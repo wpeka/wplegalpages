@@ -4,7 +4,7 @@ Plugin Name: WP Legal Pages
 Plugin URI: http://wplegalpages.com
 Description: Wp Legal Pages is a simple 1 click legal page management plugin. You can quickly add in legal pages to your wordpress sites. Furthermore the business information you fill in the general settings will be automatically filled into the appropriate places within the pages due to our custom integration system we have.
 Author: WPEka 
-Version: 1.0.1
+Version: 1.1
 Author URI: http://wplegalpages.com/
 */
 if ( ! defined( 'ABSPATH' ) ) exit;

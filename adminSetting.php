@@ -46,15 +46,15 @@ update_option('lp_general',$lp_general);
 	  if(!empty($_POST) && isset($_POST['lp-gsubmit']) && $_POST['lp-gsubmit']=='Save') : 
 	  
 $lp_general = array(
-				'domain' => sanitize_text_field($_POST['lp-domain-name']),
-				'business' =>sanitize_text_field( $_POST['lp-business-name']),
-				'phone' => sanitize_text_field($_POST['lp-phone']),
-				'street' => sanitize_text_field($_POST['lp-street']),
-				'cityState' => sanitize_text_field($_POST['lp-city-state']),
-				'country' => sanitize_text_field($_POST['lp-country']),
-				'email' =>  sanitize_email($_POST['lp-email']),
-				'address' => sanitize_text_field($_POST['lp-address']),
-				'niche' => sanitize_text_field($_POST['lp-niche']),
+				'domain' => sanitize_text_field(esc_attr($_POST['lp-domain-name'])),
+				'business' =>sanitize_text_field(esc_attr($_POST['lp-business-name'])),
+				'phone' => sanitize_text_field(esc_attr($_POST['lp-phone'])),
+				'street' => sanitize_text_field(esc_attr($_POST['lp-street'])),
+				'cityState' => sanitize_text_field(esc_attr($_POST['lp-city-state'])),
+				'country' => sanitize_text_field(esc_attr($_POST['lp-country'])),
+				'email' =>  sanitize_email(esc_attr($_POST['lp-email'])),
+				'address' => sanitize_text_field(esc_attr($_POST['lp-address'])),
+				'niche' => sanitize_text_field(esc_attr($_POST['lp-niche'])),
 				
 				);
 update_option('lp_general',$lp_general);

@@ -52,6 +52,8 @@ Few of the Key Features :
 3. screenshot-3.png
 
 == Changelog ==
+= 1.1 =
+*Enhanced security
 
 = 1.0.0 = 
 *Plugin Created
