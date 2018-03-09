@@ -1,0 +1,163 @@
+/* navbar-surveyfunnel */
+.navbar-sf{
+  background: #ffffff url('../../../../uploads/2016/09/top-bg-slide2.jpg') repeat center top;
+  border-color: #777777;
+  padding: 1% 5% 3% 5%;
+}
+
+.navbar-menu-sf{
+  padding-top: 15px;
+}
+
+.menu-sf{
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 1px !important;
+}
+
+@media (min-width:769px){
+
+  .sf-menu:after{
+    content: "";
+    height: 2px;
+  background: linear-gradient(to right, rgba(0,0,0,0) 10%, #3B9CD4 40%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 40%);
+  display: block;
+  }
+
+  .sf-active-menu:after {
+      content: "";
+      height: 2px;
+  background: linear-gradient(to right,  rgba(0,0,0,0) 10%,#3B9CD4 90%, rgba(0,0,0,0) 10%);
+  display: block;
+  }
+
+}
+
+
+
+.sml-blue{
+  background-color: #1ab7ea;
+}
+
+.sml-red{
+  background-color: #ef4035;
+}
+
+.sml-orange{
+  background-color: #f47d31;
+}
+
+.sml-green{
+  background-color: #70ac2e;
+}
+
+.sml-btn{
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+}
+
+.sml-btn:hover{
+  color: #ffffff;
+   text-decoration: none;
+}
+
+.padding-top{
+  padding-top: 12px;
+}
+
+.align-right{
+  float: right;
+}
+
+.survey-tittle{
+font-size: 16px;
+font-weight: 600;
+color: #8e9daa;
+text-transform: uppercase;
+font-family: "Open Sans",sans-serif;
+line-height: 1.42857;
+padding-left: 10px;
+}
+
+.navbar-toggle .icon-bar{
+  background-color: #3D4751;
+}
+
+.navbar-toggle{
+  background-color: white !important;
+  margin-top: 12px;
+}
+
+/* toggle css */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 65px;
+  height: 50px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 50px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Changed by Swapnil Shinde */
+.democss{
+  color: red;
+}
+
+.thank_you_text{
+
+}
+
+.social_sharing_message{
+
+}
