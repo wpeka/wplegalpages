@@ -144,6 +144,12 @@ $url = get_permalink($pid);
  	<li>Amazon affiliate template</li>
  	<li>DMCA policy</li>
  	<li>California Privacy Rights</li>
+ 	<li>Blog Comment Policy</li>
+ 	<li>Children's Online Privacy Protection Act</li>
+ 	<li>Digital Products Refund Policy</li>
+ 	<li>Newsletter Subscription and Disclaimer template</li>
+ 	<li>Return Refund Policy template</li>
+ 	<li>End User License Agreement template</li>
 </ul>
 	    </div>
 
