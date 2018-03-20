@@ -112,6 +112,9 @@ Yes. The templates are created in accordance with the US website laws and by con
 This plugin does not support multisite network. You will have to install it on each site separately.
 
 == Upgrade Notice ==
+=2.0.6 =
+Minor dashboard changes.
+
 = 2.0.5 =
 Fixed conflict issues.
 
