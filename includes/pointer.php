@@ -66,7 +66,7 @@ function custom_admin_pointers() {
    $content .= '<strong style="font-size:20px;text-align:center;">' . esc_js( __( "FREE DEVELOPER LICENSE", $plugin_namespace ) ) . '</strong><br />';
 
    $content .= '<p>' . esc_js( __( "Subscribe for the WP Legal Pages Pro newsletter - in addition to bringing you the latest WordPress news & useful web design tips,", $plugin_namespace ) );
-   $content .= '<strong>' . esc_js( __( " each month we give away a WP Legal Pages Pro Developer license (worth USD$37) to one of our lucky subscribers for free! ", $plugin_namespace ) ) . '</strong></p><br />';
+   $content .= '<strong>' . esc_js( __( " each month we give away a WP Legal Pages Pro Developer license (worth USD $67) to one of our lucky subscribers for free! ", $plugin_namespace ) ) . '</strong></p><br />';
 
    $content .= '<form action="//wpeka.us12.list-manage.com/subscribe/post?u=e0499b0e3dcc5c060fd5aada8&amp;id=261a264f3a" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>';
    $content .= '<div id="mc_embed_signup_scroll">';
