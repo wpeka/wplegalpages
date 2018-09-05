@@ -52,8 +52,14 @@ Few of the Key Features :
 3. screenshot-3.png
 
 == Changelog ==
+
+= 2.2
+* Admin panel UI improvement
+* Template not updating after activation of the plugin
+
 = 2.1 =
 * Updated EU cookie template and Privacy policy template to remain compliant with upcoming changes to the EU data protection law
+
 = 1.1 =
 *Enhanced security
 
