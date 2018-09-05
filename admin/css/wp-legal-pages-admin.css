@@ -12,13 +12,14 @@ float:left;
 }
 #lp_generalid_right{
 	float:left;
-	width:280px;
+	/*width:280px;*/
 	margin-left:20px;
 	margin-top:20px;
 	border-radius:5px;
 	-moz-border-radius:5px;
 	-webkit-border-radius:5px;
 	padding-bottom:10px;
+	display: inline-block;
 }
 
 #lp_generalid p{
@@ -233,4 +234,43 @@ font-size:22px !important;
 .more-info{
 	padding: 25px 33px;
 overflow: hidden;
+}
+.postbox .hndle.myLabel-head {
+	padding: 15px 10px !important;
+	font-size: 20px;
+	background-color: #0073aa !important;
+	color: white !important;
+	margin: 0;
+}
+
+.wrap.legal-admin-page {
+    margin: 0;
+}
+div#lp_admin_generalid {
+    width: 100%;
+		border: 1px solid #e5e5e5;
+}
+div#lp_admin_generalid_right {
+    display: inline-block;
+    width: 100%;
+    padding: 30px;
+}
+.lp-pro-link {
+	display: inline-block;
+	border: 1px solid;
+}
+
+.lp-pro-link .hndle {
+	cursor: pointer;
+	padding: 5px;
+	font-size: 20px;
+	margin: 5px;
+}
+.lp_generalid_right_wraper {
+    display: inline-block;
+    width: 25%;
+}
+
+.lp_generalid_right_wraper {
+    padding-top: 20px;
 }

@@ -26,7 +26,7 @@ wp_enqueue_script('jquery');
 $lpterms = get_option('lp_accept_terms');
 
 if($lpterms==1){?>
-<div class="wrap">
+<div class="wrap legal-admin-page">
 <?php
 if(!empty($_POST) && isset($_POST['lp-greset']) && $_POST['lp-greset']=='Reset') :
 
@@ -152,7 +152,9 @@ update_option('lp_general',$lp_general);
 
 
 </div>
+<div class='lp-pro-link'>
 	<a href="<?php echo esc_url($baseurl);?>?page=lp-create-page"><h3 class="hndle"  style="cursor:pointer; padding:7px 10px; font-size:20px;">Click Here to Create Legal Pages &raquo;</h3></a>
+</div>
 <?php }else{
 	?>
     <h2 class="hndle myLabel-head">DISCLAIMER</h2>

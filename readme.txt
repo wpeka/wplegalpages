@@ -3,9 +3,9 @@ Contributors: pallavi.chanodia, sandyr, WPEka Club
 Donate link:http://wplegalpages.com
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: Legal Pages, Business Law, law,lawyer, legal,Linking policy, External links policy, Terms and conditions, Refund policy, Affiliate disclosure, Privacy Policy, Affiliate agreement, FB privacy policy, Earnings Disclaimer, Antispam template, Double dart cookie, Disclaimer, FTC statement, Medical disclaimer, Testimonials disclosure, Amazon affiliate 
+Tags: Legal Pages, Business Law, law,lawyer, legal,Linking policy, External links policy, Terms and conditions, Refund policy, Affiliate disclosure, Privacy Policy, Affiliate agreement, FB privacy policy, Earnings Disclaimer, Antispam template, Double dart cookie, Disclaimer, FTC statement, Medical disclaimer, Testimonials disclosure, Amazon affiliate
 Requires at least: 3.1+
-Tested up to: 3.9.1
+Tested up to: 4.9.8
 Stable tag: trunk
 
 Wp Legal Pages is a simple 1 click legal page management plugin. You can quickly add in legal pages to your wordpress sites.
@@ -52,10 +52,18 @@ Few of the Key Features :
 3. screenshot-3.png
 
 == Changelog ==
+
+= 2.2
+* Admin panel UI improvement
+* Template not updating after activation of the plugin
+
+= 2.1 =
+* Updated EU cookie template and Privacy policy template to remain compliant with upcoming changes to the EU data protection law
+
 = 1.1 =
 *Enhanced security
 
-= 1.0.0 = 
+= 1.0.0 =
 *Plugin Created
 
 == Frequently Asked Questions ==
@@ -66,7 +74,7 @@ Please check <a href="http://wplegalpages.com/">resources</a> for usage.
 == Upgrade Notice ==
 
 = 1.0.0 =
-Base version of the plugin. 
+Base version of the plugin.
 
 == Official Site ==
 For more information and to take a look at the advanced WP Legal Pages version, visit our website - <a href="http://wplegalpages.com/">WP Legal Pages version</a>.
