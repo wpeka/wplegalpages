@@ -102,7 +102,7 @@ $url = get_permalink($pid);
 
         </form>
     </div>
-
+<div class="lp_generalid_right_wraper">
   <div id="lp_generalid_right" class="postbox ">
     	<h3 class="hndle"  style="cursor:pointer; padding:0px 10px 12px 10px; font-size:20px;"> Choose Template </h3><br/>
         <ul>
@@ -153,7 +153,7 @@ $url = get_permalink($pid);
  	<li>End User License Agreement template</li>
 </ul>
 	    </div>
-
+</div>
 <?php } else { ?>
 		<div id="message" class="updated">
 	    	<p>You are exceeding the limit of creating 15 legal pages.</p>
