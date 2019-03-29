@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: Legal Pages, Disclaimer, Terms and conditions, Privacy Policy,
 Requires at least: 3.1+
 Tested up to: 5.1.1
-Stable tag: 2.3
+Stable tag: 2.2.1
 
 WP Legal Pages is a simple 1 click legal page management plugin. You can quickly add in legal pages to your WordPress sites.
 
