@@ -52,6 +52,11 @@ wp_enqueue_style('jquery-miniColor',$this->plugin_url. '/wp-content/plugins/wple
 wp_enqueue_script('jquery-validation-plugin', $this->plugin_url.'/wp-content/plugins/wplegalpages/admin/js/jquery.validate.min.js', array('jquery'));
 
 ?>
+<div class='wplegalpages-addon-promotion'>
+    <a href="https://club.wpeka.com/product/wplegalpages-cookie-consent-addon/" target="_blank">
+        <img alt="WPLegalPages Cookie Consent Addon" src="<?php echo WPL_LITE_PLUGIN_URL.'admin/images/wplegalpages-addon-promotion.jpg'; ?>">
+    </a>
+</div>
     <h2 class="title-head">  <?php _e('EU Cookies','wplegalpages');?> : </h2>
     <div style="clear:both;"></div>
     <div class="wrap">

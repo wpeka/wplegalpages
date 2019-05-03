@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+define( 'WPL_LITE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+
 /**
  * The code that runs during WP Legal Pages activation.
  * This action is documented in includes/class-wp-legal-pages-activator.php
