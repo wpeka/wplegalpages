@@ -14,7 +14,7 @@ $privacy= file_get_contents(WP_PLUGIN_URL.'/wplegalpages-lite/templates/privacy.
 	<h1>WP Legal Pages</h1>
 	<div style="line-height: 2.4em;">
 	<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=legalpages%20lite%20banner&utm_campaign=legal%20pages%20lite%20banner&utm_medium=banner" target="_blank">
-	<img alt="Upgrade to Pro" src="<?php echo WP_PLUGIN_URL.'/wplegalpages-lite/admin/images/upgrade-to-pro.jpg'; ?>">
+	<img alt="Upgrade to Pro" src="<?php echo WPL_LITE_PLUGIN_URL.'admin/images/upgrade-to-pro.jpg'; ?>">
 	</a>
 	</div>
 </div>

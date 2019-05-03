@@ -274,3 +274,8 @@ div#lp_admin_generalid_right {
 .lp_generalid_right_wraper {
     padding-top: 20px;
 }
+div.wplegalpages-addon-promotion > a {
+	display: block;
+	margin: 1% auto;
+	text-align: center;
+}
