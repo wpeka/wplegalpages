@@ -49,7 +49,7 @@ wp_enqueue_script( 'jquery-minicolor',  WPL_LITE_PLUGIN_URL. 'admin/js/jquery.mi
 wp_enqueue_style('jquery-miniColor',WPL_LITE_PLUGIN_URL. 'admin/css/minicolor/jquery.miniColors.css');
 
 //Form validation library file
-wp_enqueue_script('jquery-validation-plugin', WPL_LITE_PLUGIN_URL.'js/jquery.validate.min.js', array('jquery'));
+wp_enqueue_script('jquery-validation-plugin', WPL_LITE_PLUGIN_URL.'admin/js/jquery.validate.min.js', array('jquery'));
 
 ?>
 <div class='wplegalpages-addon-promotion'>
