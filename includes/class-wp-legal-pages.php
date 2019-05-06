@@ -228,7 +228,7 @@ $this->plugin_url	= plugin_dir_path( dirname( __FILE__ ) );
 
 	function enqueue_frontend_script()
 	{
-		wp_enqueue_script('jquery-cookie', '/wp-content/plugins/wplegalpages/admin/js/jquery.cookie.js', array('jquery'));
+		wp_enqueue_script('jquery-cookie', WPL_LITE_PLUGIN_URL.'admin/js/jquery.cookie.js', array('jquery'));
 	}
 	function wp_legalpages_show_eu_cookie_message()
 	{
