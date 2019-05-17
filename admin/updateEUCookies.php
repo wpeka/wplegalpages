@@ -53,7 +53,7 @@ wp_enqueue_script('jquery-validation-plugin', WPL_LITE_PLUGIN_URL.'admin/js/jque
 
 ?>
 <div class='wplegalpages-addon-promotion'>
-    <a href="https://club.wpeka.com/product/wplegalpages-cookie-consent-addon/" target="_blank">
+    <a href="https://club.wpeka.com/product/wplegalpages-cookie-consent/" target="_blank">
         <img alt="WPLegalPages Cookie Consent Addon" src="<?php echo WPL_LITE_PLUGIN_URL.'admin/images/wplegalpages-addon-promotion.jpg'; ?>">
     </a>
 </div>
