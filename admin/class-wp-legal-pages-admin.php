@@ -104,13 +104,13 @@ class WP_Legal_Pages_Admin {
         */
 	public function admin_menu() {
 
-		add_menu_page(__('Legal Pages','legal-pages'), 'Legal Pages', 'manage_options', 'legal-pages', array($this, 'admin_setting'));
+		add_menu_page(__('Legal Pages','legal-pages'), 'Legal Pages', 'manage_options', 'legal-pages', array($this, 'admin_setting'), 'dashicons-media-default', 66);
                 $terms = get_option('lp_accept_terms');
                 if($terms == 1){
                         add_submenu_page(__('legal-pages','legal-pages'), 'Settings', 'Settings', 'manage_options', 'legal-pages', array($this, 'admin_setting'));
                         add_submenu_page(__('legal-pages','legal-pages'), 'Legal Pages', 'Legal Pages', 'manage_options', 'lp-show-pages', array($this, 'show_pages'));
                         add_submenu_page(__('legal-pages','legal-pages'), 'Create Page', 'Create Page', 'manage_options', 'lp-create-page', array($this, 'create_page'));
-                        add_submenu_page(__('legal-pages','legal-pages'), 'EU Cookies', 'EU Cookies', 'manage_options', 'lp-eu-cookies', array($this, 'update_eu_cookies'));
+                        add_submenu_page(__('legal-pages','legal-pages'), 'Cookie Bar', 'Cookie Bar', 'manage_options', 'lp-eu-cookies', array($this, 'update_eu_cookies'));
                 }
 
 	}

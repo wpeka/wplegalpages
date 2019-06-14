@@ -72,18 +72,17 @@ class WP_Legal_Pages {
 	 */
 	public function __construct() {
 
-                global $table_prefix;
-				$this->plugin_name = 'wp-legal-pages';
-				$this->version = '1.5.2';
-                $this->tablename = $table_prefix . "legal_pages";
-                $this->popuptable = $table_prefix . "lp_popups";
-$this->plugin_url	= plugin_dir_path( dirname( __FILE__ ) );
+        global $table_prefix;
+        $this->plugin_name = 'wp-legal-pages';
+        $this->version = '2.2.3';
+        $this->tablename = $table_prefix . "legal_pages";
+        $this->popuptable = $table_prefix . "lp_popups";
+        $this->plugin_url	= plugin_dir_path( dirname( __FILE__ ) );
 		$this->load_dependencies();
 		$this->set_locale();
 		if(is_admin()){
-		$this->define_admin_hooks();
-
-		}
+		    $this->define_admin_hooks();
+        }
 		$this->define_public_hooks();
 	}
 
