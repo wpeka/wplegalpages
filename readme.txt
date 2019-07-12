@@ -3,8 +3,8 @@ Contributors: pallavi.chanodia, sandyr, WPEka Club
 Donate link:https://club.wpeka.com/product/wplegalpages
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: Legal Pages, Disclaimer, Terms and conditions, Privacy Policy,
-Requires at least: 3.1+
+Tags: Legal Pages, Disclaimer, Terms and conditions, Privacy Policy, Cookie Consent
+Requires at least: 5.0+
 Tested up to: 5.2.2
 Stable tag: 2.2.4
 
@@ -19,7 +19,7 @@ Pages included:
 <ul>
 <li>Privacy Policy</li>
 <li>DMCA Policy</li>
-<li>EU Cookie Policy</li>
+<li>Simple Cookie Bar</li>
 </ul>
 
 [youtube https://www.youtube.com/watch?v=iqdLl9qsBHc]
@@ -27,7 +27,7 @@ Pages included:
 We have a <a href="https://club.wpeka.com/product/wplegalpages/">PRO version</a> of this plugin. It includes 24 legal page templates required by different sites.
 
 
-<h4>List of all the 24 templates included with PRO version : </h4>
+<h4>List of all policy templates included with PRO version : </h4>
 
 <ol>
   <li>California Privacy Rights <strong>(NEW)!!</strong></li>
@@ -56,6 +56,7 @@ We have a <a href="https://club.wpeka.com/product/wplegalpages/">PRO version</a>
   	<li>Newsletter: Subscription and Disclaimer Template</li>
 </ol>
 
+
 <h3>Features included: </h3>
 
 <h4>Easy to install & use </h4>
@@ -77,9 +78,10 @@ For advanced usage of creating unlimited templates, advanced flexibility, ready 
 Few of the Key Features: 1. Pre-built Legal Templates 2. Easy To Edit Pages 3. Powerful & Simple WP Plugin
 
 = Features of WP Legal Pages Pro =
-1. Total number of 23 templates are available
+1. Total number of 25 templates are available
 2. Supports widget
 3. <a href="https://club.wpeka.com/product/wplegalpages/">WP Legal Pages Pro </a> is also available as part of <a href="https://club.wpeka.com/">WPEKa WordPress Plugin Club</a>
+4. Compatible with [WP GDPR Cookie Consent Plugin](https://club.wpeka.com/product/wp-gdpr-cookie-consent/)
 
 * [Upgrade Today](https://club.wpeka.com/product/wplegalpages/)
 
@@ -90,11 +92,10 @@ Few of the Key Features: 1. Pre-built Legal Templates 2. Easy To Edit Pages 3. P
 4. Refer to the <a href="http://wplegalpages.com/">resources</a> section for usage details.
 
 == Screenshots ==
-1. disclaimer before using the plugin.png
-2. general settings page.png
-3. legal templates.png
-4. adding legal page as popup.png
-5. affiliate disclosure.png
+1. general settings page.png
+2. legal templates.png
+3. adding legal page as popup.png
+4. affiliate disclosure.png
 
 == Frequently Asked Questions ==
 
@@ -113,10 +114,8 @@ This plugin does not support multisite network. You will have to install it on e
 
 == Upgrade Notice ==
 = 2.2.4
-Updated Design of Admin screens.
-Updated Marketing banners for WP GDPR Cookie Consent plugin and WPLegalPages Pro Version.
-Fixed PHP Notice.
-Made compatible with WordPress 5.2.2
+Improved design of Admin screens.
+Compatibility with WordPress 5.2.2
 
 = 2.2.3
 Updated Admin menu for WPLegalPages Cookies.
