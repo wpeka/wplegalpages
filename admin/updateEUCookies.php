@@ -2,6 +2,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 require_once( 'class-wp-legal-pages-admin.php' );
+
 global $wpdb;
 $lpObj = new WP_Legal_Pages();
 if(!empty($_POST) && isset($_POST['lp-submit'])){
@@ -52,14 +53,15 @@ wp_enqueue_style('jquery-miniColor',WPL_LITE_PLUGIN_URL. 'admin/css/minicolor/jq
 wp_enqueue_script('jquery-validation-plugin', WPL_LITE_PLUGIN_URL.'admin/js/jquery.validate.min.js', array('jquery'));
 
 ?>
-<div class='wplegalpages-addon-promotion'>
-    <a href="https://club.wpeka.com/product/wp-gdpr-cookie-consent/" target="_blank">
-        <img alt="WPLegalPages Cookie Consent Addon" src="<?php echo WPL_LITE_PLUGIN_URL.'admin/images/wplegalpages-addon-promotion.jpg'; ?>">
-    </a>
-</div>
-    <h2 class="title-head">  <?php _e('Cookie Bar','wplegalpages');?> : </h2>
-    <div style="clear:both;"></div>
+
     <div class="wrap">
+        <div class='wplegalpages-addon-promotion'>
+            <a href="https://club.wpeka.com/product/wp-gdpr-cookie-consent/" target="_blank">
+                <img alt="WPLegalPages Cookie Consent Addon" src="<?php echo WPL_LITE_PLUGIN_URL.'admin/images/wplegalpages-addon-promotion.jpg'; ?>">
+            </a>
+        </div>
+        <h2 class="title-head">  <?php _e('Cookie Bar','wplegalpages');?> : </h2>
+        <div style="clear:both;"></div>
         <div class="postbox all_pad">
             <form id="lp_eu_cookies_form" enctype="multipart/form-data" method="post" action="" name="terms">
                 <div class="row">

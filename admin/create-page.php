@@ -7,19 +7,18 @@ $baseurl=esc_url(get_bloginfo('url'));
 $page = isset($_REQUEST['page'])?sanitize_text_field($_REQUEST['page']):'';
 $lptype = isset($_REQUEST['lp-type'])?sanitize_text_field($_REQUEST['lp-type']):'';
 $template = isset($_REQUEST['lp-template'])?sanitize_text_field($_REQUEST['lp-template']):'';
-$privacy= file_get_contents(WP_PLUGIN_URL.'/wplegalpages-lite/templates/privacy.html');
+$privacy= file_get_contents(plugin_dir_path( dirname( __FILE__ ) ).'templates/privacy.html');
 
 ?>
-<div style="width:1000px;float:left;">
-	<h1>WP Legal Pages</h1>
-	<div style="line-height: 2.4em;">
-	<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=legalpages%20lite%20banner&utm_campaign=legal%20pages%20lite%20banner&utm_medium=banner" target="_blank">
-	<img alt="Upgrade to Pro" src="<?php echo WPL_LITE_PLUGIN_URL.'admin/images/upgrade-to-pro.jpg'; ?>">
-	</a>
-	</div>
-</div>
-	<div style="clear:both;"></div>
 <div class="wrap">
+    <div style="">
+        <div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
+            <a href="https://club.wpeka.com/product/wplegalpages/?utm_source=legalpages%20lite%20banner&utm_campaign=legal%20pages%20lite%20banner&utm_medium=banner" target="_blank">
+                <img alt="Upgrade to Pro" src="<?php echo WPL_LITE_PLUGIN_URL.'admin/images/upgrade-to-pro.jpg'; ?>">
+            </a>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
 <?php
 if(!empty($_POST) && $_POST['lp-submit']=='Publish') :
 $title = $_POST['lp-title'];
@@ -160,3 +159,4 @@ $url = get_permalink($pid);
 
 	    </div>
 <?php }?>
+</div>
