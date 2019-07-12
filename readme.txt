@@ -5,8 +5,8 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: Legal Pages, Disclaimer, Terms and conditions, Privacy Policy,
 Requires at least: 3.1+
-Tested up to: 5.2.1
-Stable tag: 2.2.3
+Tested up to: 5.2.2
+Stable tag: 2.2.4
 
 WP Legal Pages is a simple 1 click legal page management plugin. You can quickly add in legal pages to your WordPress sites.
 
@@ -112,6 +112,12 @@ Yes. The templates are created in accordance with the US website laws and by con
 This plugin does not support multisite network. You will have to install it on each site separately.
 
 == Upgrade Notice ==
+= 2.2.4
+Updated Design of Admin screens.
+Updated Marketing banners for WP GDPR Cookie Consent plugin and WPLegalPages Pro Version.
+Fixed PHP Notice.
+Made compatible with WordPress 5.2.2
+
 = 2.2.3
 Updated Admin menu for WPLegalPages Cookies.
 Made compatible with WordPress 5.2.1

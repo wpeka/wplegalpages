@@ -2,6 +2,9 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+?>
+<div class="wrap">
+<?php
 $page = isset($_REQUEST['page'])?$_REQUEST['page']:'';
 $nonce = isset($_REQUEST['_wpnonce'])? $_REQUEST['_wpnonce']:'';
 
@@ -25,8 +28,7 @@ if( (isset($_REQUEST['mode']) && $_REQUEST['mode']=='delete' && current_user_can
 <?php
 }
 ?>
-<h1>WP Legal Pages</h1>
-<div style="line-height: 2.4em;">
+<div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
 <a href="https://club.wpeka.com/product/wplegalpages/?utm_source=legalpages%20lite%20banner&utm_campaign=legal%20pages%20lite%20banner&utm_medium=banner" target="_blank">
 <img alt="Upgrade to Pro" src="<?php echo WPL_LITE_PLUGIN_URL.'admin/images/upgrade-to-pro.jpg'; ?>">
 </a>
@@ -95,3 +97,4 @@ if( (isset($_REQUEST['mode']) && $_REQUEST['mode']=='delete' && current_user_can
     	</tr>
     </tfoot>
  </table>
+</div>

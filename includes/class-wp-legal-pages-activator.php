@@ -34,7 +34,7 @@ class WP_Legal_Pages_Activator {
             global $wpdb;
             $legal_pages = new WP_Legal_Pages();
             $privacy = file_get_contents(plugin_dir_path( dirname( __FILE__ ) ) . 'templates/privacy.html');
-            $dmca = file_get_contents(plugin_dir_path( dirname( __FILE__ ) ). '/templates/dmca.html');
+            $dmca = file_get_contents(plugin_dir_path( dirname( __FILE__ ) ). 'templates/dmca.html');
 
 
             add_option('lp_excludePage','true');

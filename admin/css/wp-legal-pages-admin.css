@@ -71,7 +71,7 @@ height:20px;
 font-size: 14px;
 }
 .toplevel_page_legal-pages .postbox{
-min-height: 750px;
+min-height: 600px;
 }
 #lp_admin_generalid_right img{
 margin-bottom: 0.5%;
@@ -248,7 +248,6 @@ overflow: hidden;
 }
 div#lp_admin_generalid {
     width: 100%;
-		border: 1px solid #e5e5e5;
 }
 div#lp_admin_generalid_right {
     display: inline-block;
@@ -274,8 +273,14 @@ div#lp_admin_generalid_right {
 .lp_generalid_right_wraper {
     padding-top: 20px;
 }
-div.wplegalpages-addon-promotion > a {
+div.wplegalpages-addon-promotion > a,
+div.wplegalpages-pro-promotion > a {
 	display: block;
 	margin: 1% auto;
 	text-align: center;
+}
+div.wplegalpages-addon-promotion img,
+div.wplegalpages-pro-promotion img {
+	max-width: 100%;
+	height: auto;
 }
