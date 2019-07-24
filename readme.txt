@@ -54,6 +54,8 @@ We have a <a href="https://club.wpeka.com/product/wplegalpages/">PRO version</a>
  	<li>DMCA Policy Template</li>
   	<li>Blog Comments Policy</li>
   	<li>Newsletter: Subscription and Disclaimer Template</li>
+  	<li>GDPR Cookie Policy</li>
+  	<li>GDPR Privacy Policy</li>
 </ol>
 
 
@@ -78,7 +80,7 @@ For advanced usage of creating unlimited templates, advanced flexibility, ready 
 Few of the Key Features: 1. Pre-built Legal Templates 2. Easy To Edit Pages 3. Powerful & Simple WP Plugin
 
 = Features of WP Legal Pages Pro =
-1. Total number of 25 templates are available
+1. Total number of 26 templates are available
 2. Supports widget
 3. <a href="https://club.wpeka.com/product/wplegalpages/">WP Legal Pages Pro </a> is also available as part of <a href="https://club.wpeka.com/">WPEKa WordPress Plugin Club</a>
 4. Compatible with [WP GDPR Cookie Consent Plugin](https://club.wpeka.com/product/wp-gdpr-cookie-consent/)
