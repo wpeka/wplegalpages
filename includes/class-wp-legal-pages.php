@@ -174,7 +174,7 @@ class WP_Legal_Pages {
 		$plugin_public = new WP_Legal_Pages_Public( $this->get_plugin_name(), $this->get_version() );
 		$lp_general = get_option('lp_general');
         if(isset($lp_general['generate']) && $lp_general['generate'] == "1"){
-            $this->loader->add_filter( 'the_content', $plugin_public, 'wplegal_post_generate' );
+            // $this->loader->add_filter( 'the_content', $plugin_public, 'wplegal_post_generate' );
 	    }
 		add_action('wp_enqueue_scripts', array($this,'enqueue_frontend_script'));
 	   add_action('wp_footer', array($this,'wp_legalpages_show_eu_cookie_message'));
