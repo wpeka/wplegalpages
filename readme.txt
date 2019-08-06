@@ -24,7 +24,7 @@ Pages included:
 
 [youtube https://www.youtube.com/watch?v=iqdLl9qsBHc]
 
-We have a <a href="https://club.wpeka.com/product/wplegalpages/">PRO version</a> of this plugin. It includes 24 legal page templates required by different sites.
+We have a <a href="https://club.wpeka.com/product/wplegalpages/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=pro-version">PRO version</a> of this plugin. It includes 24 legal page templates required by different sites.
 
 
 <h4>List of all policy templates included with PRO version : </h4>
@@ -63,7 +63,7 @@ We have a <a href="https://club.wpeka.com/product/wplegalpages/">PRO version</a>
 
 <h4>Easy to install & use </h4>
 <p>This plugin can be installed and legal pages added to your website in 5 minutes or less! Average users is seeing about that setup time…
-For advanced usage of creating unlimited templates, advanced flexibility, ready to use templates and exporting importing the templates and settings, you can use the <a href="http://wplegalpages.com">WP Legal Pages</a> plugin.</p>
+For advanced usage of creating unlimited templates, advanced flexibility, ready to use templates and exporting importing the templates and settings, you can use the <a href="http://wplegalpages.com/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=wp-legal-pages">WP Legal Pages</a> plugin.</p>
 
 <h4>Forced agreement option</h4>
 <p>Force your website visitors to agree to your Terms, Privacy policy, etc. using our lock down features. This can be used on both your WordPress pages and posts! This is a very flexible option as you can put any text in this forced option.</p>
@@ -82,16 +82,16 @@ Few of the Key Features: 1. Pre-built Legal Templates 2. Easy To Edit Pages 3. P
 = Features of WP Legal Pages Pro =
 1. Total number of 26 templates are available
 2. Supports widget
-3. <a href="https://club.wpeka.com/product/wplegalpages/">WP Legal Pages Pro </a> is also available as part of <a href="https://club.wpeka.com/">WPEKa WordPress Plugin Club</a>
-4. Compatible with [WP GDPR Cookie Consent Plugin](https://club.wpeka.com/product/wp-gdpr-cookie-consent/)
+3. <a href="https://club.wpeka.com/product/wplegalpages/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=wp-legal-pages-pro">WP Legal Pages Pro </a> is also available as part of <a href="https://club.wpeka.com/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=wpeka-wordpress-plugin-club">WPEKa WordPress Plugin Club</a>
+4. Compatible with [GDPR Cookie Consent Plugin](https://club.wpeka.com/product/wp-gdpr-cookie-consent/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=gdpr-cookie-consent-plugin)
 
-* [Upgrade Today](https://club.wpeka.com/product/wplegalpages/)
+* [Upgrade Today](https://club.wpeka.com/product/wplegalpages/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=upgrade-today)
 
 == Installation ==
 1. Download the plugin file, unzip and place it in your wp-content/plugins/ folder. You can alternatively upload it via the WordPress plugin backend.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. WP Legal Pages menu will appear in left hand side. Click on it & get started to use.
-4. Refer to the <a href="http://wplegalpages.com/">resources</a> section for usage details.
+4. Refer to the <a href="http://wplegalpages.com/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=resources">resources</a> section for usage details.
 
 == Screenshots ==
 1. general settings page.png
@@ -204,4 +204,4 @@ Base version of the plugin.
 
 
 == Official Site ==
-For more information and to take a look at the advanced WP Legal Pages version, visit our website - <a href="http://wplegalpages.com/">WP Legal Pages version</a>.
+For more information and to take a look at the advanced WP Legal Pages version, visit our website - <a href="http://wplegalpages.com/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=wp-legal-pages-version">WP Legal Pages version</a>.
