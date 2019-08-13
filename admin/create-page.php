@@ -8,9 +8,12 @@ $page = isset($_REQUEST['page'])?sanitize_text_field($_REQUEST['page']):'';
 $lptype = isset($_REQUEST['lp-type'])?sanitize_text_field($_REQUEST['lp-type']):'';
 $template = isset($_REQUEST['lp-template'])?sanitize_text_field($_REQUEST['lp-template']):'';
 $privacy= file_get_contents(plugin_dir_path( dirname( __FILE__ ) ).'templates/privacy.html');
-
+$lp_pro_installed = get_option('_lp_pro_installed');
 ?>
 <div class="wrap">
+    <?php
+    if($lp_pro_installed !== '1') :
+    ?>
     <div style="">
         <div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
             <a href="https://club.wpeka.com/product/wplegalpages/?utm_source=legalpages%20lite%20banner&utm_campaign=legal%20pages%20lite%20banner&utm_medium=banner" target="_blank">
@@ -19,7 +22,8 @@ $privacy= file_get_contents(plugin_dir_path( dirname( __FILE__ ) ).'templates/pr
         </div>
     </div>
     <div style="clear:both;"></div>
-<?php
+	<?php
+	endif;
 if(!empty($_POST) && $_POST['lp-submit']=='Publish') :
 $title = $_POST['lp-title'];
 $content = $_POST['lp-content'];
@@ -75,6 +79,7 @@ $url = get_permalink($pid);
 					$lp_find = array("[Domain]","[Business Name]","[Phone]","[Street]","[City, State, Zip code]","[Country]","[Email]","[Address]","[Niche]");
 					$lp_general = get_option('lp_general');
 					$content = str_replace($lp_find, $lp_general, stripslashes($content));
+					$content = apply_filters('wplegalpages_shortcode_content',$content);
 					$editor_id = 'lp-content';
 					$args = array();
 					wp_editor(stripslashes(html_entity_decode($content)),$id = 'content',$args);
@@ -115,7 +120,7 @@ $url = get_permalink($pid);
 
         </ul>
     </div>
-
+        <?php if($lp_pro_installed !== '1') : ?>
 		<div id="lp_generalid_right">
 			<a href="https://club.wpeka.com/checkout/?add-to-cart=5942" style="text-decoration:none;padding-left:20px;" target="_blank">
 			Upgrade to Pro for All templates
@@ -154,6 +159,7 @@ $url = get_permalink($pid);
     <li>GDPR Privacy Policy template</li>
 </ul>
 	    </div>
+    <?php endif; ?>
 </div>
 <?php } else { ?>
 		<div id="message" class="updated">

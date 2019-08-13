@@ -15,8 +15,9 @@ if(isset($_POST['lp_submit']) && $_POST['lp_submit']=='Accept'){
 wp_enqueue_script('jquery');
 
 $lpterms = get_option('lp_accept_terms');
-
+$lp_pro_installed = get_option('_lp_pro_installed');
 if($lpterms==1){?>
+    <?php if($lp_pro_installed !== '1') : ?>
     <div style="">
         <div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
             <a href="https://club.wpeka.com/product/wplegalpages/?utm_source=legalpages%20lite%20banner&utm_campaign=legal%20pages%20lite%20banner&utm_medium=banner" target="_blank">
@@ -24,7 +25,9 @@ if($lpterms==1){?>
             </a>
         </div>
         <h4>WPLegalPages is also available as a part of <a href="https://club.wpeka.com/" target="_blank">WPEka Club</a> Membership with 20+ more premium WordPress products.<h4>
-    </div>	<div style="clear:both;"></div>
+    </div>
+    <div style="clear:both;"></div>
+        <?php endif; ?>
     <div id="WP-Feedback-legal-pages" align="center"></div>
 <?php
 if(!empty($_POST) && isset($_POST['lp-greset']) && $_POST['lp-greset']=='Reset') :
@@ -66,6 +69,7 @@ $lp_general = array(
 				'niche' => sanitize_text_field(esc_attr($_POST['lp-niche'])),
 
 				);
+	  $lp_general = apply_filters('wplegalpages_save_settings', $lp_general, $_POST);
                 if(isset($_POST['lp-generate'])) {
                 $lp_general['generate']=sanitize_text_field(esc_attr($_POST['lp-generate']));
                 } else {
@@ -123,6 +127,7 @@ $lp_general = array(
             <tr>
              <td><b>Niche:</b></td> <td><input type="text" size="30" name="lp-niche" value="<?php echo !empty($lp_general['niche'])? stripslashes($lp_general['niche']):'';?>" /></td> <td>[Niche]</td>
             </tr>
+            <?php do_action('wplegalpages_admin_settings', $lp_general); ?>
             <tr>
  	          <td> <b> Give Credit : </b> </td>
                 <td><label class="switch"><input type="checkbox" <?php echo (isset($lp_general[ 'generate']) && $lp_general[ 'generate']=='1' )? 'checked="checked"': '' ?> name="lp-generate" value="1" >
