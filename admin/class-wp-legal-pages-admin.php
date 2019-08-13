@@ -111,6 +111,7 @@ class WP_Legal_Pages_Admin {
                         add_submenu_page(__('legal-pages','legal-pages'), 'Legal Pages', 'Legal Pages', 'manage_options', 'lp-show-pages', array($this, 'show_pages'));
                         add_submenu_page(__('legal-pages','legal-pages'), 'Create Page', 'Create Page', 'manage_options', 'lp-create-page', array($this, 'create_page'));
                         add_submenu_page(__('legal-pages','legal-pages'), 'Cookie Bar', 'Cookie Bar', 'manage_options', 'lp-eu-cookies', array($this, 'update_eu_cookies'));
+                        do_action('wplegalpages_admin_menu');
                 }
 
 	}

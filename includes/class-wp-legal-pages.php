@@ -74,7 +74,7 @@ class WP_Legal_Pages {
 
         global $table_prefix;
         $this->plugin_name = 'wp-legal-pages';
-        $this->version = '2.2.5';
+        $this->version = '2.2.6';
         $this->tablename = $table_prefix . "legal_pages";
         $this->popuptable = $table_prefix . "lp_popups";
         $this->plugin_url	= plugin_dir_path( dirname( __FILE__ ) );
