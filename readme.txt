@@ -115,6 +115,9 @@ Yes. The templates are created in accordance with the US website laws and by con
 This plugin does not support multisite network. You will have to install it on each site separately.
 
 == Upgrade Notice ==
+= 2.2.6
+Integration of WPLegalPages Pro version.
+
 = 2.2.5
 Fixed issue with filter for Legal Pages rendering
 
