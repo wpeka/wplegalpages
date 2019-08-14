@@ -3,24 +3,21 @@ Contributors: pallavi.chanodia, sandyr, WPEka Club
 Donate link:https://club.wpeka.com/product/wplegalpages
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: Legal Pages, Disclaimer, Terms and conditions, Privacy Policy, Cookie Consent
+Tags: Legal Pages, Disclaimer, Terms and conditions, Privacy Policy, Cookie Consent, GDPR, Cookie Consent, Terms of Service, Terms of Use
 Requires at least: 5.0+
 Tested up to: 5.2.2
 Stable tag: 2.2.6
 
-WP Legal Pages is a simple 1 click legal page management plugin. You can quickly add in legal pages to your WordPress sites.
+WP Legal Pages is a popular, easy-to-use privacy policy generator plugin for WordPress. The pro version can also generator 25+ other policy pages including terms of use, affiliate vendor compliance policies and ad network policies.
 
 == Description ==
 
-WP Legal Pages is a simple 1 click legal pages management plugin. You can quickly add in legal pages to your wordpress sites.
-All you have to do is enter your business details and just click save. And legal pages will be ready for you.
+WP Legal Pages is a popular, easy-to-use privacy policy generator plugin for WordPress. The pro version can generate 25+ other policy pages including terms of use, affiliate vendor compliance policies and ad network policies.
 
-Pages included:
-<ul>
-<li>Privacy Policy</li>
-<li>DMCA Policy</li>
-<li>Simple Cookie Bar</li>
-</ul>
+Using WP Legal Pages, you can generate two privacy policy pages required for any website.
+
+- Privacy Policy
+- DMCA Policy
 
 [youtube https://www.youtube.com/watch?v=iqdLl9qsBHc]
 
