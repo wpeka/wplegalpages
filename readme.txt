@@ -1,5 +1,5 @@
 === WP Legal Pages ===
-Contributors: pallavi.chanodia, sandyr, WPEka Club
+Contributors: sandyr, WPEka Club
 Donate link:https://club.wpeka.com/product/wplegalpages
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
