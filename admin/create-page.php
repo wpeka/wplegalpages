@@ -57,7 +57,9 @@ $url = get_permalink($pid);
 	$countofPages = $wpdb->get_results("SELECT count(meta_id) as cntPages FROM $postTbl, $postmetaTbl
 			WHERE $postTbl.ID = $postmetaTbl.post_id and $postTbl.post_status='publish'
 			AND $postmetaTbl.meta_key =  'is_legal'");
-	if($countofPages[0]->cntPages<15){
+	$max_limit = 15;
+	$max_limit = apply_filters( 'wplegalpages_pages_limit', $max_limit );
+	if($countofPages[0]->cntPages<$max_limit){
 ?>
 
 <div class="postbox ">
@@ -164,7 +166,6 @@ $url = get_permalink($pid);
 <?php } else { ?>
 		<div id="message" class="updated">
 	    	<p>You are exceeding the limit of creating 15 legal pages.</p>
-
 	    </div>
 <?php }?>
 </div>
