@@ -58,7 +58,7 @@ We have a <a href="https://club.wpeka.com/product/wplegalpages/?utm_source=wporg
 
 <h3>Features included: </h3>
 
-<h4>Easy to install & use </h4>
+<h4>Easy to install and use </h4>
 <p>This plugin can be installed and legal pages added to your website in 5 minutes or less! Average users is seeing about that setup time…
 For advanced usage of creating unlimited templates, advanced flexibility, ready to use templates and exporting importing the templates and settings, you can use the <a href="http://wplegalpages.com/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=wp-legal-pages">WP Legal Pages</a> plugin.</p>
 
