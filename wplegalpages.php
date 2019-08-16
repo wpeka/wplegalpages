@@ -7,7 +7,7 @@
 *Version: 2.2.6
 *Author URI: http://wplegalpages.com/
 *License: GPL2
-*Text Domain: WP Legal Pages
+*Text Domain: wplegalpages
 *Domain Path: /languages
 */
 
@@ -59,7 +59,7 @@ register_uninstall_hook(__FILE__, 'delete_wp_legal_pages');
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-wp-legal-pages.php';
-require plugin_dir_path( __FILE__ ) . 'includes/pointer.php';
+
 /**
  * Begins execution of the WP Legal Pages.
  *
