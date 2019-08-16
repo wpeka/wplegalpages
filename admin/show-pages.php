@@ -14,11 +14,11 @@ if( (isset($_REQUEST['mode']) && $_REQUEST['mode']=='delete' && current_user_can
 
  	if(! wp_verify_nonce( $nonce,'my-nonce' ))
  	{
- 		wp_die( __('Security Check.') );
+ 		wp_die( __('Security Check.', 'wplegalpages') );
  	}
 
 	if ( ! wp_trash_post($_REQUEST['pid']) ){
-		wp_die( __('Error in moving to Trash.') );
+		wp_die( __('Error in moving to Trash.', 'wplegalpages') );
         }
 ?>
         <div id="message" >
