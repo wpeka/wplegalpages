@@ -113,7 +113,7 @@ This plugin does not support multisite network. You will have to install it on e
 
 ## Upgrade Notice ##
 ### 2.2.7
-Added filter to fix for limit to create legal pages in pro version.
+Fix: Filter for Legal template count.
 ###
 ### 2.2.6
 Integration of WPLegalPages Pro version.
