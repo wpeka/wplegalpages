@@ -19,7 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 if( ! defined( 'WPL_LITE_PLUGIN_URL' ) ) {
 	define( 'WPL_LITE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
-
+if( ! defined( 'WPLPP_SUFFIX' ) ) {
+	define( 'WPLPP_SUFFIX', ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min' );
+}
 /**
  * The code that runs during WP Legal Pages activation.
  * This action is documented in includes/class-wp-legal-pages-activator.php

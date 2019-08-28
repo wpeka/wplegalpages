@@ -225,7 +225,7 @@ class WP_Legal_Pages {
 
 	function enqueue_frontend_script()
 	{
-		wp_enqueue_script('jquery-cookie', WPL_LITE_PLUGIN_URL.'admin/js/jquery.cookie.js', array('jquery'));
+		wp_enqueue_script('jquery-cookie', WPL_LITE_PLUGIN_URL.'admin/js/jquery.cookie'. WPLPP_SUFFIX .'.js', array('jquery'));
 	}
 	function wp_legalpages_show_eu_cookie_message()
 	{
