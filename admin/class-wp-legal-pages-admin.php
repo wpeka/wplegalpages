@@ -62,7 +62,7 @@ class WP_Legal_Pages_Admin {
 
 	public function enqueue_styles() {
 		if( (isset( $_GET['page'] )) && (($_GET['page'] == 'legal-pages')||($_GET['page'] == 'lp-show-pages')||($_GET['page'] == 'lp-create-page')||($_GET['page'] == 'lp-eu-cookies'))){
-		wp_enqueue_style( $this->plugin_name."-admin", plugin_dir_url( __FILE__ ) . 'css/wp-legal-pages-admin'. WPLPP_SUFFIX .'css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name."-admin", plugin_dir_url( __FILE__ ) . 'css/wp-legal-pages-admin'. WPLPP_SUFFIX .'.css', array(), $this->version, 'all' );
                 wp_enqueue_style( $this->plugin_name."-bootstrap", plugin_dir_url( __FILE__ ) . 'css/bootstrap' . WPLPP_SUFFIX .'.css', array(), $this->version, 'all' );
 
 	}
@@ -87,7 +87,7 @@ class WP_Legal_Pages_Admin {
 		 * class.
 		 */
 		 	if( (isset( $_GET['page'] )) && (($_GET['page'] == 'legal-pages')||($_GET['page'] == 'lp-show-pages')||($_GET['page'] == 'lp-create-page')||($_GET['page'] == 'lp-eu-cookies'))){
-		wp_enqueue_script('tooltip-js', WPL_LITE_PLUGIN_URL. 'admin/js/tooltip'. WPLPP_SUFFIX .'js');
+		wp_enqueue_script('tooltip-js', WPL_LITE_PLUGIN_URL. 'admin/js/tooltip'. WPLPP_SUFFIX .'.js');
 }
 	}
 
