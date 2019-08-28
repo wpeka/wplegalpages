@@ -2,9 +2,9 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Legal Pages 2.2.6\n"
+"Project-Id-Version: WP Legal Pages 2.2.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wplegalpages\n"
-"POT-Creation-Date: 2019-08-16 05:53:52+00:00\n"
+"POT-Creation-Date: 2019-08-28 03:53:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,6 +25,7 @@ msgstr ""
 "X-Generator: grunt-wp-i18n 1.0.3\n"
 
 #: admin/class-wp-legal-pages-admin.php:107
+#: release/2.2.7/admin/class-wp-legal-pages-admin.php:107
 msgid "Legal Pages"
 msgstr ""
 
@@ -32,74 +33,80 @@ msgstr ""
 #: admin/class-wp-legal-pages-admin.php:111
 #: admin/class-wp-legal-pages-admin.php:112
 #: admin/class-wp-legal-pages-admin.php:113
+#: release/2.2.7/admin/class-wp-legal-pages-admin.php:110
+#: release/2.2.7/admin/class-wp-legal-pages-admin.php:111
+#: release/2.2.7/admin/class-wp-legal-pages-admin.php:112
+#: release/2.2.7/admin/class-wp-legal-pages-admin.php:113
 msgid "legal-pages"
 msgstr ""
 
-#: admin/show-pages.php:17
+#: admin/show-pages.php:17 release/2.2.7/admin/show-pages.php:17
 msgid "Security Check."
 msgstr ""
 
-#: admin/show-pages.php:21
+#: admin/show-pages.php:21 release/2.2.7/admin/show-pages.php:21
 msgid "Error in moving to Trash."
 msgstr ""
 
 #: admin/updateEUCookies.php:63 admin/updateEUCookies.php:69
+#: release/2.2.7/admin/updateEUCookies.php:63
+#: release/2.2.7/admin/updateEUCookies.php:69
 msgid "Cookie Bar"
 msgstr ""
 
-#: admin/updateEUCookies.php:75
+#: admin/updateEUCookies.php:75 release/2.2.7/admin/updateEUCookies.php:75
 msgid "Cookie Title"
 msgstr ""
 
-#: admin/updateEUCookies.php:78
+#: admin/updateEUCookies.php:78 release/2.2.7/admin/updateEUCookies.php:78
 msgid "Cookie Message Body"
 msgstr ""
 
-#: admin/updateEUCookies.php:111
+#: admin/updateEUCookies.php:111 release/2.2.7/admin/updateEUCookies.php:111
 msgid "Button Text"
 msgstr ""
 
-#: admin/updateEUCookies.php:113
+#: admin/updateEUCookies.php:113 release/2.2.7/admin/updateEUCookies.php:113
 msgid "I agree"
 msgstr ""
 
-#: admin/updateEUCookies.php:115
+#: admin/updateEUCookies.php:115 release/2.2.7/admin/updateEUCookies.php:115
 msgid "Link Text"
 msgstr ""
 
-#: admin/updateEUCookies.php:119
+#: admin/updateEUCookies.php:119 release/2.2.7/admin/updateEUCookies.php:119
 msgid "Link URL"
 msgstr ""
 
-#: admin/updateEUCookies.php:125
+#: admin/updateEUCookies.php:125 release/2.2.7/admin/updateEUCookies.php:125
 msgid "Use Theme CSS"
 msgstr ""
 
-#: admin/updateEUCookies.php:129
+#: admin/updateEUCookies.php:129 release/2.2.7/admin/updateEUCookies.php:129
 msgid "Box Background Color"
 msgstr ""
 
-#: admin/updateEUCookies.php:133
+#: admin/updateEUCookies.php:133 release/2.2.7/admin/updateEUCookies.php:133
 msgid "Box Text Color"
 msgstr ""
 
-#: admin/updateEUCookies.php:137
+#: admin/updateEUCookies.php:137 release/2.2.7/admin/updateEUCookies.php:137
 msgid "Button Background Color"
 msgstr ""
 
-#: admin/updateEUCookies.php:141
+#: admin/updateEUCookies.php:141 release/2.2.7/admin/updateEUCookies.php:141
 msgid "Button Text Color"
 msgstr ""
 
-#: admin/updateEUCookies.php:145
+#: admin/updateEUCookies.php:145 release/2.2.7/admin/updateEUCookies.php:145
 msgid "Link Color"
 msgstr ""
 
-#: admin/updateEUCookies.php:149
+#: admin/updateEUCookies.php:149 release/2.2.7/admin/updateEUCookies.php:149
 msgid "Text Size"
 msgstr ""
 
-#: admin/updateEUCookies.php:165
+#: admin/updateEUCookies.php:165 release/2.2.7/admin/updateEUCookies.php:165
 msgid "Update"
 msgstr ""
 

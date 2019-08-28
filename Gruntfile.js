@@ -9,6 +9,65 @@ module.exports = function (grunt) {
 		clean: {
 			build: ['release/<%= pkg.version %>']
 		},
+		uglify: {
+			options: {
+
+			},
+			admin: {
+				files: [{
+					expand: true,
+					cwd: 'release/<%= pkg.version %>/admin/js/',
+					src: [
+						'*.js',
+						'!*.min.js'
+					],
+					dest: 'release/<%= pkg.version %>/admin/js/',
+					ext: '.min.js'
+				}]
+			},
+			frontend: {
+				files: [{
+					expand: true,
+					cwd: 'release/<%= pkg.version %>/public/js/',
+					src: [
+						'*.js',
+						'!*.min.js'
+					],
+					dest: 'release/<%= pkg.version %>/public/js/',
+					ext: '.min.js'
+				}]
+			},
+		},
+		cssmin: {
+			options: {
+
+			},
+			admin: {
+				files: [{
+					expand: true,
+					cwd: 'release/<%= pkg.version %>/admin/css/',
+					src: [
+						'*.css',
+						'minicolor/*.css',
+						'!*.min.css'
+					],
+					dest: 'release/<%= pkg.version %>/admin/css/',
+					ext: '.min.css'
+				}]
+			},
+			frontend: {
+				files: [{
+					expand: true,
+					cwd: 'release/<%= pkg.version %>/public/css/',
+					src: [
+						'*.css',
+						'!*.min.css'
+					],
+					dest: 'release/<%= pkg.version %>/public/css/',
+					ext: '.min.css'
+				}]
+			},
+		},
 		copy: {
 			build: {
 				options: {
@@ -89,10 +148,12 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-compress');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
 	grunt.registerTask('default', ['i18n', 'readme']);
 	grunt.registerTask('i18n', ['addtextdomain', 'makepot']);
 	grunt.registerTask('readme', ['wp_readme_to_markdown']);
-	grunt.registerTask('build', ['clean:build', 'copy:build', 'compress:build']);
+	grunt.registerTask('build', ['clean:build', 'copy:build', 'uglify:admin', 'uglify:frontend', 'cssmin:admin', 'cssmin:frontend', 'compress:build']);
 
 	grunt.util.linefeed = '\n';
 

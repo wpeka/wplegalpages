@@ -46,11 +46,11 @@ $lp_eu_link_url=get_option('lp_eu_link_url');
 $lp_eu_text_size=get_option('lp_eu_text_size');
 $lp_eu_link_color=get_option('lp_eu_link_color');
 
-wp_enqueue_script( 'jquery-minicolor',  WPL_LITE_PLUGIN_URL. 'admin/js/jquery.miniColors.min.js', array('jquery') );
-wp_enqueue_style('jquery-miniColor',WPL_LITE_PLUGIN_URL. 'admin/css/minicolor/jquery.miniColors.css');
+wp_enqueue_script( 'jquery-minicolor',  WPL_LITE_PLUGIN_URL. 'admin/js/jquery.miniColors'. WPLPP_SUFFIX .'.js', array('jquery') );
+wp_enqueue_style('jquery-miniColor',WPL_LITE_PLUGIN_URL. 'admin/css/minicolor/jquery.miniColors'. WPLPP_SUFFIX .'.css');
 
 //Form validation library file
-wp_enqueue_script('jquery-validation-plugin', WPL_LITE_PLUGIN_URL.'admin/js/jquery.validate.min.js', array('jquery'));
+wp_enqueue_script('jquery-validation-plugin', WPL_LITE_PLUGIN_URL.'admin/js/jquery.validate'. WPLPP_SUFFIX .'.js', array('jquery'));
 
 ?>
 
