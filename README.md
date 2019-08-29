@@ -6,7 +6,7 @@ Donate link:https://club.wpeka.com/product/wplegalpages
 **Tags:** Legal Pages, Disclaimer, Terms and conditions, Privacy Policy, Cookie Consent, GDPR, Cookie Consent, Terms of Service, Terms of Use  
 **Requires at least:** 5.0+  
 **Tested up to:** 5.2.2  
-**Stable tag:** 2.2.7  
+**Stable tag:** 2.2.8  
 
 WP Legal Pages is a popular, easy-to-use privacy policy generator plugin for WordPress. The pro version can also generator 25+ other policy pages including terms of use, affiliate vendor compliance policies and ad network policies.
 
@@ -112,6 +112,9 @@ Yes. The templates are created in accordance with the US website laws and by con
 This plugin does not support multisite network. You will have to install it on each site separately.
 
 ## Upgrade Notice ##
+### 2.2.8
+Fix: Minification issue.
+###
 ### 2.2.7
 Fix: Filter for Legal template count.
 ###
