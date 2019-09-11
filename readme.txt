@@ -5,7 +5,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: Legal Pages, Disclaimer, Terms and conditions, Privacy Policy, Cookie Consent, GDPR, Cookie Consent, Terms of Service, Terms of Use
 Requires at least: 5.0+
-Tested up to: 5.2.2
+Tested up to: 5.2.3
 Stable tag: 2.2.8
 
 WP Legal Pages is a popular, easy-to-use privacy policy generator plugin for WordPress. The pro version can also generator 25+ other policy pages including terms of use, affiliate vendor compliance policies and ad network policies.
