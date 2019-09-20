@@ -108,13 +108,13 @@ $url = get_permalink($pid);
 
         </form>
     </div>
-<div class="lp_generalid_right_wraper">
+<div class="lp_generalid_right_wraper" style="min-height:900px;">
   <div id="lp_generalid_right" class="postbox ">
     	<h3 class="hndle"  style="cursor:pointer; padding:0px 10px 12px 10px; font-size:20px;"> Choose Template </h3><br/>
         <ul>
         <?php
 
-	$result = $wpdb->get_results("select * from $lpObj->tablename");
+	$result = $wpdb->get_results("select * from $lpObj->tablename where `is_active`='1' ORDER BY `id`");
 		foreach($result as $ras){
 			?>
             <li><span id="legalpages<?php echo $ras->id;?>"><a class="myLink" href="<?php echo esc_url($baseurl);?>/wp-admin/admin.php?page=<?php echo $page;?>&lp-type=<?php echo $lptype;?>&lp-template=<?php echo $ras->id;?>"><?php echo $ras->title;?> &raquo;</a></span></li>

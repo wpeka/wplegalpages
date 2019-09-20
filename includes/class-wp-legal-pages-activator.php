@@ -63,6 +63,7 @@ class WP_Legal_Pages_Activator {
                               `contentfor` varchar(200) NOT NULL,
                               PRIMARY KEY (`id`)
                             ) ENGINE=MyISAM;";
+            $alter_sql = "ALTER TABLE `$legal_pages->tablename` ADD `is_active` BOOLEAN NULL DEFAULT NULL AFTER `notes`;";
             $sqlpopup = "CREATE TABLE IF NOT EXISTS `$legal_pages->popuptable` (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `popupName` text NOT NULL,
@@ -71,14 +72,22 @@ class WP_Legal_Pages_Activator {
                             ) ENGINE=MyISAM;";
 
             $wpdb->query($sql);
+            $column_count = $wpdb->get_var("SHOW COLUMNS FROM `$legal_pages->tablename` LIKE 'is_active' ");
+            if(!$column_count) {
+                $wpdb->query($alter_sql);
+            }
             $wpdb->query($sqlpopup);
             $privacy_policy_count = $wpdb->get_var( "SELECT COUNT(*) FROM `$legal_pages->tablename` WHERE title='Privacy Policy'" );
             if($privacy_policy_count==0){
-                    $wpdb->insert($legal_pages->tablename,array('title'=>'Privacy Policy','content'=>$privacy,'contentfor'=>'1a2b3c4d5e6f7g8h9i'),array('%s','%s','%s'));
+                    $wpdb->insert($legal_pages->tablename,array('title'=>'Privacy Policy','content'=>$privacy,'contentfor'=>'1a2b3c4d5e6f7g8h9i', 'is_active'=>'1'),array('%s','%s','%s','%d'));
+            } else {
+                $wpdb->update($legal_pages->tablename, array('is_active'=>'1'), array('title'=>'Privacy Policy'),array('%d'),array('%s'));
             }
             $dmca_count = $wpdb->get_var( "SELECT COUNT(*) FROM `$legal_pages->tablename` WHERE title='DMCA'" );
             if($dmca_count==0){
-                    $wpdb->insert($legal_pages->tablename,array('title'=>'DMCA','content'=>$dmca,'contentfor'=>'10j'),array('%s','%s','%s'));
+                    $wpdb->insert($legal_pages->tablename,array('title'=>'DMCA','content'=>$dmca,'contentfor'=>'10j', 'is_active'=>'1'),array('%s','%s','%s','%d'));
+            } else {
+                $wpdb->update($legal_pages->tablename, array('is_active'=>'1'), array('title'=>'DMCA'),array('%d'),array('%s'));
             }
 
 	}
