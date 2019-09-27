@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Fired during WP Legal Pages deactivation
  *
@@ -20,19 +19,28 @@
  * @subpackage WP_Legal_Pages/includes
  * @author     WPEka <support@wplegalpages.com>
  */
-if(!class_exists('WP_Legal_Pages_Deactivator')){
-class WP_Legal_Pages_Deactivator {
-
+if ( ! class_exists( 'WP_Legal_Pages_Deactivator' ) ) {
 	/**
-	 * Short Description. (use period)
+	 * Fired during WP Legal Pages deactivation.
 	 *
-	 * Long Description.
+	 * This class defines all code necessary to run during the WP Legal Pages's deactivation.
 	 *
-	 * @since    1.5.2
+	 * @since      1.5.2
+	 * @package    WP_Legal_Pages
+	 * @subpackage WP_Legal_Pages/includes
+	 * @author     WPEka <support@wplegalpages.com>
 	 */
-	public static function deactivate() {
-            delete_option('lp_accept_terms');
-	}
+	class WP_Legal_Pages_Deactivator {
+		/**
+		 * Short Description. (use period)
+		 *
+		 * Long Description.
+		 *
+		 * @since    1.5.2
+		 */
+		public static function deactivate() {
+			delete_option( 'lp_accept_terms' );
+		}
 
-}
+	}
 }

@@ -1,102 +1,106 @@
 <?php
+/**
+ * Provide a admin area view for the show legal pages.
+ *
+ * This file is used to markup the admin-facing aspects of the plugin.
+ *
+ * @package    Wplegalpages
+ * @subpackage Wplegalpages/admin
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 ?>
 <div class="wrap">
 <?php
-$page = isset($_REQUEST['page'])?$_REQUEST['page']:'';
-$nonce = isset($_REQUEST['_wpnonce'])? $_REQUEST['_wpnonce']:'';
 
-if( (isset($_REQUEST['mode']) && $_REQUEST['mode']=='delete' && current_user_can('manage_options')))
+if ( ( isset( $_REQUEST['mode'] ) && 'delete' === $_REQUEST['mode'] && current_user_can( 'manage_options' ) ) && isset( $_REQUEST['_wpnonce'] ) ) {
+	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'my-nonce' ) ) {
+		wp_die( esc_attr__( 'Security Check.', 'wplegalpages' ) );
+	}
 
-{
+	if ( isset( $_REQUEST['pid'] ) ) {
+		if ( ! wp_trash_post( sanitize_text_field( wp_unslash( $_REQUEST['pid'] ) ) ) ) {
+			wp_die( esc_attr__( 'Error in moving to Trash.', 'wplegalpages' ) );
+		}
+	}
+	?>
+		<div id="message" >
+			<p><span class="label label-success myAlert">Legal page moved to trash.</span></p>
+		</div>
 
- 	if(! wp_verify_nonce( $nonce,'my-nonce' ))
- 	{
- 		wp_die( __('Security Check.', 'wplegalpages') );
- 	}
-
-	if ( ! wp_trash_post($_REQUEST['pid']) ){
-		wp_die( __('Error in moving to Trash.', 'wplegalpages') );
-        }
-?>
-        <div id="message" >
-            <p><span class="label label-success myAlert">Legal page moved to trash.</span></p>
-        </div>
-
-<?php
+	<?php
 }
+$current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
 ?>
-    <?php $lp_pro_installed = get_option('_lp_pro_installed');
-    if($lp_pro_installed !== '1') : ?>
+	<?php
+	$lp_pro_installed = get_option( '_lp_pro_installed' );
+	if ( '1' !== $lp_pro_installed ) :
+		?>
 <div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
 <a href="https://club.wpeka.com/product/wplegalpages/?utm_source=legalpages%20lite%20banner&utm_campaign=legal%20pages%20lite%20banner&utm_medium=banner" target="_blank">
-<img alt="Upgrade to Pro" src="<?php echo WPL_LITE_PLUGIN_URL.'admin/images/upgrade-to-pro.jpg'; ?>">
+<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/upgrade-to-pro.jpg'; ?>">
 </a>
 </div>
 <?php endif; ?>
 <h2 class="hndle myLabel-head"> Available Pages </h2>
 <table class="widefat fixed comments table table-striped">
-    <thead>
-    	<tr>
-            <th width="5%">S.No.</th>
-            <th width="30%">Page Title</th>
-            <th width="10%">Author</th>
-            <th width="10%">Date</th>
-            <th width="15%">Action</th>
-    	</tr>
-    </thead>
-    <tbody>
+	<thead>
+		<tr>
+			<th width="5%">S.No.</th>
+			<th width="30%">Page Title</th>
+			<th width="10%">Author</th>
+			<th width="10%">Date</th>
+			<th width="15%">Action</th>
+		</tr>
+	</thead>
+	<tbody>
 
-    <?php
-        global $wpdb;
-        $postTbl = $wpdb->prefix . "posts";
-        $postmetaTbl = $wpdb->prefix . "postmeta";
-        $pagesresult = $wpdb->get_results("SELECT $postTbl . *
-                        FROM $postTbl, $postmetaTbl
-                        WHERE $postTbl.ID = $postmetaTbl.post_id and $postTbl.post_status='publish'
-                        AND $postmetaTbl.meta_key =  'is_legal'");
+	<?php
+		global $wpdb;
+		$post_tbl     = $wpdb->prefix . 'posts';
+		$postmeta_tbl = $wpdb->prefix . 'postmeta';
+		$pagesresult  = $wpdb->get_results( $wpdb->prepare( 'SELECT ptbl.* FROM ' . $post_tbl . ' as ptbl , ' . $postmeta_tbl . ' as pmtbl WHERE ptbl.ID = pmtbl.post_id and ptbl.post_status = %s AND pmtbl.meta_key = %s', array( 'publish', 'is_legal' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
-        if( $pagesresult ) { ?>
+	if ( $pagesresult ) {
+		$nonce    = wp_create_nonce( 'my-nonce' );
+		$count    = 1;
+		$user_tbl = $wpdb->prefix . 'users';
+		foreach ( $pagesresult as $res ) {
+				$url     = get_permalink( $res->ID );
+				$author  = $wpdb->get_results( $wpdb->prepare( 'SELECT utbl.user_login FROM ' . $post_tbl . ' as ptbl, ' . $user_tbl . ' as utbl WHERE ptbl.post_author = utbl.ID and ptbl.ID = %d', array( $res->ID ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				$delurl  = isset( $_SERVER['PHP_SELF'] ) ? esc_url_raw( wp_unslash( $_SERVER['PHP_SELF'] ) ) : '';
+				$delurl .= "?pid=$res->ID&page=$current_page&mode=delete&_wpnonce=$nonce";
+			?>
+			<tr>
+				<td><?php echo esc_attr( $count ); ?></td>
+				<td><?php echo esc_attr( $res->post_title ); ?></td>
+				<td><?php echo esc_attr( ucfirst( $author[0]->user_login ) ); ?></td>
+				<td><?php echo esc_attr( gmdate( 'Y/m/d', strtotime( $res->post_date ) ) ); ?></td>
+				<td>
+					<a href="<?php echo esc_attr( get_admin_url() ); ?>/post.php?post=<?php echo esc_attr( $res->ID ); ?>&action=edit">Edit</a> | <a href="<?php echo esc_url_raw( $url ); ?>">View</a>| <a href="<?php echo esc_url_raw( $delurl ); ?>">Trash</a>
+				</td>
+			</tr>
+				<?php
+				$count++;
+		}
+		?>
 
-            <?php
-            $nonce = wp_create_nonce( 'my-nonce' );
-            $count = 1;
-            $userTbl = $wpdb->prefix . "users";
-            foreach( $pagesresult as $res ) {
-                    $url = get_permalink($res ->ID);
-                    $author = $wpdb->get_results("SELECT $userTbl.user_login FROM $postTbl, $userTbl WHERE $postTbl.post_author = $userTbl.ID and $postTbl.ID = ".$res ->ID);
-                    $delurl =   $_SERVER['PHP_SELF'].'?pid='.$res->ID.'&page='.$page.'&mode=delete'.'&_wpnonce='.$nonce;
-            ?>
-             <tr>
-                <td><?php echo $count; ?></td>
-                <td><?php echo $res -> post_title; ?></td>
-                <td><?php echo ucfirst($author[0]->user_login); ?></td>
-                <td><?php echo date("Y/m/d", strtotime($res->post_date)); ?></td>
-                <td>
-                   <a href="<?php echo get_admin_url(); ?>/post.php?post=<?php echo $res ->ID;?>&action=edit">Edit</a> | <a href="<?php echo $url; ?>">View</a>| <a href="<?php echo $delurl;?>">Trash</a>                </td>
-            </tr>
-            <?php
-                $count++;
-            }
-            ?>
-
-        <?php } else { ?>
-        <tr>
-            <td colspan="3">No page yet</td>
-        </tr>
-    <?php } ?>
-    </tbody>
-    <tfoot>
-        <tr>
-
-    		<th width="5%">S.No.</th>
-           	 <th width="30%">Page Title</th>
-    		 <th width="10%">Author</th>
-    		 <th width="10%">Date</th>
-            <th width="15%">Action</th>
-    	</tr>
-    </tfoot>
- </table>
+		<?php } else { ?>
+		<tr>
+			<td colspan="3">No page yet</td>
+		</tr>
+	<?php } ?>
+	</tbody>
+	<tfoot>
+		<tr>
+			<th width="5%">S.No.</th>
+			<th width="30%">Page Title</th>
+			<th width="10%">Author</th>
+			<th width="10%">Date</th>
+			<th width="15%">Action</th>
+		</tr>
+	</tfoot>
+	</table>
 </div>
