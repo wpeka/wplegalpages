@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Fired during WP Legal Pages activation
  *
@@ -20,77 +19,110 @@
  * @subpackage WP_Legal_Pages/includes
  * @author     WPEka <support@wplegalpages.com>
  */
-if (!class_exists('WP_Legal_Pages_Activator')){
-class WP_Legal_Pages_Activator {
-
+if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 	/**
-	 * Short Description. (use period)
+	 * Fired during WP Legal Pages activation.
 	 *
-	 * Long Description.
+	 * This class defines all code necessary to run during the WP Legal Pages's activation.
 	 *
-	 * @since    1.5.2
+	 * @since      1.5.2
+	 * @package    WP_Legal_Pages
+	 * @subpackage WP_Legal_Pages/includes
+	 * @author     WPEka <support@wplegalpages.com>
 	 */
-	public static function activate() {
-            global $wpdb;
-            $legal_pages = new WP_Legal_Pages();
-            $privacy = file_get_contents(plugin_dir_path( dirname( __FILE__ ) ) . 'templates/privacy.html');
-            $dmca = file_get_contents(plugin_dir_path( dirname( __FILE__ ) ). 'templates/dmca.html');
-
-
-            add_option('lp_excludePage','true');
-            add_option('lp_general', '');
-            add_option('lp_accept_terms','0');
-            add_option('lp_eu_cookie_title','A note to our visitors');
-						$message_body="This website has updated its privacy policy in compliance with changes to European Union data protection law, for all members globally. We’ve also updated our Privacy Policy to give you more information about your rights and responsibilities with respect to your privacy and personal information. Please read this to review the updates about which cookies we use and what information we collect on our site. By continuing to use this site, you are agreeing to our updated privacy policy.";
-             add_option('lp_eu_cookie_message', htmlentities($message_body));
-             add_option('lp_eu_cookie_enable', 'OFF');
-             add_option('lp_eu_box_color', '#000000');
-
-            add_option('lp_eu_cookie_message',htmlentities($message_body));
-            add_option('lp_eu_cookie_enable','OFF');
-            add_option('lp_eu_box_color', '#000000');
- 	        add_option('lp_eu_button_color', '#e3e3e3');
-            add_option('lp_eu_button_text_color','#333333');
-            add_option('lp_eu_text_color', '#FFFFFF');
-            add_option('lp_eu_link_color', '#8f0410');
- 	      add_option('lp_eu_text_size', '12');
-
-            $sql = "CREATE TABLE IF NOT EXISTS `$legal_pages->tablename` (
+	class WP_Legal_Pages_Activator {
+		/**
+		 * Short Description. (use period)
+		 *
+		 * Long Description.
+		 *
+		 * @since    1.5.2
+		 */
+		public static function activate() {
+			global $wpdb;
+			$legal_pages = new WP_Legal_Pages();
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+			$sql = 'CREATE TABLE IF NOT EXISTS ' . $legal_pages->tablename . ' (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `title` text NOT NULL,
                               `content` longtext NOT NULL,
                               `notes` text NOT NULL,
                               `contentfor` varchar(200) NOT NULL,
                               PRIMARY KEY (`id`)
-                            ) ENGINE=MyISAM;";
-            $alter_sql = "ALTER TABLE `$legal_pages->tablename` ADD `is_active` BOOLEAN NULL DEFAULT NULL AFTER `notes`;";
-            $sqlpopup = "CREATE TABLE IF NOT EXISTS `$legal_pages->popuptable` (
+                            ) ENGINE=MyISAM;';
+			dbDelta( $sql );
+			$like         = 'is_active';
+			$column_count = $wpdb->get_var( $wpdb->prepare( 'SHOW COLUMNS FROM ' . $legal_pages->tablename . ' LIKE %s', array( $like ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( empty( $column_count ) ) {
+				$alter_sql = 'ALTER TABLE ' . $legal_pages->tablename . ' ADD `is_active` BOOLEAN NULL DEFAULT NULL AFTER `notes`;';
+				$wpdb->query( $alter_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			}
+			$popup_sql = 'CREATE TABLE IF NOT EXISTS ' . $legal_pages->popuptable . ' (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
-                              `popupName` text NOT NULL,
+                              `popup_name` text NOT NULL,
                               `content` longtext NOT NULL,
                               PRIMARY KEY (`id`)
-                            ) ENGINE=MyISAM;";
+                            ) ENGINE=MyISAM;';
+			dbDelta( $popup_sql );
+			$like         = 'popupName';
+			$column_count = $wpdb->get_var( $wpdb->prepare( 'SHOW COLUMNS FROM ' . $legal_pages->popuptable . ' LIKE %s', array( $like ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( ! empty( $column_count ) ) {
+				$alter_popup_sql = 'ALTER TABLE ' . $legal_pages->popuptable . ' CHANGE `popupName` `popup_name`;';
+				$wpdb->query( $alter_popup_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			}
+			$privacy = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/privacy.html' );
+			$dmca    = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/dmca.html' );
 
-            $wpdb->query($sql);
-            $column_count = $wpdb->get_var("SHOW COLUMNS FROM `$legal_pages->tablename` LIKE 'is_active' ");
-            if(!$column_count) {
-                $wpdb->query($alter_sql);
-            }
-            $wpdb->query($sqlpopup);
-            $privacy_policy_count = $wpdb->get_var( "SELECT COUNT(*) FROM `$legal_pages->tablename` WHERE title='Privacy Policy'" );
-            if($privacy_policy_count==0){
-                    $wpdb->insert($legal_pages->tablename,array('title'=>'Privacy Policy','content'=>$privacy,'contentfor'=>'1a2b3c4d5e6f7g8h9i', 'is_active'=>'1'),array('%s','%s','%s','%d'));
-            } else {
-                $wpdb->update($legal_pages->tablename, array('is_active'=>'1'), array('title'=>'Privacy Policy'),array('%d'),array('%s'));
-            }
-            $dmca_count = $wpdb->get_var( "SELECT COUNT(*) FROM `$legal_pages->tablename` WHERE title='DMCA'" );
-            if($dmca_count==0){
-                    $wpdb->insert($legal_pages->tablename,array('title'=>'DMCA','content'=>$dmca,'contentfor'=>'10j', 'is_active'=>'1'),array('%s','%s','%s','%d'));
-            } else {
-                $wpdb->update($legal_pages->tablename, array('is_active'=>'1'), array('title'=>'DMCA'),array('%d'),array('%s'));
-            }
+			$privacy_policy_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Privacy Policy' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( '0' === $privacy_policy_count ) {
+				$wpdb->insert(
+					$legal_pages->tablename,
+					array(
+						'title'      => 'Privacy Policy',
+						'content'    => $privacy,
+						'contentfor' => '1a2b3c4d5e6f7g8h9i',
+						'is_active'  => '1',
+					),
+					array( '%s', '%s', '%s', '%d' )
+				); // db call ok; no-cache ok.
+			} else {
+				$wpdb->update( $legal_pages->tablename, array( 'is_active' => '1' ), array( 'title' => 'Privacy Policy' ), array( '%d' ), array( '%s' ) ); // db call ok; no-cache ok.
+			}
+			$dmca_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'DMCA' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( '0' === $dmca_count ) {
+				$wpdb->insert(
+					$legal_pages->tablename,
+					array(
+						'title'      => 'DMCA',
+						'content'    => $dmca,
+						'contentfor' => '10j',
+						'is_active'  => '1',
+					),
+					array( '%s', '%s', '%s', '%d' )
+				); // db call ok; no-cache ok.
+			} else {
+				$wpdb->update( $legal_pages->tablename, array( 'is_active' => '1' ), array( 'title' => 'DMCA' ), array( '%d' ), array( '%s' ) ); // db call ok; no-cache ok.
+			}
 
-	}
+			add_option( 'lp_excludePage', 'true' );
+			add_option( 'lp_general', '' );
+			add_option( 'lp_accept_terms', '0' );
+			add_option( 'lp_eu_cookie_title', 'A note to our visitors' );
+			$message_body = 'This website has updated its privacy policy in compliance with changes to European Union data protection law, for all members globally. We’ve also updated our Privacy Policy to give you more information about your rights and responsibilities with respect to your privacy and personal information. Please read this to review the updates about which cookies we use and what information we collect on our site. By continuing to use this site, you are agreeing to our updated privacy policy.';
+			add_option( 'lp_eu_cookie_message', htmlentities( $message_body ) );
+			add_option( 'lp_eu_cookie_enable', 'OFF' );
+			add_option( 'lp_eu_box_color', '#000000' );
+
+			add_option( 'lp_eu_cookie_message', htmlentities( $message_body ) );
+			add_option( 'lp_eu_cookie_enable', 'OFF' );
+			add_option( 'lp_eu_box_color', '#000000' );
+			add_option( 'lp_eu_button_color', '#e3e3e3' );
+			add_option( 'lp_eu_button_text_color', '#333333' );
+			add_option( 'lp_eu_text_color', '#FFFFFF' );
+			add_option( 'lp_eu_link_color', '#8f0410' );
+			add_option( 'lp_eu_text_size', '12' );
+
+		}
 	}
 
 
