@@ -86,7 +86,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 					array( '%s', '%s', '%s', '%d' )
 				); // db call ok; no-cache ok.
 			} else {
-				$wpdb->update( $legal_pages->tablename, array( 'is_active' => '1' ), array( 'title' => 'Privacy Policy' ), array( '%d' ), array( '%s' ) ); // db call ok; no-cache ok.
+				$wpdb->update(
+					$legal_pages->tablename,
+					array(
+						'is_active' => '1',
+						'content'   => $privacy,
+					),
+					array( 'title' => 'Privacy Policy' ),
+					array( '%d', '%s' ),
+					array( '%s' )
+				); // db call ok; no-cache ok.
 			}
 			$dmca_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'DMCA' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			if ( '0' === $dmca_count ) {
@@ -101,7 +110,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 					array( '%s', '%s', '%s', '%d' )
 				); // db call ok; no-cache ok.
 			} else {
-				$wpdb->update( $legal_pages->tablename, array( 'is_active' => '1' ), array( 'title' => 'DMCA' ), array( '%d' ), array( '%s' ) ); // db call ok; no-cache ok.
+				$wpdb->update(
+					$legal_pages->tablename,
+					array(
+						'is_active' => '1',
+						'content'   => $dmca,
+					),
+					array( 'title' => 'DMCA' ),
+					array( '%d', '%s' ),
+					array( '%s' )
+				); // db call ok; no-cache ok.
 			}
 
 			add_option( 'lp_excludePage', 'true' );
