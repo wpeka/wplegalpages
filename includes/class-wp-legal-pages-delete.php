@@ -40,6 +40,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Delete' ) ) {
 		 */
 		public static function delete() {
 			global $wpdb;
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 			$legal_pages = new WP_Legal_Pages();
 			delete_option( 'lp_accept_terms' );
 			delete_option( 'lp_excludePage' );
