@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: Privacy Policy Generator, GDPR
 Requires at least: 5.0+
 Requires PHP: 5.0
-Tested up to: 5.2.4
+Tested up to: 5.3
 Stable tag: 2.3.0
 
 Generate privacy policy pages on your website in a few clicks. Launch your WordPress website fast.
