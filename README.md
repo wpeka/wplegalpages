@@ -6,8 +6,8 @@
 **Tags:** Privacy Policy Generator, GDPR  
 **Requires at least:** 5.0+  
 **Requires PHP:** 5.0  
-**Tested up to:** 5.2.4  
-**Stable tag:** 2.3.0  
+**Tested up to:** 5.3  
+**Stable tag:** 2.3.2  
 
 Generate privacy policy pages on your website in a few clicks. Launch your WordPress website fast.
 
@@ -52,26 +52,26 @@ Confirm with FTC guidelines. Add affiliate disclosure to the end of a page or po
 ## More Premium features ##
 [WP Legal Pages Pro](http://bit.ly/32n3Qrq) comes with even more legal policy pages including:
 
-- Privacy Policy**: Covers websites or apps that collect and store user data. Helps comply with GDPR.
-- Cookie Policy**: Covers websites and apps that collect and store user data in browser cookies. Helps comply with GDPR.
-- Cookie Consent Popups**: Works with GDPR Cookie Consent
-- Cookie Bar**: Add banner in the footer for Cookie consent, also you can customize the cookie bar style, content and button styles.
-- Amazon Affiliate Disclosure**: Covers websites and apps that engage in affiliate promotion of Amazon products.
-- Affiliate Agreement**: Covers websites and apps that run affiliate programs.
-- Affiliate Disclosure**: Covers websites and apps that engage in affiliate promotion of products and/or services.
-- Terms and Conditions**: Covers the terms and conditions for using a website.
-- California Privacy Rights**: Covers websites and apps that sell to California customers.
-- Refund Policy**: Covers refunds of sales of products and services for ecommerce stores.
-- Newsletter Subscription Policy**: Covers websites and apps that run newsletter subscriptions.
-- Children’s Online Privacy Policy (COPPA)**: Covers websites and apps whose audience is children (< 13 years age)
-- Medical Disclaimer Template**: Covers websites and apps that provide free medical information - such as healthcare providers or blogs providing medical advice.
-- External Links Policy**: Covers policies for links to or from external websites, which are not owned or controlled by you.
-- Returns & Refunds Policy**: Covers returns/refunds of your product, service or ecommerce store.
-- Digital Goods Refunds Policy**: Covers refunds for downloadable or streaming products/services.
-- Facebook Privacy Policy**: For Facebook ads, app developers, and for using Facebook login or widgets on your website.
-- Earnings Disclaimer**: Covers websites and apps that promote products, services, strategies and/or programs to help users make money.
-- Anti Spam Policy**: Covers websites & apps that provide mass email or other messaging services.
-- Age Verification**: Useful for vaping or adult content websites. Allows only 18+ aged users to access website content after taking consent.
+- **Privacy Policy**: Covers websites or apps that collect and store user data. Helps comply with GDPR.
+- **Cookie Policy**: Covers websites and apps that collect and store user data in browser cookies. Helps comply with GDPR.
+- **Cookie Consent Popups**: Works with GDPR Cookie Consent
+- **Cookie Bar**: Add banner in the footer for Cookie consent, also you can customize the cookie bar style, content and button styles.
+- **Amazon Affiliate Disclosure**: Covers websites and apps that engage in affiliate promotion of Amazon products.
+- **Affiliate Agreement**: Covers websites and apps that run affiliate programs.
+- **Affiliate Disclosure**: Covers websites and apps that engage in affiliate promotion of products and/or services.
+- **Terms and Conditions**: Covers the terms and conditions for using a website.
+- **California Privacy Rights**: Covers websites and apps that sell to California customers.
+- **Refund Policy**: Covers refunds of sales of products and services for ecommerce stores.
+- **Newsletter Subscription Policy**: Covers websites and apps that run newsletter subscriptions.
+- **Children’s Online Privacy Policy (COPPA)**: Covers websites and apps whose audience is children (< 13 years age)
+- **Medical Disclaimer Template**: Covers websites and apps that provide free medical information - such as healthcare providers or blogs providing medical advice.
+- **External Links Policy**: Covers policies for links to or from external websites, which are not owned or controlled by you.
+- **Returns & Refunds Policy**: Covers returns/refunds of your product, service or ecommerce store.
+- **Digital Goods Refunds Policy**: Covers refunds for downloadable or streaming products/services.
+- **Facebook Privacy Policy**: For Facebook ads, app developers, and for using Facebook login or widgets on your website.
+- **Earnings Disclaimer**: Covers websites and apps that promote products, services, strategies and/or programs to help users make money.
+- **Anti Spam Policy**: Covers websites & apps that provide mass email or other messaging services.
+- **Age Verification**: Useful for vaping or adult content websites. Allows only 18+ aged users to access website content after taking consent.
 
 Learn more about [WP Legal Pages Pro](http://bit.ly/32n3Qrq).
 
@@ -116,6 +116,12 @@ WP Legal Pages provides you pre-approved templates. Please consult your lawyer f
 No. WP Legal Pages not support multisite network. You will have to install it on each site separately.
 
 ## Changelog ##
+### 2.3.2 ###
+Fix: Fatal error if Analytics SDK is included in two or more plugins installed on same instance.
+
+### 2.3.1 ###
+Feature: Added feedback form on plugin deactivation.
+
 ### 2.3.0 ###
 Update: Updated template HTML structure.
 Update: Code updated as per WordPress standards.
