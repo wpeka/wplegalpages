@@ -180,6 +180,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				<li>End User License Agreement template</li>
 				<li>GDPR Cookie Policy template</li>
 				<li>GDPR Privacy Policy template</li>
+                <li>California Consumer Privacy Act (CCPA)</li>
 			</ul>
 		</div>
 	<?php endif; ?>
