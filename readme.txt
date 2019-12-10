@@ -7,7 +7,7 @@ Tags: Privacy Policy Generator, GDPR
 Requires at least: 5.0+
 Requires PHP: 5.0
 Tested up to: 5.3
-Stable tag: 2.3.2
+Stable tag: 2.3.3
 
 Generate privacy policy pages on your website in a few clicks. Launch your WordPress website fast.
 
@@ -52,7 +52,7 @@ Confirm with FTC guidelines. Add affiliate disclosure to the end of a page or po
 == More Premium features ==
 [WP Legal Pages Pro](http://bit.ly/32n3Qrq) comes with even more legal policy pages including:
 
-- **Privacy Policy**: Covers websites or apps that collect and store user data. Helps comply with GDPR.
+- **Privacy Policy**: Covers websites or apps that collect and store user data. Helps comply with GDPR and CCPA (California Consumer Privacy Act).
 - **Cookie Policy**: Covers websites and apps that collect and store user data in browser cookies. Helps comply with GDPR.
 - **Cookie Consent Popups**: Works with GDPR Cookie Consent
 - **Cookie Bar**: Add banner in the footer for Cookie consent, also you can customize the cookie bar style, content and button styles.
@@ -116,6 +116,9 @@ WP Legal Pages provides you pre-approved templates. Please consult your lawyer f
 No. WP Legal Pages not support multisite network. You will have to install it on each site separately.
 
 == Changelog ==
+= 2.3.3 =
+Update: Minor plugin updates.
+
 = 2.3.2 =
 Fix: Fatal error if Analytics SDK is included in two or more plugins installed on same instance.
 
