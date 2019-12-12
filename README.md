@@ -1,4 +1,4 @@
-# WP Legal Pages: Simple WordPress Privacy Policy Generator Plugin #
+# WP Legal Pages: WordPress Privacy Policy Generator Plugin #
 **Contributors:** [sandyr](https://profiles.wordpress.org/sandyr), [WPEka Club](https://profiles.wordpress.org/WPEka Club)  
 **Donate link:** https://club.wpeka.com/product/wplegalpages  
 **License:** GPLv2 or later  
@@ -19,8 +19,11 @@ WP Legal Pages is one of the most popular privacy policy generator plugins since
 
 Using WP Legal Pages, you can generate two privacy policy pages required for any website.
 
-- Privacy Policy
-- DMCA Policy
+### Privacy Policy ###
+Generate a standard privacy policy to comply with ad networks. Required for blogs, businesses and ecommerce websites.
+
+### DMCA Policy ###
+Generate a standard DMCA privacy policy page. Required for blogs, businesses and ecommerce websites that provide content sourced from other content producers.
 
 [youtube https://www.youtube.com/watch?v=iqdLl9qsBHc]
 
@@ -49,29 +52,68 @@ Force users to accept your policy before they can access a page or post. Availab
 ### One-click affiliate disclosure addition (Premium Feature) ###
 Confirm with FTC guidelines. Add affiliate disclosure to the end of a page or post. Available in [Pro Version](http://bit.ly/32tEf0d) only.
 
-## More Premium features ##
-[WP Legal Pages Pro](http://bit.ly/32n3Qrq) comes with even more legal policy pages including:
+## Premium Policy Pages ##
+[WP Legal Pages Pro](http://bit.ly/32n3Qrq) can generate 25+ premium policy pages including:
 
-- **Privacy Policy**: Covers websites or apps that collect and store user data. Helps comply with GDPR and CCPA (California Consumer Privacy Act).
-- **Cookie Policy**: Covers websites and apps that collect and store user data in browser cookies. Helps comply with GDPR.
-- **Cookie Consent Popups**: Works with GDPR Cookie Consent
-- **Cookie Bar**: Add banner in the footer for Cookie consent, also you can customize the cookie bar style, content and button styles.
-- **Amazon Affiliate Disclosure**: Covers websites and apps that engage in affiliate promotion of Amazon products.
-- **Affiliate Agreement**: Covers websites and apps that run affiliate programs.
-- **Affiliate Disclosure**: Covers websites and apps that engage in affiliate promotion of products and/or services.
-- **Terms and Conditions**: Covers the terms and conditions for using a website.
-- **California Privacy Rights**: Covers websites and apps that sell to California customers.
-- **Refund Policy**: Covers refunds of sales of products and services for ecommerce stores.
-- **Newsletter Subscription Policy**: Covers websites and apps that run newsletter subscriptions.
-- **Children’s Online Privacy Policy (COPPA)**: Covers websites and apps whose audience is children (< 13 years age)
-- **Medical Disclaimer Template**: Covers websites and apps that provide free medical information - such as healthcare providers or blogs providing medical advice.
-- **External Links Policy**: Covers policies for links to or from external websites, which are not owned or controlled by you.
-- **Returns & Refunds Policy**: Covers returns/refunds of your product, service or ecommerce store.
-- **Digital Goods Refunds Policy**: Covers refunds for downloadable or streaming products/services.
-- **Facebook Privacy Policy**: For Facebook ads, app developers, and for using Facebook login or widgets on your website.
-- **Earnings Disclaimer**: Covers websites and apps that promote products, services, strategies and/or programs to help users make money.
-- **Anti Spam Policy**: Covers websites & apps that provide mass email or other messaging services.
-- **Age Verification**: Useful for vaping or adult content websites. Allows only 18+ aged users to access website content after taking consent.
+### GDPR Privacy Policy ###
+Generate a privacy policy to help comply with GDPR's privacy policy requirements. Required for businesses who gather visitor information from EU countries.
+
+### CCPA (California Consumer Privacy Act) Privacy Policy ###
+Generate a privacy policy to help comply with CCPA's privacy policy requirements. Required for businesses who gather visitor information from California, USA.
+
+### Facebook Privacy Policy ###
+Generate a Facebook privacy policy for your app, website or ads account.
+
+### Generic Privacy Policy ###
+Generate a generic privacy policy to comply with ad networks. Required for businesses who advertise on ad networks like Facebook and Google AdSense.
+
+### Website Terms & Conditions ###
+Generate a website terms & conditions page. Required for all business, blog or ecommerce websites.
+
+### Cookie Policy ###
+Generate a cookie policy (in addition to the above Privacy policies) to help comply with GDPR, CCPA and CalOPPA (California Online Privacy Protection Act). Includes a third-party cookie audit table that can be generated using the [GDPR Cookie Consent](https://wordpress.org/plugins/gdpr-cookie-consent/) Plugin.
+
+### Amazon Affiliate Disclosure ###
+Generate an Amazon Affiliate Disclosure policy page. Required for affiliate websites promoting Amazon products.
+
+### Affiliate Agreement Policy ###
+Generate a standard affiliate agreement policy. Useful for businesses that run affiliate programs on their websites.
+
+### Affiliate Disclosure Policy ###
+Generate an affiliate income disclosure policy page. Required by FTC for businesses promoting products by earning affiliate commissions.
+
+### Earnings Disclaimer Policy ###
+Generate an earnings disclaimer policy page. Required by FTC for website and blogs that have content related to income schemes, private finance etc.
+
+### Medical Disclaimer Policy ###
+Generate a medical disclaimer policy to indemnify your website/blog from medical claims. Required for website and blog that provide content related to healthcare.
+
+### Refund Policy ###
+Generate a standard refunds policy page. Useful for ecommerce websites or websites that sell products/services on their website.
+
+### Returns Policy ###
+Generate a standard returns policy page. Useful for ecommerce websites or websites that sell physical products on their website.
+
+### Digital Goods Refunds Policy ###
+Generate a standard refunds policy page. Useful for ecommerce websites or websites that sell digital products/services on their website.
+
+### Children’s Online Privacy Policy (COPPA) ###
+Generate a standard COPPA policy page on your WordPress website. Required for website and apps whose audience consists of children below 13 years of age.
+
+### Newsletter Subscription Policy ###
+Generates a standard Newsletter Subscription Policy. Useful for businesses and blogs that run a newsletter subscription.
+
+### External Links Policy ###
+Generates a standard External Links policy page. Covers the links to or from external websites, which are not owned or controlled by your website.
+
+### Anti Spam Policy ###
+Generate a standard anti-spam policy. Required for businesses, applications or websites who allow users to send emails in bulk.
+
+### Age Verification Policy with Consent Popup ###
+Generate an age verification policy with consent popup. Requried  for websites, blogs and ecommerce sites that provide adult content or sell products/services meant for adults.
+
+### Cookie Consent Notice ###
+Display a standard cookie consent notice on your WordPress website. Use the [GDPR Cookie Consent](https://wordpress.org/plugins/gdpr-cookie-consent/) plugin to display a cookie consent notice according to GDPR standards.
 
 Learn more about [WP Legal Pages Pro](http://bit.ly/32n3Qrq).
 
