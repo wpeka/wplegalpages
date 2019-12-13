@@ -7,7 +7,7 @@
 **Requires at least:** 5.0+  
 **Requires PHP:** 5.0  
 **Tested up to:** 5.3  
-**Stable tag:** 2.3.3  
+**Stable tag:** 2.3.4  
 
 Generate privacy policy pages on your website in a few clicks. Launch your WordPress website fast.
 
@@ -158,6 +158,9 @@ WP Legal Pages provides you pre-approved templates. Please consult your lawyer f
 No. WP Legal Pages not support multisite network. You will have to install it on each site separately.
 
 ## Changelog ##
+### 2.3.4 ###
+Feature: Added wizard for user consent on plugin activation.
+
 ### 2.3.3 ###
 Update: Minor plugin updates.
 
