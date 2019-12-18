@@ -6,7 +6,7 @@
 **Tags:** Privacy Policy Generator, GDPR  
 **Requires at least:** 5.0+  
 **Requires PHP:** 5.0  
-**Tested up to:** 5.3  
+**Tested up to:** 5.3.1  
 **Stable tag:** 2.3.4  
 
 Generate privacy policy pages on your website in a few clicks. Launch your WordPress website fast.
@@ -38,7 +38,10 @@ WP Legal Pages makes it super easy to generate policy pages for your WordPress w
 ## Why WP Legal Pages? ##
 
 ### Easy to install ###
-Install and add legal policy pages to your website in 5 minutes of less.
+Install and add legal policy pages to your website in 5 minutes or less.
+
+### GUIDED WIZARD TO CREATE POLICY PAGES (PREMIUM FEATURE) ###
+Generate complex policy pages like "Terms & Conditions" and "Privacy Policy" using a step-by-step guided wizard. Available in [Pro Version](http://bit.ly/32oibEf) only.
 
 ### Easy to edit policy pages ###
 Generates policy pages are regular WordPress pages. You can easily edit and update them.
@@ -159,7 +162,8 @@ No. WP Legal Pages not support multisite network. You will have to install it on
 
 ## Changelog ##
 ### 2.3.4 ###
-Feature: Added wizard for user consent on plugin activation.
+Update: Updated link for show credit.
+Update: Made compatible with WordPress 5.3.1.
 
 ### 2.3.3 ###
 Update: Minor plugin updates.

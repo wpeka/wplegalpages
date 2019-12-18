@@ -122,7 +122,7 @@ module.exports = function (grunt) {
 					options: {
 						updateDomains: true
 					},
-					src: ['*.php', '**/*.php', '!\.git/**/*', '!bin/**/*', '!node_modules/**/*', '!tests/**/*', '!vendor/**/*']
+					src: ['*.php', '**/*.php', '!\.git/**/*', '!bin/**/*', '!node_modules/**/*', '!tests/**/*', '!vendor/**/*', '!analytics/**/*']
 				}
 			},
 
@@ -138,7 +138,7 @@ module.exports = function (grunt) {
 				target: {
 					options: {
 						domainPath: '/languages',
-						exclude: ['\.git/*', 'bin/*', 'node_modules/*', 'tests/*', '!vendor/**/*'],
+						exclude: ['\.git/*', 'bin/*', 'node_modules/*', 'tests/*', '!vendor/**/*', '!analytics/**/*'],
 						mainFile: 'wplegalpages.php',
 						potFilename: 'wplegalpages.pot',
 						potHeaders: {

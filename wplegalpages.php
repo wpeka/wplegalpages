@@ -19,7 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! function_exists( 'wplp_fs' ) ) {
-	// Helper function to access SDK.
+	/**
+	 * Helper function to access SDK.
+	 *
+	 * @return Analytics
+	 */
 	function wplp_fs() {
 		global $wplp_fs;
 
