@@ -39,6 +39,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Deactivator' ) ) {
 		 * @since    1.5.2
 		 */
 		public static function deactivate() {
+			delete_option( '_lp_db_updated' );
 			delete_option( 'lp_accept_terms' );
 		}
 

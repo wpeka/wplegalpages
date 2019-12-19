@@ -116,6 +116,76 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		/**
+		 * Admin init for database update.
+		 *
+		 * @since 2.3.5
+		 */
+		public function wplegal_admin_init() {
+			$lp_db_updated = get_option( '_lp_db_updated' );
+			if ( '1' !== $lp_db_updated ) {
+				global $wpdb;
+				$legal_pages = new WP_Legal_Pages();
+				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+				$terms_latest = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/Terms-latest.html' );
+				$ccpa         = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/CCPA.html' );
+
+				$terms_of_use_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Terms of Use' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				if ( '0' === $terms_of_use_count ) {
+					$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+						$legal_pages->tablename,
+						array(
+							'title'      => 'Terms of Use',
+							'content'    => $terms_latest,
+							'contentfor' => '1a2b3c4d5e6f7g8h9i',
+							'is_active'  => '1',
+						),
+						array( '%s', '%s', '%s', '%d' )
+					);
+				} else {
+					$wpdb->update(
+						$legal_pages->tablename,
+						array(
+							'is_active' => '1',
+							'content'   => $terms_latest,
+						),
+						array( 'title' => 'Terms of Use' ),
+						array( '%d', '%s' ),
+						array( '%s' )
+					); // db call ok; no-cache ok.
+				}
+				$ccpa_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'CCPA - California Consumer Privacy Act' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				if ( '0' === $ccpa_count ) {
+					$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+						$legal_pages->tablename,
+						array(
+							'title'      => 'CCPA - California Consumer Privacy Act',
+							'content'    => $ccpa,
+							'contentfor' => '5a5b5c5d5e',
+							'is_active'  => '1',
+						),
+						array( '%s', '%s', '%s', '%d' )
+					);
+				} else {
+					$wpdb->update(
+						$legal_pages->tablename,
+						array(
+							'is_active' => '1',
+							'content'   => $ccpa,
+						),
+						array( 'title' => 'CCPA - California Consumer Privacy Act' ),
+						array( '%d', '%s' ),
+						array( '%s' )
+					); // db call ok; no-cache ok.
+				}
+				$lp_general             = array();
+				$lp_general['generate'] = '1';
+				update_option( 'lp_general', $lp_general );
+				update_option( '_lp_db_updated', true );
+			}
+
+		}
+
+		/**
 		 * Enqueue admin common style and scripts.
 		 */
 		public function enqueue_common_style_scripts() {

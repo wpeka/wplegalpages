@@ -156,7 +156,6 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				<li>Terms of use <strong>(forced agreement - don't allow your users to proceed without agreeing to your terms)</strong></li>
 				<li>Linking policy template</li>
 				<li>External links policy template</li>
-				<li>Terms and conditions template</li>
 				<li>Refund policy template</li>
 				<li>Affiliate disclosure template</li>
 				<li>Privacy Policy template</li>
@@ -180,7 +179,6 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				<li>End User License Agreement template</li>
 				<li>GDPR Cookie Policy template</li>
 				<li>GDPR Privacy Policy template</li>
-				<li>California Consumer Privacy Act (CCPA)</li>
 			</ul>
 		</div>
 	<?php endif; ?>
