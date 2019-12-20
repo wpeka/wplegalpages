@@ -189,6 +189,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 			add_option( 'lp_eu_text_color', '#FFFFFF' );
 			add_option( 'lp_eu_link_color', '#8f0410' );
 			add_option( 'lp_eu_text_size', '12' );
+			$lp_general = get_option( 'lp_general' );
 			if ( isset( $lp_general ) && ! empty( $lp_general ) ) {
 				$lp_general['generate'] = '1';
 			} else {
