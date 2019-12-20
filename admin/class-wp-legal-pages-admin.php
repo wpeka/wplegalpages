@@ -177,8 +177,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						array( '%s' )
 					); // db call ok; no-cache ok.
 				}
-				$lp_general             = array();
-				$lp_general['generate'] = '1';
+				$lp_general = get_option( 'lp_general' );
+				if ( isset( $lp_general ) && ! empty( $lp_general ) ) {
+					$lp_general['generate'] = '0';
+				} else {
+					$lp_general             = array();
+					$lp_general['generate'] = '0';
+				}
 				update_option( 'lp_general', $lp_general );
 				update_option( '_lp_db_updated', true );
 			}
