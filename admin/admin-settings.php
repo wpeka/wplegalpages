@@ -57,7 +57,7 @@ if ( '1' === $lpterms ) {
 			'address'    => '',
 			'niche'      => '',
 			'pagefooter' => '',
-			'generate'   => '',
+			'generate'   => '1',
 		);
 
 		update_option( 'lp_general', $lp_general );
@@ -81,15 +81,9 @@ if ( '1' === $lpterms ) {
 			'email'     => isset( $_POST['lp-email'] ) ? sanitize_email( wp_unslash( $_POST['lp-email'] ) ) : '',
 			'address'   => isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
 			'niche'     => isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
-
 		);
 		$lp_general = apply_filters( 'wplegalpages_save_settings', $lp_general, $_POST );
-		if ( isset( $_POST['lp-generate'] ) ) {
-			$lp_general['generate'] = sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) );
-		} else {
-			$lp_general['generate'] = 0;
-		}
-			update_option( 'lp_general', $lp_general );
+		update_option( 'lp_general', $lp_general );
 		?>
 	<div id="message">
 		<p><span class="label label-success myAlert">Settings Saved.</span></p>
@@ -143,13 +137,6 @@ if ( '1' === $lpterms ) {
 				<td><b>Niche:</b></td> <td><input type="text" size="30" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>" /></td> <td>[Niche]</td>
 			</tr>
 			<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
-			<tr>
-				<td><b> Give Credit : </b></td>
-				<td><label class="switch"><input type="checkbox" <?php echo ( isset( $lp_general['generate'] ) && '1' === $lp_general['generate'] ) ? 'checked="checked"' : ''; ?> name="lp-generate" value="1" >
-			<div class="slider round"></div>
-			</label>
-			</td>
-			</tr>
 			<tr align="center">
 				<td colspan="3"><input type="submit" name="lp-gsubmit" class="btn btn-primary" value="Save" /> <input type="submit" class="btn btn-primary" name="lp-greset" value="Reset" /></td>
 			</tr>

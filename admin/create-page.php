@@ -97,9 +97,12 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				$lp_find    = array( '[Domain]', '[Business Name]', '[Phone]', '[Street]', '[City, State, Zip code]', '[Country]', '[Email]', '[Address]', '[Niche]' );
 				$lp_general = get_option( 'lp_general' );
 				$content    = str_replace( $lp_find, $lp_general, stripslashes( $content ) );
-				$content    = apply_filters( 'wplegalpages_shortcode_content', $content );
-				$editor_id  = 'lp-content';
-				$args       = array();
+				if ( ! shortcode_exists( 'wpl_cookie_details' ) ) {
+					$content = str_replace( '[wpl_cookie_details]', '', stripslashes( $content ) );
+				}
+				$content   = apply_filters( 'wplegalpages_shortcode_content', $content );
+				$editor_id = 'lp-content';
+				$args      = array();
 				wp_editor( stripslashes( html_entity_decode( $content ) ), 'content', $args );
 				?>
 				</div>
@@ -156,7 +159,6 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				<li>Terms of use <strong>(forced agreement - don't allow your users to proceed without agreeing to your terms)</strong></li>
 				<li>Linking policy template</li>
 				<li>External links policy template</li>
-				<li>Terms and conditions template</li>
 				<li>Refund policy template</li>
 				<li>Affiliate disclosure template</li>
 				<li>Privacy Policy template</li>
@@ -180,7 +182,6 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				<li>End User License Agreement template</li>
 				<li>GDPR Cookie Policy template</li>
 				<li>GDPR Privacy Policy template</li>
-				<li>California Consumer Privacy Act (CCPA)</li>
 			</ul>
 		</div>
 	<?php endif; ?>

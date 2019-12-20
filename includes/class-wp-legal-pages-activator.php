@@ -70,8 +70,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 				$alter_popup_sql = 'ALTER TABLE ' . $legal_pages->popuptable . ' CHANGE `popupName` `popup_name` TEXT;';
 				$wpdb->query( $alter_popup_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			}
-			$privacy = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/privacy.html' );
-			$dmca    = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/dmca.html' );
+			$privacy      = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/privacy.html' );
+			$dmca         = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/dmca.html' );
+			$terms_latest = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/Terms-latest.html' );
+			$ccpa         = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/CCPA.html' );
 
 			$privacy_policy_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Privacy Policy' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			if ( '0' === $privacy_policy_count ) {
@@ -121,7 +123,55 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 					array( '%s' )
 				); // db call ok; no-cache ok.
 			}
-
+			$terms_of_use_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Terms of Use' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( '0' === $terms_of_use_count ) {
+				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					$legal_pages->tablename,
+					array(
+						'title'      => 'Terms of Use',
+						'content'    => $terms_latest,
+						'contentfor' => '1a2b3c4d5e6f7g8h9i',
+						'is_active'  => '1',
+					),
+					array( '%s', '%s', '%s', '%d' )
+				);
+			} else {
+				$wpdb->update(
+					$legal_pages->tablename,
+					array(
+						'is_active' => '1',
+						'content'   => $terms_latest,
+					),
+					array( 'title' => 'Terms of Use' ),
+					array( '%d', '%s' ),
+					array( '%s' )
+				); // db call ok; no-cache ok.
+			}
+			$ccpa_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'CCPA - California Consumer Privacy Act' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( '0' === $ccpa_count ) {
+				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					$legal_pages->tablename,
+					array(
+						'title'      => 'CCPA - California Consumer Privacy Act',
+						'content'    => $ccpa,
+						'contentfor' => '5a5b5c5d5e',
+						'is_active'  => '1',
+					),
+					array( '%s', '%s', '%s', '%d' )
+				);
+			} else {
+				$wpdb->update(
+					$legal_pages->tablename,
+					array(
+						'is_active' => '1',
+						'content'   => $ccpa,
+					),
+					array( 'title' => 'CCPA - California Consumer Privacy Act' ),
+					array( '%d', '%s' ),
+					array( '%s' )
+				); // db call ok; no-cache ok.
+			}
+			add_option( '_lp_db_updated', true );
 			add_option( 'lp_excludePage', 'true' );
 			add_option( 'lp_general', '' );
 			add_option( 'lp_accept_terms', '0' );
@@ -139,7 +189,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 			add_option( 'lp_eu_text_color', '#FFFFFF' );
 			add_option( 'lp_eu_link_color', '#8f0410' );
 			add_option( 'lp_eu_text_size', '12' );
-
+			if ( isset( $lp_general ) && ! empty( $lp_general ) ) {
+				$lp_general['generate'] = '1';
+			} else {
+				$lp_general             = array();
+				$lp_general['generate'] = '1';
+			}
+			update_option( 'lp_general', $lp_general );
 		}
 	}
 
