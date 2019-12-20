@@ -48,6 +48,7 @@ Install and add legal policy pages to your website in 5 minutes or less.
 
 ### GUIDED WIZARD TO CREATE POLICY PAGES (PREMIUM FEATURE) ###
 Generate complex policy pages like "Terms & Conditions" and "California Consumer Privacy Act (CCPA)" using a step-by-step guided wizard. Available in [Pro Version](http://bit.ly/32oibEf) only.
+Customizable for various types of websites which sell in multiple countries like e-commerce, marketplace, SaaS.
 
 ### Easy to edit policy pages ###
 Generates policy pages are regular WordPress pages. You can easily edit and update them.
@@ -67,17 +68,14 @@ Confirm with FTC guidelines. Add affiliate disclosure to the end of a page or po
 ### GDPR Privacy Policy ###
 Generate a privacy policy to help comply with GDPR's privacy policy requirements. Required for businesses who gather visitor information from EU countries.
 
-### CCPA (California Consumer Privacy Act) Privacy Policy ###
-Generate a privacy policy to help comply with CCPA's privacy policy requirements. Required for businesses who gather visitor information from California, USA.
-
 ### Facebook Privacy Policy ###
 Generate a Facebook privacy policy for your app, website or ads account.
 
 ### Generic Privacy Policy ###
 Generate a generic privacy policy to comply with ad networks. Required for businesses who advertise on ad networks like Facebook and Google AdSense.
 
-### Website Terms & Conditions ###
-Generate a website terms & conditions page. Required for all business, blog or ecommerce websites.
+### Website Terms & Conditions Pro ###
+Wizard to customize Terms of Service or Terms & Conditions for different types of websites.
 
 ### Cookie Policy ###
 Generate a cookie policy (in addition to the above Privacy policies) to help comply with GDPR, CCPA and CalOPPA (California Online Privacy Protection Act). Includes a third-party cookie audit table that can be generated using the [GDPR Cookie Consent](https://wordpress.org/plugins/gdpr-cookie-consent/) Plugin.
@@ -168,7 +166,7 @@ No. WP Legal Pages not support multisite network. You will have to install it on
 
 ## Changelog ##
 ### 2.3.5 ###
-Feature: Added CCPA and Terms and Conditions policy templates.
+Feature: Added standard California Consumer Privacy Act (CCPA) and Terms and Conditions policy templates.
 Update: Made compatible with WordPress 5.3.2.
 
 ### 2.3.4 ###

@@ -97,9 +97,12 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				$lp_find    = array( '[Domain]', '[Business Name]', '[Phone]', '[Street]', '[City, State, Zip code]', '[Country]', '[Email]', '[Address]', '[Niche]' );
 				$lp_general = get_option( 'lp_general' );
 				$content    = str_replace( $lp_find, $lp_general, stripslashes( $content ) );
-				$content    = apply_filters( 'wplegalpages_shortcode_content', $content );
-				$editor_id  = 'lp-content';
-				$args       = array();
+				if ( ! shortcode_exists( 'wpl_cookie_details' ) ) {
+					$content = str_replace( '[wpl_cookie_details]', '', stripslashes( $content ) );
+				}
+				$content   = apply_filters( 'wplegalpages_shortcode_content', $content );
+				$editor_id = 'lp-content';
+				$args      = array();
 				wp_editor( stripslashes( html_entity_decode( $content ) ), 'content', $args );
 				?>
 				</div>
