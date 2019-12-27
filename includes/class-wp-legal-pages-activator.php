@@ -72,7 +72,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 			}
 			$privacy      = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/privacy.html' );
 			$dmca         = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/dmca.html' );
-			$terms_latest = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/Terms-latest.html' );
+			$terms_latest = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/Terms-of-use.html' );
 			$ccpa         = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/CCPA.html' );
 
 			$privacy_policy_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Privacy Policy' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -172,6 +172,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 				); // db call ok; no-cache ok.
 			}
 			add_option( '_lp_db_updated', true );
+			add_option( '_lp_terms_updated', true );
 			add_option( 'lp_excludePage', 'true' );
 			add_option( 'lp_general', '' );
 			add_option( 'lp_accept_terms', '0' );
