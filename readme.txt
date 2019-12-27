@@ -7,7 +7,7 @@ Tags: Privacy Policy Generator, GDPR
 Requires at least: 5.0+
 Requires PHP: 5.0
 Tested up to: 5.3.2
-Stable tag: 2.3.5
+Stable tag: 2.3.6
 
 Generate privacy policy pages on your website in a few clicks. Launch your WordPress website fast.
 
@@ -165,6 +165,9 @@ WP Legal Pages provides you pre-approved templates. Please consult your lawyer f
 No. WP Legal Pages not support multisite network. You will have to install it on each site separately.
 
 == Changelog ==
+= 2.3.6 =
+Update: Updated Terms of use template.
+
 = 2.3.5 =
 Feature: Added standard California Consumer Privacy Act (CCPA) and Terms and Conditions policy templates.
 Update: Made compatible with WordPress 5.3.2.

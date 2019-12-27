@@ -121,12 +121,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @since 2.3.5
 		 */
 		public function wplegal_admin_init() {
-			$lp_db_updated = get_option( '_lp_db_updated' );
-			if ( '1' !== $lp_db_updated ) {
+			$lp_db_updated    = get_option( '_lp_db_updated' );
+			$lp_terms_updated = get_option( '_lp_terms_updated' );
+			if ( '1' !== $lp_db_updated || '1' !== $lp_terms_updated ) {
 				global $wpdb;
 				$legal_pages = new WP_Legal_Pages();
 				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-				$terms_latest = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/Terms-latest.html' );
+				$terms_latest = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/Terms-of-use.html' );
 				$ccpa         = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/CCPA.html' );
 
 				$terms_of_use_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Terms of Use' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -186,6 +187,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				}
 				update_option( 'lp_general', $lp_general );
 				update_option( '_lp_db_updated', true );
+				update_option( '_lp_terms_updated', true );
 			}
 
 		}
