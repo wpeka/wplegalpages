@@ -1,5 +1,5 @@
-# WP Legal Pages: WordPress Privacy Policy Generator Plugin #
-**Contributors:** [sandyr](https://profiles.wordpress.org/sandyr), [WPEka Club](https://profiles.wordpress.org/WPEka Club)  
+# Privacy Policy Generator WordPress Plugin: WP Legal Pages #
+**Contributors:** [WPEka Club](https://profiles.wordpress.org/WPEka Club)  
 **Donate link:** https://club.wpeka.com/product/wplegalpages  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -7,35 +7,33 @@
 **Requires at least:** 5.0+  
 **Requires PHP:** 5.0  
 **Tested up to:** 5.3.2  
-**Stable tag:** 2.3.6  
+**Stable tag:** 2.3.7  
 
-Generate privacy policy pages on your website in a few clicks. Launch your WordPress website fast.
+Easily generate privacy policy pages on your wordpress website in a few clicks. Legal Pages for blogs, ecommerce and marketing websites.
 
 ## Description ##
 
-Need help generating privacy policy pages on your WordPress website?
+Generate WordPress Legal Pages like Privacy Policy, Terms of Use, Disclaimers. Covers 25+ Legal Templates for all types of WordPress Websites.
 
-WP Legal Pages is one of the most popular privacy policy generator plugins since 2014. It is a favorite tool of 10,000+ WordPress users from bloggers, affiliate marketers to ecommerce stores.
+WP Legal Pages is a popular and regularly updated privacy policy generator plugins with more than 180,000 downloads. From WordPress Bloggers, Affiliate Marketers, Corporate websites to ecommerce stores, the privacy pages are designed for different types of websites.
 
-Using WP Legal Pages, you can generate two privacy policy pages required for any website.
-
-### Privacy Policy ###
+### Privacy Policy Generator ###
 Generate a standard privacy policy to comply with ad networks. Required for blogs, businesses and ecommerce websites.
 
 ### Privacy Notice for California Consumer Privacy Act (CCPA) ###
-Generate a standard privacy policy to comply with the new California Consumer Privacy Act (CCPA) and California Online Protection Act (CalOPPA). For a customized policy created using a guided wizard, please use the [Pro Version](http://bit.ly/32oibEf).
+Generate a standard privacy policy to comply with the new California Consumer Privacy Act (CCPA) and California Online Protection Act (CalOPPA). For a customized policy created using a guided wizard, please use the [Pro Version](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-ccpa).
 
-### Terms & Conditions ###
-Generate a standard terms & conditions policy page. For a customized policy created using a guided wizard, please use the [Pro Version](http://bit.ly/32oibEf).
+### Terms & Conditions Generator ###
+Generate a standard terms & conditions policy page. For a customized policy created using a guided wizard, please use the [Pro Version](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-terms-and-conditions).
 
-### DMCA Policy ###
+### DMCA Policy Generator ###
 Generate a standard DMCA privacy policy page. Required for blogs, businesses and ecommerce websites that provide content sourced from other content producers.
 
 [youtube https://www.youtube.com/watch?v=iqdLl9qsBHc]
 
-## WP Legal Pages: Simple WordPress Privacy Policy Generator Plugin ##
+## Privacy Policy Generator WordPress Plugin: WP Legal Pages ##
 
-WP Legal Pages makes it super easy to generate policy pages for your WordPress website.
+WP Legal Pages makes it super easy to generate privacy policy pages for websites.
 
 1. Add your business information.
 1. Select a legal policy page template.
@@ -46,27 +44,27 @@ WP Legal Pages makes it super easy to generate policy pages for your WordPress w
 ### Easy to install ###
 Install and add legal policy pages to your website in 5 minutes or less.
 
-### GUIDED WIZARD TO CREATE POLICY PAGES (PREMIUM FEATURE) ###
-Generate complex policy pages like "Terms & Conditions" and "California Consumer Privacy Act (CCPA)" using a step-by-step guided wizard. Available in [Pro Version](http://bit.ly/32oibEf) only.
+### GUIDED WIZARD TO GENERATE LEGAL PAGES (PREMIUM FEATURE) ###
+Generate complex legal pages like "Terms & Conditions" and "California Consumer Privacy Act (CCPA)" using a step-by-step guided wizard. Available in [Pro Version](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-guided-wizard) only.
 Customizable for various types of websites which sell in multiple countries like e-commerce, marketplace, SaaS.
 
-### Easy to edit policy pages ###
-Generates policy pages are regular WordPress pages. You can easily edit and update them.
+### Easy to customize privacy policy pages ###
+Generated policy pages are regular WordPress pages. You can easily edit and update them.
 
 ### 25+ pre-built policy templates (Premium Feature) ###
 WP Legal Pages comes with ready-to-use policy page templates. Fill in your business information and hit generate.
 
 ### Option to force agreement (Premium Feature) ###
-Force users to accept your policy before they can access a page or post. Available in [Pro Version](http://bit.ly/32oibEf) only.
+Force users to accept your policy before they can access a page or post. Available in [Pro Version](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-force-agreement) only.
 
 ### One-click affiliate disclosure addition (Premium Feature) ###
-Confirm with FTC guidelines. Add affiliate disclosure to the end of a page or post. Available in [Pro Version](http://bit.ly/32tEf0d) only.
+Confirm with FTC guidelines. Add affiliate disclosure to the end of a page or post. Available in [Pro Version](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-affiliate-disclosure) only.
 
 ## Premium Policy Pages ##
-[WP Legal Pages Pro](http://bit.ly/32n3Qrq) can generate 25+ premium policy pages including:
+[WP Legal Pages Pro](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-premium-policy-pages) can generate 25+ premium policy pages including:
 
 ### GDPR Privacy Policy ###
-Generate a privacy policy to help comply with GDPR's privacy policy requirements. Required for businesses who gather visitor information from EU countries.
+Generate a privacy policy to help comply with GDPR's privacy policy requirements. Required for businesses who gather visitor information from EU countries. Also available for France - RGPD and Germany - DSGVO.
 
 ### Facebook Privacy Policy ###
 Generate a Facebook privacy policy for your app, website or ads account.
@@ -148,6 +146,15 @@ Learn more about [WP Legal Pages Pro](http://bit.ly/32n3Qrq).
 
 ## Frequently Asked Questions ##
 
+### Is this a Free Privacy Policy generator for WordPress? ###
+Yes! The privacy policy generator feature in this plugin is Free.
+
+The Pro version is ideal:
+- If you need to customize it for GDPR
+- Use the guided wizard (Terms & Conditions)
+- Specific Legal Needs (Disclaimers & Disclosures - Affiliates, Consultants, Medical Blogs, Marketers)
+- Returns and Refunds (WooCommerce or e-Commerce Websites)
+
 ### Why use WPLegalPages? ###
 GDPR, FTC and other privacy regulators along with ad networks require you to have legal policy pages on your website. Instead of spending hours researching and creating your own policy pages, use WP Legal Pages to generate them in a few clicks.
 
@@ -159,12 +166,12 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 1. You can also use shortcodes of each template and save it as a post or page.
 
 ### Will it protect my website? ###
-WP Legal Pages provides you pre-approved templates. Please consult your lawyer for compliance with your local law regulators.
-
-### Can it be used for multisite network? ###
-No. WP Legal Pages not support multisite network. You will have to install it on each site separately.
+WP Legal Pages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 ## Changelog ##
+### 2.3.7 ###
+Update: Minor plugin updates.
+
 ### 2.3.6 ###
 Update: Updated Terms of use template.
 
@@ -277,13 +284,13 @@ Added new DMCA template
 Updated for Compatibility with WP 4.5.3. Improved Admin Dashboard for easy creation of policy pages
 
 ### 1.3 ###
-*WPLegal Pages is now compatible WordPress 4.5.
+WPLegal Pages is now compatible WordPress 4.5.
 
 ### 1.2 ###
-*Added banner to upgrade WPLegal Pages Pro version on plugin dashboard
+Added banner to upgrade WPLegal Pages Pro version on plugin dashboard
 
 ### 1.1 ###
-*Enhanced security
+Enhanced security
 
 ### 1.0.0 ###
 Base version of the plugin.
