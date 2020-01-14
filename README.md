@@ -7,7 +7,7 @@
 **Requires at least:** 5.0+  
 **Requires PHP:** 5.0  
 **Tested up to:** 5.3.2  
-**Stable tag:** 2.3.6  
+**Stable tag:** 2.3.7  
 
 Generate privacy policy pages on your website in a few clicks. Launch your WordPress website fast.
 
@@ -66,7 +66,7 @@ Confirm with FTC guidelines. Add affiliate disclosure to the end of a page or po
 [WP Legal Pages Pro](http://bit.ly/32n3Qrq) can generate 25+ premium policy pages including:
 
 ### GDPR Privacy Policy ###
-Generate a privacy policy to help comply with GDPR's privacy policy requirements. Required for businesses who gather visitor information from EU countries.
+Generate a privacy policy to help comply with GDPR's privacy policy requirements. Required for businesses who gather visitor information from EU countries. Also available in French and German languages.
 
 ### Facebook Privacy Policy ###
 Generate a Facebook privacy policy for your app, website or ads account.
@@ -165,6 +165,9 @@ WP Legal Pages provides you pre-approved templates. Please consult your lawyer f
 No. WP Legal Pages not support multisite network. You will have to install it on each site separately.
 
 ## Changelog ##
+### 2.3.7 ###
+Update: Minor plugin updates.
+
 ### 2.3.6 ###
 Update: Updated Terms of use template.
 
