@@ -21,10 +21,10 @@ WP Legal Pages is a popular and regularly updated privacy policy generator plugi
 Generate a standard privacy policy to comply with ad networks. Required for blogs, businesses and ecommerce websites.
 
 = Privacy Notice for California Consumer Privacy Act (CCPA) =
-Generate a standard privacy policy to comply with the new California Consumer Privacy Act (CCPA) and California Online Protection Act (CalOPPA). For a customized policy created using a guided wizard, please use the [Pro Version](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-ccpa).
+Generate a standard privacy policy to comply with the new California Consumer Privacy Act (CCPA) and California Online Protection Act (CalOPPA). For a customized policy created using a guided wizard, please use the [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wplegalpages&utm_content=readme-ccpa).
 
 = Terms & Conditions Generator =
-Generate a standard terms & conditions policy page. For a customized policy created using a guided wizard, please use the [Pro Version](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-terms-and-conditions).
+Generate a standard terms & conditions policy page. For a customized policy created using a guided wizard, please use the [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wplegalpages&utm_content=readme-terms-and-conditions).
 
 = DMCA Policy Generator =
 Generate a standard DMCA privacy policy page. Required for blogs, businesses and ecommerce websites that provide content sourced from other content producers.
@@ -45,7 +45,7 @@ WP Legal Pages makes it super easy to generate privacy policy pages for websites
 Install and add legal policy pages to your website in 5 minutes or less.
 
 = GUIDED WIZARD TO GENERATE LEGAL PAGES (PREMIUM FEATURE) =
-Generate complex legal pages like "Terms & Conditions" and "California Consumer Privacy Act (CCPA)" using a step-by-step guided wizard. Available in [Pro Version](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-guided-wizard) only.
+Generate complex legal pages like "Terms & Conditions" and "California Consumer Privacy Act (CCPA)" using a step-by-step guided wizard. Available in [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wplegalpages&utm_content=readme-guided-wizard) only.
 Customizable for various types of websites which sell in multiple countries like e-commerce, marketplace, SaaS.
 
 = Easy to customize privacy policy pages =
@@ -55,13 +55,13 @@ Generated policy pages are regular WordPress pages. You can easily edit and upda
 WP Legal Pages comes with ready-to-use policy page templates. Fill in your business information and hit generate.
 
 = Option to force agreement (Premium Feature) =
-Force users to accept your policy before they can access a page or post. Available in [Pro Version](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-force-agreement) only.
+Force users to accept your policy before they can access a page or post. Available in [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wplegalpages&utm_content=readme-force-agreement) only.
 
 = One-click affiliate disclosure addition (Premium Feature) =
-Confirm with FTC guidelines. Add affiliate disclosure to the end of a page or post. Available in [Pro Version](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-affiliate-disclosure) only.
+Confirm with FTC guidelines. Add affiliate disclosure to the end of a page or post. Available in [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wplegalpages&utm_content=readme-affiliate-disclosure) only.
 
 == Premium Policy Pages ==
-[WP Legal Pages Pro](https://club.wpeka.com/product/wp-legal-pages-pro/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wp-legal-pages-pro&utm_content=readme-premium-policy-pages) can generate 25+ premium policy pages including:
+[WP Legal Pages Pro](https://club.wpeka.com/product/wplegalpages/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wplegalpages&utm_content=readme-premium-policy-pages) can generate 25+ premium policy pages including:
 
 = GDPR Privacy Policy =
 Generate a privacy policy to help comply with GDPR's privacy policy requirements. Required for businesses who gather visitor information from EU countries. Also available for France - RGPD and Germany - DSGVO.
