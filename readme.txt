@@ -3,13 +3,14 @@ Contributors: WPEka Club
 Donate link: https://club.wpeka.com/product/wplegalpages
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: Privacy Policy Generator, GDPR
+Tags: Privacy Policy, GDPR, Terms and Conditions, Terms of Use, Terms of Service
 Requires at least: 5.0+
+Requires PHP: 5.0
 Requires PHP: 5.0
 Tested up to: 5.3.2
 Stable tag: 2.3.7
 
-Easily generate privacy policy pages on your wordpress website in a few clicks. Legal Pages for blogs, ecommerce and marketing websites.
+Easily generate privacy policy pages on your WordPress website in a few clicks. Legal Pages for blogs, ecommerce and marketing websites.
 
 == Description ==
 
