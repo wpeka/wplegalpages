@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: WP Legal Pages
- * Plugin URI: http://wplegalpages.com
+ * Plugin URI: https://club.wpeka.com/
  * Description: WP Legal Pages is a simple 1 click legal page management plugin. You can quickly add in legal pages to your WordPress sites.
  * Author: WPEka Club
  * Version: 2.3.7
- * Author URI: http://wplegalpages.com/
+ * Author URI: https://club.wpeka.com
  * License: GPL2
  * Text Domain: wplegalpages
  * Domain Path: /languages
