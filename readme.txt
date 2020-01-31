@@ -8,7 +8,7 @@ Requires at least: 5.0+
 Requires PHP: 5.0
 Requires PHP: 5.0
 Tested up to: 5.3.2
-Stable tag: 2.3.7
+Stable tag: 2.3.8
 
 Easily generate privacy policy pages on your WordPress website in a few clicks. Legal Pages for blogs, ecommerce and marketing websites.
 
@@ -170,6 +170,9 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 WP Legal Pages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 == Changelog ==
+= 2.3.8 =
+* Feature: Added Terms of use templates for French and German Translations.
+
 = 2.3.7 =
 Update: Minor plugin updates.
 
