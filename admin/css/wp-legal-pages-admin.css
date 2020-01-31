@@ -292,3 +292,9 @@ div.wplegalpages-pro-promotion img {
 	max-width: 100%;
 	height: auto;
 }
+div.wplegal-choose-template {
+	padding: 10px;
+}
+div.wplegal-choose-template select.wplegal-template-language {
+	width: 100%;
+}

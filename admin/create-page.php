@@ -32,16 +32,17 @@ $lp_pro_installed = get_option( '_lp_pro_installed' );
 	endif;
 	if ( ! empty( $_POST ) && isset( $_POST['lp-submit'] ) && 'Publish' === $_POST['lp-submit'] ) :
 		check_admin_referer( 'lp-submit-create-page' );
-		$page_title = isset( $_POST['lp-title'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-title'] ) ) : '';
-		$content    = isset( $_POST['lp-content'] ) ? wp_kses_post( wp_unslash( $_POST['lp-content'] ) ) : '';
-		$post_args  = array(
+		$page_title    = isset( $_POST['lp-title'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-title'] ) ) : '';
+		$content       = isset( $_POST['lp-content'] ) ? wp_kses_post( wp_unslash( $_POST['lp-content'] ) ) : '';
+		$template_lang = isset( $_POST['template_language'] ) ? sanitize_text_field( wp_unslash( $_POST['template_language'] ) ) : '';
+		$post_args     = array(
 			'post_title'   => apply_filters( 'the_title', $page_title ),
 			'post_content' => $content,
 			'post_type'    => 'page',
 			'post_status'  => 'publish',
 			'post_author'  => 1,
 		);
-		$pid        = wp_insert_post( $post_args );
+		$pid           = wp_insert_post( $post_args );
 		update_post_meta( $pid, 'is_legal', 'yes' );
 		$url = get_permalink( $pid );
 		?>
@@ -54,9 +55,12 @@ $lp_pro_installed = get_option( '_lp_pro_installed' );
 	$current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
 	$lptype       = isset( $_REQUEST['lp-type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lp-type'] ) ) : '';
 	$template     = isset( $_REQUEST['lp-template'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lp-template'] ) ) : '';
-	$general      = get_option( 'wpgattack_general' );
-	$checked      = 'checked="checked"';
-	$selected     = 'selected="selected"';
+	if ( ! isset( $template_lang ) || empty( $template_lang ) ) {
+		$template_lang = isset( $_REQUEST['lp-template-lang'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lp-template-lang'] ) ) : 'eng';
+	}
+	$general  = get_option( 'wpgattack_general' );
+	$checked  = 'checked="checked"';
+	$selected = 'selected="selected"';
 	?>
 
 <?php
@@ -134,15 +138,57 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 	</div>
 <div class="lp_generalid_right_wraper" style="min-height:900px;">
 	<div id="lp_generalid_right" class="postbox ">
-		<h3 class="hndle"  style="cursor:pointer; padding:0px 10px 12px 10px; font-size:20px;"> Choose Template </h3><br/>
-		<ul>
+		<h3 class="hndle"  style="cursor:pointer; padding:0px 10px 12px 10px; font-size:20px;"> Choose Template </h3>
+		<div class="wplegal-choose-template">
+		<select name="template_language" class="wplegal-template-language">
+			<option value="eng" 
+			<?php
+			if ( 'eng' === $template_lang ) {
+				echo 'selected';}
+			?>
+			>English</option>
+			<option value="fr" 
+			<?php
+			if ( 'fr' === $template_lang ) {
+				echo 'selected';}
+			?>
+			>French</option>
+			<option value="de" 
+			<?php
+			if ( 'de' === $template_lang ) {
+				echo 'selected';}
+			?>
+			>German</option>
+		</select>
+		</div>
+		<ul class="wplegal-templates">
 		<?php
 
 		$result = $wpdb->get_results( $wpdb->prepare( 'select * from ' . $lp_obj->tablename . ' where `is_active`=%d ORDER BY `id`', array( 1 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		foreach ( $result as $ras ) {
-			?>
-			<li><span id="legalpages<?php echo esc_attr( $ras->id ); ?>"><a class="myLink" href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=<?php echo esc_attr( $current_page ); ?>&lp-type=<?php echo esc_attr( $lptype ); ?>&lp-template=<?php echo esc_attr( $ras->id ); ?>"><?php echo esc_attr( $ras->title ); ?> &raquo;</a></span></li>
-			<?php } ?>
+			if ( strpos( $ras->title, 'FR' ) !== false ) {
+				if ( 'fr' === $template_lang ) :
+					?>
+					<li class="wplegal-template-fr"><span id="legalpages<?php echo esc_attr( $ras->id ); ?>"><a class="myLink" href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=<?php echo esc_attr( $current_page ); ?>&lp-template-lang=fr&lp-type=<?php echo esc_attr( $lptype ); ?>&lp-template=<?php echo esc_attr( $ras->id ); ?>"><?php echo esc_attr( $ras->title ); ?> &raquo;</a></span></li>
+				<?php else : ?>
+					<li style="display:none;" class="wplegal-template-fr"><span id="legalpages<?php echo esc_attr( $ras->id ); ?>"><a class="myLink" href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=<?php echo esc_attr( $current_page ); ?>&lp-template-lang=fr&lp-type=<?php echo esc_attr( $lptype ); ?>&lp-template=<?php echo esc_attr( $ras->id ); ?>"><?php echo esc_attr( $ras->title ); ?> &raquo;</a></span></li>
+				<?php endif; ?>
+			<?php } elseif ( strpos( $ras->title, 'DE' ) !== false ) { ?>
+				<?php if ( 'de' === $template_lang ) : ?>
+					<li class="wplegal-template-de"><span id="legalpages<?php echo esc_attr( $ras->id ); ?>"><a class="myLink" href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=<?php echo esc_attr( $current_page ); ?>&lp-template-lang=de&lp-type=<?php echo esc_attr( $lptype ); ?>&lp-template=<?php echo esc_attr( $ras->id ); ?>"><?php echo esc_attr( $ras->title ); ?> &raquo;</a></span></li>
+				<?php else : ?>
+					<li style="display:none;" class="wplegal-template-de"><span id="legalpages<?php echo esc_attr( $ras->id ); ?>"><a class="myLink" href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=<?php echo esc_attr( $current_page ); ?>&lp-template-lang=de&lp-type=<?php echo esc_attr( $lptype ); ?>&lp-template=<?php echo esc_attr( $ras->id ); ?>"><?php echo esc_attr( $ras->title ); ?> &raquo;</a></span></li>
+				<?php endif; ?>
+			<?php } else { ?>
+				<?php if ( 'eng' === $template_lang ) : ?>
+					<li class="wplegal-template-eng"><span id="legalpages<?php echo esc_attr( $ras->id ); ?>"><a class="myLink" href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=<?php echo esc_attr( $current_page ); ?>&lp-template-lang=eng&lp-type=<?php echo esc_attr( $lptype ); ?>&lp-template=<?php echo esc_attr( $ras->id ); ?>"><?php echo esc_attr( $ras->title ); ?> &raquo;</a></span></li>
+				<?php else : ?>
+					<li style="display:none;" class="wplegal-template-eng"><span id="legalpages<?php echo esc_attr( $ras->id ); ?>"><a class="myLink" href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=<?php echo esc_attr( $current_page ); ?>&lp-template-lang=eng&lp-type=<?php echo esc_attr( $lptype ); ?>&lp-template=<?php echo esc_attr( $ras->id ); ?>"><?php echo esc_attr( $ras->title ); ?> &raquo;</a></span></li>
+				<?php endif; ?>
+				<?php
+			}
+		}
+		?>
 
 		</ul>
 	</div>
@@ -167,7 +213,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				<li>Earnings Disclaimer template</li>
 				<li>Antispam template</li>
 				<li>Double dart cookie template</li>
-				<li>Disclaimer template</li>
+				<li>Disclaimer template (English, French, German)</li>
 				<li>FTC statement template</li>
 				<li>Medical disclaimer template</li>
 				<li>Testimonials disclosure template</li>
