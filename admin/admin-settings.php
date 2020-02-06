@@ -138,6 +138,13 @@ if ( '1' === $lpterms ) {
 				<td><b>Niche:</b></td> <td><input type="text" size="30" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>" /></td> <td>[Niche]</td>
 			</tr>
 			<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
+			<tr>
+				<td><b> Give Credit : </b></td>
+				<td><label class="switch"><input type="checkbox" <?php echo ( isset( $lp_general['generate'] ) && '1' === $lp_general['generate'] ) ? 'checked="checked"' : ''; ?> name="lp-generate" value="1" >
+						<div class="slider round"></div>
+					</label>
+				</td>
+			</tr>
 			<tr align="center">
 				<td colspan="3"><input type="submit" name="lp-gsubmit" class="btn btn-primary" value="Save" /> <input type="submit" class="btn btn-primary" name="lp-greset" value="Reset" /></td>
 			</tr>

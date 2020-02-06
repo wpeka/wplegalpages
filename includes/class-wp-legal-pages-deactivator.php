@@ -40,6 +40,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Deactivator' ) ) {
 		 */
 		public static function deactivate() {
 			delete_option( '_lp_db_updated' );
+			delete_option( '_lp_terms_updated' );
+			delete_option( '_lp_terms_fr_de_updated' );
 			delete_option( 'lp_accept_terms' );
 		}
 
