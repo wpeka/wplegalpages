@@ -121,18 +121,72 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @since 2.3.5
 		 */
 		public function wplegal_admin_init() {
-			$lp_db_updated          = get_option( '_lp_db_updated' );
-			$lp_terms_updated       = get_option( '_lp_terms_updated' );
-			$lp_terms_fr_de_updated = get_option( '_lp_terms_fr_de_updated' );
-			if ( '1' !== $lp_db_updated || '1' !== $lp_terms_updated || '1' !== $lp_terms_fr_de_updated ) {
+			delete_option( '_lp_db_updated' );
+			delete_option( '_lp_terms_updated' );
+			delete_option( '_lp_terms_fr_de_updated' );
+			$lp_templates_updated = get_option( '_lp_templates_updated' );
+			if ( '1' !== $lp_templates_updated ) {
 				global $wpdb;
 				$legal_pages = new WP_Legal_Pages();
 				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-				$terms_latest = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/Terms-of-use.html' );
-				$terms_fr     = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/Terms-of-use-fr.html' );
-				$terms_de     = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/Terms-of-use-de.html' );
-				$ccpa         = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . '/templates/CCPA.html' );
 
+				$privacy      = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/privacy.html' );
+				$dmca         = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/dmca.html' );
+				$terms_latest = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/Terms-of-use.html' );
+				$ccpa         = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/CCPA.html' );
+				$terms_fr     = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/Terms-of-use-fr.html' );
+				$terms_de     = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/Terms-of-use-de.html' );
+
+				$privacy_policy_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Privacy Policy' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				if ( '0' === $privacy_policy_count ) {
+					$wpdb->insert(
+						$legal_pages->tablename,
+						array(
+							'title'      => 'Privacy Policy',
+							'content'    => $privacy,
+							'contentfor' => 'kCjTeYOZxB',
+							'is_active'  => '1',
+						),
+						array( '%s', '%s', '%s', '%d' )
+					); // db call ok; no-cache ok.
+				} else {
+					$wpdb->update(
+						$legal_pages->tablename,
+						array(
+							'is_active'  => '1',
+							'content'    => $privacy,
+							'contentfor' => 'kCjTeYOZxB',
+						),
+						array( 'title' => 'Privacy Policy' ),
+						array( '%d', '%s', '%s' ),
+						array( '%s' )
+					); // db call ok; no-cache ok.
+				}
+				$dmca_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'DMCA' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				if ( '0' === $dmca_count ) {
+					$wpdb->insert(
+						$legal_pages->tablename,
+						array(
+							'title'      => 'DMCA',
+							'content'    => $dmca,
+							'contentfor' => '1r4X6y8tssz0j',
+							'is_active'  => '1',
+						),
+						array( '%s', '%s', '%s', '%d' )
+					); // db call ok; no-cache ok.
+				} else {
+					$wpdb->update(
+						$legal_pages->tablename,
+						array(
+							'is_active'  => '1',
+							'content'    => $dmca,
+							'contentfor' => 'r4X6y8tssz',
+						),
+						array( 'title' => 'DMCA' ),
+						array( '%d', '%s', '%s' ),
+						array( '%s' )
+					); // db call ok; no-cache ok.
+				}
 				$terms_of_use_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Terms of Use' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 				if ( '0' === $terms_of_use_count ) {
 					$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
@@ -140,7 +194,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						array(
 							'title'      => 'Terms of Use',
 							'content'    => $terms_latest,
-							'contentfor' => '1a2b3c4d5e6f7g8h9i',
+							'contentfor' => 'n1bmPjZ6Xj',
 							'is_active'  => '1',
 						),
 						array( '%s', '%s', '%s', '%d' )
@@ -149,10 +203,61 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$wpdb->update(
 						$legal_pages->tablename,
 						array(
-							'is_active' => '1',
-							'content'   => $terms_latest,
+							'is_active'  => '1',
+							'content'    => $terms_latest,
+							'contentfor' => 'n1bmPjZ6Xj',
 						),
 						array( 'title' => 'Terms of Use' ),
+						array( '%d', '%s', '%s' ),
+						array( '%s' )
+					); // db call ok; no-cache ok.
+				}
+				$terms_of_use_fr_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Terms of Use - FR' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				if ( '0' === $terms_of_use_fr_count ) {
+					$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+						$legal_pages->tablename,
+						array(
+							'title'      => 'Terms of Use - FR',
+							'content'    => $terms_fr,
+							'contentfor' => 'MMFqUJfC3m',
+							'is_active'  => '1',
+						),
+						array( '%s', '%s', '%s', '%d' )
+					);
+				} else {
+					$wpdb->update(
+						$legal_pages->tablename,
+						array(
+							'is_active'  => '1',
+							'content'    => $terms_fr,
+							'contentfor' => 'MMFqUJfC3m',
+						),
+						array( 'title' => 'Terms of Use - FR' ),
+						array( '%d', '%s', '%s' ),
+						array( '%s' )
+					); // db call ok; no-cache ok.
+				}
+				$terms_of_use_de_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Terms of Use - DE' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				if ( '0' === $terms_of_use_de_count ) {
+					$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+						$legal_pages->tablename,
+						array(
+							'title'      => 'Terms of Use - DE',
+							'content'    => $terms_de,
+							'contentfor' => 'fbBlC5Y4yZ',
+							'is_active'  => '1',
+						),
+						array( '%s', '%s', '%s', '%d' )
+					);
+				} else {
+					$wpdb->update(
+						$legal_pages->tablename,
+						array(
+							'is_active'  => '1',
+							'content'    => $terms_de,
+							'contentfor' => 'fbBlC5Y4yZ',
+						),
+						array( 'title' => 'Terms of Use - DE' ),
 						array( '%d', '%s' ),
 						array( '%s' )
 					); // db call ok; no-cache ok.
@@ -212,7 +317,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						array(
 							'title'      => 'CCPA - California Consumer Privacy Act',
 							'content'    => $ccpa,
-							'contentfor' => '5a5b5c5d5e',
+							'contentfor' => 'JRevVk8nkP',
 							'is_active'  => '1',
 						),
 						array( '%s', '%s', '%s', '%d' )
@@ -221,27 +326,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$wpdb->update(
 						$legal_pages->tablename,
 						array(
-							'is_active' => '1',
-							'content'   => $ccpa,
+							'is_active'  => '1',
+							'content'    => $ccpa,
+							'contentfor' => 'JRevVk8nkP',
 						),
 						array( 'title' => 'CCPA - California Consumer Privacy Act' ),
-						array( '%d', '%s' ),
+						array( '%d', '%s', '%s' ),
 						array( '%s' )
 					); // db call ok; no-cache ok.
 				}
-				$lp_general = get_option( 'lp_general' );
-				if ( isset( $lp_general ) && ! empty( $lp_general ) ) {
-					$lp_general['generate'] = '1';
-				} else {
-					$lp_general             = array();
-					$lp_general['generate'] = '1';
-				}
-				update_option( 'lp_general', $lp_general );
-				update_option( '_lp_db_updated', true );
-				update_option( '_lp_terms_updated', true );
-				update_option( '_lp_terms_fr_de_updated', true );
+				update_option( '_lp_templates_updated', true );
 			}
-
 		}
 
 		/**

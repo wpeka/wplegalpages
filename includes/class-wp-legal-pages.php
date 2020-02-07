@@ -85,16 +85,37 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 
 			global $table_prefix;
 			$this->plugin_name = 'wp-legal-pages';
-			$this->version     = '2.3.8';
+			$this->version     = '2.3.9';
 			$this->tablename   = $table_prefix . 'legal_pages';
 			$this->popuptable  = $table_prefix . 'lp_popups';
 			$this->plugin_url  = plugin_dir_path( dirname( __FILE__ ) );
 			$this->load_dependencies();
 			$this->set_locale();
-			if ( is_admin() ) {
+			if ( $this->is_request( 'admin' ) ) {
 				$this->define_admin_hooks();
+			} elseif ( $this->is_request( 'frontend' ) ) {
+				$this->define_public_hooks();
 			}
-			$this->define_public_hooks();
+		}
+
+		/**
+		 * What type of request is this?
+		 *
+		 * @since 2.3.9
+		 * @param  string $type admin, ajax, cron or frontend.
+		 * @return bool
+		 */
+		private function is_request( $type ) {
+			switch ( $type ) {
+				case 'admin':
+					return is_admin();
+				case 'ajax':
+					return defined( 'DOING_AJAX' );
+				case 'cron':
+					return defined( 'DOING_CRON' );
+				case 'frontend':
+					return ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' ) && ! defined( 'REST_REQUEST' );
+			}
 		}
 
 		/**
