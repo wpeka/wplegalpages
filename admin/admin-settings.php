@@ -57,7 +57,7 @@ if ( '1' === $lpterms ) {
 			'address'    => '',
 			'niche'      => '',
 			'pagefooter' => '',
-			'generate'   => '1',
+			'generate'   => '',
 		);
 
 		update_option( 'lp_general', $lp_general );
@@ -81,7 +81,7 @@ if ( '1' === $lpterms ) {
 			'email'     => isset( $_POST['lp-email'] ) ? sanitize_email( wp_unslash( $_POST['lp-email'] ) ) : '',
 			'address'   => isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
 			'niche'     => isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
-			'generate'  => '1',
+			'generate'  => isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
 		);
 		$lp_general = apply_filters( 'wplegalpages_save_settings', $lp_general, $_POST );
 		update_option( 'lp_general', $lp_general );
