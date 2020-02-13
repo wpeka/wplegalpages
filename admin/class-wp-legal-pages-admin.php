@@ -313,24 +313,33 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * This Callback function for Create Page menu for WP Legal pages.
 		 */
 		public function create_page() {
-			$this->enqueue_common_style_scripts();
-			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/create-page.php';
+			$activated = apply_filters( 'wplegal_check_license_status', true );
+			if ( $activated ) {
+				$this->enqueue_common_style_scripts();
+				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/create-page.php';
+			}
 		}
 
 		/**
 		 * This Callback function for Show Page menu for WP Legal pages.
 		 */
 		public function show_pages() {
-			$this->enqueue_common_style_scripts();
-			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/show-pages.php';
+			$activated = apply_filters( 'wplegal_check_license_status', true );
+			if ( $activated ) {
+				$this->enqueue_common_style_scripts();
+				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/show-pages.php';
+			}
 		}
 
 		/**
 		 * This Callback function for EU_Cookies Page menu for WP Legal pages.
 		 */
 		public function update_eu_cookies() {
-			$this->enqueue_common_style_scripts();
-			include_once 'update-eu-cookies.php';
+			$activated = apply_filters( 'wplegal_check_license_status', true );
+			if ( $activated ) {
+				$this->enqueue_common_style_scripts();
+				include_once 'update-eu-cookies.php';
+			}
 		}
 
 	}
