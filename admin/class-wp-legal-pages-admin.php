@@ -262,54 +262,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						array( '%s' )
 					); // db call ok; no-cache ok.
 				}
-				$terms_of_use_fr_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Terms of Use - FR' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-				if ( '0' === $terms_of_use_fr_count ) {
-					$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-						$legal_pages->tablename,
-						array(
-							'title'      => 'Terms of Use - FR',
-							'content'    => $terms_fr,
-							'contentfor' => '1a2b3c4d5e6f7g8h9ifr',
-							'is_active'  => '1',
-						),
-						array( '%s', '%s', '%s', '%d' )
-					);
-				} else {
-					$wpdb->update(
-						$legal_pages->tablename,
-						array(
-							'is_active' => '1',
-							'content'   => $terms_fr,
-						),
-						array( 'title' => 'Terms of Use - FR' ),
-						array( '%d', '%s' ),
-						array( '%s' )
-					); // db call ok; no-cache ok.
-				}
-				$terms_of_use_de_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'Terms of Use - DE' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-				if ( '0' === $terms_of_use_de_count ) {
-					$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-						$legal_pages->tablename,
-						array(
-							'title'      => 'Terms of Use - DE',
-							'content'    => $terms_de,
-							'contentfor' => '1a2b3c4d5e6f7g8h9ide',
-							'is_active'  => '1',
-						),
-						array( '%s', '%s', '%s', '%d' )
-					);
-				} else {
-					$wpdb->update(
-						$legal_pages->tablename,
-						array(
-							'is_active' => '1',
-							'content'   => $terms_de,
-						),
-						array( 'title' => 'Terms of Use - DE' ),
-						array( '%d', '%s' ),
-						array( '%s' )
-					); // db call ok; no-cache ok.
-				}
 				$ccpa_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE title=%s', array( 'CCPA - California Consumer Privacy Act' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 				if ( '0' === $ccpa_count ) {
 					$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
@@ -361,24 +313,33 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * This Callback function for Create Page menu for WP Legal pages.
 		 */
 		public function create_page() {
-			$this->enqueue_common_style_scripts();
-			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/create-page.php';
+			$activated = apply_filters( 'wplegal_check_license_status', true );
+			if ( $activated ) {
+				$this->enqueue_common_style_scripts();
+				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/create-page.php';
+			}
 		}
 
 		/**
 		 * This Callback function for Show Page menu for WP Legal pages.
 		 */
 		public function show_pages() {
-			$this->enqueue_common_style_scripts();
-			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/show-pages.php';
+			$activated = apply_filters( 'wplegal_check_license_status', true );
+			if ( $activated ) {
+				$this->enqueue_common_style_scripts();
+				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/show-pages.php';
+			}
 		}
 
 		/**
 		 * This Callback function for EU_Cookies Page menu for WP Legal pages.
 		 */
 		public function update_eu_cookies() {
-			$this->enqueue_common_style_scripts();
-			include_once 'update-eu-cookies.php';
+			$activated = apply_filters( 'wplegal_check_license_status', true );
+			if ( $activated ) {
+				$this->enqueue_common_style_scripts();
+				include_once 'update-eu-cookies.php';
+			}
 		}
 
 	}
