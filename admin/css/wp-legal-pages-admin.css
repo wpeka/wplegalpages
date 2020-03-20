@@ -125,8 +125,8 @@ a{
 }
 
 .myLabel-head{
-	color:#0073aa !important;
-	font-size:22px !important;
+	color:#0073aa;
+	font-size:22px;
 }
 
 .myAlert{
@@ -249,6 +249,49 @@ input:checked + .slider:before {
 	background-color: #0073aa !important;
 	color: white !important;
 	margin: 0;
+}
+.toplevel_page_legal-pages .postbox.lp-accept-terms {
+	min-height: 220px;
+}
+.postbox.lp-accept-terms .myLabel-head {
+	color:inherit;
+}
+.postbox.lp-accept-terms h4.myLabel-head {
+	font-size:18px;
+	margin-left:1.33em;
+}
+.postbox.lp-accept-terms div {
+	margin: 0 2em;
+	padding: 0 0 1em 0;
+}
+.postbox.lp-accept-terms > div {
+	margin: 0;
+	padding: 0;
+}
+.postbox.lp-accept-terms div.lp_accept_terms #lp_accept_submit.focus,
+.postbox div.lp_accept_terms #lp_accept_submit:focus {
+	box-shadow: none;
+}
+.postbox.lp-accept-terms div a.is-disabled {
+	pointer-events: none;
+}
+.postbox.lp-accept-terms div p,
+.postbox.lp-accept-terms div a {
+	font-size: 14px;
+	line-height: 20px;
+}
+.postbox.lp-accept-terms div a:focus {
+	box-shadow: none;
+}
+.postbox.lp-accept-terms div ul {
+	list-style: disc;
+	margin: 1em;
+}
+.postbox.lp-accept-terms div ul li {
+	margin: 1em;
+}
+.postbox.lp-accept-terms div ul li a:hover {
+	cursor: pointer;
 }
 
 .wrap.legal-admin-page {

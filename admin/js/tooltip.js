@@ -41,5 +41,28 @@ jQuery( document ).ready(
 			}
 		);
 
+		jQuery( '#lp_accept_submit' ).click(
+			function() {
+				var parent = jQuery( this ).parent( '.lp_accept_terms' );
+				var data   = parent.find( 'input[type="hidden"]' );
+				jQuery( this ).addClass( 'button-disabled' );
+				jQuery.ajax(
+					{
+						type: 'post',
+						dataType: 'json',
+						url: ajaxurl + '?action=lp_accept_terms',
+						data: data,
+						success: function(msg) {
+							if (msg.success) {
+								window.location = jQuery( '.lp-accept-terms' ).find( 'input[name="redirect_url"]' ).val();
+							} else {
+								jQuery( '.lp_accept_terms' ).find( 'input[type="button"]' ).removeClass( 'button-disabled' );
+							}
+						}
+					}
+				)
+			}
+		)
+
 	}
 );
