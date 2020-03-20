@@ -85,7 +85,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 
 			global $table_prefix;
 			$this->plugin_name = 'wp-legal-pages';
-			$this->version     = '2.4.0';
+			$this->version     = '2.4.1';
 			$this->tablename   = $table_prefix . 'legal_pages';
 			$this->popuptable  = $table_prefix . 'lp_popups';
 			$this->plugin_url  = plugin_dir_path( dirname( __FILE__ ) );
@@ -193,6 +193,8 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'wplegal_admin_init' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+			$this->loader->add_action( 'wp_ajax_lp_accept_terms', $plugin_admin, 'wplegal_accept_terms' );
+			$this->loader->add_action( 'wp_ajax_nopriv_lp_accept_terms', $plugin_admin, 'wplegal_accept_terms' );
 
 		}
 
