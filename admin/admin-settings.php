@@ -47,17 +47,19 @@ if ( '1' === $lpterms ) {
 	if ( ! empty( $_POST ) && isset( $_POST['lp-greset'] ) && 'Reset' === $_POST['lp-greset'] ) :
 
 		$lp_general = array(
-			'domain'     => '',
-			'business'   => '',
-			'phone'      => '',
-			'street'     => '',
-			'cityState'  => '',
-			'country'    => '',
-			'email'      => '',
-			'address'    => '',
-			'niche'      => '',
-			'pagefooter' => '',
-			'generate'   => '',
+			'domain'       => '',
+			'business'     => '',
+			'phone'        => '',
+			'street'       => '',
+			'cityState'    => '',
+			'country'      => '',
+			'email'        => '',
+			'address'      => '',
+			'niche'        => '',
+			'privacy'      => '',
+			'privacy_page' => '',
+			'pagefooter'   => '',
+			'generate'     => '',
 		);
 
 		update_option( 'lp_general', $lp_general );
@@ -95,7 +97,8 @@ if ( '1' === $lpterms ) {
 	$selected   = 'selected="selected"';
 	$lp_general = get_option( 'lp_general' );
 	if ( ! isset( $wpgattack ) ) {
-		global $wpgattack;}
+		global $wpgattack;
+	}
 	?>
 <div class="postbox ">
 
@@ -139,7 +142,7 @@ if ( '1' === $lpterms ) {
 			</tr>
 			<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
 			<tr>
-				<td><b> Give Credit : </b></td>
+				<td><b>Give Credit:</b></td>
 				<td><label class="switch"><input type="checkbox" <?php echo ( isset( $lp_general['generate'] ) && '1' === $lp_general['generate'] ) ? 'checked="checked"' : ''; ?> name="lp-generate" value="1" >
 						<div class="slider round"></div>
 					</label>

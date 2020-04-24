@@ -40,30 +40,41 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 		 */
 		public static function activate() {
 			global $wpdb;
+			$collate = '';
+			if ( $wpdb->has_cap( 'collation' ) ) {
+				$collate = $wpdb->get_charset_collate();
+			}
+
 			$legal_pages = new WP_Legal_Pages();
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-			$sql = 'CREATE TABLE IF NOT EXISTS ' . $legal_pages->tablename . ' (
+			$search_query = "SHOW TABLES LIKE '%" . $legal_pages->tablename . "%'";
+			if ( ! $wpdb->get_results( $search_query, ARRAY_N ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				$sql = 'CREATE TABLE IF NOT EXISTS ' . $legal_pages->tablename . ' (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `title` text NOT NULL,
                               `content` longtext NOT NULL,
                               `notes` text NOT NULL,
                               `contentfor` varchar(200) NOT NULL,
                               PRIMARY KEY (`id`)
-                            ) ENGINE=MyISAM;';
-			dbDelta( $sql );
+                            ) ' . $collate . ';';
+				dbDelta( $sql );
+			}
 			$like         = 'is_active';
 			$column_count = $wpdb->get_var( $wpdb->prepare( 'SHOW COLUMNS FROM ' . $legal_pages->tablename . ' LIKE %s', array( $like ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			if ( empty( $column_count ) ) {
 				$alter_sql = 'ALTER TABLE ' . $legal_pages->tablename . ' ADD `is_active` BOOLEAN NULL DEFAULT NULL AFTER `notes`;';
 				$wpdb->query( $alter_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			}
-			$popup_sql = 'CREATE TABLE IF NOT EXISTS ' . $legal_pages->popuptable . ' (
+			$search_query = "SHOW TABLES LIKE '%" . $legal_pages->popuptable . "%'";
+			if ( ! $wpdb->get_results( $search_query, ARRAY_N ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				$popup_sql = 'CREATE TABLE IF NOT EXISTS ' . $legal_pages->popuptable . ' (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `popup_name` text NOT NULL,
                               `content` longtext NOT NULL,
                               PRIMARY KEY (`id`)
-                            ) ENGINE=MyISAM;';
-			dbDelta( $popup_sql );
+                            ) ' . $collate . ';';
+				dbDelta( $popup_sql );
+			}
 			$like         = 'popupName';
 			$column_count = $wpdb->get_var( $wpdb->prepare( 'SHOW COLUMNS FROM ' . $legal_pages->popuptable . ' LIKE %s', array( $like ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			if ( ! empty( $column_count ) ) {
