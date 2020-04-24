@@ -171,6 +171,7 @@ WPLegalPages provides you pre-approved templates. You may want to customize it a
 == Changelog ==
 = 2.4.2 =
 * Update: Integration with Pro features.
+* Fix: Table creation issue on plugin activation.
 
 = 2.4.1 =
 * Update: Added Getting Started menu.
