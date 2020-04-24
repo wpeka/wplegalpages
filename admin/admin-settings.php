@@ -47,17 +47,19 @@ if ( '1' === $lpterms ) {
 	if ( ! empty( $_POST ) && isset( $_POST['lp-greset'] ) && 'Reset' === $_POST['lp-greset'] ) :
 
 		$lp_general = array(
-			'domain'     => '',
-			'business'   => '',
-			'phone'      => '',
-			'street'     => '',
-			'cityState'  => '',
-			'country'    => '',
-			'email'      => '',
-			'address'    => '',
-			'niche'      => '',
-			'pagefooter' => '',
-			'generate'   => '',
+			'domain'       => '',
+			'business'     => '',
+			'phone'        => '',
+			'street'       => '',
+			'cityState'    => '',
+			'country'      => '',
+			'email'        => '',
+			'address'      => '',
+			'niche'        => '',
+			'privacy'      => '',
+			'privacy_page' => '',
+			'pagefooter'   => '',
+			'generate'     => '',
 		);
 
 		update_option( 'lp_general', $lp_general );
@@ -72,16 +74,16 @@ if ( '1' === $lpterms ) {
 
 
 		$lp_general = array(
-			'domain'    => isset( $_POST['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-domain-name'] ) ) : '',
-			'business'  => isset( $_POST['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-business-name'] ) ) : '',
-			'phone'     => isset( $_POST['lp-phone'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-phone'] ) ) : '',
-			'street'    => isset( $_POST['lp-street'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-street'] ) ) : '',
-			'cityState' => isset( $_POST['lp-city-state'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-city-state'] ) ) : '',
-			'country'   => isset( $_POST['lp-country'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-country'] ) ) : '',
-			'email'     => isset( $_POST['lp-email'] ) ? sanitize_email( wp_unslash( $_POST['lp-email'] ) ) : '',
-			'address'   => isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
-			'niche'     => isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
-			'generate'  => isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
+			'domain'       => isset( $_POST['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-domain-name'] ) ) : '',
+			'business'     => isset( $_POST['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-business-name'] ) ) : '',
+			'phone'        => isset( $_POST['lp-phone'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-phone'] ) ) : '',
+			'street'       => isset( $_POST['lp-street'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-street'] ) ) : '',
+			'cityState'    => isset( $_POST['lp-city-state'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-city-state'] ) ) : '',
+			'country'      => isset( $_POST['lp-country'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-country'] ) ) : '',
+			'email'        => isset( $_POST['lp-email'] ) ? sanitize_email( wp_unslash( $_POST['lp-email'] ) ) : '',
+			'address'      => isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
+			'niche'        => isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
+			'generate'     => isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
 		);
 		$lp_general = apply_filters( 'wplegalpages_save_settings', $lp_general, $_POST );
 		update_option( 'lp_general', $lp_general );
@@ -95,7 +97,8 @@ if ( '1' === $lpterms ) {
 	$selected   = 'selected="selected"';
 	$lp_general = get_option( 'lp_general' );
 	if ( ! isset( $wpgattack ) ) {
-		global $wpgattack;}
+		global $wpgattack;
+	}
 	?>
 <div class="postbox ">
 
@@ -139,7 +142,7 @@ if ( '1' === $lpterms ) {
 			</tr>
 			<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
 			<tr>
-				<td><b> Give Credit : </b></td>
+				<td><b>Give Credit:</b></td>
 				<td><label class="switch"><input type="checkbox" <?php echo ( isset( $lp_general['generate'] ) && '1' === $lp_general['generate'] ) ? 'checked="checked"' : ''; ?> name="lp-generate" value="1" >
 						<div class="slider round"></div>
 					</label>

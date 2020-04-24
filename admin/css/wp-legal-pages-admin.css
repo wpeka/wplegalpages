@@ -76,13 +76,14 @@ a{
 	font-size: 14px;
 }
 .toplevel_page_legal-pages .postbox{
-	min-height: 600px;
+	min-height: 635px;
 }
 #lp_admin_generalid_right img{
 	margin-bottom: 0.5%;
 }
 
-#lp_admin_generalid input[type=text]{
+#lp_admin_generalid input[type=text],
+#lp_admin_generalid select{
 	width:300px;
 	height:30px;
 	font-size:14px;

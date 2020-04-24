@@ -20,6 +20,16 @@ jQuery( document ).ready(
 			}
 		);
 
+		jQuery( '#lp_privacy' ).change(
+			function(){
+				if (this.checked) {
+					jQuery( '#privacy_page_section' ).show();
+				} else {
+					jQuery( '#privacy_page_section' ).hide();
+				}
+			}
+		);
+
 		jQuery( '.wplegal-template-language' ).change(
 			function() {
 				var selectedLang = jQuery( this ). children( "option:selected" ). val();
