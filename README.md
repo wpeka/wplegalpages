@@ -51,6 +51,16 @@ Customizable for various types of websites which sell in multiple countries like
 ### Easy to customize privacy policy pages ###
 Generated policy pages are regular WordPress pages. You can easily edit and update them.
 
+### Integrates with your favorite contact form (Premium Feature) ###
+WPLegalPages seamlessly works with your favorite contact form plugin. Users are informed about data being collected and can read the privacy policy before form submission. This helps in getting an informed consent as per the privacy requirements.
+
+List of supported contact form plugins include:
+
+- WPForms
+- Contact Form 7
+- Gravity Forms
+- Ninja Forms (coming soon)
+
 ### 25+ pre-built policy templates (Premium Feature) ###
 WPLegalPages comes with ready-to-use policy page templates. Fill in your business information and hit generate.
 
