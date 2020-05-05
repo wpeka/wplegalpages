@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD, CalOPPA, datenschutz, impressum, coppa, terms and conditions, terms of service, disclosure, disclaimer, disclosure statement, affiliate, affiliate links, amazon, woo commerce, woo, antispam, confidentiality, refund, refund policy, returns, earnings, ftc, medical disclaimer, adsense, analytics, google ads, law, legal, cookie consent, cookie notice, cookie, comments, testimonial
 Requires at least: 5.0+
 Requires PHP: 7.0
-Tested up to: 5.4
+Tested up to: 5.4.1
 Stable tag: 2.4.2
 
 Easily generate privacy policy pages on your WordPress website in a few clicks. Legal Pages for blogs, ecommerce and marketing websites.
@@ -98,10 +98,10 @@ Generate a standard affiliate agreement policy. Useful for businesses that run a
 Generate an affiliate income disclosure policy page. Required by FTC for businesses promoting products by earning affiliate commissions.
 
 = Earnings Disclaimer Policy =
-Generate an earnings disclaimer policy page. Required by FTC for website and blogs that have content related to income schemes, private finance etc.
+Generate an earnings disclaimer policy page. Required by FTC for websites and blogs that have content related to income schemes, private finance etc.
 
 = Medical Disclaimer Policy =
-Generate a medical disclaimer policy to indemnify your website/blog from medical claims. Required for website and blog that provide content related to healthcare.
+Generate a medical disclaimer policy to indemnify your website/blog from medical claims. Required for websites and blogs that provide content related to healthcare.
 
 = Refund Policy =
 Generate a standard refunds policy page. Useful for ecommerce websites or websites that sell products/services on their website.
@@ -113,7 +113,7 @@ Generate a standard returns policy page. Useful for ecommerce websites or websit
 Generate a standard refunds policy page. Useful for ecommerce websites or websites that sell digital products/services on their website.
 
 = Children’s Online Privacy Policy (COPPA) =
-Generate a standard COPPA policy page on your WordPress website. Required for website and apps whose audience consists of children below 13 years of age.
+Generate a standard COPPA policy page on your WordPress website. Required for websites and apps whose audience consists of children below 13 years of age.
 
 = Newsletter Subscription Policy =
 Generates a standard Newsletter Subscription Policy. Useful for businesses and blogs that run a newsletter subscription.
@@ -125,12 +125,15 @@ Generates a standard External Links policy page. Covers the links to or from ext
 Generate a standard anti-spam policy. Required for businesses, applications or websites who allow users to send emails in bulk.
 
 = Age Verification Policy with Consent Popup =
-Generate an age verification policy with consent popup. Requried  for websites, blogs and ecommerce sites that provide adult content or sell products/services meant for adults.
+Generate an age verification policy with consent popup. Required  for websites, blogs and ecommerce sites that provide adult content or sell products/services meant for adults.
 
 = Cookie Consent Notice =
 Display a standard cookie consent notice on your WordPress website. Use the [GDPR Cookie Consent](https://wordpress.org/plugins/gdpr-cookie-consent/) plugin to display a cookie consent notice according to GDPR standards.
 
 Learn more about [WPLegalPages Pro](http://bit.ly/32n3Qrq).
+
+== SUGGESTIONS ==
+We’re continuously improving. Contact us on our website to have your wishlist added to the plugin.
 
 == Installation ==
 
@@ -145,7 +148,7 @@ Learn more about [WPLegalPages Pro](http://bit.ly/32n3Qrq).
 
 1. Upload the `wplegalpages` folder to the `/wp-content/plugins/` directory.
 1. Activate the WP Legal Pages plugin through the 'Plugins' menu in WordPress.
-1. WP Legal Pages menu will appear in left hand side. Click on it & get started to use.
+1. WP Legal Pages menu will appear on the left hand side. Click on it & get started to use it.
 1. Click on the 'WP Legal Pages' admin menu to get started.
 
 == Screenshots ==
@@ -164,6 +167,12 @@ The Pro version is ideal:
 - Use the guided wizard (Terms & Conditions)
 - Specific Legal Needs (Disclaimers & Disclosures - Affiliates, Consultants, Medical Blogs, Marketers)
 - Returns and Refunds (WooCommerce or e-Commerce Websites)
+
+= How to create a GDPR contact form? =
+As your contact forms are generally used to collect user email for being contacted, users consent is needed. This makes the contact forms subject to GDPR consent rules. In WP Legal Pages Pro, you can enable contact form integration. This helps to capture informed consent from the users. Users can also easily view the privacy policy before submitting the form.
+
+= Is the cookie notice bar GDPR compliant? =
+The Cookie Notice feature of this plugin is useful for small websites to show basic cookie notice. To have GDPR compliant notices, use the [GDPR Cookie Consent Plugin](https://wordpress.org/plugins/gdpr-cookie-consent/)
 
 = Why use WPLegalPages? =
 GDPR, FTC and other privacy regulators along with ad networks require you to have legal policy pages on your website. Instead of spending hours researching and creating your own policy pages, use WPLegalPages to generate them in a few clicks.
@@ -187,7 +196,7 @@ WPLegalPages provides you pre-approved templates. You may want to customize it a
 * Update: Added Getting Started menu.
 
 = 2.4.0 =
-* Update: Improved compatability with the Pro Privacy Wizard.
+* Update: Improved compatibility with the Pro Privacy Wizard.
 
 = 2.3.9 =
 * Update: Templates and minor plugin updates.
@@ -213,7 +222,7 @@ Update: Made compatible with WordPress 5.3.1.
 Update: Minor plugin updates.
 
 = 2.3.2 =
-Fix: Fatal error if Analytics SDK is included in two or more plugins installed on same instance.
+Fix: Fatal error if Analytics SDK is included in two or more plugins installed on the same instance.
 
 = 2.3.1 =
 Feature: Added feedback form on plugin deactivation.
@@ -301,7 +310,7 @@ Added Give Credit option.
 Compatible with PHP 7.0.
 
 = 1.5.1 =
-Added lest of Pro templates
+Added list of Pro templates
 
 = 1.5 =
 Added new DMCA template
@@ -310,7 +319,7 @@ Added new DMCA template
 Updated for Compatibility with WP 4.5.3. Improved Admin Dashboard for easy creation of policy pages
 
 = 1.3 =
-WPLegal Pages is now compatible WordPress 4.5.
+WPLegal Pages is now compatible with WordPress 4.5.
 
 = 1.2 =
 Added banner to upgrade WPLegal Pages Pro version on plugin dashboard
