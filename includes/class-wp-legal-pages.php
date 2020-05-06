@@ -260,7 +260,8 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 		 * Enqueue jQuery Cookie js library.
 		 */
 		public function enqueue_frontend_script() {
-			wp_register_script( $this->plugin_name . '-jquery-cookie', WPL_LITE_PLUGIN_URL . 'admin/js/jquery.cookie.min.js', array( 'jquery' ), $this->version, false );
+			wp_register_script( $this->plugin_name . '-jquery-cookie', WPL_LITE_PLUGIN_URL . 'admin/js/jquery.cookie.min.js', array( 'jquery' ), $this->version, true );
+            wp_enqueue_script( $this->plugin_name . '-jquery-cookie' );
 		}
 
 		/**
@@ -271,8 +272,6 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$lp_eu_get_visibility = get_option( 'lp_eu_cookie_enable' );
 
 			if ( 'ON' === $lp_eu_get_visibility ) {
-				wp_enqueue_script( $this->plugin_name . '-jquery-cookie' );
-
 				$lp_eu_theme_css         = get_option( 'lp_eu_theme_css' );
 				$lp_eu_title             = get_option( 'lp_eu_cookie_title' );
 				$lp_eu_message           = get_option( 'lp_eu_cookie_message' );

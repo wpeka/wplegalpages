@@ -40,10 +40,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 		 */
 		public static function activate() {
 			global $wpdb;
-			$collate = '';
-			if ( $wpdb->has_cap( 'collation' ) ) {
-				$collate = $wpdb->get_charset_collate();
-			}
 
 			$legal_pages = new WP_Legal_Pages();
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -56,7 +52,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
                               `notes` text NOT NULL,
                               `contentfor` varchar(200) NOT NULL,
                               PRIMARY KEY (`id`)
-                            ) ' . $collate . ';';
+                            );';
 				dbDelta( $sql );
 			}
 			$like         = 'is_active';
@@ -72,7 +68,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
                               `popup_name` text NOT NULL,
                               `content` longtext NOT NULL,
                               PRIMARY KEY (`id`)
-                            ) ' . $collate . ';';
+                            );';
 				dbDelta( $popup_sql );
 			}
 			$like         = 'popupName';
