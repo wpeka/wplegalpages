@@ -85,7 +85,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 
 			global $table_prefix;
 			$this->plugin_name = 'wp-legal-pages';
-			$this->version     = '2.4.2';
+			$this->version     = '2.4.3';
 			$this->tablename   = $table_prefix . 'legal_pages';
 			$this->popuptable  = $table_prefix . 'lp_popups';
 			$this->plugin_url  = plugin_dir_path( dirname( __FILE__ ) );
@@ -260,7 +260,8 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 		 * Enqueue jQuery Cookie js library.
 		 */
 		public function enqueue_frontend_script() {
-			wp_enqueue_script( 'jquery-cookie', WPL_LITE_PLUGIN_URL . 'admin/js/jquery.cookie.min.js', array( 'jquery' ), $this->version, false );
+			wp_register_script( $this->plugin_name . '-jquery-cookie', WPL_LITE_PLUGIN_URL . 'admin/js/jquery.cookie.min.js', array( 'jquery' ), $this->version, true );
+            wp_enqueue_script( $this->plugin_name . '-jquery-cookie' );
 		}
 
 		/**
@@ -271,7 +272,6 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$lp_eu_get_visibility = get_option( 'lp_eu_cookie_enable' );
 
 			if ( 'ON' === $lp_eu_get_visibility ) {
-
 				$lp_eu_theme_css         = get_option( 'lp_eu_theme_css' );
 				$lp_eu_title             = get_option( 'lp_eu_cookie_title' );
 				$lp_eu_message           = get_option( 'lp_eu_cookie_message' );
