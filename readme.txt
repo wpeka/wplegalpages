@@ -191,6 +191,7 @@ WPLegalPages provides you pre-approved templates. You may want to customize it a
 = 2.4.3 =
 * Update: WordPress 5.4.1 compatibility.
 * Fix: Plugin frontend performance and theme customizer issues.
+* Fix: Reworked on table creation issue on plugin activation.
 
 = 2.4.2 =
 * Update: Integration with Pro features.
