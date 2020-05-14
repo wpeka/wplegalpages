@@ -130,6 +130,8 @@ Generate an age verification policy with consent popup. Required  for websites, 
 = Cookie Consent Notice =
 Display a standard cookie consent notice on your WordPress website. Use the [GDPR Cookie Consent](https://wordpress.org/plugins/gdpr-cookie-consent/) plugin to display a cookie consent notice according to GDPR standards.
 
+Endorsements: If you need to disclose about your affiliate links on your website. This feature enables you to include disclaimer at the end of your posts which has affiliate links. You can also use the Affiliate Disclosure Block to add the disclaimer easily anywhere in your content on page or posts.
+
 Learn more about [WPLegalPages Pro](http://bit.ly/32n3Qrq).
 
 == SUGGESTIONS ==
