@@ -7,7 +7,7 @@ Tags: gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD,
 Requires at least: 5.0+
 Requires PHP: 7.0
 Tested up to: 5.4.1
-Stable tag: 2.4.3
+Stable tag: 2.4.4
 
 Easily generate privacy policy pages on your WordPress website in a few clicks. Legal Pages for blogs, ecommerce and marketing websites.
 
@@ -130,6 +130,8 @@ Generate an age verification policy with consent popup. Required  for websites, 
 = Cookie Consent Notice =
 Display a standard cookie consent notice on your WordPress website. Use the [GDPR Cookie Consent](https://wordpress.org/plugins/gdpr-cookie-consent/) plugin to display a cookie consent notice according to GDPR standards.
 
+WPML Compatible - [Learn more](https://docs.wpeka.com/wp-legal-pages/faq#how-to-translate-wplegalpages-plugin-using-wpml?utm_source=wporg&utm_medium=wp-legal-pages&utm_campaign=link&utm_content=wpml-compatible-faq)
+
 Endorsements: If you need to disclose about your affiliate links on your website. This feature enables you to include disclaimer at the end of your posts which has affiliate links. You can also use the Affiliate Disclosure Block to add the disclaimer easily anywhere in your content on page or posts.
 
 Learn more about [WPLegalPages Pro](http://bit.ly/32n3Qrq).
@@ -190,6 +192,10 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 WPLegalPages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 == Changelog ==
+= 2.4.4 =
+* Feature: Added WPML compatibility.
+* Fix: Issue related while creating legal pages in sub-folder WordPress instance.
+
 = 2.4.3 =
 * Update: WordPress 5.4.1 compatibility.
 * Fix: Plugin frontend performance and theme customizer issues.

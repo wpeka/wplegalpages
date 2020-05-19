@@ -41,7 +41,7 @@ if ( ! function_exists( 'wplp_fs' ) ) {
 					'slug'            => 'wplegalpages',
 					'product_name'    => 'WP Legal Pages',
 					'module_type'     => 'plugin',
-					'version'         => '2.4.3',
+					'version'         => '2.4.4',
 					'plugin_basename' => 'wplegalpages/wplegalpages.php',
 					'plugin_url'      => WPL_LITE_PLUGIN_URL,
 				)
