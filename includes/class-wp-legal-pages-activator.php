@@ -39,6 +39,26 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 		 * @since    1.5.2
 		 */
 		public static function activate() {
+
+			global $wpdb;
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+			if ( is_multisite() ) {
+				// Get all blogs in the network and activate plugin on each one.
+				$blog_ids = $wpdb->get_col( 'SELECT blog_id FROM ' . $wpdb->blogs ); // db call ok; no-cache ok.
+				foreach ( $blog_ids as $blog_id ) {
+					switch_to_blog( $blog_id );
+					self::install_db();
+					restore_current_blog();
+				}
+			} else {
+				self::install_db();
+			}
+		}
+
+		/**
+		 * Install required tables.
+		 */
+		public static function install_db() {
 			global $wpdb;
 
 			$legal_pages = new WP_Legal_Pages();
@@ -256,6 +276,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 			add_option( 'lp_eu_text_color', '#FFFFFF' );
 			add_option( 'lp_eu_link_color', '#8f0410' );
 			add_option( 'lp_eu_text_size', '12' );
+
 		}
 	}
 

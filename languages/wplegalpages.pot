@@ -1,0 +1,125 @@
+# Copyright (C) 2020 WPEka Club
+# This file is distributed under the same license as the WP Legal Pages plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Legal Pages 2.4.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wplegalpages\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2020-05-27T17:25:39+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: wplegalpages\n"
+
+#. Plugin Name of the plugin
+msgid "WP Legal Pages"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://club.wpeka.com/"
+msgstr ""
+
+#. Description of the plugin
+msgid "WP Legal Pages is a simple 1 click legal page management plugin. You can quickly add in legal pages to your WordPress sites."
+msgstr ""
+
+#. Author of the plugin
+msgid "WPEka Club"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://club.wpeka.com"
+msgstr ""
+
+#: admin/class-wp-legal-pages-admin.php:108
+#: admin/class-wp-legal-pages-admin.php:110
+msgid "Legal Pages"
+msgstr ""
+
+#: admin/class-wp-legal-pages-admin.php:113
+#: admin/class-wp-legal-pages-admin.php:114
+#: admin/class-wp-legal-pages-admin.php:115
+#: admin/class-wp-legal-pages-admin.php:116
+msgid "legal-pages"
+msgstr ""
+
+#: admin/class-wp-legal-pages-admin.php:118
+#: admin/class-wp-legal-pages-admin.php:385
+msgid "Getting Started"
+msgstr ""
+
+#: admin/create-page.php:93
+msgid "Privacy Policy"
+msgstr ""
+
+#: admin/show-pages.php:20
+msgid "Security Check."
+msgstr ""
+
+#: admin/show-pages.php:25
+msgid "Error in moving to Trash."
+msgstr ""
+
+#: admin/update-eu-cookies.php:74
+#: admin/update-eu-cookies.php:80
+msgid "Cookie Bar"
+msgstr ""
+
+#: admin/update-eu-cookies.php:91
+msgid "Cookie Title"
+msgstr ""
+
+#: admin/update-eu-cookies.php:94
+msgid "Cookie Message Body"
+msgstr ""
+
+#: admin/update-eu-cookies.php:127
+msgid "Button Text"
+msgstr ""
+
+#: admin/update-eu-cookies.php:135
+msgid "I agree"
+msgstr ""
+
+#: admin/update-eu-cookies.php:138
+msgid "Link Text"
+msgstr ""
+
+#: admin/update-eu-cookies.php:142
+msgid "Link URL"
+msgstr ""
+
+#: admin/update-eu-cookies.php:148
+msgid "Use Theme CSS"
+msgstr ""
+
+#: admin/update-eu-cookies.php:162
+msgid "Box Background Color"
+msgstr ""
+
+#: admin/update-eu-cookies.php:166
+msgid "Box Text Color"
+msgstr ""
+
+#: admin/update-eu-cookies.php:170
+msgid "Button Background Color"
+msgstr ""
+
+#: admin/update-eu-cookies.php:174
+msgid "Button Text Color"
+msgstr ""
+
+#: admin/update-eu-cookies.php:178
+msgid "Link Color"
+msgstr ""
+
+#: admin/update-eu-cookies.php:182
+msgid "Text Size"
+msgstr ""
+
+#: admin/update-eu-cookies.php:210
+msgid "Update"
+msgstr ""

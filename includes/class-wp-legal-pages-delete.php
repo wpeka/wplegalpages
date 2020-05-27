@@ -41,7 +41,30 @@ if ( ! class_exists( 'WP_Legal_Pages_Delete' ) ) {
 		public static function delete() {
 			global $wpdb;
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+			if ( is_multisite() ) {
+				// Get all blogs in the network and activate plugin on each one.
+				$blog_ids = $wpdb->get_col( 'SELECT blog_id FROM ' . $wpdb->blogs ); // db call ok; no-cache ok.
+				foreach ( $blog_ids as $blog_id ) {
+					switch_to_blog( $blog_id );
+					self::delete_db();
+					restore_current_blog();
+				}
+			} else {
+				self::delete_db();
+			}
+		}
+
+		/**
+		 * Delete database tables on plugin uninstall hook.
+		 */
+		public static function delete_db() {
+			global $wpdb;
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 			$legal_pages = new WP_Legal_Pages();
+			$drop_sql    = 'DROP TABLE IF EXISTS ' . $legal_pages->tablename;
+			$wpdb->query( $drop_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$drop_popup_sql = 'DROP TABLE IF EXISTS ' . $legal_pages->popuptable;
+			$wpdb->query( $drop_popup_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			delete_option( '_lp_db_updated' );
 			delete_option( 'lp_accept_terms' );
 			delete_option( 'lp_excludePage' );
@@ -54,11 +77,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Delete' ) ) {
 			delete_option( 'lp_eu_button_color' );
 			delete_option( 'lp_eu_button_text_color' );
 			delete_option( 'lp_eu_text_color' );
-			$drop_sql = 'DROP TABLE ' . $legal_pages->tablename;
-			dbDelta( $drop_sql );
-			$drop_popup_sql = 'DROP TABLE ' . $legal_pages->popuptable;
-			dbDelta( $drop_popup_sql );
-
+			delete_option( 'lp_eu_text_size' );
+			delete_option( 'lp_eu_link_color' );
+			delete_option( '_lp_templates_updated' );
 		}
 
 	}

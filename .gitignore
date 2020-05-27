@@ -9,4 +9,3 @@ release/
 *.zip
 admin/css/wp-legal-pages-admin.min.css
 admin/js/tooltip.min.js
-languages/*.pot
