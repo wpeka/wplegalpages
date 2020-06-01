@@ -26,7 +26,7 @@ if ( isset( $_POST['lp_submit'] ) && 'Accept' === $_POST['lp_submit'] ) {
 <div class="wrap">
 <?php
 wp_enqueue_script( 'jquery' );
-
+$lp_pro_active    = get_option( '_lp_pro_active' );
 $lpterms          = get_option( 'lp_accept_terms' );
 $lp_pro_installed = get_option( '_lp_pro_installed' );
 if ( '1' === $lpterms ) {
@@ -99,8 +99,14 @@ if ( '1' === $lpterms ) {
 	if ( ! isset( $wpgattack ) ) {
 		global $wpgattack;
 	}
+	if ( $lp_pro_active ) {
+		?>
+		<div class="postbox " style="min-height:1240px!important;">  
+	<?php } else { ?>
+		<div class="postbox ">
+		<?php
+	}
 	?>
-<div class="postbox ">
 
 	<h3 class="hndle myLabel-head"  style="cursor:pointer; padding:7px 10px; font-size:20px;"> General Settings </h3>
 	<div id="lp_admin_generalid">
