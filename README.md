@@ -13,20 +13,20 @@ Easily generate privacy policy pages on your WordPress website in a few clicks. 
 
 ## Description ##
 
-Generate WordPress Legal Pages like Privacy Policy, Terms of Use, Disclaimers. Covers 25+ Legal Templates for all types of WordPress Websites.
+Generate a professional WordPress Privacy Policy, terms of use, terms & conditions, eCommerce returns & refunds policy, affiliate disclaimers & more. Covers 25+ expert vetted legal pages for WordPress websites.
 
-WPLegalPages is a popular and regularly updated privacy policy generator plugins with more than 180,000 downloads. From WordPress Bloggers, Affiliate Marketers, Corporate websites to ecommerce stores, the privacy pages are designed for different types of websites.
+WPLegalPages is a popular and regularly updated privacy policy generator plugins with more than 2,50,000 downloads. WordPress Bloggers, Affiliate Marketers, corporate websites, ecommerce stores, consultants use WP Legal Pages for their legal requirements. The plugin generates professional policy pages tailored to your website requirements across multiple geographies.
 
-### Privacy Policy Generator ###
-Generate a standard privacy policy to comply with ad networks. Required for blogs, businesses and ecommerce websites.
+### Privacy Policy Generator - Free ###
+Generate a standard privacy policy to comply with ad networks, analytics, marketing tools on websites. Required for blogs, businesses and ecommerce websites. For a customized privacy policy (with GDPR opt out links), please use the Pro version.
 
-### Privacy Notice for California Consumer Privacy Act (CCPA) ###
+### Privacy Notice for California Consumer Privacy Act (CCPA) - Free ###
 Generate a standard privacy policy to comply with the new California Consumer Privacy Act (CCPA) and California Online Protection Act (CalOPPA). For a customized policy created using a guided wizard, please use the [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wplegalpages&utm_content=readme-ccpa).
 
-### Terms & Conditions Generator ###
+### Terms & Conditions Generator - Free ###
 Generate a standard terms & conditions policy page. For a customized policy created using a guided wizard, please use the [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wporg&utm_medium=wplegalpages&utm_campaign=wplegalpages&utm_content=readme-terms-and-conditions).
 
-### DMCA Policy Generator ###
+### DMCA Policy Generator - Free ###
 Generate a standard DMCA privacy policy page. Required for blogs, businesses and ecommerce websites that provide content sourced from other content producers.
 
 [youtube https://www.youtube.com/watch?v=iqdLl9qsBHc]
@@ -193,26 +193,24 @@ WPLegalPages provides you pre-approved templates. You may want to customize it a
 
 ## Changelog ##
 ### 2.4.5 ###
-* Update: Support for WordPress multisite integration.
+* Update: Support for WordPress multisite integration. Setup Privacy Policy Pages on WordPress Multisite.
 
 ### 2.4.4 ###
-* Feature: Added WPML compatibility.
-* Fix: Issue related while creating legal pages in sub-folder WordPress instance.
+* Feature: Compatible with WPML. Setup privacy policies on multilingual websites.
+* Fix: Compatibility with sub-folder based WordPress instances.
 
 ### 2.4.3 ###
-* Update: WordPress 5.4.1 compatibility.
-* Fix: Plugin frontend performance and theme customizer issues.
-* Fix: Reworked on table creation issue on plugin activation.
+* Update: Test and minor changes for WordPress 5.4.1 compatibility.
+* Update: Improved website performance and theme customizer integration.
 
 ### 2.4.2 ###
-* Update: Integration with Pro features.
-* Fix: Table creation issue on plugin activation.
+* Update: Improved integration with Pro features.
 
 ### 2.4.1 ###
-* Update: Added Getting Started menu.
+* Update: Added Getting Started menu to help easy setup of Privacy or any other terms pages on WordPress.
 
 ### 2.4.0 ###
-* Update: Improved compatibility with the Pro Privacy Wizard.
+* Update: Improved compatibility with the Pro Privacy Generation Wizard.
 
 ### 2.3.9 ###
 * Update: Templates and minor plugin updates.
