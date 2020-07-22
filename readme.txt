@@ -348,15 +348,13 @@ Base version of the plugin.
 
 If you like this plugin, then consider checking out our other projects:
 
-- [GDPR Cookie Consent](https://club.wpeka.com/product/wp-gdpr-cookie-consent/?utm_source=wporg&utm_medium=wp-legal-pages&utm_campaign=link&utm_content=gdpr-cookie-consent) - ICO Compliant GDPR Cookie Consent Plugin
+- [WP Cookie Notice & Consent Banner for GDPR, CCPA & ePrivacy](https://wordpress.org/plugins/gdpr-cookie-consent/) - WP Cookie Notice for GDPR, CCPA & ePrivacy Consent
 
-- [WP Local Plus](https://club.wpeka.com/product/wp-local-plus/?utm_source=wporg&utm_medium=wp-legal-pages&utm_campaign=link&utm_content=wp-local-plus) - WordPress Business Directory Plugin
+- [WP Local Plus](https://wordpress.org/plugins/wplocalplus-lite/) - WordPress Directory Plugin For Business Listings
 
-- [Woo Auction Software](https://club.wpeka.com/product/woo-auction-software/?utm_source=wporg&utm_medium=wp-legal-pages&utm_campaign=link&utm_content=woo-auction-software) - Host eBay like auctions on your WooCommerce website
+- [WPeka Woo Auction Software](https://wordpress.org/plugins/auction-software/) - Host eBay like auctions or Simple / Reverse / Penny Auctions on your WooCommerce website
 
-- [Survey Funnel](https://club.wpeka.com/product/survey-funnel/?utm_source=wporg&utm_medium=wp-legal-pages&utm_campaign=link&utm_content=survey-funnel) - Generate leads on your WordPress website with targeted opt-in offers and surveys
-
-- [WP Raffle](https://club.wpeka.com/product/wp-raffle/?utm_source=wporg&utm_medium=wp-legal-pages&utm_campaign=link&utm_content=survey-funnel) - Run giveaways and contests on your WordPress website
+- [WP Ad Center](https://wordpress.org/plugins/wpadcenter/) - Easily Manage Ads on WordPress - Banner, Amazon, Google Adsense Ads
 
 == Official Site ==
 For more information and to take a look at the advanced WPLegalPages version, visit our website - <a href="http://wplegalpages.com/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=wp-legal-pages-version">WPLegalPages version</a>.
