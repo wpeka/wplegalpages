@@ -28,7 +28,8 @@ module.exports = function (grunt) {
 						cwd: 'release/<%= pkg.version %>/admin/js/',
 						src: [
 						'*.js',
-						'!*.min.js'
+						'!*.min.js',
+						'!vue/'
 						],
 						dest: 'release/<%= pkg.version %>/admin/js/',
 						ext: '.min.js'
@@ -58,6 +59,7 @@ module.exports = function (grunt) {
 						src: [
 						'*.css',
 						'minicolor/*.css',
+						'vue/*.css',
 						'!*.min.css'
 						],
 						dest: 'release/<%= pkg.version %>/admin/css/',
