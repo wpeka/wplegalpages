@@ -192,6 +192,9 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 WPLegalPages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 ## Changelog ##
+### 2.4.7 ###
+* Fix: Fixed vulnerability issue for analytics within the plugin.
+
 ### 2.4.6 ###
 * Update: Redesigned Getting started page.
 * Update: Notice to track usage analytics for the plugin.
