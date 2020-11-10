@@ -7,7 +7,7 @@ Tags: gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD,
 Requires at least: 5.0+
 Requires PHP: 7.0
 Tested up to: 5.4.2
-Stable tag: 2.4.6
+Stable tag: 2.4.7
 
 Easily generate privacy policy pages on your WordPress website in a few clicks. Legal Pages for blogs, ecommerce and marketing websites.
 
