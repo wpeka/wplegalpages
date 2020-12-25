@@ -195,6 +195,7 @@ WPLegalPages provides you pre-approved templates. You may want to customize it a
 ### 2.4.8 ###
 * Feature: Widget to add Legal Pages to the sidebar.
 * Feature: Easily add Legal Pages to your theme menu.
+* Update: Language translations POT file.
 
 ### 2.4.7 ###
 * Fix: Fixed vulnerability issue for analytics within the plugin.

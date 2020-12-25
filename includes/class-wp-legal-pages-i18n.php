@@ -42,9 +42,8 @@ if ( ! class_exists( 'WP_Legal_Pages_I18n' ) ) {
 		 * @since    1.0.0
 		 */
 		public function load_plugin_textdomain() {
-
 			load_plugin_textdomain(
-				'wp-legal-pages',
+				'wplegalpages',
 				false,
 				dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 			);

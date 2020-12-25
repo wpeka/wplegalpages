@@ -170,11 +170,11 @@ class WP_Widget_Legal_Pages extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'sortby' ) ); ?>"><?php esc_attr_e( 'Sort by:' ); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'sortby' ) ); ?>"><?php esc_attr_e( 'Sort by:', 'wplegalpages' ); ?></label>
 			<select name="<?php echo esc_attr( $this->get_field_name( 'sortby' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'sortby' ) ); ?>" class="widefat">
 				<option value="post_title"<?php selected( $instance['sortby'], 'post_title' ); ?>><?php esc_attr_e( 'Page title', 'wplegalpages' ); ?></option>
 				<option value="menu_order"<?php selected( $instance['sortby'], 'menu_order' ); ?>><?php esc_attr_e( 'Page order', 'wplegalpages' ); ?></option>
-				<option value="ID"<?php selected( $instance['sortby'], 'ID' ); ?>><?php esc_attr_e( 'Page ID' ); ?></option>
+				<option value="ID"<?php selected( $instance['sortby'], 'ID' ); ?>><?php esc_attr_e( 'Page ID', 'wplegalpages' ); ?></option>
 			</select>
 		</p>
 

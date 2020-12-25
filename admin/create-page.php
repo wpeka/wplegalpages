@@ -47,8 +47,8 @@ $lp_pro_installed = get_option( '_lp_pro_installed' );
 		$url = get_permalink( $pid );
 		?>
 	<div id="message">
-		<p><span class="label label-success myAlert">Page Successfully Created. You can view your page as a normal Page in Pages Menu. </span></p>
-		<p><a href="<?php echo esc_url_raw( get_admin_url() ); ?>/post.php?post=<?php echo esc_attr( $pid ); ?>&action=edit">Edit</a> | <a href="<?php echo esc_url( $url ); ?>">View</a></p>
+		<p><span class="label label-success myAlert"><?php esc_attr_e( 'Page Successfully Created. You can view your page as a normal Page in Pages Menu.', 'wplegalpages' ); ?> </span></p>
+		<p><a href="<?php echo esc_url_raw( get_admin_url() ); ?>/post.php?post=<?php echo esc_attr( $pid ); ?>&action=edit"><?php esc_attr_e( 'Edit', 'wplegalpages' ); ?></a> | <a href="<?php echo esc_url( $url ); ?>"><?php esc_attr_e( 'View', 'wplegalpages' ); ?></a></p>
 	</div>
 		<?php
 	endif;
@@ -75,10 +75,10 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 	?>
 
 <div class="postbox ">
-	<h3 class="hndle myLabel-head"  style="cursor:pointer; padding:7px 10px; font-size:20px;"> Create Page :</h3>
+	<h3 class="hndle myLabel-head"  style="cursor:pointer; padding:7px 10px; font-size:20px;"> <?php esc_attr_e( 'Create Page :', 'wplegalpages' ); ?></h3>
 	<div id="lp_generalid">
 
-	<p>&nbsp;&nbsp;</p>
+	<p>&nbsp;&nbsp</p>
 		<form name="terms" method="post" enctype="multipart/form-data">
 	<?php
 	if ( ! empty( $template ) ) {
@@ -138,7 +138,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 	</div>
 <div class="lp_generalid_right_wraper" style="min-height:900px;">
 	<div id="lp_generalid_right" class="postbox ">
-		<h3 class="hndle"  style="cursor:pointer; padding:0px 10px 12px 10px; font-size:20px;"> Choose Template </h3>
+		<h3 class="hndle"  style="cursor:pointer; padding:0px 10px 12px 10px; font-size:20px;"> <?php esc_attr_e( 'Choose Template', 'wplegalpages' ); ?> </h3>
 		<div class="wplegal-choose-template">
 		<select name="template_language" class="wplegal-template-language">
 			<option value="eng" 
@@ -195,12 +195,12 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 		<?php if ( '1' !== $lp_pro_installed ) : ?>
 		<div id="lp_generalid_right">
 			<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_campaign=wplegalpages&utm_content=upgrade-to-pro-for-all-templates" style="text-decoration:none;padding-left:20px;" target="_blank">
-			Upgrade to Pro for All templates
+			<?php esc_attr_e( 'Upgrade to Pro for All templates', 'wplegalpages' ); ?>
 			</a>
 		</div>
 
 		<div id="lp_generalid_right" class="postbox ">
-			<h3 class="hndle"  style="padding:0px 10px 12px 10px; font-size:20px;"> WP LegalPages Pro Templates </h3><br/>
+			<h3 class="hndle"  style="padding:0px 10px 12px 10px; font-size:20px;"> <?php esc_attr_e( 'WP LegalPages Pro Templates', 'wplegalpages' ); ?> </h3><br/>
 			<ul>
 				<li>Terms of use <strong>(forced agreement - don't allow your users to proceed without agreeing to your terms)</strong></li>
 				<li>Linking policy template</li>
@@ -234,7 +234,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 </div>
 <?php } else { ?>
 		<div id="message" class="updated">
-			<p>You are exceeding the limit of creating 15 legal pages.</p>
+			<p><?php esc_attr_e( 'You are exceeding the limit of creating 15 legal pages.', 'wplegalpages' ); ?></p>
 		</div>
 <?php } ?>
 </div>

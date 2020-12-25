@@ -23,19 +23,19 @@ Vue.component('WelcomeSection', {
         }, [createElement('p', {
             staticClass: 'wplegal-title-heading',
             domProps: {
-                textContent: 'Welcome to WP Legal Pages!'
+                textContent: obj.welcome_text
             }
         }), createElement('p', {
             staticClass: 'wplegal-title-subheading',
             domProps: {
-                textContent: 'Simple one-click legal page management plugin.'
+                textContent: obj.welcome_subtext
             }
         })]),
         createElement('div', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p', {
             domProps: {
-                innerHTML: 'Thank you for choosing WP Legal Pages plugin - the most powerful legal page management plugin.'
+                innerHTML: obj.welcome_description
             }
         })])]);
     }
@@ -106,6 +106,7 @@ Vue.component('TermsSection', {
             $.post(obj.ajax_url,{'action':'save_accept_terms','data':data,'nonce':obj.ajax_nonce}).then((response => {
                 if(response.success) {
                     this.$parent.disabled = 1;
+                    location.reload();
                 }
             }))
 
@@ -130,12 +131,12 @@ Vue.component('TermsSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p', {
             domProps: {
-                innerHTML: 'WP Legal Pages is a privacy policy and terms & conditions generator for WordPress. With just a few clicks you can generate <a href="https://club.wpeka.com/product/wplegalpages/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=25-policy-pages#wplegalpages-policy-templates" target="_blank">25+ policy pages</a> for your WordPress website.'
+                innerHTML: obj.terms.text
             }
         }),
         createElement('p', {
             domProps: {
-                textContent: 'These policy pages are vetted by experts and are constantly updated to keep up with the latest regulations such as GDPR, CCPA, CalOPPA and many others.'
+                textContent: obj.terms.subtext
             }
         }),
         createElement('form', {
@@ -169,7 +170,7 @@ Vue.component('TermsSection', {
             }
         }),createElement('span',{
             domProps: {
-                innerHTML: 'By using WP Legal Pages, you accept the <a href=\"https://wplegalpages.com/product-terms-of-use/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=terms-of-use\" target=\"_blank\">terms of use</a>.'
+                innerHTML: obj.terms.input_text
             }
         })]),
         this.$parent.disabled ? [] : createElement('button',{
@@ -179,7 +180,7 @@ Vue.component('TermsSection', {
                 name: 'accept_terms'
             },
             domProps: {
-                textContent: 'Accept'
+                textContent: obj.terms.button_text
             }
         })])])]);
     }
@@ -193,13 +194,13 @@ Vue.component('SettingsSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p',{
             domProps: {
-                textContent: 'WP Legal Pages generates personalized legal pages for your website. To do this it needs to know a few details about your website. Please take a couple of minutes to set up your business details before you can generate a policy page for this website.'
+                textContent: obj.configure.text
             }
         }), createElement('a', {
             staticClass: 'wplegal-button',
             domProps: {
-                textContent: 'Configure Details',
-                href:obj.settings_url
+                textContent: obj.configure.button_text,
+                href:obj.configure.url
             }
         })])]);
     }
@@ -213,13 +214,13 @@ Vue.component('PagesSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p',{
             domProps: {
-                textContent: 'Generate a personalized legal policy page your website.'
+                textContent: obj.create.text
             }
         }), createElement('a', {
             staticClass: 'wplegal-button',
             domProps: {
-                textContent: 'Create Page',
-                href:obj.pages_url
+                textContent: obj.create.button_text,
+                href:obj.create.url
             }
         })])]);
     }
@@ -234,12 +235,12 @@ Vue.component('FeaturesSection', {
         }, [createElement('p', {
             staticClass: 'wplegal-title-heading',
             domProps: {
-                textContent: 'WP Legal Pages Features'
+                textContent: obj.features.heading
             }
         }), createElement('p', {
             staticClass: 'wplegal-title-subheading',
             domProps: {
-                textContent: 'Why choose WP Legal Pages?'
+                textContent: obj.features.subheading
             }
         })]), createElement('div',{
             staticClass: 'wplegal-section-content'
@@ -256,12 +257,12 @@ Vue.component('FeaturesSection', {
         }, [createElement('p', {
             staticClass: 'wplegal-feature-title',
             domProps: {
-                textContent: 'Powerful yet simple'
+                textContent: obj.features.powerful_text
             }
         }), createElement('p',{
             staticClass: 'wplegal-feature-text',
             domProps: {
-                textContent: 'Add 25+ legal policy pages to your WordPress website in less than 5 minutes.'
+                textContent: obj.features.powerful_desc
             }
         })])]), createElement('div', {
             staticClass: 'wplegal-feature'
@@ -276,12 +277,12 @@ Vue.component('FeaturesSection', {
         }, [createElement('p', {
             staticClass: 'wplegal-feature-title',
             domProps: {
-                textContent: 'Pre-built templates'
+                textContent: obj.features.prebuilt_text
             }
         }), createElement('p',{
             staticClass: 'wplegal-feature-text',
             domProps: {
-                textContent: 'Choose from 25+ lawyer approved, legal policy pages from GDPR policies to affiliate disclosures.'
+                textContent: obj.features.prebuilt_desc
             }
         })])]), createElement('div', {
             staticClass: 'wplegal-feature'
@@ -296,12 +297,12 @@ Vue.component('FeaturesSection', {
         }, [createElement('p', {
             staticClass: 'wplegal-feature-title',
             domProps: {
-                textContent: 'Editable templates'
+                textContent: obj.features.editable_text
             }
         }), createElement('p',{
             staticClass: 'wplegal-feature-text',
             domProps: {
-                textContent: 'Edit or create your own legal policy templates using the WYSIWYG WordPress editor.'
+                textContent: obj.features.editable_desc
             }
         })])]), createElement('div', {
             staticClass: 'wplegal-feature'
@@ -316,12 +317,12 @@ Vue.component('FeaturesSection', {
         }, [createElement('p', {
             staticClass: 'wplegal-feature-title',
             domProps: {
-                textContent: 'GDPR compliance'
+                textContent: obj.features.gdpr_text
             }
         }), createElement('p',{
             staticClass: 'wplegal-feature-text',
             domProps: {
-                textContent: 'Easy to use shortcodes to display business information in legal policy pages.'
+                textContent: obj.features.gdpr_desc
             }
         })])]), createElement('div', {
             staticClass: 'wplegal-feature'
@@ -336,12 +337,12 @@ Vue.component('FeaturesSection', {
         }, [createElement('p', {
             staticClass: 'wplegal-feature-title',
             domProps: {
-                textContent: 'Forced consent'
+                textContent: obj.features.forced_text
             }
         }), createElement('p',{
             staticClass: 'wplegal-feature-text',
             domProps: {
-                textContent: 'Force website visitors to agree to your Terms, Privacy Policy, etc using post / page lock down features.'
+                textContent: obj.features.forced_desc
             }
         })])]), createElement('div', {
             staticClass: 'wplegal-feature'
@@ -356,12 +357,12 @@ Vue.component('FeaturesSection', {
         }, [createElement('p', {
             staticClass: 'wplegal-feature-title',
             domProps: {
-                textContent: 'Easy shortcodes'
+                textContent: obj.features.easy_text
             }
         }), createElement('p',{
             staticClass: 'wplegal-feature-text',
             domProps: {
-                textContent: 'Easy to use shortcodes to display business information in legal policy pages.'
+                textContent: obj.features.easy_desc
             }
         })])]), createElement('div', {
             staticClass: 'wplegal-feature'
@@ -376,12 +377,12 @@ Vue.component('FeaturesSection', {
         }, [createElement('p', {
             staticClass: 'wplegal-feature-title',
             domProps: {
-                textContent: 'Easy to install'
+                textContent: obj.features.install_text
             }
         }), createElement('p',{
             staticClass: 'wplegal-feature-text',
             domProps: {
-                textContent: 'WP Legal Pages is super-easy to install. Download & install takes less than 2 minutes.'
+                textContent: obj.features.install_desc
             }
         })])]), createElement('div', {
             staticClass: 'wplegal-feature'
@@ -396,12 +397,12 @@ Vue.component('FeaturesSection', {
         }, [createElement('p', {
             staticClass: 'wplegal-feature-title',
             domProps: {
-                textContent: 'Helpful docs & guides'
+                textContent: obj.features.helpful_text
             }
         }), createElement('p',{
             staticClass: 'wplegal-feature-text',
             domProps: {
-                textContent: 'Even if you get stuck using WP Legal Pages, you can use our easy to follow docs & guides.'
+                textContent: obj.features.helpful_desc
             }
         })])]), createElement('div', {
             staticClass: 'wplegal-feature'
@@ -416,12 +417,12 @@ Vue.component('FeaturesSection', {
         }, [createElement('p', {
             staticClass: 'wplegal-feature-title',
             domProps: {
-                textContent: 'Multilingual support'
+                textContent: obj.features.multilingual_text
             }
         }), createElement('p',{
             staticClass: 'wplegal-feature-text',
             domProps: {
-                textContent: 'Supports multi-language translations for English, French, Spanish, German, Italian, Portuguese.'
+                textContent: obj.features.multilingual_desc
             }
         })])])])]);
     }
@@ -435,17 +436,17 @@ Vue.component('WizardSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p',{
             domProps: {
-                textContent: 'Use our newly created wizard to create legal pages for your website.'
+                textContent: obj.wizard.text
             }
         }), createElement('p',{
             domProps: {
-                textContent: '(with just a few clicks)'
+                textContent: obj.wizard.subtext
             }
         }), createElement('a', {
             staticClass: 'wplegal-button',
             domProps: {
-                textContent: 'Launch Wizard',
-                href:obj.wizard_url
+                textContent: obj.wizard.button_text,
+                href:obj.wizard.url
             }
         })])]);
     }
@@ -490,28 +491,28 @@ var vm = new Vue({
                 var mItems = [
                     {
                         icon: 'dashicons-lightbulb',
-                        tooltip: 'Support',
-                        link: obj.support_url,
+                        tooltip: obj.menu_items.support_text,
+                        link: obj.menu_items.support_url,
                         key: 'support'
                     },
                     {
                         icon: 'dashicons-info',
-                        tooltip: 'FAQ',
-                        link: obj.faq_url,
+                        tooltip: obj.menu_items.faq_text,
+                        link: obj.menu_items.faq_url,
                         key: 'faq'
                     },
                     {
                         icon: 'dashicons-sos',
-                        tooltip: 'Documentation',
-                        link: obj.documentation_url,
+                        tooltip: obj.menu_items.documentation_text,
+                        link: obj.menu_items.documentation_url,
                         key: 'documentation'
                     }
                 ];
                 if(!this.isPro) {
                     mItems.push({
                         icon: 'dashicons-star-filled',
-                        tooltip: 'Upgrade to Pro »',
-                        link: obj.upgrade_url,
+                        tooltip: obj.menu_items.upgrade_text,
+                        link: obj.menu_items.upgrade_url,
                         key: 'upgrade'
                     });
                 }
@@ -579,7 +580,7 @@ var vm = new Vue({
                 }),
                 createElement('span',{
                     class: 'wplegal-mascot-quick-link-title'
-                }, 'See Quick Links')
+                }, obj.quick_links_text)
             ]),
             createElement('transition-group', {
                 staticClass: 'wplegal-mascot-quick-links-menu',
