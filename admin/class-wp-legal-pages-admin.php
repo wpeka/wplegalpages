@@ -108,9 +108,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		public function admin_menu() {
 			$terms = get_option( 'lp_accept_terms' );
 			if ( '1' === $terms ) {
-				add_menu_page( __( 'Legal Pages', 'wplegalpages' ), 'Legal Pages', 'manage_options', 'legal-pages', array( $this, 'admin_setting' ), 'dashicons-media-default', 66 );
+				add_menu_page( __( 'Legal Pages', 'wplegalpages' ), __('Legal Pages', 'wplegalpages'), 'manage_options', 'legal-pages', array( $this, 'admin_setting' ), 'dashicons-media-default', 66 );
 			} else {
-				add_menu_page( __( 'Legal Pages', 'wplegalpages' ), 'Legal Pages', 'manage_options', 'getting-started', array( $this, 'vue_getting_started' ), 'dashicons-media-default', 66 );
+				add_menu_page( __( 'Legal Pages', 'wplegalpages' ), __('Legal Pages', 'wplegalpages'), 'manage_options', 'getting-started', array( $this, 'vue_getting_started' ), 'dashicons-media-default', 66 );
 			}
 			if ( '1' === $terms ) {
 				add_submenu_page( 'legal-pages', __( 'Settings', 'wplegalpages' ), __( 'Settings', 'wplegalpages' ), 'manage_options', 'legal-pages', array( $this, 'admin_setting' ) );
