@@ -53,6 +53,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 			} else {
 				self::install_db();
 			}
+
+			$hidden_meta_boxes = get_user_option( 'metaboxhidden_nav-menus' );
+			if ( is_array( $hidden_meta_boxes ) ) {
+				$key = array_search( 'wplegalpages-menu-metabox', $hidden_meta_boxes, true );
+				if ( false !== $key ) {
+					unset( $hidden_meta_boxes[ $key ] );
+				}
+			}
+			$user = wp_get_current_user();
+			update_user_option( $user->ID, 'metaboxhidden_nav-menus', $hidden_meta_boxes, true );
 		}
 
 		/**

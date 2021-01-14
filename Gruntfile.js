@@ -98,7 +98,8 @@ module.exports = function (grunt) {
 					'!.gitignore',
 					'!.gitmodules',
 					'!composer.lock',
-					'!composer.json'
+					'!composer.json',
+					'!README.md'
 					],
 					dest: 'release/<%= pkg.version %>/'
 				}

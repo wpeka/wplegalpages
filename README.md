@@ -3,11 +3,11 @@
 **Donate link:** https://club.wpeka.com/product/wplegalpages  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
-**Tags:** gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD, CalOPPA, datenschutz, impressum, coppa, terms and conditions, terms of service, disclosure, disclaimer, disclosure statement, affiliate, affiliate links, amazon, woo commerce, woo, antispam, confidentiality, refund, refund policy, returns, earnings, ftc, medical disclaimer, adsense, analytics, google ads, law, legal, cookie consent, cookie notice, cookie, comments, testimonial  
-**Requires at least:** 5.0+  
+**Tags:** gdpr, ccpa, privacy policy, cookie policy, impressum  
+**Requires at least:** 5.0  
 **Requires PHP:** 7.0  
-**Tested up to:** 5.4.2  
-**Stable tag:** 2.4.7  
+**Tested up to:** 5.6  
+**Stable tag:** 2.4.8  
 
 Easily generate privacy policy pages on your WordPress website in a few clicks. Legal Pages for blogs, ecommerce and marketing websites.
 
@@ -192,6 +192,11 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 WPLegalPages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 ## Changelog ##
+### 2.4.8 ###
+* Feature: Widget to add Legal Pages to the sidebar.
+* Feature: Easily add Legal Pages to your theme menu.
+* Update: Language translations POT file.
+
 ### 2.4.7 ###
 * Fix: Fixed vulnerability issue for analytics within the plugin.
 

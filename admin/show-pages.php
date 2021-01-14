@@ -44,15 +44,16 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 </a>
 </div>
 <?php endif; ?>
-<h2 class="hndle myLabel-head"> Available Pages </h2>
+<h2 class="hndle myLabel-head"> <?php esc_attr_e( 'Available Pages', 'wplegalpages' ); ?> </h2>
 <table class="widefat fixed comments table table-striped">
 	<thead>
 		<tr>
-			<th width="5%">S.No.</th>
-			<th width="30%">Page Title</th>
-			<th width="10%">Author</th>
-			<th width="10%">Date</th>
-			<th width="15%">Action</th>
+			<th width="5%"><?php esc_attr_e( 'S.No.', 'wplegalpages' ); ?></th>
+			<th width="30%"><?php esc_attr_e( 'Page Title', 'wplegalpages' ); ?></th>
+			<th width="10%"><?php esc_attr_e( 'Page ID', 'wplegalpages' ); ?></th>
+			<th width="10%"><?php esc_attr_e( 'Author', 'wplegalpages' ); ?></th>
+			<th width="10%"><?php esc_attr_e( 'Date', 'wplegalpages' ); ?></th>
+			<th width="10%"><?php esc_attr_e( 'Action', 'wplegalpages' ); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -76,10 +77,11 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 			<tr>
 				<td><?php echo esc_attr( $count ); ?></td>
 				<td><?php echo esc_attr( $res->post_title ); ?></td>
+				<td><?php echo esc_attr( $res->ID ); ?></td>
 				<td><?php echo esc_attr( ucfirst( $author[0]->user_login ) ); ?></td>
 				<td><?php echo esc_attr( gmdate( 'Y/m/d', strtotime( $res->post_date ) ) ); ?></td>
 				<td>
-					<a href="<?php echo esc_attr( get_admin_url() ); ?>/post.php?post=<?php echo esc_attr( $res->ID ); ?>&action=edit">Edit</a> | <a href="<?php echo esc_url_raw( $url ); ?>">View</a>| <a href="<?php echo esc_url_raw( $delurl ); ?>">Trash</a>
+					<a href="<?php echo esc_attr( get_admin_url() ); ?>/post.php?post=<?php echo esc_attr( $res->ID ); ?>&action=edit"><?php esc_attr_e( 'Edit', 'wplegalpages' ); ?></a> | <a href="<?php echo esc_url_raw( $url ); ?>"><?php esc_attr_e( 'View', 'wplegalpages' ); ?></a>| <a href="<?php echo esc_url_raw( $delurl ); ?>"><?php esc_attr_e( 'Trash', 'wplegalpages' ); ?></a>
 				</td>
 			</tr>
 				<?php
@@ -89,17 +91,18 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 
 		<?php } else { ?>
 		<tr>
-			<td colspan="3">No page yet</td>
+			<td colspan="3"><?php esc_attr_e( 'No page yet', 'wplegalpages' ); ?></td>
 		</tr>
 	<?php } ?>
 	</tbody>
 	<tfoot>
 		<tr>
-			<th width="5%">S.No.</th>
-			<th width="30%">Page Title</th>
-			<th width="10%">Author</th>
-			<th width="10%">Date</th>
-			<th width="15%">Action</th>
+			<th width="5%"><?php esc_attr_e( 'S.No.', 'wplegalpages' ); ?></th>
+			<th width="30%"><?php esc_attr_e( 'Page Title', 'wplegalpages' ); ?></th>
+			<th width="10%"><?php esc_attr_e( 'Page ID', 'wplegalpages' ); ?></th>
+			<th width="10%"><?php esc_attr_e( 'Author', 'wplegalpages' ); ?></th>
+			<th width="10%"><?php esc_attr_e( 'Date', 'wplegalpages' ); ?></th>
+			<th width="10%"><?php esc_attr_e( 'Action', 'wplegalpages' ); ?></th>
 		</tr>
 	</tfoot>
 	</table>
