@@ -360,13 +360,11 @@ Base version of the plugin.
 
 If you like this plugin, then consider checking out our other projects:
 
-- [WP Cookie Notice & Consent Banner for GDPR, CCPA & ePrivacy](https://wordpress.org/plugins/gdpr-cookie-consent/) - WP Cookie Notice for GDPR, CCPA & ePrivacy Consent
+- [WP Cookie Notice & Consent Banner for GDPR, CCPA & ePrivacy](https://wplegalpages.com/cookie-consent-banner-on-your-website/?&utm_source=wporg&utm_medium=referral&utm_campaign=wplegalpages) - WP Cookie Notice for GDPR, CCPA & ePrivacy Consent
 
-- [WP Local Plus](https://wordpress.org/plugins/wplocalplus-lite/) - WordPress Directory Plugin For Business Listings
+- [WPeka Woo Auction Software](https://www.wpauctionsoftware.com/?&utm_source=wporg&utm_medium=referral&utm_campaign=wplegalpages) - Host eBay like auctions or Simple / Reverse / Penny Auctions on your WooCommerce website
 
-- [WPeka Woo Auction Software](https://wordpress.org/plugins/auction-software/) - Host eBay like auctions or Simple / Reverse / Penny Auctions on your WooCommerce website
-
-- [WP Ad Center](https://wordpress.org/plugins/wpadcenter/) - Easily Manage Ads on WordPress - Banner, Amazon, Google Adsense Ads
+- [WP Ad Center](https://wpadcenter.com/?&utm_source=wporg&utm_medium=referral&utm_campaign=wplegalpages) - Easily Manage Ads on WordPress - Banner, Amazon, Google Adsense Ads
 
 == Official Site ==
 For more information and to take a look at the advanced WPLegalPages version, visit our website - <a href="http://wplegalpages.com/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=wp-legal-pages-version">WPLegalPages version</a>.
