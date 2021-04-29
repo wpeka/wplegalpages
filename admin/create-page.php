@@ -225,7 +225,6 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				<li>Digital Products Refund Policy</li>
 				<li>Newsletter Subscription and Disclaimer template</li>
 				<li>Return Refund Policy template</li>
-				<li>End User License Agreement template</li>
 				<li>GDPR Cookie Policy template</li>
 				<li>GDPR Privacy Policy template (English, French, German)</li>
 			</ul>

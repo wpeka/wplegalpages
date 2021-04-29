@@ -7,7 +7,7 @@ Tags: gdpr, ccpa, privacy policy, cookie policy, impressum
 Requires at least: 5.0
 Requires PHP: 7.0
 Tested up to: 5.6
-Stable tag: 2.4.8
+Stable tag: 2.4.9
 
 Easily generate privacy policy pages on your WordPress website in a few clicks. Legal Pages for blogs, ecommerce and marketing websites.
 
@@ -192,6 +192,9 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 WPLegalPages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 == Changelog ==
+= 2.4.9 =
+* Update: Removed missing pro template entries from the template list.
+
 = 2.4.8 =
 * Feature: Widget to add Legal Pages to the sidebar.
 * Feature: Easily add Legal Pages to your theme menu.
