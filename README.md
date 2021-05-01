@@ -193,7 +193,7 @@ WPLegalPages provides you pre-approved templates. You may want to customize it a
 
 ## Changelog ##
 ### 2.4.9 ###
-* Update: Removed missing pro template entries from the template list.
+* Update: Update available pro template list.
 
 ### 2.4.8 ###
 * Feature: Widget to add Legal Pages to the sidebar.
