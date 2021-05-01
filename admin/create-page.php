@@ -204,9 +204,11 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 			<ul>
 				<li>Terms of use <strong>(forced agreement - don't allow your users to proceed without agreeing to your terms)</strong></li>
 				<li>Linking policy template</li>
+                <li>About Us</li>
 				<li>External links policy template</li>
 				<li>Refund policy template</li>
 				<li>Affiliate disclosure template</li>
+                <li>Cookies Policy</li>
 				<li>Privacy Policy template</li>
 				<li>Affiliate agreement template</li>
 				<li>FB privacy policy template</li>
@@ -224,6 +226,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				<li>Children's Online Privacy Protection Act</li>
 				<li>Digital Products Refund Policy</li>
 				<li>Newsletter Subscription and Disclaimer template</li>
+                <li>Confidentiality Discloser template</li>
 				<li>Return Refund Policy template</li>
 				<li>GDPR Cookie Policy template</li>
 				<li>GDPR Privacy Policy template (English, French, German)</li>
