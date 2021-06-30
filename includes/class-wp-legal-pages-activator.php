@@ -269,6 +269,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 			delete_option( '_lp_terms_updated' );
 			delete_option( '_lp_terms_fr_de_updated' );
 			add_option( '_lp_templates_updated', true );
+			add_option( '_lp_effective_date_templates_updated', true );
 			add_option( 'lp_excludePage', 'true' );
 			add_option( 'lp_general', '' );
 			add_option( 'lp_accept_terms', '0' );

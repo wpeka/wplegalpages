@@ -108,9 +108,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		public function admin_menu() {
 			$terms = get_option( 'lp_accept_terms' );
 			if ( '1' === $terms ) {
-				add_menu_page( __( 'Legal Pages', 'wplegalpages' ), __('Legal Pages', 'wplegalpages'), 'manage_options', 'legal-pages', array( $this, 'admin_setting' ), 'dashicons-media-default', 66 );
+				add_menu_page( __( 'Legal Pages', 'wplegalpages' ), __( 'Legal Pages', 'wplegalpages' ), 'manage_options', 'legal-pages', array( $this, 'admin_setting' ), 'dashicons-media-default', 66 );
 			} else {
-				add_menu_page( __( 'Legal Pages', 'wplegalpages' ), __('Legal Pages', 'wplegalpages'), 'manage_options', 'getting-started', array( $this, 'vue_getting_started' ), 'dashicons-media-default', 66 );
+				add_menu_page( __( 'Legal Pages', 'wplegalpages' ), __( 'Legal Pages', 'wplegalpages' ), 'manage_options', 'getting-started', array( $this, 'vue_getting_started' ), 'dashicons-media-default', 66 );
 			}
 			if ( '1' === $terms ) {
 				add_submenu_page( 'legal-pages', __( 'Settings', 'wplegalpages' ), __( 'Settings', 'wplegalpages' ), 'manage_options', 'legal-pages', array( $this, 'admin_setting' ) );
@@ -129,8 +129,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @since 2.3.5
 		 */
 		public function wplegal_admin_init() {
-			$lp_templates_updated = get_option( '_lp_templates_updated' );
-			if ( '1' !== $lp_templates_updated ) {
+			$lp_templates_updated               = get_option( '_lp_templates_updated' );
+			$lp_effective_date_template_updated = get_option( '_lp_effective_date_templates_updated' );
+			if ( '1' !== $lp_templates_updated || '1' !== $lp_effective_date_template_updated ) {
 				global $wpdb;
 				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 				if ( is_multisite() ) {
@@ -335,6 +336,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				); // db call ok; no-cache ok.
 			}
 			update_option( '_lp_templates_updated', true );
+			update_option( '_lp_effective_date_templates_updated', true );
 		}
 
 		/**

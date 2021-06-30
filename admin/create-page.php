@@ -101,6 +101,11 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				$lp_find    = array( '[Domain]', '[Business Name]', '[Phone]', '[Street]', '[City, State, Zip code]', '[Country]', '[Email]', '[Address]', '[Niche]' );
 				$lp_general = get_option( 'lp_general' );
 				$content    = str_replace( $lp_find, $lp_general, stripslashes( $content ) );
+
+				// Last updated date shown in editor.
+				$date    = gmdate( get_option( 'date_format' ) );
+				$content = str_replace( '[Last Updated]', $date, stripslashes( $content ) );
+
 				if ( ! shortcode_exists( 'wpl_cookie_details' ) ) {
 					$content = str_replace( '[wpl_cookie_details]', '', stripslashes( $content ) );
 				}
