@@ -1,6 +1,6 @@
 <?php
 /**
- * The widget-specific functionality for Legal Pages.
+ * The widget-specific functionality for WPLegalPages.
  *
  * @link       https://club.wpeka.com/
  * @since      1.0.0
@@ -10,7 +10,7 @@
  */
 
 /**
- * The widget-specific functionality for Legal Pages.
+ * The widget-specific functionality for WPLegalPages.
  *
  * @link       https://club.wpeka.com/
  * @since      1.0.0
@@ -21,7 +21,7 @@
 class WP_Widget_Legal_Pages extends WP_Widget {
 
 	/**
-	 * Sets up a new Legal Pages widget instance.
+	 * Sets up a new WPLegalPages widget instance.
 	 *
 	 * @since 2.4.8
 	 */
@@ -31,20 +31,20 @@ class WP_Widget_Legal_Pages extends WP_Widget {
 			'description'                 => __( 'A list of your site&#8217;s Legal Pages.' ),
 			'customize_selective_refresh' => true,
 		);
-		parent::__construct( 'legal_pages', __( 'WP Legal Pages' ), $widget_ops );
+		parent::__construct( 'legal_pages', __( 'WPLegalPages' ), $widget_ops );
 	}
 
 	/**
-	 * Outputs the content for the current Legal Pages widget instance.
+	 * Outputs the content for the current WPLegalPages widget instance.
 	 *
 	 * @since 2.4.8
 	 *
 	 * @param array $args     Display arguments including 'before_title', 'after_title',
 	 *                        'before_widget', and 'after_widget'.
-	 * @param array $instance Settings for the current Legal Pages widget instance.
+	 * @param array $instance Settings for the current WPLegalPages widget instance.
 	 */
 	public function widget( $args, $instance ) {
-		$default_title = __( 'Legal Pages' );
+		$default_title = __( 'WPLegalPages' );
 		$title         = ! empty( $instance['title'] ) ? $instance['title'] : $default_title;
 
 		/**
@@ -52,7 +52,7 @@ class WP_Widget_Legal_Pages extends WP_Widget {
 		 *
 		 * @since 2.4.8
 		 *
-		 * @param string $title    The widget title. Default 'Legal Pages'.
+		 * @param string $title    The widget title. Default 'WPLegalPages'.
 		 * @param array  $instance Array of settings for the current widget.
 		 * @param mixed  $id_base  The widget ID.
 		 */
@@ -67,7 +67,7 @@ class WP_Widget_Legal_Pages extends WP_Widget {
 
 		$out = wp_list_pages(
 		/**
-		 * Filters the arguments for the Legal Pages widget.
+		 * Filters the arguments for the WPLegalPages widget.
 		 *
 		 * @since 2.4.8
 		 *
@@ -123,7 +123,7 @@ class WP_Widget_Legal_Pages extends WP_Widget {
 	}
 
 	/**
-	 * Handles updating settings for the current Legal Pages widget instance.
+	 * Handles updating settings for the current WPLegalPages widget instance.
 	 *
 	 * @since 2.4.8
 	 *
@@ -147,7 +147,7 @@ class WP_Widget_Legal_Pages extends WP_Widget {
 	}
 
 	/**
-	 * Outputs the settings form for the Legal Pages widget.
+	 * Outputs the settings form for the WPLegalPages widget.
 	 *
 	 * @since 2.4.8
 	 *

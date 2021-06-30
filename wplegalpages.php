@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: WP Legal Pages
+ * Plugin Name: WPLegalPages
  * Plugin URI: https://club.wpeka.com/
- * Description: WP Legal Pages is a simple 1 click legal page management plugin. You can quickly add in legal pages to your WordPress sites.
+ * Description: WPLegalPages is a simple 1 click legal page management plugin. You can quickly add in legal pages to your WordPress sites.
  * Author: WPEka Club
  * Version: 2.4.9
  * Author URI: https://club.wpeka.com
@@ -42,7 +42,7 @@ if ( ! function_exists( 'wplp_fs' ) ) {
 				array(
 					'id'              => '4',
 					'slug'            => 'wplegalpages',
-					'product_name'    => 'WP Legal Pages',
+					'product_name'    => 'WPLegalPages',
 					'module_type'     => 'plugin',
 					'version'         => '2.4.9',
 					'plugin_basename' => 'wplegalpages/wplegalpages.php',
@@ -66,7 +66,7 @@ if ( ! defined( 'WPLPP_SUFFIX' ) ) {
 
 if ( ! function_exists( 'activate_wp_legal_pages' ) ) {
 	/**
-	 * The code that runs during WP Legal Pages activation.
+	 * The code that runs during WPLegalPages activation.
 	 * This action is documented in includes/class-wp-legal-pages-activator.php
 	 */
 	function activate_wp_legal_pages() {
@@ -77,12 +77,12 @@ if ( ! function_exists( 'activate_wp_legal_pages' ) ) {
 }
 
 /**
- * The code that runs during WP Legal Pages deactivation.
+ * The code that runs during WPLegalPages deactivation.
  * This action is documented in includes/class-plugin-name-deactivator.php
  */
 if ( ! function_exists( 'deactivate_wp_legal_pages' ) ) {
 	/**
-	 * The code that runs during WP Legal Pages deactivation.
+	 * The code that runs during WPLegalPages deactivation.
 	 * This action is documented in includes/class-plugin-name-deactivator.php
 	 */
 	function deactivate_wp_legal_pages() {
@@ -92,7 +92,7 @@ if ( ! function_exists( 'deactivate_wp_legal_pages' ) ) {
 }
 if ( ! function_exists( 'delete_wp_legal_pages' ) ) {
 	/**
-	 * The code that runs during WP Legal Pages delete.
+	 * The code that runs during WPLegalPages delete.
 	 * This action is documented in includes/class-plugin-name-delete.php
 	 */
 	function delete_wp_legal_pages() {
@@ -108,7 +108,7 @@ register_uninstall_hook( __FILE__, 'delete_wp_legal_pages' );
 
 
 /**
- * The core WP Legal Pages class that is used to define internationalization,
+ * The core WPLegalPages class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-wp-legal-pages.php';
@@ -116,10 +116,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wp-legal-pages.php';
 
 if ( ! function_exists( 'run_wp_legal_pages' ) ) {
 	/**
-	 * Begins execution of the WP Legal Pages.
+	 * Begins execution of the WPLegalPages.
 	 *
-	 * Since everything within the WP Legal Pages is registered via hooks,
-	 * then kicking off the WP Legal Pages from this point in the file does
+	 * Since everything within the WPLegalPages is registered via hooks,
+	 * then kicking off the WPLegalPages from this point in the file does
 	 * not affect the page life cycle.
 	 *
 	 * @since    1.0.0

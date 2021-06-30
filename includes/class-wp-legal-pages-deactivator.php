@@ -1,6 +1,6 @@
 <?php
 /**
- * Fired during WP Legal Pages deactivation
+ * Fired during WPLegalPages deactivation
  *
  * @link       http://wplegalpages.com/
  * @since      1.5.2
@@ -10,9 +10,9 @@
  */
 
 /**
- * Fired during WP Legal Pages deactivation.
+ * Fired during WPLegalPages deactivation.
  *
- * This class defines all code necessary to run during the WP Legal Pages's deactivation.
+ * This class defines all code necessary to run during the WPLegalPages's deactivation.
  *
  * @since      1.5.2
  * @package    WP_Legal_Pages
@@ -21,9 +21,9 @@
  */
 if ( ! class_exists( 'WP_Legal_Pages_Deactivator' ) ) {
 	/**
-	 * Fired during WP Legal Pages deactivation.
+	 * Fired during WPLegalPages deactivation.
 	 *
-	 * This class defines all code necessary to run during the WP Legal Pages's deactivation.
+	 * This class defines all code necessary to run during the WPLegalPages's deactivation.
 	 *
 	 * @since      1.5.2
 	 * @package    WP_Legal_Pages

@@ -1,6 +1,6 @@
 <?php
 /**
- * The file that defines the core WP Legal Pages class
+ * The file that defines the core WPLegalPages class
  *
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
@@ -13,13 +13,13 @@
  */
 
 /**
- * The core WP Legal Pages class.
+ * The core WPLegalPages class.
  *
  * This is used to define internationalization, admin-specific hooks, and
  * public-facing site hooks.
  *
- * Also maintains the unique identifier of this WP Legal Pages as well as the current
- * version of the WP Legal Pages.
+ * Also maintains the unique identifier of this WPLegalPages as well as the current
+ * version of the WPLegalPages.
  *
  * @since      1.5.2
  * @package    WP_Legal_Pages
@@ -28,13 +28,13 @@
  */
 if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 	/**
-	 * The core WP Legal Pages class.
+	 * The core WPLegalPages class.
 	 *
 	 * This is used to define internationalization, admin-specific hooks, and
 	 * public-facing site hooks.
 	 *
-	 * Also maintains the unique identifier of this WP Legal Pages as well as the current
-	 * version of the WP Legal Pages.
+	 * Also maintains the unique identifier of this WPLegalPages as well as the current
+	 * version of the WPLegalPages.
 	 *
 	 * @since      1.5.2
 	 * @package    WP_Legal_Pages
@@ -44,7 +44,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 	class WP_Legal_Pages {
 		/**
 		 * The loader that's responsible for maintaining and registering all hooks that power
-		 * the WP Legal Pages.
+		 * the WPLegalPages.
 		 *
 		 * @since    1.5.2
 		 * @access   protected
@@ -54,7 +54,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 		protected $loader;
 
 		/**
-		 * The unique identifier of WP Legal Pages.
+		 * The unique identifier of WPLegalPages.
 		 *
 		 * @since    1.5.2
 		 * @access   protected
@@ -63,19 +63,19 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 		public $plugin_name;
 
 		/**
-		 * The current version of the WP Legal Pages.
+		 * The current version of the WPLegalPages.
 		 *
 		 * @since    1.5.2
 		 * @access   protected
-		 * @var      string    $version    The current version of the WP Legal Pages.
+		 * @var      string    $version    The current version of the WPLegalPages.
 		 */
 
 		public $version;
 
 		/**
-		 * Define the core functionality of the WP Legal Pages.
+		 * Define the core functionality of the WPLegalPages.
 		 *
-		 * Set the WP Legal Pages name and the WP Legal Pages version that can be used throughout the plugin.
+		 * Set the WPLegalPages name and the WPLegalPages version that can be used throughout the plugin.
 		 * Load the dependencies, define the locale, and set the hooks for the admin area and
 		 * the public-facing side of the site.
 		 *
@@ -119,9 +119,9 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 		}
 
 		/**
-		 * Load the required dependencies for WP Legal Pages.
+		 * Load the required dependencies for WPLegalPages.
 		 *
-		 * Include the following files that make up the WP Legal Pages:
+		 * Include the following files that make up the WPLegalPages:
 		 *
 		 * - WP_Legal_Pages_Loader. Orchestrates the hooks of the plugin.
 		 * - WP_Legal_Pages_I18n. Defines internationalization functionality.

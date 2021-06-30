@@ -1,22 +1,24 @@
-# Copyright (C) 2020 WPEka Club
-# This file is distributed under the same license as the WP Legal Pages plugin.
+# Copyright (C) 2021 WPEka Club
+# This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Legal Pages 2.4.8\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wplegalpages\n"
+"Project-Id-Version: WPLegalPages 2.4.9\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wplegalpages-free\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-12-24T17:17:00+00:00\n"
+"POT-Creation-Date: 2021-06-28T12:21:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.5.0-alpha-fe5f480\n"
 "X-Domain: wplegalpages\n"
 
 #. Plugin Name of the plugin
+#: admin/class-wp-legal-pages-admin.php:111
+#: admin/class-wp-legal-pages-admin.php:113
 #: admin/class-wp-legal-pages-admin.php:566
-msgid "WP Legal Pages"
+msgid "WPLegalPages"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -24,7 +26,7 @@ msgid "https://club.wpeka.com/"
 msgstr ""
 
 #. Description of the plugin
-msgid "WP Legal Pages is a simple 1 click legal page management plugin. You can quickly add in legal pages to your WordPress sites."
+msgid "WPLegalPages is a simple 1 click legal page management plugin. You can quickly add in legal pages to your WordPress sites."
 msgstr ""
 
 #. Author of the plugin
@@ -108,19 +110,16 @@ msgstr ""
 msgid "Click Here to Create Legal Pages &raquo;"
 msgstr ""
 
-#: admin/class-wp-legal-pages-admin.php:111
-#: admin/class-wp-legal-pages-admin.php:113
-#: admin/class-wp-legal-pages-admin.php:117
-msgid "Legal Pages"
-msgstr ""
-
 #: admin/class-wp-legal-pages-admin.php:116
 msgid "Settings"
 msgstr ""
 
+#: admin/class-wp-legal-pages-admin.php:117
+msgid "All Legal Pages"
+msgstr ""
+
 #: admin/class-wp-legal-pages-admin.php:118
-#: admin/class-wp-legal-pages-admin.php:455
-msgid "Create Page"
+msgid "Create Legal Page"
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:119
@@ -157,7 +156,7 @@ msgid "Upgrade to Pro &raquo;"
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:422
-msgid "Welcome to WP Legal Pages!"
+msgid "Welcome to WPLegalPages!"
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:423
@@ -165,7 +164,7 @@ msgid "Simple one-click legal page management plugin."
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:424
-msgid "Thank you for choosing WP Legal Pages plugin - the most powerful legal page management plugin."
+msgid "Thank you for choosing WPLegalPages plugin - the most powerful legal page management plugin."
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:425
@@ -173,11 +172,11 @@ msgid "See Quick Links"
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:427
-msgid "WP Legal Pages Features"
+msgid "WPLegalPages Features"
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:428
-msgid "Why choose WP Legal Pages?"
+msgid "Why choose WPLegalPages?"
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:429
@@ -230,7 +229,7 @@ msgid "Easy to install"
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:442
-msgid "WP Legal Pages is super-easy to install. Download & install takes less than 2 minutes."
+msgid "WPLegalPages is super-easy to install. Download & install takes less than 2 minutes."
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:443
@@ -238,7 +237,7 @@ msgid "Helpful docs & guides"
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:444
-msgid "Even if you get stuck using WP Legal Pages, you can use our easy to follow docs & guides."
+msgid "Even if you get stuck using WPLegalPages, you can use our easy to follow docs & guides."
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:445
@@ -251,7 +250,7 @@ msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:449
 #: admin/getting-started.php:59
-msgid "WP Legal Pages generates personalized legal pages for your website. To do this it needs to know a few details about your website. Please take a couple of minutes to set up your business details before you can generate a policy page for this website."
+msgid "WPLegalPages generates personalized legal pages for your website. To do this it needs to know a few details about your website. Please take a couple of minutes to set up your business details before you can generate a policy page for this website."
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:450
@@ -260,6 +259,10 @@ msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:454
 msgid "Generate a personalized legal policy page your website."
+msgstr ""
+
+#: admin/class-wp-legal-pages-admin.php:455
+msgid "Create Page"
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:459
@@ -276,7 +279,7 @@ msgstr ""
 
 #. translators: %s: Terms of use link
 #: admin/class-wp-legal-pages-admin.php:467
-msgid "WP Legal Pages is a privacy policy and terms & conditions generator for WordPress. With just a few clicks you can generate %s for your WordPress website."
+msgid "WPLegalPages is a privacy policy and terms & conditions generator for WordPress. With just a few clicks you can generate %s for your WordPress website."
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:472
@@ -293,7 +296,7 @@ msgstr ""
 
 #. translators: %s: Terms of use link, %s Text
 #: admin/class-wp-legal-pages-admin.php:479
-msgid "By using WP Legal Pages, you accept the %s."
+msgid "By using WPLegalPages, you accept the %s."
 msgstr ""
 
 #: admin/class-wp-legal-pages-admin.php:484
@@ -383,10 +386,10 @@ msgid "Upgrade to Pro for All templates"
 msgstr ""
 
 #: admin/create-page.php:203
-msgid "WP LegalPages Pro Templates"
+msgid "WPLegalPages Pro Templates"
 msgstr ""
 
-#: admin/create-page.php:237
+#: admin/create-page.php:239
 msgid "You are exceeding the limit of creating 15 legal pages."
 msgstr ""
 
@@ -395,7 +398,7 @@ msgid "1. Accept the terms of use"
 msgstr ""
 
 #: admin/getting-started.php:37
-msgid "By using WP Legal Pages"
+msgid "By using WPLegalPages"
 msgstr ""
 
 #: admin/getting-started.php:40
@@ -427,12 +430,12 @@ msgid "Create Policy Page &raquo;"
 msgstr ""
 
 #: admin/getting-started.php:67
-msgid "About WP Legal Pages"
+msgid "About WPLegalPages"
 msgstr ""
 
 #. translators: %s: Product feature link
 #: admin/getting-started.php:73
-msgid "WP Legal Pages is a privacy policy and terms & conditions generator for WordPress. With just a few clicks you can generate %s for your WordPress website. These policy pages are vetted by experts and are constantly updated to keep up with the latest regulations such as GDPR, CCPA, CalOPPA and many others."
+msgid "WPLegalPages is a privacy policy and terms & conditions generator for WordPress. With just a few clicks you can generate %s for your WordPress website. These policy pages are vetted by experts and are constantly updated to keep up with the latest regulations such as GDPR, CCPA, CalOPPA and many others."
 msgstr ""
 
 #: admin/getting-started.php:83
@@ -456,7 +459,7 @@ msgid "Forums &raquo;"
 msgstr ""
 
 #: admin/getting-started.php:92
-msgid "Upgrade to WP LegalPages Pro &raquo;"
+msgid "Upgrade to WPLegalPages Pro &raquo;"
 msgstr ""
 
 #: admin/show-pages.php:20

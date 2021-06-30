@@ -15,7 +15,7 @@ Easily generate privacy policy pages on your WordPress website in a few clicks. 
 
 Generate a professional WordPress Privacy Policy, terms of use, terms & conditions, eCommerce returns & refunds policy, affiliate disclaimers & more. Covers 25+ expert vetted legal pages for WordPress websites.
 
-WPLegalPages is a popular and regularly updated privacy policy generator plugins with more than 2,50,000 downloads. WordPress Bloggers, Affiliate Marketers, corporate websites, ecommerce stores, consultants use WP Legal Pages for their legal requirements. The plugin generates professional policy pages tailored to your website requirements across multiple geographies.
+WPLegalPages is a popular and regularly updated privacy policy generator plugins with more than 2,50,000 downloads. WordPress Bloggers, Affiliate Marketers, corporate websites, ecommerce stores, consultants use WPLegalPages for their legal requirements. The plugin generates professional policy pages tailored to your website requirements across multiple geographies.
 
 ### Privacy Policy Generator - Free ###
 Generate a standard privacy policy to comply with ad networks, analytics, marketing tools on websites. Required for blogs, businesses and ecommerce websites. For a customized privacy policy (with GDPR opt out links), please use the Pro version.
@@ -145,15 +145,15 @@ We’re continuously improving. Contact us on our website to have your wishlist 
 
 1. Visit 'Plugins > Add New'.
 1. Search for 'wplegalpages'.
-1. Activate WP Legal Pages from your Plugins page.
-1. Click on the 'WP Legal Pages' admin menu to get started.
+1. Activate WPLegalPages from your Plugins page.
+1. Click on the 'WPLegalPages' admin menu to get started.
 
 ### Manually ###
 
 1. Upload the `wplegalpages` folder to the `/wp-content/plugins/` directory.
-1. Activate the WP Legal Pages plugin through the 'Plugins' menu in WordPress.
-1. WP Legal Pages menu will appear on the left hand side. Click on it & get started to use it.
-1. Click on the 'WP Legal Pages' admin menu to get started.
+1. Activate the WPLegalPages plugin through the 'Plugins' menu in WordPress.
+1. WPLegalPages menu will appear on the left hand side. Click on it & get started to use it.
+1. Click on the 'WPLegalPages' admin menu to get started.
 
 ## Screenshots ##
 1. general settings page.png
@@ -173,7 +173,7 @@ The Pro version is ideal:
 - Returns and Refunds (WooCommerce or e-Commerce Websites)
 
 ### How to create a GDPR contact form? ###
-As your contact forms are generally used to collect user email for being contacted, users consent is needed. This makes the contact forms subject to GDPR consent rules. In WP Legal Pages Pro, you can enable contact form integration. This helps to capture informed consent from the users. Users can also easily view the privacy policy before submitting the form.
+As your contact forms are generally used to collect user email for being contacted, users consent is needed. This makes the contact forms subject to GDPR consent rules. In WPLegalPages Pro, you can enable contact form integration. This helps to capture informed consent from the users. Users can also easily view the privacy policy before submitting the form.
 
 ### Is the cookie notice bar GDPR compliant? ###
 The Cookie Notice feature of this plugin is useful for small websites to show basic cookie notice. To have GDPR compliant notices, use the [GDPR Cookie Consent Plugin](https://wordpress.org/plugins/gdpr-cookie-consent/)
@@ -182,7 +182,7 @@ The Cookie Notice feature of this plugin is useful for small websites to show ba
 GDPR, FTC and other privacy regulators along with ad networks require you to have legal policy pages on your website. Instead of spending hours researching and creating your own policy pages, use WPLegalPages to generate them in a few clicks.
 
 ### How to use WPLegalPages? ###
-1. Click on the 'WP Legal Pages' admin menu.
+1. Click on the 'WPLegalPages' admin menu.
 1. Accept the disclaimer.
 1. Fill in business details.
 1. Click create legal pages >> Select the type of legal template >> Publish.
@@ -192,7 +192,7 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 WPLegalPages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 ### Can I upgrade to pro to a single site license and use it for my multi-site setup with the same domain?
-A single site license is meant to be deployed on a single WordPress deployment for one single domain or sub-domain. Hence, to use WP Legal Pages on a multi-site setup you will require a multi-site license which is readily available.
+A single site license is meant to be deployed on a single WordPress deployment for one single domain or sub-domain. Hence, to use WPLegalPages on a multi-site setup you will require a multi-site license which is readily available.
 ###
 ## Changelog ##
 ### 2.4.9 ###
@@ -354,7 +354,7 @@ Updated for Compatibility with WP 4.5.3. Improved Admin Dashboard for easy creat
 WPLegal Pages is now compatible with WordPress 4.5.
 
 ### 1.2 ###
-Added banner to upgrade WPLegal Pages Pro version on plugin dashboard
+Added banner to upgrade WPLegalPages Pro version on plugin dashboard
 
 ### 1.1 ###
 Enhanced security

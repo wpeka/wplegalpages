@@ -1,6 +1,6 @@
 <?php
 /**
- * Register all actions and filters for the WP Legal Pages
+ * Register all actions and filters for the WPLegalPages
  *
  * @link       http://wplegalpages.com/
  * @since      1.5.2
@@ -10,10 +10,10 @@
  */
 
 /**
- * Register all actions and filters for the WP Legal Pages.
+ * Register all actions and filters for the WPLegalPages.
  *
  * Maintain a list of all hooks that are registered throughout
- * the WP Legal Pages, and register them with the WordPress API. Call the
+ * the WPLegalPages, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
  * @package    WP_Legal_Pages
@@ -22,10 +22,10 @@
  */
 if ( ! class_exists( 'WP_Legal_Pages_Loader' ) ) {
 	/**
-	 * Register all actions and filters for the WP Legal Pages.
+	 * Register all actions and filters for the WPLegalPages.
 	 *
 	 * Maintain a list of all hooks that are registered throughout
-	 * the WP Legal Pages, and register them with the WordPress API. Call the
+	 * the WPLegalPages, and register them with the WordPress API. Call the
 	 * run function to execute the list of actions and filters.
 	 *
 	 * @package    WP_Legal_Pages
@@ -39,7 +39,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Loader' ) ) {
 		 *
 		 * @since    1.5.2
 		 * @access   protected
-		 * @var      array    $actions    The actions registered with WordPress to fire when the WP Legal Pages loads.
+		 * @var      array    $actions    The actions registered with WordPress to fire when the WPLegalPages loads.
 		 */
 
 		protected $actions;
@@ -49,7 +49,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Loader' ) ) {
 		 *
 		 * @since    1.5.2
 		 * @access   protected
-		 * @var      array    $filters    The filters registered with WordPress to fire when the WP Legal Pages loads.
+		 * @var      array    $filters    The filters registered with WordPress to fire when the WPLegalPages loads.
 		 */
 		protected $filters;
 
