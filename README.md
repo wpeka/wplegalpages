@@ -191,9 +191,6 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 ### Will it protect my website? ###
 WPLegalPages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
-### Can I upgrade to pro to a single site license and use it for my multi-site setup with the same domain?
-A single site license is meant to be deployed on a single WordPress deployment for one single domain or sub-domain. Hence, to use WPLegalPages on a multi-site setup you will require a multi-site license which is readily available.
-###
 ## Changelog ##
 ### 2.4.9 ###
 * Update: Update available pro template list.
@@ -351,7 +348,7 @@ Added new DMCA template
 Updated for Compatibility with WP 4.5.3. Improved Admin Dashboard for easy creation of policy pages
 
 ### 1.3 ###
-WPLegal Pages is now compatible with WordPress 4.5.
+WPLegalPages is now compatible with WordPress 4.5.
 
 ### 1.2 ###
 Added banner to upgrade WPLegalPages Pro version on plugin dashboard
