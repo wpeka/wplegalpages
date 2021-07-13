@@ -91,15 +91,21 @@ module.exports = function (grunt) {
 					'!vendor/**',
 					'!release/**',
 					'!build/**',
+					'!tests/**',
 					'!.git/**',
 					'!Gruntfile.js',
 					'!package.json',
 					'!package-lock.json',
 					'!.gitignore',
 					'!.gitmodules',
+					'!.github/**',
+					'!bin/**',
 					'!composer.lock',
 					'!composer.json',
-					'!README.md'
+					'!README.md',
+					'!*.yml',
+					'!*.xml',
+					'!*.config.*'
 					],
 					dest: 'release/<%= pkg.version %>/'
 				}
