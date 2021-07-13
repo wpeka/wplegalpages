@@ -11,7 +11,7 @@
   },
   "require-dev": {
     "nette/utils": "2.5.3",
-    "phpunit/phpunit": "6.5.14"
+    "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5"
   },
   "scripts": {
     "test": [

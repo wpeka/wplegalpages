@@ -1,3 +1,12 @@
+<p align="center"><a href="https://wplegalpages.com/"><img src="https://wplegalpages.com/wp-content/uploads/2020/01/wplegalpages-logo.png" alt="Wplegalpages"></a></p>
+
+<p align="center">
+<a href="https://wordpress.org/plugins/wplegalpages/"><img src="https://img.shields.io/wordpress/plugin/v/wplegalpages" alt="Latest Stable Version"></a>
+<img src="https://img.shields.io/wordpress/plugin/dt/wplegalpages" alt="WordPress.org downloads">
+<a href="https://github.com/wpeka/wplegalpages/actions/workflows/pr-code-coverage.yml"><img src="https://github.com/wpeka/wplegalpages/actions/workflows/pr-code-coverage.yml/badge.svg" alt="Github Actions"></a>
+<a href="https://codecov.io/gh/wpeka/wplegalpages"><img src="https://codecov.io/gh/wpeka/wplegalpages/branch/master/graph/badge.svg?token=1IY9393BLU" alt="codecov"></a>
+</p>
+
 # Privacy Policy Generator, Terms & Conditions Generator WordPress Plugin : WPLegalPages #
 **Contributors:** [WPEka Club](https://profiles.wordpress.org/WPEka Club)  
 **Donate link:** https://club.wpeka.com/product/wplegalpages  
