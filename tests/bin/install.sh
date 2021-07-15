@@ -35,8 +35,8 @@ elif [[ $WP_VERSION =~ [0-9]+\.[0-9]+\.[0-9]+ ]]; then
 	else
 		WP_TESTS_TAG="tags/$WP_VERSION"
 	fi
-elif [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'master' ]]; then
-	WP_TESTS_TAG="master"
+elif [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
+	WP_TESTS_TAG="trunk"
 else
 	# http serves a single offer, whereas https serves multiple. we only want one
 	download http://api.wordpress.org/core/version-check/1.7/ $TMPDIR/wp-latest.json
@@ -59,12 +59,11 @@ install_wp() {
 
 	mkdir -p $WP_CORE_DIR
 
-	if [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'master' ]]; then
+	if [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
 		mkdir -p $TMPDIR/wordpress-nightly
 		download https://wordpress.org/nightly-builds/wordpress-latest.zip  $TMPDIR/wordpress-nightly/wordpress-nightly.zip
 		unzip -q $TMPDIR/wordpress-nightly/wordpress-nightly.zip -d $TMPDIR/wordpress-nightly/
 		mv $TMPDIR/wordpress-nightly/wordpress/* $WP_CORE_DIR
-
 	else
 		if [ $WP_VERSION == 'latest' ]; then
 			local ARCHIVE_NAME='latest'
@@ -92,7 +91,6 @@ install_wp() {
 	fi
 
 	download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
-
 }
 
 install_test_suite() {
