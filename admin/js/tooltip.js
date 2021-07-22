@@ -72,7 +72,17 @@ jQuery( document ).ready(
 					}
 				)
 			}
-		)
+		);
+
+		jQuery( '#wplegal_pages_settings_warning_disable' ).click(
+			function() {
+				jQuery( '#wplegalpages_settings_warning' ).css('display','none');
+				var request = {
+					action: "wplegalpages_disable_settings_warning",
+				};
+				jQuery.post( ajaxurl, request ).done();
+			}
+		);
 
 	}
 );
