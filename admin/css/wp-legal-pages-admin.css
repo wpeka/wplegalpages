@@ -342,3 +342,8 @@ div.wplegal-choose-template {
 div.wplegal-choose-template select.wplegal-template-language {
 	width: 100%;
 }
+.wplegalpages_settings_warning{
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+}

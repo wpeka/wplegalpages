@@ -890,5 +890,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			</div><!-- /.posttypediv -->
 			<?php
 		}
+
+		/**
+		 * Set option for do not show again settings warning on create legal page submenu.
+		 */
+		public function wplegalpages_disable_settings_warning() {
+			update_option( 'wplegalpages_disable_settings_warning', '1' );
+			return true;
+		}
 	}
 }

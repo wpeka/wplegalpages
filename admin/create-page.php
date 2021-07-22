@@ -30,6 +30,19 @@ $lp_pro_installed = get_option( '_lp_pro_installed' );
 	<div style="clear:both;"></div>
 		<?php
 	endif;
+	$disable_settings_warning = get_option( 'wplegalpages_disable_settings_warning' );
+	if ( ! $disable_settings_warning ) {
+		?>
+		<div id="wplegalpages_settings_warning" class="notice notice-warning is-dismissible wplegalpages_settings_warning">
+			<div>
+				<p>Please make sure the website information is correct at the <a href="' . admin_url() . 'admin.php?page=legal-pages' . '">Settings page</a> before you create a legal page.</p>
+			</div> 
+			<div>
+				<button id="wplegal_pages_settings_warning_disable" class="button-primary">Do not show again</button>
+			</div>
+		</div>
+		<?php
+	}
 	if ( ! empty( $_POST ) && isset( $_POST['lp-submit'] ) && 'Publish' === $_POST['lp-submit'] ) :
 		check_admin_referer( 'lp-submit-create-page' );
 		$page_title    = isset( $_POST['lp-title'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-title'] ) ) : '';
