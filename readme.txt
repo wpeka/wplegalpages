@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD, CalOPPA, datenschutz, impressum, coppa, terms and conditions, terms of service, disclosure, disclaimer, disclosure statement, affiliate, affiliate links, amazon, woo commerce, woo, antispam, confidentiality, refund, refund policy, returns, earnings, ftc, medical disclaimer, adsense, analytics, google ads, law, legal, cookie consent, cookie notice, cookie, comments, testimonial, webshop
 Requires at least: 5.0
 Requires PHP: 7.0
-Tested up to: 5.6
+Tested up to: 5.8
 Stable tag: 2.5.0
 
 Easily generate privacy policy pages on your WordPress website in a few clicks. Legal Pages for blogs, ecommerce and marketing websites.
