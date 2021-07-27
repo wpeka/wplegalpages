@@ -1,12 +1,3 @@
-<p align="center"><a href="https://wplegalpages.com/"><img src="https://wplegalpages.com/wp-content/uploads/2020/01/wplegalpages-logo.png" alt="Wplegalpages"></a></p>
-
-<p align="center">
-<a href="https://wordpress.org/plugins/wplegalpages/"><img src="https://img.shields.io/wordpress/plugin/v/wplegalpages" alt="Latest Stable Version"></a>
-<img src="https://img.shields.io/wordpress/plugin/dt/wplegalpages" alt="WordPress.org downloads">
-<a href="https://github.com/wpeka/wplegalpages/actions/workflows/pr-code-coverage.yml"><img src="https://github.com/wpeka/wplegalpages/actions/workflows/pr-code-coverage.yml/badge.svg" alt="Github Actions"></a>
-<a href="https://codecov.io/gh/wpeka/wplegalpages"><img src="https://codecov.io/gh/wpeka/wplegalpages/branch/master/graph/badge.svg?token=1IY9393BLU" alt="codecov"></a>
-</p>
-
 # Privacy Policy Generator, Terms & Conditions Generator WordPress Plugin : WPLegalPages #
 **Contributors:** [WPEka Club](https://profiles.wordpress.org/WPEka Club)  
 **Donate link:** https://club.wpeka.com/product/wplegalpages  
@@ -15,8 +6,8 @@
 **Tags:** gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD, CalOPPA, datenschutz, impressum, coppa, terms and conditions, terms of service, disclosure, disclaimer, disclosure statement, affiliate, affiliate links, amazon, woo commerce, woo, antispam, confidentiality, refund, refund policy, returns, earnings, ftc, medical disclaimer, adsense, analytics, google ads, law, legal, cookie consent, cookie notice, cookie, comments, testimonial, webshop  
 **Requires at least:** 5.0  
 **Requires PHP:** 7.0  
-**Tested up to:** 5.6  
-**Stable tag:** 2.4.9  
+**Tested up to:** 5.8  
+**Stable tag:** 2.5.0  
 
 Easily generate privacy policy pages on your WordPress website in a few clicks. Legal Pages for blogs, ecommerce and marketing websites.
 
@@ -201,6 +192,11 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 WPLegalPages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 ## Changelog ##
+### 2.5.0 ###
+* Update: Added Last updated date in policy template.
+* Update: Plugin name change.
+* Update: Compatibility with latest WordPress 5.8.
+
 ### 2.4.9 ###
 * Update: Update available pro template list.
 
