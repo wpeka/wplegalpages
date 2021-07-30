@@ -35,7 +35,7 @@ $lp_pro_installed = get_option( '_lp_pro_installed' );
 		?>
 		<div id="wplegalpages_settings_warning" class="notice notice-warning is-dismissible wplegalpages_settings_warning">
 			<div>
-				<p>Please make sure the website information is correct at the <a href="' . admin_url() . 'admin.php?page=legal-pages' . '">Settings page</a> before you create a legal page.</p>
+				<p>Please make sure the website information is correct at the <a href="<?php echo esc_url_raw( admin_url() . "admin.php?page=legal-pages" ); ?>">Settings page</a> before you create a legal page.</p>
 			</div> 
 			<div>
 				<button id="wplegal_pages_settings_warning_disable" class="button-primary">Do not show again</button>
