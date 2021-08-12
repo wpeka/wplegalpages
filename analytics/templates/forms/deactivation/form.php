@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @var array $VARS
  */
-$as   = analytics( $VARS['id'], $VARS['slug'], $VARS['product_name'], $VARS['version'], $VARS['module_type'] );
+$as   = analytics( $VARS['id'], $VARS['product_name'], $VARS['version'], $VARS['module_type'], $VARS['slug'] );
 $slug = $as->get_slug();
 
 $show_deactivation_feedback_form = $VARS['show_deactivation_feedback_form'];
@@ -67,6 +67,7 @@ HTML;
 		);
 	}
 }
+error_log( print_r( $as->get_slug(), true ) );
 
 // Aliases.
 $deactivate_text = __( 'Deactivate', 'analytics' );
@@ -256,12 +257,18 @@ as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 
 				$modal.find('.reason-input').remove();
 				$modal.find( '.internal-message' ).hide();
-				$modal.find('.button-deactivate').html('<?php echo esc_js( sprintf(
-                    __( 'Submit & %s', 'analytics', $slug ),
-                    $as->is_plugin() ?
-                        $deactivate_text :
-                        sprintf( $activate_x_text, $theme_text )
-                ) ) ?>');
+				$modal.find('.button-deactivate').html('
+				<?php
+				echo esc_js(
+					sprintf(
+						__( 'Submit & %s', 'analytics', $slug ),
+						$as->is_plugin() ?
+						$deactivate_text :
+						sprintf( $activate_x_text, $theme_text )
+					)
+				)
+				?>
+				');
 
 				enableDeactivateButton();
 
