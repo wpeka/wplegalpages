@@ -30,14 +30,14 @@ class WP_Legal_Pages_Public_Test extends WP_UnitTestCase {
 	 * @param WP_UnitTest_Factory $factory helper for unit test functionality.
 	 */
 	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
-		self::$wplegalpages_public = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.5.0' );
+		self::$wplegalpages_public = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.5.1' );
 	}
 
 	/**
 	 * Test for constructor function
 	 */
 	public function test_constructor() {
-		$obj = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.5.0' );
+		$obj = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.5.1' );
 		$this->assertTrue( $obj instanceof WP_Legal_Pages_Public );
 	}
 

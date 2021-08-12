@@ -41,6 +41,13 @@ class Analytics_Tracking {
 	protected $endpoint = WP_STAT__ADDRESS . '/wp-json/action/submit/usage/stats/';
 
 	/**
+	 * The endpoint to send the tracking data to.
+	 *
+	 * @var string
+	 */
+	protected $tracking_endpoint = WP_STAT__ADDRESS . '/wp-json/action/track/analytics/click';
+
+	/**
 	 * The current time.
 	 *
 	 * @var int
@@ -65,6 +72,35 @@ class Analytics_Tracking {
 		// Add an action hook that will be triggered at the specified time by `wp_schedule_single_event()`.
 		add_action( 'analytics_tracking_send_data_after_core_update', array( $this, 'analytics_tracking_send' ) );
 		add_action( 'upgrader_process_complete', array( $this, 'analytics_tracking_schedule_data_sending' ), 10, 2 );
+		add_action( 'wp_ajax_wplegalpages_track_analytics', array( $this, 'analytics_tracking_send_clicks' ), 10, 1 );
+	}
+
+	/**
+	 * Send click tracking data.
+	 *
+	 * @return array
+	 */
+	public function analytics_tracking_send_clicks() {
+		if ( isset( $_POST['data'] ) && ! empty( $_POST['data'] ) ) {
+			if ( isset( $_POST['data']['nonce'] ) && ! empty( $_POST['data']['nonce'] ) ) {
+				$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
+				if ( wp_verify_nonce( $nonce, 'track_analytics' ) ) {
+					$event = isset( $_POST['data']['event'] ) ? sanitize_text_field( $_POST['data']['event'] ) : '';
+					if ( ! empty( $event ) ) {
+						$args     = array(
+							'method' => 'POST',
+							'body'   => array(
+								'product_name' => $this->slug,
+								'event'        => $event,
+								'default'      => $this->analytics_tracking_get_default_data(),
+							),
+						);
+						$response = wp_remote_post( $this->tracking_endpoint, $args );
+					}
+				}
+			}
+		}
+		return array( 'response' => true );
 	}
 
 	/**
