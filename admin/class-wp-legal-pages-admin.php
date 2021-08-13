@@ -487,6 +487,32 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							)
 						),
 					),
+					'help_section'        => array(
+						'help_center'  => array(
+							'title'       => __( 'Help Center', 'wplegalpages' ),
+							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
+							'description' => __( 'Read the documentation to find answers to your questions', 'wplegalpages' ),
+							'link'        => 'https://docs.wpeka.com/wp-legal-pages/',
+							'link_title'  => 'Learn more',
+						),
+						'video_guides' => array(
+							'title'       => __( 'Video Guides', 'wplegalpages' ),
+							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
+							'description' => __( 'Browse through these video tutorials to learn more about how WPLegalPages function', 'wplegalpages' ),
+							'link'        => 'https://youtube.com/playlist?list=PLb2uZyVYHgAXGnKHTr2EouG8ZWba60URR',
+							'link_title'  => 'Watch now',
+
+						),
+						'faq'          => array(
+							'title'       => __( 'FAQ with answers', 'wplegalpages' ),
+							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
+							'description' => __( 'Find answers to some of the most commonly asked questions', 'wplegalpages' ),
+							'link'        => 'https://docs.wpeka.com/wp-legal-pages/faq',
+							'link_title'  => 'Find out',
+
+						),
+
+					),
 				)
 			);
 			?>
