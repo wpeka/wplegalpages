@@ -67,7 +67,6 @@ HTML;
 		);
 	}
 }
-error_log( print_r( $as->get_slug(), true ) );
 
 // Aliases.
 $deactivate_text = __( 'Deactivate', 'analytics' );
