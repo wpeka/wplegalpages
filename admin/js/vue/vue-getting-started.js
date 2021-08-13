@@ -61,65 +61,43 @@ Vue.component('HelpSection', {
             var helpCards = [];
             for (const [key, value] of Object.entries(obj.help_section)){
 
-                var helpCard = createElement('div', {
-                    staticClass: 'wplegal-help-card',
-                    attrs:{
-                        height: '200',
-                        width:'200',
-                        border:'1px solid red'
-                    },
-        
+                var helpCard = [createElement('div', {
+                    staticClass: 'wplegal-help-card'
                 },[createElement('div', {
+                    staticClass: 'wplegal-help-card-top',
+                    },[createElement('div', {
                     staticClass: 'wplegal-help-card-icon',
-                    attrs:{
-                        height: '70',
-                        width:'200',
-                        border:'1px solid red'
-                    },
                     domProps: {
                         innerHTML: '<img class="wplegal-help-img" src='+ value.image_src + key + '.png >'
                     }
-        
                 }),
                 createElement('div', {
-                    staticClass: 'wplegal-help-card-description',
-                    attrs:{
-                        height: '130',
-                        width:'200',
-                        border:'1px solid red'
-                    }
+                    staticClass: 'wplegal-help-card-description'
                 },
                 [createElement('h3', {
                     staticClass: 'wplegal-help-card-heading',
                     domProps: {
                         innerHTML: value.title
                     }
-        
                 }),
                 createElement('p', {
                     staticClass: 'wplegal-help-card-summary',
                     domProps: {
                         innerHTML: value.description
                     }
-        
-                }),
+                }),])]),
                 createElement('p', {
                     staticClass: 'wplegal-help-card-link',
                     domProps: {
                         innerHTML: '<a  target="_blank" href=' + value.link +' >' + value.link_title + '</a>'
                     }
-        
-                })
-            ]
-                )
-            ]
-                )
+                })])];
                 helpCards.push(helpCard);
             };
             return helpCards;
 
-    }
-},
+        }
+    },
     render(createElement) {
         var self = this;
         return createElement('div', {
