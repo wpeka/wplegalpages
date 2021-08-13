@@ -55,6 +55,61 @@ Vue.component('VideoSection', {
     }
 });
 
+Vue.component('HelpSection', {
+    methods: {
+        createHelpCards: function(createElement) {
+            var helpCards = [];
+            for (const [key, value] of Object.entries(obj.help_section)){
+
+                var helpCard = [createElement('div', {
+                    staticClass: 'wplegal-help-card'
+                },[createElement('div', {
+                    staticClass: 'wplegal-help-card-top',
+                    },[createElement('div', {
+                    staticClass: 'wplegal-help-card-icon',
+                    domProps: {
+                        innerHTML: '<img class="wplegal-help-img" src='+ value.image_src + key + '.png >'
+                    }
+                }),
+                createElement('div', {
+                    staticClass: 'wplegal-help-card-description'
+                },
+                [createElement('h3', {
+                    staticClass: 'wplegal-help-card-heading',
+                    domProps: {
+                        innerHTML: value.title
+                    }
+                }),
+                createElement('p', {
+                    staticClass: 'wplegal-help-card-summary',
+                    domProps: {
+                        innerHTML: value.description
+                    }
+                }),])]),
+                createElement('p', {
+                    staticClass: 'wplegal-help-card-link',
+                    domProps: {
+                        innerHTML: '<a  target="_blank" href=' + value.link +' >' + value.link_title + '</a>'
+                    }
+                })])];
+                helpCards.push(helpCard);
+            };
+            return helpCards;
+
+        }
+    },
+    render(createElement) {
+        var self = this;
+        return createElement('div', {
+            staticClass: 'wplegal-help-section',
+            attrs:{
+                display: 'flex',
+                justifyContent:'space-between',
+            }
+        }, [self.createHelpCards(createElement)]);
+    }
+});
+
 Vue.component('TermsSection', {
     data: function() {
         return {
@@ -464,7 +519,7 @@ var app = new Vue({
         },[createElement('header-section'),
         createElement('div',{
             staticClass: 'wplegal-container-main'
-        },[createElement('welcome-section'), createElement('video-section'), createElement('terms-section'), this.disabled && !this.is_pro ? createElement('settings-section') : [], this.disabled && !this.is_pro ? createElement('pages-section') : []]),
+        },[createElement('welcome-section'), createElement('video-section'), createElement('help-section'),createElement('terms-section'), this.disabled && !this.is_pro ? createElement('settings-section') : [], this.disabled && !this.is_pro ? createElement('pages-section') : []]),
         createElement('div',{
         staticClass: 'wplegal-container-features'
         },[this.is_pro ? this.disabled ? createElement('wizard-section') : [] : createElement('features-section')])]);
