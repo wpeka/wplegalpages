@@ -209,6 +209,7 @@ WPLegalPages provides you pre-approved templates. You may want to customize it a
 = 2.5.1 =
 * Update: Analytics tracking library.
 * Fix: PHP 8 compatibility issues fixed.
+* Update: Restructured Getting started page.
 
 = 2.5.0 =
 * Update: Added Last updated date in policy template.
