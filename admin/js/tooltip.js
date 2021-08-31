@@ -84,5 +84,18 @@ jQuery( document ).ready(
 			}
 		);
 
+		jQuery( '#wplegal_accordian' ).click(
+			function() {
+				var display_state = jQuery('#wplegal_refund_list').css('display');
+				jQuery("#wplegal_accordian").toggleClass("wplegal-accordian-active");
+
+				if(display_state === 'none'){
+					jQuery('#wplegal_refund_list').css('display','block');
+				}else{
+					jQuery('#wplegal_refund_list').css('display','none');
+				}
+			}
+		);
+
 	}
 );
