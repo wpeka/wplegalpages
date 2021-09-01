@@ -347,3 +347,54 @@ div.wplegal-choose-template select.wplegal-template-language {
 	justify-content:space-between;
 	align-items:center;
 }
+#wplegal_refund_list{
+	padding-left: 20px;
+}
+
+#wplegal_accordian{
+	list-style-type: none !important; 
+}
+
+#wplegal_accordian::before {
+    content: '\271A';
+    color: #000;
+    font-size: 12px;
+    margin-left: -3px;
+    margin-right: 7px;
+}
+
+.wplegal-accordian-active::before{
+	content: '\2212' !important;
+	color: #000 !important;
+    font-weight: 1000;
+}
+
+.wplegal-tooltip {
+	position: relative;
+	display: inline-block;
+  }
+  /* Tooltip text */
+  .wplegal-tooltip .wplegal-tooltiptext {
+	visibility: hidden;
+	width: 150px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	padding: 5px 5px;
+	border-radius: 6px;
+   
+	/* Position the tooltip text */
+	position: absolute;
+	z-index: 1001;
+	top: 25px;
+    left: -60px;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .wplegal-tooltip:hover .wplegal-tooltiptext {
+	visibility: visible;
+  }
+  .wplegal-tooltip .dashicons-info {
+	  margin-top:2.5px;
+	  font-size: 15px;
+  }

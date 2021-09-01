@@ -183,7 +183,77 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 		<?php
 
 		$result = $wpdb->get_results( $wpdb->prepare( 'select * from ' . $lp_obj->tablename . ' where `is_active`=%d ORDER BY `id`', array( 1 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$tooltip_texts = array(
+			'Privacy Policy'                           => 'If you collect any personal data from users',
+			'DMCA'                                     => 'To limit your liability to copyright infringement claims',
+			'Terms of Use'                             => 'If you want to protect your business',
+			'CCPA - California Consumer Privacy Act'   => 'If you are collecting personal data and have California based users',
+			'Terms(forced agreement)'                  => "Use when you don't want your users to proceed without agreeing to website terms",
+			'California Privacy Rights'                => 'If you have California based users and want to give them clarity on disclosure of personal information.',
+			'Earnings Disclaimer'                      => 'To limit your legal liability if your website is promoting strategies and programs to help users make money',
+			'Disclaimer'                               => 'To limit your legal liability and keep your users informed',
+			'Testimonials Disclosure'                  => 'Use this if your website displays user reviews or endorsements',
+			'Linking Policy'                           => 'Use this policy to inform the users about the terms and conditions for linking to your website and disclaimers for external linking.',
+			' General'                                 => 'Suitable for most eCommerce businesses which need a standard policy',
+			' Digital Goods'                           => 'For downloadable, licensed, or subscription based services. Eg- Software, Music, e-Books',
+			' Physical Goods'                          => 'For physical items which needs shipping like apparels, shoes, books etc',
+			' Perishable Goods'                        => 'For easily perishable items like food, that have a short lifespan',
+			' No Refunds'                              => 'If your store doesn’t give any refunds',
+			'Affiliate Agreement'                      => 'For a legal contract between you and your affiliates who promote your products/services',
+			'Antispam'                                 => 'If you are an individual/business that uses email for advertising or promoting something',
+			'FTC Statement'                            => 'If you have a website and have affiliate partners, you should declare your website’s compliance with the Federal Trade Commission policies',
+			'Amazon Affiliate Disclosure'              => 'To comply with Amazon’s affiliate program requirements (if you promote products listed on amazon)',
+			'Double Dart Cookie'                       => 'To notify users if your website or blog is using any Double Click Dart Cookie',
+			'External Links Policy'                    => 'If your website links to other external websites, you can use this to ensure that the external links are in compliance with the applicable laws.',
+			'Affiliate Disclosure'                     => 'To inform your audience about your affiliate relationships with brands, products, or companies that you publicly recommend',
+			'FB Policy'                                => 'If you are collecting any personal data from your page through a call to action (such as email addresses for your mailing list),',
+			'About Us'                                 => 'To display your contact and mailing information',
+			'Blog Comments Policy'                     => 'Use when you have comments enabled on your blog',
+			'Cookies Policy'                           => 'To inform users about the cookies active on your website that track user data',
+			'GDPR Cookie Policy'                       => 'Use when you have visitors from the EU & are using cookies on your website',
+			'Confidentiality Disclosure'               => 'To protect confidential and proprietary information displayed on your website',
+			'GDPR Cookie Policy'                       => 'Use when you have visitors from the EU & are using cookies on your website',
+			'Medical Disclaimer'                       => 'To imply that the information on your website is not intended to be a substitute for professional medical advice, diagnosis, or treatment',
+			'COPPA - Children’s Online Privacy Policy' => 'If you are collecting personal information on your website from children below 13 years in age',
+			'Newsletter : Subscription and Disclaimer' => 'If you are using an email newsletter service and collect personal information like email id from your subscribers',
+			'GDPR Privacy Policy'                      => 'Use when your website collects personal information and has visitors from the EU.',
+		);
+
+		$refund_start  = false;
+		$refund_end   = false;
+
 		foreach ( $result as $ras ) {
+
+			if ( ! $refund_start && strpos( $ras->title, 'Refund' ) !== false )
+			{
+				$_GET['page'] = 'returns_refunds_policy';
+
+				?>
+				<li class="wplegal-template-eng wplegal-accordian" id="wplegal_accordian"><span><a class="myLink" href="#"> Returns and Refunds Policy </a></span></li>
+
+				<div class="wplegal-refund-list" id="wplegal_refund_list" style="display : none">
+
+					<li class="wplegal-template-fr"><span><a class="myLink" href="<?php echo esc_url( admin_url() ); ?>index.php?page=wplegal-wizard#/">Use Guided Wizard
+								<span class="wplegal-tooltip"><span class="dashicons dashicons-info"></span>
+									<span class="wplegal-tooltiptext">Easy Q&A wizard to help you customize your policy as per your business</span>
+								</span>
+							</a></span></li>
+				<?php
+
+				$refund_start = true;
+			}
+
+			if ( $refund_start && ! $refund_end && strpos( $ras->title, 'Refund' ) === false ) {
+				?>
+				</div>
+				<?php
+				$refund_end = true;
+			}
+
+			if ( strpos( $ras->title, 'Returns and Refunds Policy' ) !== false ) {
+				$ras->title = str_replace( 'Returns and Refunds Policy:', '', $ras->title );
+			}
+
 			if ( strpos( $ras->title, 'FR' ) !== false ) {
 				if ( 'fr' === $template_lang ) :
 					?>
@@ -199,7 +269,11 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				<?php endif; ?>
 			<?php } else { ?>
 				<?php if ( 'eng' === $template_lang ) : ?>
-					<li class="wplegal-template-eng"><span id="legalpages<?php echo esc_attr( $ras->id ); ?>"><a class="myLink" href="<?php echo esc_url( admin_url() ); ?>admin.php?page=<?php echo esc_attr( $current_page ); ?>&lp-template-lang=eng&lp-type=<?php echo esc_attr( $lptype ); ?>&lp-template=<?php echo esc_attr( $ras->id ); ?>"><?php echo esc_attr( $ras->title ); ?> &raquo;</a></span></li>
+					<li class="wplegal-template-eng "><span id="legalpages<?php echo esc_attr( $ras->id ); ?>"><a class="myLink " href="<?php echo esc_url( admin_url() ); ?>admin.php?page=<?php echo esc_attr( $current_page ); ?>&lp-template-lang=eng&lp-type=<?php echo esc_attr( $lptype ); ?>&lp-template=<?php echo esc_attr( $ras->id ); ?>"><?php echo esc_attr( $ras->title ); ?>
+												<span class="wplegal-tooltip"><span class="dashicons dashicons-info"></span>
+													<span class="wplegal-tooltiptext"><?php echo esc_attr( $tooltip_texts[ $ras->title ] ); ?></span>
+												</span>
+											</a></span></li>
 				<?php else : ?>
 					<li style="display:none;" class="wplegal-template-eng"><span id="legalpages<?php echo esc_attr( $ras->id ); ?>"><a class="myLink" href="<?php echo esc_url( admin_url() ); ?>admin.php?page=<?php echo esc_attr( $current_page ); ?>&lp-template-lang=eng&lp-type=<?php echo esc_attr( $lptype ); ?>&lp-template=<?php echo esc_attr( $ras->id ); ?>"><?php echo esc_attr( $ras->title ); ?> &raquo;</a></span></li>
 				<?php endif; ?>
