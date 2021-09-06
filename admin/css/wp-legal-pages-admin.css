@@ -376,7 +376,7 @@ div.wplegal-choose-template select.wplegal-template-language {
   /* Tooltip text */
   .wplegal-tooltip .wplegal-tooltiptext {
 	visibility: hidden;
-	width: 150px;
+	width: 135px;
 	background-color: black;
 	color: #fff;
 	text-align: center;
@@ -387,7 +387,7 @@ div.wplegal-choose-template select.wplegal-template-language {
 	position: absolute;
 	z-index: 1001;
 	top: 25px;
-    left: -60px;
+    left: -110px;
   }
   
   /* Show the tooltip text when you mouse over the tooltip container */
@@ -397,4 +397,15 @@ div.wplegal-choose-template select.wplegal-template-language {
   .wplegal-tooltip .dashicons-info {
 	  margin-top:2.5px;
 	  font-size: 15px;
+  }
+
+  .wplegal-tooltip .wplegal-tooltiptext::after {
+	content: " ";
+	position: absolute;
+	bottom: 100%;  
+	left: 89%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent transparent black transparent;
   }
