@@ -229,7 +229,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				$_GET['page'] = 'returns_refunds_policy';
 
 				?>
-				<li class="wplegal-template-eng wplegal-accordian" id="wplegal_accordian"><span><a class="myLink" href="#"> Returns and Refunds Policy </a></span></li>
+				<li class="wplegal-template-eng wplegal-accordian" id="wplegal_accordian"><span><a class="myLink" > Returns and Refunds Policy </a></span></li>
 
 				<div class="wplegal-refund-list" id="wplegal_refund_list" style="display : none">
 
