@@ -75,7 +75,7 @@ a{
 	height:20px;
 	font-size: 14px;
 }
-.toplevel_page_legal-pages .postbox{
+.toplevel_page_legal-pages .postbox.legalpages-settings{
 	min-height: 635px;
 }
 #lp_admin_generalid_right img{
