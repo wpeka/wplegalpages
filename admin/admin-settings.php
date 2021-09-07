@@ -114,9 +114,9 @@ if ( '1' === $lpterms ) {
 	}
 	if ( $lp_pro_active ) {
 		?>
-		<div class="postbox " style="min-height:1240px!important;">  
+		<div class="postbox legalpages-settings" style="min-height:1240px!important;">
 	<?php } else { ?>
-		<div class="postbox ">
+		<div class="postbox legalpages-settings">
 		<?php
 	}
 	?>
