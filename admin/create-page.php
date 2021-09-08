@@ -224,7 +224,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 
 		foreach ( $result as $ras ) {
 
-			if ( get_option( 'wplegalpages_pro_version' ) || version_compare( get_option( 'wplegalpages_pro_version' ), '8.1.8' ) !== 0 ) {
+			if ( get_option( 'wplegalpages_pro_version' ) && version_compare( get_option( 'wplegalpages_pro_version' ), '8.1.8' ) !== 0 ) {
 				if ( ! $refund_start && strpos( $ras->title, 'Refund' ) !== false ) {
 					$_GET['page'] = 'returns_refunds_policy';
 	
