@@ -35,14 +35,14 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 	 * @param WP_UnitTest_Factory $factory helper for unit test functionality.
 	 */
 	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
-		self::$wplegalpages_admin = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.5.2' );
+		self::$wplegalpages_admin = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.5.3' );
 	}
 
 	/**
 	 * Test for construction function
 	 */
 	public function test_construct() {
-		$obj = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.5.2' );
+		$obj = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.5.3' );
 		$this->assertTrue( $obj instanceof WP_Legal_Pages_Admin );
 	}
 
