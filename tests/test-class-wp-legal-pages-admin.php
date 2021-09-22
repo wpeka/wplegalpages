@@ -75,6 +75,11 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 	public function test_admin_menu() {
 		$current_user = wp_get_current_user();
 		$current_user->add_cap( 'manage_options' );
+
+		update_option( 'lp_accept_terms', '0' );
+		self::$wplegalpages_admin->admin_menu();
+		$this->assertNotEmpty( menu_page_url( 'getting-started' ) );
+
 		update_option( 'lp_accept_terms', '1' );
 
 		self::$wplegalpages_admin->admin_menu();
@@ -279,6 +284,24 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		self::$wplegalpages_admin->update_eu_cookies();
 		$html = ob_get_clean();
 		$this->assertTrue( is_string( $html ) && wp_strip_all_tags( $html ) );
+	}
+
+	/**
+	 * Test for wplegalpages_disable_settings_warning
+	 */
+	public function test_wplegalpages_disable_settings_warning() {
+		$result = self::$wplegalpages_admin->wplegalpages_disable_settings_warning();
+		$this->assertTrue( $result );
+		$option_value = get_option( 'wplegalpages_disable_settings_warning' );
+		$this->assertEquals( $option_value, '1' );
+	}
+
+	/**
+	 * Test for wplegal_accept_terms
+	 */
+	public function test_wplegal_accept_terms() {
+		$this->expectException( 'WPDieException' );
+		self::$wplegalpages_admin->wplegal_accept_terms();
 	}
 }
 
