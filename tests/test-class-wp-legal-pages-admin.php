@@ -217,6 +217,9 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 	 * Test for getting_started function
 	 */
 	public function test_getting_started() {
+		update_option( 'lp_accept_terms', '1' );
+		update_option( '_lp_pro_installed', '1' );
+
 		ob_start();
 		self::$wplegalpages_admin->getting_started();
 		$expected_html = ob_get_clean();
