@@ -57,69 +57,74 @@ if ( '1' === $lpterms ) {
 		<?php endif; ?>
 	<div id="WP-Feedback-legal-pages" align="center"></div>
 	<?php
-	if ( ! empty( $_POST ) && isset( $_POST['lp-greset'] ) ) :
+	if ( get_option( 'wplegalpages_pro_version' ) && version_compare( get_option( 'wplegalpages_pro_version' ), '8.2.0' ) < 0 ) {
+		if ( ! empty( $_POST ) && isset( $_POST['lp-greset'] ) ) :
 
-		$lp_general = array(
-			'domain'       => '',
-			'business'     => '',
-			'phone'        => '',
-			'street'       => '',
-			'cityState'    => '',
-			'country'      => '',
-			'email'        => '',
-			'address'      => '',
-			'niche'        => '',
-			'privacy'      => '',
-			'privacy_page' => '',
-			'pagefooter'   => '',
-			'generate'     => '',
-		);
+			$lp_general = array(
+				'domain'       => '',
+				'business'     => '',
+				'phone'        => '',
+				'street'       => '',
+				'cityState'    => '',
+				'country'      => '',
+				'email'        => '',
+				'address'      => '',
+				'niche'        => '',
+				'privacy'      => '',
+				'privacy_page' => '',
+				'pagefooter'   => '',
+				'generate'     => '',
+			);
 
-		update_option( 'lp_general', $lp_general );
+			update_option( 'lp_general', $lp_general );
 
-		?>
-	<div id="message">
-		<p><span class="label label-success myAlert"><?php esc_attr_e( 'Settings Reset.', 'wplegalpages' ); ?></span></p>
-	</div>
-		<?php
-	endif;
-	if ( ! empty( $_POST ) && isset( $_POST['lp-gsubmit'] ) ) :
+			?>
+			<div id="message">
+			<p><span class="label label-success myAlert"><?php esc_attr_e( 'Settings Reset.', 'wplegalpages' ); ?></span></p>
+		</div>
+			<?php
+		endif;
+		if ( ! empty( $_POST ) && isset( $_POST['lp-gsubmit'] ) ) :
 
 
-		$lp_general = array(
-			'domain'    => isset( $_POST['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-domain-name'] ) ) : '',
-			'business'  => isset( $_POST['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-business-name'] ) ) : '',
-			'phone'     => isset( $_POST['lp-phone'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-phone'] ) ) : '',
-			'street'    => isset( $_POST['lp-street'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-street'] ) ) : '',
-			'cityState' => isset( $_POST['lp-city-state'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-city-state'] ) ) : '',
-			'country'   => isset( $_POST['lp-country'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-country'] ) ) : '',
-			'email'     => isset( $_POST['lp-email'] ) ? sanitize_email( wp_unslash( $_POST['lp-email'] ) ) : '',
-			'address'   => isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
-			'niche'     => isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
-			'generate'  => isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
-		);
-		$lp_general = apply_filters( 'wplegalpages_save_settings', $lp_general, $_POST );
-		update_option( 'lp_general', $lp_general );
-		?>
-	<div id="message">
-		<p><span class="label label-success myAlert"><?php esc_attr_e( 'Settings Saved.', 'wplegalpages' ); ?></span></p>
-	</div>
-		<?php
-	endif;
+			$lp_general = array(
+				'domain'    => isset( $_POST['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-domain-name'] ) ) : '',
+				'business'  => isset( $_POST['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-business-name'] ) ) : '',
+				'phone'     => isset( $_POST['lp-phone'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-phone'] ) ) : '',
+				'street'    => isset( $_POST['lp-street'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-street'] ) ) : '',
+				'cityState' => isset( $_POST['lp-city-state'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-city-state'] ) ) : '',
+				'country'   => isset( $_POST['lp-country'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-country'] ) ) : '',
+				'email'     => isset( $_POST['lp-email'] ) ? sanitize_email( wp_unslash( $_POST['lp-email'] ) ) : '',
+				'address'   => isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
+				'niche'     => isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
+				'generate'  => isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
+			);
+			$lp_general = apply_filters( 'wplegalpages_save_settings', $lp_general, $_POST );
+			update_option( 'lp_general', $lp_general );
+			?>
+		<div id="message">
+			<p><span class="label label-success myAlert"><?php esc_attr_e( 'Settings Saved.', 'wplegalpages' ); ?></span></p>
+		</div>
+			<?php
+		endif;
+	}
 	$checked    = 'checked="checked"';
 	$selected   = 'selected="selected"';
 	$lp_general = get_option( 'lp_general' );
 	if ( ! isset( $wpgattack ) ) {
 		global $wpgattack;
 	}
-	if ( $lp_pro_active ) {
-		?>
-		<div class="postbox legalpages-settings" style="min-height:1240px!important;">
-	<?php } else { ?>
-		<div class="postbox legalpages-settings">
-		<?php
-	}
 	?>
+	<?php
+	if ( get_option( 'wplegalpages_pro_version' ) && version_compare( get_option( 'wplegalpages_pro_version' ), '8.2.0' ) < 0 ) {
+		if ( $lp_pro_active ) {
+			?>
+			<div class="postbox legalpages-settings" style="min-height:1240px!important;">
+		<?php } else { ?>
+			<div class="postbox legalpages-settings">
+			<?php
+		}
+		?>
 
 	<h3 class="hndle myLabel-head"  style="cursor:pointer; padding:7px 10px; font-size:20px;"> <?php esc_attr_e( 'General Settings', 'wplegalpages' ); ?> </h3>
 	<div id="lp_admin_generalid">
@@ -181,7 +186,73 @@ if ( '1' === $lpterms ) {
 <div class='lp-pro-link'>
 	<a href="<?php echo esc_url( $baseurl ); ?>?page=lp-create-page"><h3 class="hndle"  style="cursor:pointer; padding:7px 10px; font-size:20px;"><?php esc_attr_e( 'Click Here to Create Legal Pages &raquo;', 'wplegalpages' ); ?></h3></a>
 </div>
-	<?php
+		<?php
+	} else {
+		?>
+	<div id="app" v-cloak>
+	<div class="adc-nav">
+		<div class="adc-nav-inner">
+			<div class="adc-logo"></div>
+		</div>
+	</div>
+	
+	<div id="wplegalpages-save-settings-alert">Settings saved</div>
+	<c-tabs ref="active_tab" id="wplegalpages_tabs">
+		
+		<c-tab class = "wplegalpages-nav-menu-item" title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" active href="#general">
+			
+			<?php do_action( 'wp_legalpages_notice' ); ?>
+			<c-card>
+				<c-card-body>
+					<div id="lp_admin_generalid">
+						
+							
+							<table class="wplegalpages-settings-table" cellpadding="5" cellspacing="0" border="0">
+								<tr>
+									<td></td><td></td><td><b class="hndle shortcode-label"><?php esc_attr_e( 'Shortcodes', 'wplegalpages' ); ?><p><?php esc_attr_e( '(Use as a placeholder)', 'wplegalpages' ); ?></p></b></td>
+								</tr>
+								<tr>
+									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Domain Name', 'wplegalpages' ); ?></b></td><td><c-input class="wplegalpages-settings-input" type="text" name="lp-domain-name" value="<?php echo ! empty( $lp_general['domain'] ) ? esc_attr( $lp_general['domain'] ) : esc_url_raw( get_bloginfo( 'url' ) ); ?>"></c-input><td class="wplegalpages-settings-shortcode">[Domain]</td>
+									</tr>
+								<tr>
+									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Business Name', 'wplegalpages' ); ?></b></td><td><c-input class="wplegalpages-settings-input" type="text" name="lp-business-name" value="<?php echo ! empty( $lp_general['business'] ) ? esc_attr( $lp_general['business'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[Business Name]</td>
+								</tr>
+								<tr>
+									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Phone', 'wplegalpages' ); ?></b></td><td><c-input class="wplegalpages-settings-input" type="text"  name="lp-phone" value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[Phone]</td>
+								</tr>
+								<tr>
+									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Street', 'wplegalpages' ); ?></b></td><td><c-input class="wplegalpages-settings-input" type="text" name="lp-street" value="<?php echo ! empty( $lp_general['street'] ) ? esc_attr( $lp_general['street'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[Street]</td>
+								</tr>
+								<tr>
+									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'City, State, Zip code', 'wplegalpages' ); ?></b></td><td><c-input class="wplegalpages-settings-input" type="text"  name="lp-city-state" value="<?php echo ! empty( $lp_general['cityState'] ) ? esc_attr( $lp_general['cityState'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[City, State, Zip code]</td>
+								</tr>
+								<tr>
+									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Country', 'wplegalpages' ); ?></b></td><td><c-input class="wplegalpages-settings-input" type="text" name="lp-country" value="<?php echo ! empty( $lp_general['country'] ) ? esc_attr( $lp_general['country'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[Country]</td>
+								</tr>
+								<tr>
+									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Email', 'wplegalpages' ); ?></b></td><td><c-input class="wplegalpages-settings-input" type="text"  name="lp-email" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" ></c-input></td><td class="wplegalpages-settings-shortcode">[Email]</td>
+								</tr>
+								<tr>
+									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Address', 'wplegalpages' ); ?></b></td><td><c-input class="wplegalpages-settings-input"type="text" name="lp-address" value="<?php echo ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[Address]</td>
+								</tr>
+								<tr>
+									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Niche', 'wplegalpages' ); ?></b></td> <td><c-input class="wplegalpages-settings-input" type="text" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>"></c-input></td> <td class="wplegalpages-settings-shortcode">[Niche]</td>
+								</tr>
+								<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
+								
+								<tr align="center">
+								</tr>					
+						</table>
+					</div>	
+				</c-card-body>
+			</c-card>				
+		</c-tab>
+		<?php do_action( 'wp_legalpages_after_general_tab' ); ?>
+		<?php do_action( 'wp_legalpages_after_data_section_tab' ); ?>
+	</c-tabs>
+</div>
+		<?php
+	}
 } else {
 	?>
 	<h2 class="hndle myLabel-head">DISCLAIMER</h2>
