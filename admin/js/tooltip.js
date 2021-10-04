@@ -97,5 +97,24 @@ jQuery( document ).ready(
 			}
 		);
 
+		jQuery( '#lp_ajax_settings_form' ).submit(
+            function(e) {
+                e.preventDefault();
+                var dataV = jQuery(this).serialize();
+				console.log(dataV);
+                var url = jQuery('#lp_admin_ajax_url').val(); 
+			   jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
+                jQuery.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: dataV + '&action=lp_save_admin_settings', 
+                }).done(function (data) {
+                    data = JSON.parse(data);
+					jQuery("#wplegalpages-save-settings-alert").fadeOut(2500);
+                });
+            }
+        );
+
+		
 	}
 );
