@@ -202,9 +202,9 @@ if ( '1' === $lpterms ) {
 		<c-tab class = "wplegalpages-nav-menu-item" title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" active href="#general">
 			
 			<?php do_action( 'wp_legalpages_notice' ); ?>
-			<c-card>
-				<c-card-body>
-					<div id="lp_admin_generalid">
+			<c-card class="wplegalpages-table-card">
+				<c-card-body class="wplegalpages-table-card-body">
+					<div id="lp_admin_generalid" class="lp_settings_table">
 						
 							
 							<table class="wplegalpages-settings-table" cellpadding="5" cellspacing="0" border="0">
