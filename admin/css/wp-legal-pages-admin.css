@@ -625,3 +625,27 @@ div.wplegal-choose-template select.wplegal-template-language {
 	font-size: 14px !important;
 	padding-left: 20px;
 }
+
+.wplegalpages-settings-card-heading {
+	font-size: 20px !important;
+}
+
+.card-header {
+	margin-top: 20px !important;
+	margin-bottom: 20px !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+.wplegalpages_settings_enable_button {
+	color: #fff;
+	background-color: #3399ff;
+}
+
+.wplegalpages_settings_button_text{
+	color: #fff;
+}
+
+.wplegalpages_settings_button_text:hover {
+	color: #fff;
+}

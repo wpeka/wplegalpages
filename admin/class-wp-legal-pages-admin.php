@@ -384,9 +384,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						array_push( $options, $lp_page->post_title );
 					}
 				}
-				//$options = wp_json_encode( $options );
-				wp_localize_script($this->plugin_name . '-main','page_option',$options);
-				wp_enqueue_script( $this->plugin_name . '-main');
+				$lp_options     = get_option( 'lp_general' );
+				$options_object = array(
+					'lp_options'   => $lp_options,
+					'page_options' => $options,
+				);
+				wp_localize_script( $this->plugin_name . '-main', 'obj', $options_object );
+				wp_enqueue_script( $this->plugin_name . '-main' );
 				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wplegalpages-admin-settings.php';
 			}
 		}
@@ -1021,6 +1025,21 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			} else {
 				$_POST['lp-privacy'] = '0';
 			}
+			if ( isset( $_POST['lp-footer'] ) && ( 'true' === $_POST['lp-footer'] || true === $_POST['lp-footer'] ) ) {
+				$_POST['lp-footer'] = '1';
+			} else {
+				$_POST['lp-footer'] = '0';
+			}
+			if ( isset( $_POST['lp-banner'] ) && ( 'true' === $_POST['lp-banner'] || true === $_POST['lp-banner'] ) ) {
+				$_POST['lp-banner'] = '1';
+			} else {
+				$_POST['lp-banner'] = '0';
+			}
+			if ( isset( $_POST['lp-cookie'] ) && ( 'true' === $_POST['lp-cookie'] || true === $_POST['lp-cookie'] ) ) {
+				$_POST['lp-cookie'] = '1';
+			} else {
+				$_POST['lp-cookie'] = '0';
+			}
 			$lp_general = array(
 				'domain'    => isset( $_POST['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-domain-name'] ) ) : '',
 				'business'  => isset( $_POST['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-business-name'] ) ) : '',
@@ -1032,6 +1051,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'address'   => isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
 				'niche'     => isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
 				'generate'  => isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
+				'is_footer' => isset( $_POST['lp-footer'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-footer'] ) ) : '0',
+				'is_banner' => isset( $_POST['lp-banner'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-banner'] ) ) : '0',
+				'is_cookie' => isset( $_POST['lp-cookie'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-cookie'] ) ) : '0',
 			);
 			$lp_general = apply_filters( 'wplegalpages_save_settings', $lp_general, $_POST );
 			update_option( 'lp_general', $lp_general );
