@@ -267,7 +267,7 @@ if ( '1' === $lpterms ) {
 		</c-tab>
 		<?php do_action( 'wp_legalpages_after_general_tab' ); ?>
 		<?php do_action( 'wp_legalpages_after_data_section_tab' ); ?>
-		<c-tab class = "wplegalpages-nav-menu-item" title="<?php esc_attr_e( 'Additional Features', 'wplegalpages' ); ?>" active href="#features">
+		<c-tab class = "wplegalpages-nav-menu-item" title="<?php esc_attr_e( 'Additional Features', 'wplegalpages' ); ?>" href="#features">
 			<div class="wplegalpages-additonal-features-tab">
 			<c-card>
 				<c-card-header><h1 class="wplegalpages-settings-card-heading"><?php esc_html_e( 'Add Legal Pages Link to the Footer', 'wplegalpages' ); ?></h1></c-card-header>
