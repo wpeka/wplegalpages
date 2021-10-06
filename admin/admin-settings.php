@@ -202,9 +202,9 @@ if ( '1' === $lpterms ) {
 		<c-tab class = "wplegalpages-nav-menu-item" title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" active href="#general">
 			
 			<?php do_action( 'wp_legalpages_notice' ); ?>
-			<c-card>
-				<c-card-body>
-					<div id="lp_admin_generalid">
+			<c-card class="wplegalpages-table-card">
+				<c-card-body class="wplegalpages-table-card-body">
+					<div id="lp_admin_generalid" class="lp_settings_table">
 						
 							
 							<table class="wplegalpages-settings-table" cellpadding="5" cellspacing="0" border="0">
@@ -249,47 +249,64 @@ if ( '1' === $lpterms ) {
 		</c-tab>
 		<?php do_action( 'wp_legalpages_after_general_tab' ); ?>
 		<?php do_action( 'wp_legalpages_after_data_section_tab' ); ?>
-		<c-tab class = "wplegalpages-nav-menu-item" title="<?php esc_attr_e( 'Additional Features', 'wplegalpages' ); ?>" href="#features">
+		<c-tab class = "wplegalpages-nav-menu-item" title="<?php esc_attr_e( 'Additional Features', 'wplegalpages' ); ?>" active href="#features">
+			<div class="wplegalpages-additonal-features-tab">
 			<c-card>
 				<c-card-header><h1 class="wplegalpages-settings-card-heading"><?php esc_html_e( 'Add Legal Pages Link to the Footer', 'wplegalpages' ); ?></h1></c-card-header>
 				<c-card-body>
+					<div class="wplegalpages-additional-features-descripiton">
+						<p class="wplegalpages-additonal-features-card-description"><?php esc_html_e( 'Display links to your legal pages in the footer section of your website.', 'wplegalpages' ); ?></p>
+					</div>
+					<div class="wplegalpages-additional-features-buttons">
 					<c-button class="wplegalpages_settings_enable_button" @click="onClickFooter">
 						<span class="wplegalpages_settings_button_text" v-show="is_footer"><?php esc_attr_e( 'Disable' ); ?></span>
 						<span class="wplegalpages_settings_button_text" v-show="!is_footer"><?php esc_attr_e( 'Enable' ); ?></span>
 					</c-button>
-					<c-button color="info">
-						<span><?php esc_attr_e( 'Configure' ); ?></span>
+					<c-button class="wplegalpages_settings_configure_button">
+						<span class="wplegalpages_settings_button_text"><?php esc_attr_e( 'Configure' ); ?></span>
 					</c-button>
-					<input type="hidden" name="lp-footer" ref="footer" v-model="is_footer">
+					</div>
+					<input type="hidden" name="lp-footer" ref="footer" v-model="is_footer">	
 				</c-card-body>
 			</c-card>
 			<c-card>
 				<c-card-header><h1 class="wplegalpages-settings-card-heading"><?php esc_html_e( 'Announcement Banner for Legal Pages', 'wplegalpages' ); ?></h1></c-card-header>
 				<c-card-body>
+					<div class="wplegalpages-additional-features-descripiton">
+						<p class="wplegalpages-additonal-features-card-description"><?php esc_html_e( 'Display announcement banners on your website whenever any legal pages have been updated.', 'wplegalpages' ); ?></p>
+					</div>
+					<div class="wplegalpages-additional-features-buttons">
 					<c-button class="wplegalpages_settings_enable_button" @click="onClickBanner">
 						<span class="wplegalpages_settings_button_text" v-show="is_banner"><?php esc_attr_e( 'Disable' ); ?></span>
 						<span class="wplegalpages_settings_button_text" v-show="!is_banner"><?php esc_attr_e( 'Enable' ); ?></span>
 					</c-button>
-					<c-button color="info">
-						<span><?php esc_attr_e( 'Configure' ); ?></span>
+					<c-button class="wplegalpages_settings_configure_button">
+						<span class="wplegalpages_settings_button_text"><?php esc_attr_e( 'Configure' ); ?></span>
 					</c-button>
+					</div>
 					<input type="hidden" name="lp-banner" ref="banner" v-model="is_banner">
 				</c-card-body>
 			</c-card>
 			<c-card>
 				<c-card-header><h1 class="wplegalpages-settings-card-heading"><?php esc_html_e( 'Add Cookie Bar', 'wplegalpages' ); ?></h1></c-card-header>
 				<c-card-body>
+					<div class="wplegalpages-additional-features-descripiton">
+						<p class="wplegalpages-additonal-features-card-description"><?php esc_html_e( 'Add a cookie bar on your website to inform your visitors about the cookies you use and the information you collect.', 'wplegalpages' ); ?></p>
+					</div>
+					<div class="wplegalpages-additional-features-buttons">
 					<c-button class="wplegalpages_settings_enable_button" @click="onClickCookie">
 						<span class="wplegalpages_settings_button_text" v-show="is_cookie"><?php esc_attr_e( 'Disable' ); ?></span>
 						<span class="wplegalpages_settings_button_text" v-show="!is_cookie"><?php esc_attr_e( 'Enable' ); ?></span>
 					</c-button>
-					<c-button color="info">
-						<span><?php esc_attr_e( 'Configure' ); ?></span>
+					<c-button class="wplegalpages_settings_configure_button">
+						<span class="wplegalpages_settings_button_text"><?php esc_attr_e( 'Configure' ); ?></span>
 					</c-button>
+					</div>
 					<input type="hidden" name="lp-cookie" ref="cookie" v-model="is_cookie">
 				</c-card-body>
 			</c-card>
 			<?php do_action( 'wplegalpages_additional_feature_settings' ); ?>
+			</div>
 		</c-tab>
 	</c-tabs>
 </div>
