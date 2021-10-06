@@ -651,6 +651,56 @@ div.wplegal-choose-template select.wplegal-template-language {
 	font-size: 14px !important;
 	padding-left: 20px;
 }
+
+.wplegalpages-settings-card-heading {
+	font-size: 16px !important;
+	font-weight: 600 !important;
+}
+
+.card-header {
+	margin-top: 20px !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+.wplegalpages_settings_enable_button {
+	padding: 10px 20px;
+	background-color: #509fe2;
+	border-width: 1px 1px 2px;
+	border-radius: 3px;
+	border: solid #2e7fbe;
+	font-size: 14px;
+	font-weight: 400;
+}
+
+.wplegalpages_settings_enable_button:hover {
+	border: 1px solid #2971a9;
+	background-color: #3a93dd;
+}
+
+.wplegalpages_settings_configure_button {
+	padding: 10px 20px;
+	background-color: #509fe2;
+	border-width: 1px 1px 2px;
+	border-radius: 3px;
+	border: solid #2e7fbe;
+	font-size: 14px;
+	font-weight: 400;
+}
+
+.wplegalpages_settings_configure_button:hover {
+	border: 1px solid #2971a9;
+	background-color: #3a93dd;
+}
+
+.wplegalpages_settings_button_text{
+	color: #fff;
+}
+
+.wplegalpages_settings_button_text:hover {
+	color: #fff;
+}
+
 .c-switch-3d-dark .c-switch-input:checked+.c-switch-slider {
     background-color: #2eb85c;
 }
@@ -666,4 +716,30 @@ div.wplegal-choose-template select.wplegal-template-language {
 }
 .wplegalpages-data-section-card{
 	margin-bottom:0px !important;
+}
+.wplegalpages-additonal-features-tab {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	margin-top: 64px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;   
+	grid-auto-rows: minmax(max-content, 1fr);
+	grid-column-gap: 20px;
+    grid-row-gap: 20px;
+}
+.wplegalpages-additional-features-buttons {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+}
+.wplegalpages-additonal-features-tab>.card {
+	padding: 5px;
+	margin: 0;
+}
+
+.wplegalpages-additonal-features-card-description {
+	font-size: 14px;
+}
+
+.wplegalpages-additional-features-descripiton {
+	height: 63px;
 }
