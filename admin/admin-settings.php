@@ -270,7 +270,7 @@ if ( '1' === $lpterms ) {
 		<c-tab class = "wplegalpages-nav-menu-item" title="<?php esc_attr_e( 'Additional Features', 'wplegalpages' ); ?>" href="#features">
 			<div class="wplegalpages-additonal-features-tab">
 			<c-card>
-				<c-card-header><h1 class="wplegalpages-settings-card-heading"><?php esc_html_e( 'Add Legal Pages Link to the Footer', 'wplegalpages' ); ?></h1></c-card-header>
+				<c-card-header class="wplegalpages-settings-card-heading"><?php esc_html_e( 'Add Legal Pages Link to the Footer', 'wplegalpages' ); ?></c-card-header>
 				<c-card-body>
 					<div class="wplegalpages-additional-features-descripiton">
 						<p class="wplegalpages-additonal-features-card-description"><?php esc_html_e( 'Display links to your legal pages in the footer section of your website.', 'wplegalpages' ); ?></p>
@@ -288,7 +288,7 @@ if ( '1' === $lpterms ) {
 				</c-card-body>
 			</c-card>
 			<c-card>
-				<c-card-header><h1 class="wplegalpages-settings-card-heading"><?php esc_html_e( 'Announcement Banner for Legal Pages', 'wplegalpages' ); ?></h1></c-card-header>
+				<c-card-header class="wplegalpages-settings-card-heading"><?php esc_html_e( 'Announcement Banner for Legal Pages', 'wplegalpages' ); ?></c-card-header>
 				<c-card-body>
 					<div class="wplegalpages-additional-features-descripiton">
 						<p class="wplegalpages-additonal-features-card-description"><?php esc_html_e( 'Display announcement banners on your website whenever any legal pages have been updated.', 'wplegalpages' ); ?></p>
@@ -306,7 +306,7 @@ if ( '1' === $lpterms ) {
 				</c-card-body>
 			</c-card>
 			<c-card>
-				<c-card-header><h1 class="wplegalpages-settings-card-heading"><?php esc_html_e( 'Add Cookie Bar', 'wplegalpages' ); ?></h1></c-card-header>
+				<c-card-header class="wplegalpages-settings-card-heading"><?php esc_html_e( 'Add Cookie Bar', 'wplegalpages' ); ?></c-card-header>
 				<c-card-body>
 					<div class="wplegalpages-additional-features-descripiton">
 						<p class="wplegalpages-additonal-features-card-description"><?php esc_html_e( 'Add a cookie bar on your website to inform your visitors about the cookies you use and the information you collect.', 'wplegalpages' ); ?></p>
