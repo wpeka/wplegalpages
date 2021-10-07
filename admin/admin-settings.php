@@ -213,47 +213,47 @@ if ( '1' === $lpterms ) {
 								</tr>
 								<tr>
 									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Domain Name', 'wplegalpages' ); ?></b>
-									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'Enter your website URL', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
 								</td><td><c-input class="wplegalpages-settings-input" type="text" name="lp-domain-name" value="<?php echo ! empty( $lp_general['domain'] ) ? esc_attr( $lp_general['domain'] ) : esc_url_raw( get_bloginfo( 'url' ) ); ?>"></c-input><td class="wplegalpages-settings-shortcode">[Domain]</td>
 									</tr>
 								<tr>
 									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Business Name', 'wplegalpages' ); ?></b>
-									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'Enter your Legal business name', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
 								</td><td><c-input class="wplegalpages-settings-input" type="text" name="lp-business-name" value="<?php echo ! empty( $lp_general['business'] ) ? esc_attr( $lp_general['business'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[Business Name]</td>
 								</tr>
 								<tr>
 									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Phone', 'wplegalpages' ); ?></b>
-									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'Certain policies like CCPA require your contact details', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
 								</td><td><c-input class="wplegalpages-settings-input" type="text"  name="lp-phone" value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[Phone]</td>
 								</tr>
 								<tr>
 									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Street', 'wplegalpages' ); ?></b>
-									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'Certain policies like CCPA require your contact details ', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
 								</td><td><c-input class="wplegalpages-settings-input" type="text" name="lp-street" value="<?php echo ! empty( $lp_general['street'] ) ? esc_attr( $lp_general['street'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[Street]</td>
 								</tr>
 								<tr>
 									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'City, State, Zip code', 'wplegalpages' ); ?></b>
-									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'Certain policies like CCPA require your contact details', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
 								</td><td><c-input class="wplegalpages-settings-input" type="text"  name="lp-city-state" value="<?php echo ! empty( $lp_general['cityState'] ) ? esc_attr( $lp_general['cityState'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[City, State, Zip code]</td>
 								</tr>
 								<tr>
 									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Country', 'wplegalpages' ); ?></b>
-									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'Certain policies like CCPA require your contact details', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
 								</td><td><c-input class="wplegalpages-settings-input" type="text" name="lp-country" value="<?php echo ! empty( $lp_general['country'] ) ? esc_attr( $lp_general['country'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[Country]</td>
 								</tr>
 								<tr>
 									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Email', 'wplegalpages' ); ?></b>
-									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'Certain policies like CCPA require your contact details', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
 								</td><td><c-input class="wplegalpages-settings-input" type="text"  name="lp-email" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" ></c-input></td><td class="wplegalpages-settings-shortcode">[Email]</td>
 								</tr>
 								<tr>
 									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Address', 'wplegalpages' ); ?></b>
-									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'Certain policies like CCPA require your contact details', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
 								</td><td><c-input class="wplegalpages-settings-input"type="text" name="lp-address" value="<?php echo ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : ''; ?>"></c-input></td><td class="wplegalpages-settings-shortcode">[Address]</td>
 								</tr>
 								<tr>
 									<td class="wplegalpages-settings-label"><b><?php esc_attr_e( 'Niche', 'wplegalpages' ); ?></b>
-									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+									<c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( ' Fill the general niche of your business', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
 								</td> <td><c-input class="wplegalpages-settings-input" type="text" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>"></c-input></td> <td class="wplegalpages-settings-shortcode">[Niche]</td>
 								</tr>
 								<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
