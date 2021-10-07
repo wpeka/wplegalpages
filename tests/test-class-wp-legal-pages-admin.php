@@ -6,6 +6,8 @@
  * @subpackage wplegalpages/tests
  */
 
+require_once ABSPATH . 'wp-admin/includes/ajax-actions.php';
+
 /**
  * Require WP_Legal_Pages class.
  */
@@ -19,7 +21,7 @@ require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wp-legal-p
 /**
  * Class WP_Legal_Pages_Admin class test cases
  */
-class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
+class WP_Legal_Pages_Admin_Test extends WP_Ajax_UnitTestCase {
 
 	/**
 	 * The WP_Legal_Pages_Admin class instance.
@@ -291,6 +293,25 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test for wplegalpages_ajax_save_settings
+	 */
+	public function test_wplegalpages_ajax_save_settings() {
+		$this->_setRole( 'administrator' );
+
+		$_POST['settings_form_nonce'] = wp_create_nonce( 'settings-form-nonce' );
+		$_POST['lp-niche']            = 'My niche';
+		$_POST['action']              = 'lp_save_admin_settings';
+
+		try {
+			$this->_handleAjax( 'lp_save_admin_settings' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+		$response = json_decode( $this->_last_response );
+		$this->assertNull( $response );
+	}
+
+	/**
 	 * Test for wplegalpages_disable_settings_warning
 	 */
 	public function test_wplegalpages_disable_settings_warning() {
@@ -304,8 +325,16 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 	 * Test for wplegal_accept_terms
 	 */
 	public function test_wplegal_accept_terms() {
-		$this->expectException( 'WPDieException' );
-		self::$wplegalpages_admin->wplegal_accept_terms();
+		$this->_setRole( 'administrator' );
+		$_POST['_wpnonce'] = wp_create_nonce( 'lp-accept-terms' );
+		$_POST['action'] = 'lp_accept_terms';
+		try {
+			$this->_handleAjax( 'lp_save_admin_settings' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+		$response = json_decode( $this->_last_response );
+		$this->assertNull( $response );
 	}
 }
 
