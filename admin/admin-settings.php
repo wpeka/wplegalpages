@@ -326,9 +326,6 @@ if ( '1' === $lpterms ) {
 			<?php do_action( 'wplegalpages_additional_feature_settings' ); ?>
 			</div>
 		</c-tab>
-		<div id="announcement_popup">
-			
-		<div>
 	</c-tabs>
 </div>
 		<?php
