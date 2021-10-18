@@ -124,5 +124,63 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			}
 			return $content;
 		}
+
+		/**
+		 * Function to display message in footer
+		 */
+		public function wp_legalpages_show_footer_message() {
+			$lp_footer_options = get_option( 'lp_footer_options' );
+			if ( false === $lp_footer_options || empty( $lp_footer_options ) ) {
+				return;
+			}
+			if ( '1' !== $lp_footer_options['show_footer'] ) {
+				return;
+			}
+			$footer_bg_color    = $lp_footer_options['footer_bg_color'];
+			$footer_text_align  = $lp_footer_options['footer_text_align'];
+			$footer_separator   = $lp_footer_options['footer_separator'];
+			$footer_text_color  = $lp_footer_options['footer_text_color'];
+			$footer_link_color  = $lp_footer_options['footer_link_color'];
+			$footer_font_family = $lp_footer_options['footer_font'];
+			$footer_font_id     = $lp_footer_options['footer_font_id'];
+			$footer_font_size   = $lp_footer_options['footer_font_size'];
+			$footer_custom_css  = $lp_footer_options['footer_custom_css'];
+			$footer_new_tab     = '1' === $lp_footer_options['footer_new_tab'] ? 'target="_blank"' : '';
+			$footer_pages       = explode( ',', $lp_footer_options['footer_legal_pages'] );
+			?>
+			<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=<?php echo esc_attr( $footer_font_id ); ?>">
+			<?php
+			$wplegalpages_footer_html = '<div id="wplegalpages_footer_links_container">';
+			$page_count               = count( $footer_pages );
+			for ( $i = 0; $i < $page_count; $i++ ) {
+				$page_url                  = get_permalink( get_page_by_title( $footer_pages[ $i ] ) );
+				$wplegalpages_footer_html .= '<a class="wplegalpages_footer_link" ' . $footer_new_tab . ' href="' . $page_url . '">' . $footer_pages[ $i ] . '</a> ';
+				if ( $i !== $page_count - 1 ) {
+					$wplegalpages_footer_html .= '<span class="wplegalpages_footer_separator_text">' . $footer_separator . '</span>';
+				}
+			}
+			$wplegalpages_footer_html .= '</div>';
+			echo '<style>' . $footer_custom_css . '</style>';
+			echo $wplegalpages_footer_html;
+			?>
+			<script type="text/javascript">
+				jQuery(document).ready(function(){
+					jQuery('#wplegalpages_footer_links_container').css({
+						'width': '100%',
+						'background-color': '<?php echo esc_attr( $footer_bg_color ); ?>',
+						'text-align': '<?php echo esc_attr( $footer_text_align ); ?>',
+						'font-size': '<?php echo esc_attr( $footer_font_size ) . 'px'; ?>',
+						'font-family': '<?php echo esc_attr( $footer_font_family ); ?>'
+					})
+					jQuery('.wplegalpages_footer_link').css({
+						'color': '<?php echo esc_attr( $footer_link_color ); ?>'
+					})
+					jQuery('.wplegalpages_footer_separator_text').css({
+						'color': '<?php echo esc_attr( $footer_text_color ); ?>'
+					})
+				})
+			</script>
+			<?php
+		}
 	}
 }
