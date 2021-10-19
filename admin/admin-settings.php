@@ -29,6 +29,7 @@ wp_enqueue_script( 'jquery' );
 $lp_pro_active    = get_option( '_lp_pro_active' );
 $lpterms          = get_option( 'lp_accept_terms' );
 $lp_pro_installed = get_option( '_lp_pro_installed' );
+$lp_banner_options = get_option( 'lp_banner_options' );
 if ( '1' === $lpterms ) {
 	?>
 	<?php if ( '1' !== $lp_pro_installed ) : ?>
@@ -298,7 +299,7 @@ if ( '1' === $lpterms ) {
 						<span class="wplegalpages_settings_button_text" v-show="is_banner"><?php esc_attr_e( 'Disable' ); ?></span>
 						<span class="wplegalpages_settings_button_text" v-show="!is_banner"><?php esc_attr_e( 'Enable' ); ?></span>
 					</c-button>
-					<c-button class="wplegalpages_settings_configure_button">
+					<c-button class="wplegalpages_settings_configure_button"  id="wplegalpages_banner_config_button">
 						<span class="wplegalpages_settings_button_text"><?php esc_attr_e( 'Configure' ); ?></span>
 					</c-button>
 					</div>
@@ -324,6 +325,98 @@ if ( '1' === $lpterms ) {
 				</c-card-body>
 			</c-card>
 			<?php do_action( 'wplegalpages_additional_feature_settings' ); ?>
+			</div>
+			<div id="announcement_popup">
+				<div class="announce_popup">
+					<div class="wplegalpages-form-modal-navbar">
+						<span id="wplegalpages-form-modal-close">x</span>
+					</div>
+					<div class="wplegalpages-form-modal-content">
+						<div class="wplegalpages-form-modal-input-group">
+							<label class="wplegalpages-form-modal-label" for="wplegalpages-show-footer" ><?php esc_attr_e( 'Enabled : ', 'wplegalpages' ); ?></label>
+							<c-switch class="wplegalpages-form-modal-switch" ref="switch_banner" v-model="is_banner" id="wplegalpages-show-footer" variant="3d" size="sm" color="dark" :checked="is_banner" v-on:update:checked="onSwitchBanner"></c-switch>
+							<input type="hidden" name="lp-is-banner" v-model="is_banner">
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<label class="wplegalpages-form-modal-label" for="wplegalpages-bar-position"><?php esc_attr_e( 'Announcement Bar Position : ', 'wplegalpages' ); ?></label>
+							<input type="hidden" ref="bar_position" v-model="bar_position" name="lp-bar-position">
+							<input type="hidden" ref="bar_position_mount" value="<?php echo esc_html( stripslashes( isset( $lp_banner_options['bar_position'] ) ? $lp_banner_options['bar_position'] : '' ) ); ?>">
+							<v-select id="wplegalpages-bar-position" :options="bar_position_options" v-model="bar_position"></v-select>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+						<label class="wplegalpages-form-modal-label" for="wplegalpages-bar-type"><?php esc_attr_e( 'Announcement Bar type : ', 'wplegalpages' ); ?></label>
+						<input type="hidden" ref="bar_type" v-model="bar_type" name="lp-bar-type">
+						<input type="hidden" ref="bar_type_mount" value="<?php echo esc_html( stripslashes( isset( $lp_banner_options['bar_type'] ) ? $lp_banner_options['bar_type'] : '' ) ); ?>">
+						<v-select id="wplegalpages-bar-type" :options="bar_type_options" v-model="bar_type"></v-select>
+						</div>
+
+						<div class="wplegalpages-form-modal-input-group">
+						<label class="wplegalpages-form-modal-label" for="wplegalpages-bar-expiry"><?php esc_attr_e( 'How long to keep the announcement : ', 'wplegalpages' ); ?></label>
+						<input type="hidden" ref="bar_num_of_days" v-model="bar_num_of_days" name="lp-bar-num-of-days">
+						<input type="hidden" ref="bar_num_of_days_mount" value="<?php echo esc_html( stripslashes( isset( $lp_banner_options['bar_num_of_days'] ) ? $lp_banner_options['bar_num_of_days'] : '1' ) ); ?>">
+						<v-select id="wplegalpages-bar-expiry" :options="banner_number_of_days" v-model="bar_num_of_days">
+						</div>
+
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+							<label for="wplegalpages-lp-banner-message"><?php esc_html_e( 'Message', 'wplegalpages' ); ?></label>
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+								<vue-editor id="wplegalpages-lp-banner-message" :editor-toolbar="customToolbar" v-model="banner_message"></vue-editor>
+							</div>
+						</div>
+
+						<div class="wplegalpages-form-modal-input-group">
+						<label class="wplegalpages-form-modal-label" for="wplegalpages-banner-bg-color"><?php esc_attr_e( 'Background Color: ', 'wplegalpages' ); ?></label>
+						<colorpicker id="wplegalpages-banner-bg-color" :color="banner_bg_color" v-model="banner_bg_color" />
+						</div>
+
+						<div class="wplegalpages-form-modal-input-group">
+						<label class="wplegalpages-form-modal-label" for="wplegalpages-banner-font"><?php esc_attr_e( 'Font family: ', 'wplegalpages' ); ?></label>
+						<font-picker id="wplegalpages-banner-font" :api-key="apiKey"  :active-font="banner_font" @change="onBannerFont"></font-picker>
+						</div>
+
+						<div class="wplegalpages-form-modal-input-group">
+						<label class="wplegalpages-form-modal-label" for="wplegalpages-banner-font-size"><?php esc_attr_e( 'Text Size: ', 'wplegalpages' ); ?></label>
+						<input type="hidden" ref="banner_font_size" v-model="banner_font_size" name="lp-banner-font-size">
+						<input type="hidden" ref="banner_font_size_mount" value="<?php echo esc_html( stripslashes( isset( $lp_banner_options['banner_font_size'] ) ? $lp_banner_options['banner_font_size'] : '20px' ) ); ?>">
+						<v-select id="wplegalpages-banner-font-size" :options="banner_font_size_option" v-model="banner_font_size">	
+						</div>
+
+						<div class="wplegalpages-form-modal-input-group">
+						<label class="wplegalpages-form-modal-label" for="wplegalpages-banner-close-message"><?php esc_attr_e( 'Message for close button: ', 'wplegalpages' ); ?></label>
+						<input type="text" name="lp-banner-font-size" id="wplegalpages-banner-close-message" v-model="banner_close_message" value="<?php echo ! empty( $lp_banner_options['banner_close_message'] ) ? esc_attr( $lp_banner_options['banner_close_message'] ) : 'Close'; ?>">
+						</div>
+
+						<div class="wplegalpages-form-modal-input-group">
+						<label class="wplegalpages-form-modal-label" for="wplegalpages-banner-text-color"><?php esc_attr_e( 'Text Color: ', 'wplegalpages' ); ?></label>
+						<colorpicker id="wplegalpages-banner-text-color" :color="banner_text_color" v-model="banner_text_color" />
+						</div>
+
+						<div class="wplegalpages-form-modal-input-group">
+						<label class="wplegalpages-form-modal-label" for="wplegalpages-banner-link-color"><?php esc_attr_e( 'Link Color: ', 'wplegalpages' ); ?></label>
+						<colorpicker id="wplegalpages-banner-link-color" :color="banner_link_color" v-model="banner_link_color" />
+						</div>
+
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+							<label for="wplegalpages-lp-form-separator"><?php esc_html_e( 'Additional CSS', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'Enter your website URL', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+								<vue-editor id="wplegalpages-lp-banner-custom-css" :editor-toolbar="customToolbar" v-model="banner_custom_css"></vue-editor>
+								</div>
+								<p class="wplegalpages-custom-css-heading">Available CSS Selectors</p>
+								<p class="wplegalpages-custom-css-selector">Container ID's: <span class="wplegalpages-custom-css-links" @click="addBannerContainerID">.wplegalpages_banner_content</span></p>
+								<p class="wplegalpages-custom-css-selector">Links class: <span class="wplegalpages-custom-css-links" @click="addBannerLinksClass">.wplegalpages_banner_link</span></p>
+							</div>
+						</div>
+						
+						<div class="wplegalpages-form-modal-buttons">
+						<c-button color="info" class="wplegalpages-form-modal-save-button" id="wplegalpages-banner-form-submit">Save</c-button>
+						<c-button color="danger" class="wplegalpages-form-modal-cancel-button">Cancel</c-button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</c-tab>
 	</c-tabs>
