@@ -23,7 +23,9 @@ require_once $_tests_dir . '/includes/functions.php';
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
-	require dirname( dirname( __FILE__ ) ) . '/wplegalpages.php';
+	$string = dirname( dirname( __FILE__ ) ) . '/wplegalpages.php';
+	require $string;
+	do_action( 'activate_' . trim( $string, '/' ) ); //phpcs:ignore
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 

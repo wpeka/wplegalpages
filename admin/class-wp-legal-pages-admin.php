@@ -639,6 +639,21 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		/**
+		 * WPLegalPages hidden metaboxes
+		 */
+		public function wplegalpages_hidden_meta_boxes() {
+			$hidden_meta_boxes = get_user_option( 'metaboxhidden_nav-menus' );
+			if ( is_array( $hidden_meta_boxes ) ) {
+				$key = array_search( 'wplegalpages-menu-metabox', $hidden_meta_boxes, true );
+				if ( false !== $key ) {
+					unset( $hidden_meta_boxes[ $key ] );
+				}
+			}
+			$user = wp_get_current_user();
+			update_user_option( $user->ID, 'metaboxhidden_nav-menus', $hidden_meta_boxes, true );
+		}
+
+		/**
 		 * WPLegalPages Menu items on theme menu screen.
 		 */
 		public function wplegalpages_menu_meta_box() {
@@ -1093,6 +1108,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$lp_general              = get_option( 'lp_general' );
 			$lp_general['is_footer'] = isset( $_POST['lp-is-footer'] ) && ( true === $_POST['lp-is-footer'] || 'true' === $_POST['lp-is-footer'] ) ? '1' : '0';
 			update_option( 'lp_general', $lp_general );
+			wp_send_json_success( array( 'form_options_saved' => true ) );
 		}
 
 		/**
