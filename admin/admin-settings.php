@@ -26,10 +26,27 @@ if ( isset( $_POST['lp_submit'] ) && 'Accept' === $_POST['lp_submit'] ) {
 <div class="wrap">
 <?php
 wp_enqueue_script( 'jquery' );
-$lp_pro_active    = get_option( '_lp_pro_active' );
-$lpterms          = get_option( 'lp_accept_terms' );
-$lp_pro_installed = get_option( '_lp_pro_installed' );
-$lp_banner_options = get_option( 'lp_banner_options' );
+$lp_pro_active     = get_option( '_lp_pro_active' );
+$lpterms           = get_option( 'lp_accept_terms' );
+$lp_pro_installed  = get_option( '_lp_pro_installed' );
+$lp_footer_options = get_option( 'lp_footer_options' );
+if ( false === $lp_footer_options || empty( $lp_footer_options ) ) {
+	$lp_footer_options = array(
+		'footer_legal_pages' => '',
+		'show_footer'        => '0',
+		'footer_bg_color'    => '#ffffff',
+		'footer_text_align'  => 'center',
+		'footer_separator'   => '',
+		'footer_new_tab'     => '0',
+		'footer_text_color'  => '#333333',
+		'footer_link_color'  => '#333333',
+		'footer_font'        => 'Open Sans',
+		'footer_font_id'     => 'Open+Sans',
+		'footer_font_size'   => '16',
+		'footer_custom_css'  => '',
+	);
+	update_option( 'lp_footer_options', $lp_footer_options );
+}
 if ( '1' === $lpterms ) {
 	?>
 	<?php if ( '1' !== $lp_pro_installed ) : ?>
@@ -196,18 +213,18 @@ if ( '1' === $lpterms ) {
 			<div class="adc-logo"></div>
 		</div>
 	</div>
-	
+
 	<div id="wplegalpages-save-settings-alert">Settings saved</div>
 	<c-tabs ref="active_tab" id="wplegalpages_tabs">
-		
+
 		<c-tab class = "wplegalpages-nav-menu-item" title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" active href="#general">
-			
+
 			<?php do_action( 'wp_legalpages_notice' ); ?>
 			<c-card class="wplegalpages-table-card">
 				<c-card-body class="wplegalpages-table-card-body">
 					<div id="lp_admin_generalid" class="lp_settings_table">
-						
-							
+
+
 							<table class="wplegalpages-settings-table" cellpadding="5" cellspacing="0" border="0">
 								<tr>
 									<td></td><td></td><td><b class="hndle shortcode-label"><?php esc_attr_e( 'Shortcodes', 'wplegalpages' ); ?><p><?php esc_attr_e( '(Use as a placeholder)', 'wplegalpages' ); ?></p></b></td>
@@ -258,7 +275,7 @@ if ( '1' === $lpterms ) {
 								</td> <td><c-input class="wplegalpages-settings-input" type="text" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>"></c-input></td> <td class="wplegalpages-settings-shortcode">[Niche]</td>
 								</tr>
 								<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
-								
+
 								<tr align="center">
 								</tr>					
 						</table>
@@ -281,7 +298,7 @@ if ( '1' === $lpterms ) {
 						<span class="wplegalpages_settings_button_text" v-show="is_footer"><?php esc_attr_e( 'Disable' ); ?></span>
 						<span class="wplegalpages_settings_button_text" v-show="!is_footer"><?php esc_attr_e( 'Enable' ); ?></span>
 					</c-button>
-					<c-button class="wplegalpages_settings_configure_button">
+					<c-button class="wplegalpages_settings_configure_button" @click="showFooterForm">
 						<span class="wplegalpages_settings_button_text"><?php esc_attr_e( 'Configure' ); ?></span>
 					</c-button>
 					</div>
@@ -325,6 +342,136 @@ if ( '1' === $lpterms ) {
 				</c-card-body>
 			</c-card>
 			<?php do_action( 'wplegalpages_additional_feature_settings' ); ?>
+			</div>
+			<div id="wplegalpages-form-modal-footer-form">
+				<div class="wplegalpages-form-modal-dialog">
+					<div class="wplegalpages-form-modal-navbar">
+						<span class="wplegalpages-form-modal-title"><?php esc_html_e( 'Add Legal Pages Link to the Footer', 'wplegalpages' ); ?></span>
+						<span class="wplegalpages-form-modal-close" @click="showFooterForm">X</span>
+					</div>
+					<div class="wplegalpages-form-modal-content">
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+							<label for="wplegalpages-show-footer"><?php esc_html_e( 'Enabled', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip='"<?php esc_html_e( 'Adds rel attribute tags to links', 'wplegalpages' ); ?>"' color="primary" name="cib-google-keep"></c-icon>
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+							<c-switch  class="wplegalpages-form-modal-switch" ref="switch_footer" v-model="is_footer" id="wplegalpages-show-footer" variant="3d" size="sm" color="dark" :checked="is_footer" v-on:update:checked="onSwitchFooter"></c-switch>
+							<input type="hidden" name="lp-is-footer" v-model="is_footer">
+							</div>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+							<label for="wplegalpages-footer-page"><?php esc_html_e( 'Select the Legal Pages', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip='"<?php esc_html_e( 'Adds rel attribute tags to links', 'wplegalpages' ); ?>"' color="primary" name="cib-google-keep"></c-icon>
+							<input type="hidden" ref="footer_legal_pages" v-model="footer_legal_pages" name="footer_legal_pages">
+							<input type="hidden" ref="footer_legal_pages_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_legal_pages'] ) ); ?>">
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+							<v-select id="wplegalpages-footer-pages" :options="page_options" multiple v-model="footer_legal_pages"  >
+							</v-select>
+							</div>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+								<label for="wplegalpages-footer-bgcolor"><?php esc_html_e( 'Background Color', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip='"<?php esc_html_e( 'Adds rel attribute tags to links', 'wplegalpages' ); ?>"' color="primary" name="cib-google-keep"></c-icon>
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+							<colorpicker class="wplegalpages-input-color-picker" id="wplegalpages-footer-bgcolor" :color="link_bg_color" v-model="link_bg_color" />
+							</div>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+							<label for="wplegalpages-footer-font"><?php esc_html_e( 'Font', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip='"<?php esc_html_e( 'Adds rel attribute tags to links', 'wplegalpages' ); ?>"' color="primary" name="cib-google-keep"></c-icon>
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+							<font-picker class="wplegalpages-font-picker" id="wplegalpages-footer-font" :api-key="apiKey"  :active-font="footer_font" @change="onFooterFont"></font-picker>
+							</div>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+							<label for="wplegalpages-footer-font-size"><?php esc_html_e( 'Font Size', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip='"<?php esc_html_e( 'Adds rel attribute tags to links', 'wplegalpages' ); ?>"' color="primary" name="cib-google-keep"></c-icon>
+							<input type="hidden" ref="footer_font_size" v-model="footer_font_size" name="lp-footer-font-size">
+							<input type="hidden" ref="footer_font_size_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_font_size'] ) ); ?>">
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+							<v-select id="wplegalpages-footer-font-size" :options="font_size_options" v-model="footer_font_size">
+							</v-select>
+							</div>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+								<label for="wplegalpages-footer-text-color"><?php esc_html_e( 'Text Color', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip='"<?php esc_html_e( 'Adds rel attribute tags to links', 'wplegalpages' ); ?>"' color="primary" name="cib-google-keep"></c-icon>
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+							<colorpicker class="wplegalpages-input-color-picker" id="wplegalpages-footer-text-color" :color="footer_text_color" v-model="footer_text_color"></colorpicker>
+							</div>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+							<label for="wplegalpages-footer-align"><?php esc_html_e( 'Text align', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip='"<?php esc_html_e( 'Adds rel attribute tags to links', 'wplegalpages' ); ?>"' color="primary" name="cib-google-keep"></c-icon>
+							<input type="hidden" ref="footer_text_align" v-model="footer_text_align" name="lp-footer-text-align">
+							<input type="hidden" ref="footer_text_align_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_text_align'] ) ); ?>">
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+							<v-select id="wplegalpages-footer-align" :options="footer_align_options" v-model="footer_text_align">
+							</v-select>
+							</div>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+								<label for="wplegalpages-footer-link-color"><?php esc_html_e( 'Link Color', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip='"<?php esc_html_e( 'Adds rel attribute tags to links', 'wplegalpages' ); ?>"' color="primary" name="cib-google-keep"></c-icon>
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+							<colorpicker class="wplegalpages-input-color-picker" id="wplegalpages-footer-link-color" :color="footer_link_color" v-model="footer_link_color"></colorpicker>
+							</div>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+							<label for="wplegalpages-lp-form-separator"><?php esc_html_e( 'Link Separator', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'Enter your website URL', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+							<c-input id="wplegalpages-lp-form-separator" type="text" name="lp-footer-separator" value="<?php echo esc_html( $lp_footer_options['footer_separator'] ); ?>"></c-input>
+							</div>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+							<label for="wplegalpages-footer-new-tab"><?php esc_html_e( 'Links to open in new page', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip='"<?php esc_html_e( 'Adds rel attribute tags to links', 'wplegalpages' ); ?>"' color="primary" name="cib-google-keep"></c-icon>
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+							<c-switch  class="wplegalpages-form-modal-switch" ref="footer_new_tab" v-model="footer_new_tab" id="wplegalpages-footer-new-tab" variant="3d" size="sm" color="dark" :checked="footer_new_tab" v-on:update:checked="onClickNewTab"></c-switch>
+							<input type="hidden" name="lp-footer-new-tab" v-model="footer_new_tab">
+							</div>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+							<label for="wplegalpages-lp-form-separator"><?php esc_html_e( 'Additional CSS', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip="'<?php esc_html_e( 'Enter your website URL', 'wplegalpages' ); ?>'" color="primary" name="cib-google-keep"></c-icon>
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+								<div id="wplegal-pages-form-css-editor">
+								<vue-editor id="wplegalpages-lp-footer-custom-css" :editor-toolbar="customToolbarForm" v-model="footer_custom_css"></vue-editor>
+								</div>
+								<p class="wplegalpages-custom-css-heading">Available CSS Selectors</p>
+								<p class="wplegalpages-custom-css-selector">Container ID's: <span class="wplegalpages-custom-css-links" @click="addContainerID">#wplegalpages_footer_links_container</span></p>
+								<p class="wplegalpages-custom-css-selector">Links class: <span class="wplegalpages-custom-css-links" @click="addLinksClass">.wplegalpages_footer_link</span></p>
+								<p class="wplegalpages-custom-css-selector">Text class: <span class="wplegalpages-custom-css-links" @click="addTextClass">.wplegalpages_footer_separator_text</span></p>
+							</div>
+						</div>
+						<div class="wplegalpages-form-modal-input-group">
+							<div class="wplegalpages-form-modal-label">
+								<label for="wplegalpages-footer-order-links"><?php esc_html_e( 'Order Links', 'wplegalpages' ); ?></label><c-icon class="wplegalpages-tooltip" v-c-tooltip='"<?php esc_html_e( 'Adds rel attribute tags to links', 'wplegalpages' ); ?>"' color="primary" name="cib-google-keep"></c-icon>
+							</div>
+							<div class="wplegalpages-form-modal-inputs">
+							<draggable id="wplegalpages-footer-order-links" v-model="footer_legal_pages">
+								<div class="wplegalpages-draggable-item" v-for="footer_page in footer_legal_pages" :key="footer_page">{{footer_page}}</div>
+							</draggable>
+							</div>
+						</div>
+						<input type="hidden" id="wplegalpages-footer-form-nonce" name="lp-footer-form-nonce" value="<?php echo wp_create_nonce( 'settings_footer_form_nonce' ); ?>"/>
+						<div class="wplegalpages-form-modal-buttons">
+							<c-button @click="showFooterForm" class="wplegalpages-form-modal-save-button" color="info" id="wplegalpages-footer-form-submit">Save</c-button>
+							<c-button @click="showFooterForm" class="wplegalpages-form-modal-cancel-button" color="danger" id="wplegalpages-footer-form-submit">Cancel</c-button>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div id="announcement_popup">
 				<div class="announce_popup">

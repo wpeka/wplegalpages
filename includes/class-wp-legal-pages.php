@@ -91,11 +91,8 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$this->plugin_url  = plugin_dir_path( dirname( __FILE__ ) );
 			$this->load_dependencies();
 			$this->set_locale();
-			if ( $this->is_request( 'admin' ) ) {
-				$this->define_admin_hooks();
-			} elseif ( $this->is_request( 'frontend' ) ) {
-				$this->define_public_hooks();
-			}
+			$this->define_admin_hooks();
+			$this->define_public_hooks();
 		}
 
 		/**
@@ -193,9 +190,9 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 		 * @access   private
 		 */
 		private function define_admin_hooks() {
-
 			$plugin_admin = new WP_Legal_Pages_Admin( $this->get_plugin_name(), $this->get_version() );
 			$this->loader->add_action( 'admin_menu', $plugin_admin, 'admin_menu' );
+			$this->loader->add_action( 'admin_init', $plugin_admin, 'wplegalpages_hidden_meta_boxes' );
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'wplegal_admin_init' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -210,6 +207,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$this->loader->add_action( 'wp_ajax_lp_save_admin_settings', $plugin_admin, 'wplegalpages_ajax_save_settings', 10, 1 );
 			$this->loader->add_filter( 'style_loader_src', $plugin_admin, 'wplegalpages_dequeue_styles' );
 			$this->loader->add_filter( 'print_styles_array', $plugin_admin, 'wplegalpages_remove_forms_style' );
+			$this->loader->add_action( 'wp_ajax_lp_save_footer_form', $plugin_admin, 'wplegalpages_save_footer_form' );
 			$this->loader->add_filter( 'wp_ajax_save_banner_form', $plugin_admin, 'wplegalpages_save_banner_form' );
 		}
 
@@ -229,6 +227,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			}
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_script' ) );
 			add_action( 'wp_footer', array( $this, 'wp_legalpages_show_eu_cookie_message' ) );
+			$this->loader->add_action( 'wp_footer', $plugin_public, 'wp_legalpages_show_footer_message' );
 			if ( isset( $lp_banner_options['bar_position'] ) && 'bottom' === $lp_banner_options['bar_position'] ) {
 				$this->loader->add_action( 'wp_footer', $plugin_public, 'wplegal_announce_bar_content');
 			}

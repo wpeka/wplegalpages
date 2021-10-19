@@ -113,21 +113,17 @@ register_uninstall_hook( __FILE__, 'delete_wp_legal_pages' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-wp-legal-pages.php';
 
-
-if ( ! function_exists( 'run_wp_legal_pages' ) ) {
-	/**
-	 * Begins execution of the WPLegalPages.
-	 *
-	 * Since everything within the WPLegalPages is registered via hooks,
-	 * then kicking off the WPLegalPages from this point in the file does
-	 * not affect the page life cycle.
-	 *
-	 * @since    1.0.0
-	 */
-	function run_wp_legal_pages() {
-		$legal_pages = new WP_Legal_Pages();
-		$legal_pages->run();
-
-	}
+/**
+ * Begins execution of the WPLegalPages.
+ *
+ * Since everything within the WPLegalPages is registered via hooks,
+ * then kicking off the WPLegalPages from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_wp_legal_pages() {
+	$legal_pages = new WP_Legal_Pages();
+	$legal_pages->run();
 }
 run_wp_legal_pages();
