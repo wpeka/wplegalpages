@@ -743,3 +743,105 @@ div.wplegal-choose-template select.wplegal-template-language {
 .wplegalpages-additional-features-descripiton {
 	height: 63px;
 }
+#announcement_popup{
+	display: none;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 90;
+	background-color: rgba(0,0,0,0.7);
+	align-items: center;
+	justify-content: center;
+	margin:auto;
+}
+
+.announce_popup{
+	display: block;
+	top: 8vh;
+	left: 24vw;
+	position: fixed;
+	background-color: #fff;
+	height: 600px;
+	width: 954px;
+	overflow: auto;
+}
+
+.wplegalpages-form-modal-navbar {
+	display: flex;
+	justify-content: end;
+	padding: 20px;
+}
+
+.wplegalpages-form-modal-close {
+	cursor: pointer;
+	font-size: 20px;
+	color: #9da9b4;
+}
+
+.wplegalpages-form-modal-content {
+	padding: 20px;
+}
+
+.wplegalpages-form-modal-label {
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 16px;
+}
+
+.wplegalpages-form-modal-input-group {
+	margin-bottom: 32px;
+}
+
+.wplegalpages-form-modal-label-gap{
+	margin-bottom: 20px;
+}
+
+.wplegalpages-form-modal-switch {
+	margin-left: 20px;
+	padding-top: 5px;
+}
+#wplegalpages-bar-number-of-days{
+	width:100%;
+}
+.wplegalpages-form-modal-save-button {
+	padding: 14px;
+	height: 50px;
+	width: 90px;
+	margin-right: 8px;
+}
+
+.wplegalpages-form-modal-cancel-button {
+	padding: 14px;
+	height: 50px;
+	width: 90px;
+}
+
+.wplegalpages-form-modal-buttons {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 32px;
+}
+h1 {
+	height: 120px;
+	line-height: 120px;
+	text-align: center;
+}
+.vc-chrome {
+	position: absolute;
+	top: 35px;
+	right: 0;
+	z-index: 9;
+}
+.current-color {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background-color: #000;
+	cursor: pointer;
+}
+.footer {
+	margin-top: 20px;
+	text-align: center;
+}
