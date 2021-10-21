@@ -30,11 +30,21 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 	public static $wplegalpages_admin;
 
 	/**
+	 * Created legal pages.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string $lp_ids legalpage ids.
+	 */
+	public static $lp_ids;
+
+	/**
 	 * Set up function.
 	 *
 	 * @param WP_UnitTest_Factory $factory helper for unit test functionality.
 	 */
 	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
+		self::$lp_ids             = $factory->post->create_many( 2, array( 'post_type' => 'page' ) );
 		self::$wplegalpages_admin = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.6.0' );
 	}
 
@@ -298,6 +308,17 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		$this->assertTrue( $result );
 		$option_value = get_option( 'wplegalpages_disable_settings_warning' );
 		$this->assertEquals( $option_value, '1' );
+	}
+
+	/**
+	 * Test for wplegalpages_notice
+	 */
+	public function test_wplegalpages_notice() {
+		update_option( '_lp_pro_active', '1' );
+		ob_start();
+		self::$wplegalpages_admin->wplegalpages_notice();
+		$html = ob_get_clean();
+		$this->assertTrue( is_string( $html ) && wp_strip_all_tags( $html ) );
 	}
 }
 

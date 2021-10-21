@@ -101,7 +101,6 @@ jQuery( document ).ready(
             function(e) {
                 e.preventDefault();
                 var dataV = jQuery(this).serialize();
-				console.log(dataV);
                 var url = jQuery('#lp_admin_ajax_url').val(); 
 			   jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
                 jQuery.ajax({
@@ -114,34 +113,5 @@ jQuery( document ).ready(
                 });
             }
         );
-		jQuery( '#banner_form' ).submit(
-            function(e) {
-                e.preventDefault();
-                var dataV = jQuery(this).serialize();
-				console.log(dataV);
-                var url = jQuery('#lp_admin_ajax_url').val(); 
-			   jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
-                jQuery.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: dataV + '&action=lp_save_admin_settings', 
-                }).done(function (data) {
-                    data = JSON.parse(data);
-					jQuery("#wplegalpages-save-settings-alert").fadeOut(2500);
-                });
-            }
-        );
-
-		jQuery( '#wplegalpages_banner_config_button, #wplegalpages-form-modal-close, .wplegalpages-form-modal-cancel-button' ).click(
-			function() {
-				var display_state = jQuery('#announcement_popup').css('display');
-				if(display_state === 'none'){
-					jQuery('#announcement_popup').css('display','block');
-				}else{
-					jQuery('#announcement_popup').css('display','none');
-				}
-			}
-		);
-		
 	}
 );

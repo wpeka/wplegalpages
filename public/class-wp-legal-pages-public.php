@@ -182,51 +182,52 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			</script>
 			<?php
 		}
-		 
-		 /* Show Announcement bar contents
+
+		/* Show Announcement bar contents
 		 *
 		 * @param String $content Content.
 		 * @return string
 		 */
 
 		public function wplegal_announce_bar_content() {
-
-			$lp_banner_options    = get_option( 'lp_banner_options' );
-			$bar_num_of_days      = $lp_banner_options['bar_num_of_days'];
-			//$cookie_expiry        = $bar_num_of_days*86400;
-			// if(!isset($_COOKIE['lp_banner-1'])) {
-			// 	setcookie('lp_banner-1', 'true', time()+240);
-			// }
-			// else{
-			// 	$this->lp_banner_contents_display();
-			// }		
-			$this->lp_banner_contents_display();
+			$lp_banner_options = get_option( 'lp_banner_options' );
+			if ( '1' === $lp_banner_options['show_banner'] ) {
+				foreach ( $_COOKIE as $key => $val ) {
+					if ( preg_match( '/wplegalpages-update-notice-\d+/', $key ) ) {
+						$this->lp_banner_contents_display();
+						break;
+					}
+				}
+			}
 		}
 
-		public function lp_banner_contents_display(){
-			$lp_banner_options    = get_option( 'lp_banner_options' );
-			$banner_position      = $lp_banner_options['bar_position'];
-			$banner_type          = $lp_banner_options['bar_type'];
-			$banner_bg_color      = $lp_banner_options['banner_bg_color'];
-			$banner_font          = $lp_banner_options['banner_font'];
-			$banner_font_id       = $lp_banner_options['banner_font_id'];
-			$banner_text_color    = $lp_banner_options['banner_text_color'];
-			$banner_font_size     = $lp_banner_options['banner_font_size'];
-			$banner_link_color    = $lp_banner_options['banner_link_color'];
-			$bar_num_of_days      = $lp_banner_options['bar_num_of_days'];
-			$banner_custom_css    = $lp_banner_options['banner_custom_css'];
-			$banner_close_message = $lp_banner_options['banner_close_message'];
-			$banner_message       = $lp_banner_options['banner_message'];
+		public function lp_banner_contents_display() {
+			$lp_banner_options       = get_option( 'lp_banner_options' );
+			$banner_position         = $lp_banner_options['bar_position'];
+			$banner_type             = $lp_banner_options['bar_type'];
+			$banner_bg_color         = $lp_banner_options['banner_bg_color'];
+			$banner_font             = $lp_banner_options['banner_font'];
+			$banner_font_id          = $lp_banner_options['banner_font_id'];
+			$banner_text_color       = $lp_banner_options['banner_text_color'];
+			$banner_font_size        = $lp_banner_options['banner_font_size'];
+			$banner_link_color       = $lp_banner_options['banner_link_color'];
+			$bar_num_of_days         = $lp_banner_options['bar_num_of_days'];
+			$banner_custom_css       = $lp_banner_options['banner_custom_css'];
+			$banner_close_message    = $lp_banner_options['banner_close_message'];
+			$banner_message          = $lp_banner_options['banner_message'];
+			$banner_multiple_message = $lp_banner_options['banner_multiple_message'];
+			$date_format             = get_option( 'date_format' );
 			?>
 				<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=<?php echo esc_attr( $banner_font_id ); ?>">
 				<div class="wplegalpages_banner_content" 
 					style="background-color:red; 
 					<?php if ( 'top' === $banner_position ) { ?>
 					top: 32px; 
-					<?php
-					} else { ?>
+						<?php
+					} else {
+						?>
 						bottom:0px;
-					<?php
+						<?php
 					}
 					?>
 					width:100%;
@@ -236,10 +237,55 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 					background-color: <?php echo esc_attr( $banner_bg_color ); ?>;
 					color: <?php echo esc_attr( $banner_text_color ); ?>;
 					font-size: <?php echo esc_attr( $banner_font_size ); ?>px;">
-					<?php echo esc_attr( $banner_message ); ?>
-					<a> <?php echo esc_attr( $banner_close_message );?> </a>
+					<?php
+					$page_ids    = array();
+					$page_titles = '';
+					$page_links  = array();
+					$exp         = '/wplegalpages-update-notice-\d+/';
+					foreach ( $_COOKIE as $key => $val ) {
+						if ( preg_match( $exp, $key ) ) {
+							$p_id = substr( $key, 27 );
+							array_push( $page_ids, $p_id );
+							$page_titles .= get_the_title( $p_id ) . ', ';
+							array_push( $page_links, get_page_link( $p_id ) );
+						}
+					}
+					$num_of_pages = count( $page_ids );
+					if ( 1 === $num_of_pages ) {
+						$banner_message = str_replace( '[wplegalpages_page_title]', $page_titles, $banner_message );
+						$banner_message = str_replace( '[wplegalpages_last_updated]', get_the_modified_date( $date_format, $page_ids[0] ), $banner_message );
+						$banner_message = str_replace( '[wplegalpages_page_href]', get_page_link( $page_ids[0] ), $banner_message );
+						if ( strpos( $banner_message, '[wplegalpages_page_link]' ) ) {
+							echo substr( $banner_message, 0, strpos( $banner_message, '[wplegalpages_page_link]' ) );
+							echo '<a class="wplegalpages_banner_link" href=' . get_page_link( $page_ids[0] ) . '>' . $page_titles . '</a>';
+							echo substr( $banner_message, strpos( $banner_message, '[wplegalpages_page_link]' ) + 24 );
+						} else {
+							echo esc_attr( $banner_message );
+						}
+					} else {
+						$page_latest_update = 0;
+						$page_date          = '';
+						$page_links_text    = '';
+						for ( $i = 0; $i < $num_of_pages; $i++ ) {
+							$page_links_text .= '<a class="wplegalpages_banner_link" href=' . $page_links[ $i ] . '>' . get_the_title( $page_ids[ $i ] ) . '</a>, ';
+							if ( get_post_modified_time( 'U', false, $page_ids[ $i ] ) > $page_latest_update ) {
+								$page_date          = get_the_modified_date( $date_format, $page_ids[ $i ] );
+								$page_latest_update = get_post_modified_time( 'U', false, $page_ids[ $i ] );
+							}
+						}
+						$banner_multiple_message = str_replace( '[wplegalpages_page_title]', $page_titles, $banner_multiple_message, );
+						$banner_multiple_message = str_replace( '[wplegalpages_last_updated]', $page_date, $banner_multiple_message );
+						if ( strpos( $banner_multiple_message, '[wplegalpages_page_link]' ) ) {
+							echo substr( $banner_multiple_message, 0, strpos( $banner_multiple_message, '[wplegalpages_page_link]' ) );
+							echo $page_links_text;
+							echo substr( $banner_multiple_message, strpos( $banner_multiple_message, '[wplegalpages_page_link]' ) + 24 );
+						} else {
+							echo esc_attr( $banner_multiple_message );
+						}
+					}
+					?>
+					<a> <?php echo esc_attr( $banner_close_message ); ?> </a>
 				</div>
-				
 				<script type="text/javascript">
 					jQuery(document).ready(function(){
 						jQuery(".wplegalpages_banner_content").find("a").addClass("wplegalpages_banner_link");
@@ -250,20 +296,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 									jQuery('.wplegalpages_banner_content').css('display','none');
 								}
 							}
-						);
-
-						// if (jQuery.cookie('lp_banner_cookie') == null) {
-						// 	jQuery.cookie('lp_banner_cookie', '1', { expires: 1, path: '/' });
-						// 	//lp_eu_show_cookie_bar();
-						// }
-						
+						);					
 					});
 				</script>
-				
 				<?php
 				echo '<style>
 				.wplegalpages_banner_link{
-					color: '. $banner_link_color .';
+					color: ' . $banner_link_color . ';
 				} 
 				.banner_content_close_message{
 				
