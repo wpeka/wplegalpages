@@ -252,7 +252,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 					}
 					$num_of_pages = count( $page_ids );
 					if ( 1 === $num_of_pages ) {
-						$banner_message = str_replace( '[wplegalpages_page_title]', $page_titles, $banner_message, );
+						$banner_message = str_replace( '[wplegalpages_page_title]', $page_titles, $banner_message );
 						$banner_message = str_replace( '[wplegalpages_last_updated]', get_the_modified_date( $date_format, $page_ids[0] ), $banner_message );
 						$banner_message = str_replace( '[wplegalpages_page_href]', get_page_link( $page_ids[0] ), $banner_message );
 						if ( strpos( $banner_message, '[wplegalpages_page_link]' ) ) {
