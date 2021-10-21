@@ -772,18 +772,22 @@ div.wplegal-choose-template select.wplegal-template-language {
 	width: 954px;
 	overflow: auto;
 }
-#announcement_popup{
-display: none;
-position: absolute;
-top: 0;
-bottom: 0;
-left: 0;
-right: 0;
-z-index: 90;
-background-color: rgba(0,0,0,0.7);
-align-items: center;
-justify-content: center;
-margin:auto;
+#wplegalpages-announcement-popup-form{
+	display: none;
+	z-index: 1000;
+	position: fixed;
+	background-color: rgba(0,0,0,0.7);
+	align-items: center;
+	justify-content: center;
+	top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    background-color: rgba(0,0,0,0.7);
+    align-items: center;
+    justify-content: center;
+    margin:auto;
 }
 .announce_popup{
 	display: block;
@@ -907,6 +911,7 @@ div#wplegalpages-footer-pages{
 .wplegalpages-form-modal-inputs {
 	margin-left: 8px;
 	min-width: 653px;
+	max-width: 653px;
 }
 
 .wplegalpages-draggable-item {
@@ -943,10 +948,22 @@ div#wplegalpages-footer-pages{
     display: none;
 }
 
+#wplegal-pages-banner-css-editor > div > div.ql-toolbar.ql-snow {
+    display: none;
+}
+
 #wplegalpages-lp-footer-custom-css{
+	border-top: 1px solid #ccc;
+}
+
+#wplegalpages-lp-banner-custom-css{
 	border-top: 1px solid #ccc;
 }
 
 #wplegalpages-footer-font > ul {
     z-index: 100;
+}
+
+#wplegalpages-banner-font > ul {
+	z-index: 100;
 }

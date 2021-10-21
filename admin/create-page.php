@@ -182,7 +182,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 		<ul class="wplegal-templates">
 		<?php
 
-		$result = $wpdb->get_results( $wpdb->prepare( 'select * from ' . $lp_obj->tablename . ' where `is_active`=%d ORDER BY `id`', array( 1 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$result        = $wpdb->get_results( $wpdb->prepare( 'select * from ' . $lp_obj->tablename . ' where `is_active`=%d ORDER BY `id`', array( 1 ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$tooltip_texts = array(
 			'kCjTeYOZxB'    => 'If you collect any personal data from users',
 			'1r4X6y8tssz0j' => 'To limit your liability to copyright infringement claims',
@@ -219,7 +219,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 			'6x5434Xdu7'    => 'Use when your website collects personal information and has visitors from the EU.',
 		);
 
-		$refund_start  = false;
+		$refund_start = false;
 		$refund_end   = false;
 
 		foreach ( $result as $ras ) {
@@ -229,9 +229,9 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 					$_GET['page'] = 'returns_refunds_policy';
 					?>
 					<li class="wplegal-template-eng wplegal-accordian" id="wplegal_accordian"><span><a class="myLink" > Returns and Refunds Policy </a></span></li>
-	
+
 					<div class="wplegal-refund-list" id="wplegal_refund_list" style="display : none">
-	
+
 						<li class="wplegal-template-fr"><span><a class="myLink" href="<?php echo esc_url( admin_url() ); ?>index.php?page=wplegal-wizard#/">Use Guided Wizard
 									<span class="wplegal-tooltip"><span class="dashicons dashicons-info"></span>
 										<span class="wplegal-tooltiptext">Easy Q&A wizard to help you customize your policy as per your business</span>
@@ -240,18 +240,18 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 					<?php
 					$refund_start = true;
 				}
-	
+
 				if ( $refund_start && ! $refund_end && strpos( $ras->title, 'Refund' ) === false ) {
 					?>
 					</div>
 					<?php
 					$refund_end = true;
 				}
-	
+
 				if ( strpos( $ras->title, 'Returns and Refunds Policy' ) !== false ) {
 					$ras->title = str_replace( 'Returns and Refunds Policy:', '', $ras->title );
 				}
-	
+
 				if ( strpos( $ras->title, 'FR' ) !== false ) {
 					if ( 'fr' === $template_lang ) :
 						?>
@@ -277,7 +277,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 							</a></span></li>
 								<?php
 							}
-							?>	
+							?>
 					<?php else : ?>
 						<li style="display:none;" class="wplegal-template-eng"><span id="legalpages<?php echo esc_attr( $ras->id ); ?>"><a class="myLink" href="<?php echo esc_url( admin_url() ); ?>admin.php?page=<?php echo esc_attr( $current_page ); ?>&lp-template-lang=eng&lp-type=<?php echo esc_attr( $lptype ); ?>&lp-template=<?php echo esc_attr( $ras->id ); ?>"><?php echo esc_attr( $ras->title ); ?> &raquo;</a></span></li>
 					<?php endif; ?>
@@ -323,11 +323,11 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 			<ul>
 				<li>Terms of use <strong>(forced agreement - don't allow your users to proceed without agreeing to your terms)</strong></li>
 				<li>Linking policy template</li>
-                <li>About Us</li>
+				<li>About Us</li>
 				<li>External links policy template</li>
 				<li>Refund policy template</li>
 				<li>Affiliate disclosure template</li>
-                <li>Cookies Policy</li>
+				<li>Cookies Policy</li>
 				<li>Privacy Policy template</li>
 				<li>Affiliate agreement template</li>
 				<li>FB privacy policy template</li>
@@ -345,7 +345,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 				<li>Children's Online Privacy Protection Act</li>
 				<li>Digital Products Refund Policy</li>
 				<li>Newsletter Subscription and Disclaimer template</li>
-                <li>Confidentiality Discloser template</li>
+				<li>Confidentiality Discloser template</li>
 				<li>Return Refund Policy template</li>
 				<li>GDPR Cookie Policy template</li>
 				<li>GDPR Privacy Policy template (English, French, German)</li>

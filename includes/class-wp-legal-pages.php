@@ -209,6 +209,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$this->loader->add_filter( 'print_styles_array', $plugin_admin, 'wplegalpages_remove_forms_style' );
 			$this->loader->add_action( 'wp_ajax_lp_save_footer_form', $plugin_admin, 'wplegalpages_save_footer_form' );
 			$this->loader->add_filter( 'wp_ajax_save_banner_form', $plugin_admin, 'wplegalpages_save_banner_form' );
+			$this->loader->add_action( 'post_updated', $plugin_admin, 'wplegalpages_post_updated', 10, 1 );
 		}
 
 		/**
@@ -219,8 +220,8 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 		 * @access   private
 		 */
 		private function define_public_hooks() {
-			$plugin_public = new WP_Legal_Pages_Public( $this->get_plugin_name(), $this->get_version() );
-			$lp_general    = get_option( 'lp_general' );
+			$plugin_public     = new WP_Legal_Pages_Public( $this->get_plugin_name(), $this->get_version() );
+			$lp_general        = get_option( 'lp_general' );
 			$lp_banner_options = get_option( 'lp_banner_options' );
 			if ( isset( $lp_general['generate'] ) && '1' === $lp_general['generate'] ) {
 				$this->loader->add_filter( 'the_content', $plugin_public, 'wplegal_post_generate' );
@@ -229,7 +230,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			add_action( 'wp_footer', array( $this, 'wp_legalpages_show_eu_cookie_message' ) );
 			$this->loader->add_action( 'wp_footer', $plugin_public, 'wp_legalpages_show_footer_message' );
 			if ( isset( $lp_banner_options['bar_position'] ) && 'bottom' === $lp_banner_options['bar_position'] ) {
-				$this->loader->add_action( 'wp_footer', $plugin_public, 'wplegal_announce_bar_content');
+				$this->loader->add_action( 'wp_footer', $plugin_public, 'wplegal_announce_bar_content' );
 			}
 			if ( isset( $lp_banner_options['bar_position'] ) && 'top' === $lp_banner_options['bar_position'] ) {
 				$this->loader->add_action( 'wp_head', $plugin_public, 'wplegal_announce_bar_content' );

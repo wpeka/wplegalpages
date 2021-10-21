@@ -122,4 +122,95 @@ class AjaxTestCLASS extends WP_Ajax_UnitTestCase {
 		$response = json_decode( $this->_last_response, true );
 		$this->assertTrue( $response['success'] );
 	}
+
+	/**
+	 * Test for wplegalpages_ajax_save_settings
+	 */
+	public function test_wplegalpages_ajax_save_settings() {
+		$_POST['settings_form_nonce']     = wp_create_nonce( 'settings-form-nonce' );
+		$_POST['lp-generate']             = true;
+		$_POST['lp-search']               = true;
+		$_POST['lp-affiliate-disclosure'] = true;
+		$_POST['lp-is_adult']             = true;
+		$_POST['lp-privacy']              = true;
+		$_POST['lp-footer']               = true;
+		$_POST['lp-banner']               = true;
+		$_POST['lp-cookie']               = true;
+		$_POST['lp-domain-name']          = '';
+		$_POST['lp-business-name']        = '';
+		$_POST['lp-phone']                = '';
+		$_POST['lp-street']               = '';
+		$_POST['lp-city-state']           = '';
+		$_POST['lp-country']              = '';
+		$_POST['lp-email']                = '';
+		$_POST['lp-address']              = '';
+		$_POST['lp-niche']                = '';
+		$_POST['lp-generate']             = '';
+		try {
+			$this->_handleAjax( 'lp_save_admin_settings' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+		$response = json_decode( $this->_last_response, true );
+		$this->assertTrue( $response['success'] );
+	}
+
+	/**
+	 * Test for wplegalpages_ajax_save_settings - false part
+	 */
+	public function test_wplegalpages_ajax_save_settings_else_part() {
+		$_POST['settings_form_nonce']     = wp_create_nonce( 'settings-form-nonce' );
+		$_POST['lp-generate']             = '';
+		$_POST['lp-search']               = '';
+		$_POST['lp-affiliate-disclosure'] = '';
+		$_POST['lp-is_adult']             = '';
+		$_POST['lp-privacy']              = '';
+		$_POST['lp-footer']               = '';
+		$_POST['lp-banner']               = '';
+		$_POST['lp-cookie']               = '';
+		$_POST['lp-domain-name']          = '';
+		$_POST['lp-business-name']        = '';
+		$_POST['lp-phone']                = '';
+		$_POST['lp-street']               = '';
+		$_POST['lp-city-state']           = '';
+		$_POST['lp-country']              = '';
+		$_POST['lp-email']                = '';
+		$_POST['lp-address']              = '';
+		$_POST['lp-niche']                = '';
+		$_POST['lp-generate']             = '';
+		try {
+			$this->_handleAjax( 'lp_save_admin_settings' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+		$response = json_decode( $this->_last_response, true );
+		$this->assertTrue( $response['success'] );
+	}
+
+	/**
+	 * Test for wplegalpages_save_banner_form
+	 */
+	public function test_wplegalpages_save_banner_form() {
+		$_POST['lp_banner_nonce_data']    = wp_create_nonce( 'settings_banner_form_nonce' );
+		$_POST['lp-is-banner']            = '';
+		$_POST['lp-bar-position']         = '';
+		$_POST['lp-bar-type']             = '';
+		$_POST['lp-banner-bg-color']      = '';
+		$_POST['lp-banner-font']          = '';
+		$_POST['lp-banner-font-id']       = '';
+		$_POST['lp-banner-text-color']    = '';
+		$_POST['lp-banner-font-size']     = '';
+		$_POST['lp-banner-link-color']    = '';
+		$_POST['lp-bar-num-of-days']      = '';
+		$_POST['lp-banner-css']           = '';
+		$_POST['lp-banner-close-message'] = '';
+		$_POST['lp-banner-message']       = '';
+		try {
+			$this->_handleAjax( 'save_banner_form' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+		$response = json_decode( $this->_last_response, true );
+		$this->assertTrue( $response['success'] );
+	}
 }
