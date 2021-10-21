@@ -227,17 +227,31 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 			if ( get_option( 'wplegalpages_pro_version' ) && version_compare( get_option( 'wplegalpages_pro_version' ), '8.1.8' ) >= 0 ) {
 				if ( ! $refund_start && strpos( $ras->title, 'Refund' ) !== false ) {
 					$_GET['page'] = 'returns_refunds_policy';
-					?>
+					if ( 'eng' === $template_lang ) :
+						?>
 					<li class="wplegal-template-eng wplegal-accordian" id="wplegal_accordian"><span><a class="myLink" > Returns and Refunds Policy </a></span></li>
-
+					<?php else : ?> 
+					<li class="wplegal-template-eng wplegal-accordian" style="display:none;" id="wplegal_accordian"><span><a class="myLink" > Returns and Refunds Policy </a></span></li>
+						<?php
+					endif;
+					?>
 					<div class="wplegal-refund-list" id="wplegal_refund_list" style="display : none">
-
+					<?php
+					if ( 'eng' === $template_lang ) :
+					?>
 						<li class="wplegal-template-fr"><span><a class="myLink" href="<?php echo esc_url( admin_url() ); ?>index.php?page=wplegal-wizard#/">Use Guided Wizard
 									<span class="wplegal-tooltip"><span class="dashicons dashicons-info"></span>
 										<span class="wplegal-tooltiptext">Easy Q&A wizard to help you customize your policy as per your business</span>
 									</span>
 								</a></span></li>
+					<?php else : ?> 
+						<li class="wplegal-template-fr" style="display:none;"><span><a class="myLink" href="<?php echo esc_url( admin_url() ); ?>index.php?page=wplegal-wizard#/">Use Guided Wizard
+									<span class="wplegal-tooltip"><span class="dashicons dashicons-info"></span>
+										<span class="wplegal-tooltiptext">Easy Q&A wizard to help you customize your policy as per your business</span>
+									</span>
+								</a></span></li>			
 					<?php
+					endif;
 					$refund_start = true;
 				}
 
