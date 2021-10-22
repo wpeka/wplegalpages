@@ -52,6 +52,9 @@ jobs:
             ./vendor
           key: ${{ runner.os }}-${{ hashFiles('./composer.lock') }}
 
+      - name: Setup and install composer
+        run: composer install
+        
       - name: Add PHP8 Compatibility.
         run: |
           if [ "$(php -r "echo version_compare(PHP_VERSION,'8.0','>=');")" ]; then
@@ -60,10 +63,7 @@ jobs:
              composer bin phpunit config --unset platform
              composer bin phpunit config repositories.0 '{"type": "path", "url": "/tmp/phpunit-7.5-fork/phpunit-add-compatibility-with-php8-to-phpunit-7", "options": {"symlink": false}}'
              composer bin phpunit require --dev -W phpunit/phpunit:@dev --ignore-platform-reqs    
-           fi 
-        
-      - name: Setup and install composer
-        run: composer install
+           fi
 
       - name: Init DB and WP
         run: ./tests/bin/install.sh woo_test root root 127.0.0.1 ${{ matrix.wp }}
