@@ -11,6 +11,9 @@
   },
   "require-dev": {
     "nette/utils": "2.5.3",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+    "phpcompatibility/phpcompatibility-wp": "*",
+    "wp-coding-standards/wpcs": "^2.1.0",
     "bamarni/composer-bin-plugin": "^1.4",
     "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5",
     "yoast/phpunit-polyfills": "^1.0"
