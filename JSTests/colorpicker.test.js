@@ -37,4 +37,15 @@ it('test for methods', () => {
 	var settingColor = colorpicker.methods.setColor.bind(module);
 	settingColor( '#123123' );
 	expect(module.colorValue).toBe('#123123');
+
+	var updatedColors = colorpicker.methods.updateColors.bind(module);
+	updatedColors( 'rgba(100,100,100,0.5)' );
+	expect(module.colors).toEqual( {
+		hex: '#646464',
+		a: '0.5'
+	} )
+	updatedColors('#121212');
+	expect(module.colors).toEqual({
+		hex: '#121212'
+	})
 })
