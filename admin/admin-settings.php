@@ -284,7 +284,7 @@ if ( '1' === $lpterms ) {
 			</c-card>				
 		</c-tab>
 		<?php do_action( 'wp_legalpages_after_general_tab' ); ?>
-		<?php do_action( 'wp_legalpages_after_data_section_tab' ); ?>
+		<?php do_action( 'wp_legalpages_after_data_tab' ); ?>
 		<c-tab class = "wplegalpages-nav-menu-item" title="<?php esc_attr_e( 'Compliances', 'wplegalpages' ); ?>" href="#features">
 			<div class="wplegalpages-additonal-features-tab">
 			<c-card>
@@ -323,25 +323,7 @@ if ( '1' === $lpterms ) {
 					<input type="hidden" name="lp-banner" ref="banner" v-model="is_banner">
 				</c-card-body>
 			</c-card>
-			<c-card>
-				<c-card-header class="wplegalpages-settings-card-heading"><?php esc_html_e( 'Add Cookie Bar', 'wplegalpages' ); ?></c-card-header>
-				<c-card-body>
-					<div class="wplegalpages-additional-features-descripiton">
-						<p class="wplegalpages-additonal-features-card-description"><?php esc_html_e( 'Add a cookie bar on your website to inform your visitors about the cookies you use and the information you collect.', 'wplegalpages' ); ?></p>
-					</div>
-					<div class="wplegalpages-additional-features-buttons">
-					<c-button class="wplegalpages_settings_enable_button" @click="onClickCookie">
-						<span class="wplegalpages_settings_button_text" v-show="is_cookie"><?php esc_attr_e( 'Disable' ); ?></span>
-						<span class="wplegalpages_settings_button_text" v-show="!is_cookie"><?php esc_attr_e( 'Enable' ); ?></span>
-					</c-button>
-					<c-button class="wplegalpages_settings_configure_button">
-						<span class="wplegalpages_settings_button_text"><?php esc_attr_e( 'Configure' ); ?></span>
-					</c-button>
-					</div>
-					<input type="hidden" name="lp-cookie" ref="cookie" v-model="is_cookie">
-				</c-card-body>
-			</c-card>
-			<?php do_action( 'wplegalpages_additional_feature_settings' ); ?>
+			<?php // do_action( 'wplegalpages_compliances_settings' ); ?>
 			</div>
 			<div id="wplegalpages-form-modal-footer-form">
 				<div class="wplegalpages-form-modal-dialog">

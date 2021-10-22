@@ -680,17 +680,17 @@ div.wplegal-choose-template select.wplegal-template-language {
 
 .wplegalpages_settings_configure_button {
 	padding: 10px 20px;
-	background-color: #509fe2;
+	background-color: #8a93a2;
 	border-width: 1px 1px 2px;
 	border-radius: 3px;
-	border: solid #2e7fbe;
+	border: solid #768192;
 	font-size: 14px;
 	font-weight: 400;
 }
 
 .wplegalpages_settings_configure_button:hover {
-	border: 1px solid #2971a9;
-	background-color: #3a93dd;
+	border: 1px solid #636f83;
+	background-color: #768192;
 }
 
 .wplegalpages_settings_button_text{
