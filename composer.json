@@ -35,9 +35,6 @@
     "phpcbf": [
       "phpcbf -p"
     ],
-    "makepot": [
-      "@makepot-audit --skip-audit"
-    ],
     "bin": [
       "echo 'bin not installed'"
     ]
