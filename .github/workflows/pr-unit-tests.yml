@@ -1,5 +1,5 @@
 name: Run unit tests on PR
-on: [ pull_request, push ]
+on: [ pull_request ]
 jobs:
   test:
     name: PHP ${{ matrix.php }} WP ${{ matrix.wp }}
