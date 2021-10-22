@@ -30,19 +30,29 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 	public static $wplegalpages_admin;
 
 	/**
+	 * Created legal pages.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string $lp_ids legalpage ids.
+	 */
+	public static $lp_ids;
+
+	/**
 	 * Set up function.
 	 *
 	 * @param WP_UnitTest_Factory $factory helper for unit test functionality.
 	 */
 	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
-		self::$wplegalpages_admin = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.5.3' );
+		self::$lp_ids             = $factory->post->create_many( 2, array( 'post_type' => 'page' ) );
+		self::$wplegalpages_admin = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.6.0' );
 	}
 
 	/**
 	 * Test for construction function
 	 */
 	public function test_construct() {
-		$obj = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.5.3' );
+		$obj = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.6.0' );
 		$this->assertTrue( $obj instanceof WP_Legal_Pages_Admin );
 	}
 
@@ -161,11 +171,7 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		ob_start();
 		self::$wplegalpages_admin->admin_setting();
 		$actual_html = ob_get_clean();
-
-		ob_start();
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin-settings.php';
-		$expected_html = ob_get_clean();
-		$this->assertEquals( $expected_html, $actual_html );
+		$this->assertTrue( is_string( $actual_html ) && ( wp_strip_all_tags( $actual_html ) !== $actual_html ) );
 		global $wp_styles, $wp_scripts;
 		$all_enqueue_style  = $wp_styles->queue;
 		$all_enqueue_script = $wp_scripts->queue;
@@ -305,11 +311,14 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test for wplegal_accept_terms
+	 * Test for wplegalpages_notice
 	 */
-	public function test_wplegal_accept_terms() {
-		$this->expectException( 'WPDieException' );
-		self::$wplegalpages_admin->wplegal_accept_terms();
+	public function test_wplegalpages_notice() {
+		update_option( '_lp_pro_active', '1' );
+		ob_start();
+		self::$wplegalpages_admin->wplegalpages_notice();
+		$html = ob_get_clean();
+		$this->assertTrue( is_string( $html ) && wp_strip_all_tags( $html ) );
 	}
 }
 
