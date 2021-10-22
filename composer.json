@@ -7,11 +7,13 @@
   "prefer-stable": true,
   "minimum-stability": "dev",
   "require": {
+    "php": "^7.0||^8.0",
     "composer/installers": "~1.7"
   },
   "require-dev": {
     "nette/utils": "2.5.3",
-    "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5"
+    "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5",
+    "yoast/phpunit-polyfills": "^1.0"
   },
   "scripts": {
     "test": [

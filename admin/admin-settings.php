@@ -21,7 +21,6 @@ if ( isset( $_POST['lp_submit'] ) && 'Accept' === $_POST['lp_submit'] ) {
 	check_admin_referer( 'lp-submit-accept-terms' );
 	update_option( 'lp_accept_terms', isset( $_POST['lp_accept_terms'] ) ? sanitize_text_field( wp_unslash( $_POST['lp_accept_terms'] ) ) : '' );
 }
-
 ?>
 <div class="wrap">
 <?php
@@ -30,6 +29,18 @@ $lp_pro_active     = get_option( '_lp_pro_active' );
 $lpterms           = get_option( 'lp_accept_terms' );
 $lp_pro_installed  = get_option( '_lp_pro_installed' );
 $lp_footer_options = get_option( 'lp_footer_options' );
+if ( '1' !== $lp_pro_active ) :
+	?>
+<div style="">
+	<div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
+		<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin-banner&utm_campaign=wplegalpages&utm_content=upgrade-to-pro" target="_blank">
+			<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/upgrade-to-pro.jpg'; ?>">
+		</a>
+	</div>
+</div>
+<div style="clear:both;"></div>
+	<?php
+endif;
 if ( false === $lp_footer_options || empty( $lp_footer_options ) ) {
 	$lp_footer_options = array(
 		'footer_legal_pages' => '',
