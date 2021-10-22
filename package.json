@@ -22,8 +22,14 @@
     "@coreui/coreui": "^3.4.0",
     "@coreui/icons": "^2.0.1",
     "@coreui/vue": "^3.2.7",
+    "@testing-library/jest-dom": "^5.14.1",
+    "babel-jest": "^27.3.1",
     "css-loader": "^6.3.0",
     "font-picker-vue": "^1.0.3",
+    "jest": "^27.3.1",
+    "jest-css-modules": "^2.1.0",
+    "jest-environment-jsdom": "^27.3.1",
+    "jquery": "^3.6.0",
     "style-loader": "^3.2.1",
     "vue-color": "^2.8.1",
     "vue-select": "^3.13.0",
@@ -36,6 +42,8 @@
   "scripts": {
     "start": "wp-scripts start --config webpack.config.js --progress",
     "build": "wp-scripts build --config webpack.config.js",
-    "watch": "wp-scripts start --config webpack.config.js --watch"
+    "watch": "wp-scripts start --config webpack.config.js --watch",
+    "test": "jest --coverage",
+    "jest": "jest"
   }
 }
