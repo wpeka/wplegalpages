@@ -20,6 +20,9 @@
     "wptrt/wpthemereview": "^0.2.0",
     "bamarni/composer-bin-plugin": "^1.4"
   },
+  "bamarni-bin": {
+    "target-directory": "bin/composer"
+  },
   "scripts": {
     "test": [
       "phpunit"
