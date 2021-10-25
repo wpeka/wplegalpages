@@ -11,14 +11,14 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$lp_obj           = new WP_Legal_Pages();
-$baseurl          = esc_url( get_bloginfo( 'url' ) );
-$privacy          = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/privacy.html' );
-$lp_pro_installed = get_option( '_lp_pro_installed' );
+$lp_obj        = new WP_Legal_Pages();
+$baseurl       = esc_url( get_bloginfo( 'url' ) );
+$privacy       = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'templates/privacy.html' );
+$lp_pro_active = get_option( '_lp_pro_active' );
 ?>
 <div class="wrap">
 	<?php
-	if ( '1' !== $lp_pro_installed ) :
+	if ( '1' !== $lp_pro_active ) :
 		?>
 	<div style="">
 		<div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
@@ -325,7 +325,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 
 		</ul>
 	</div>
-		<?php if ( '1' !== $lp_pro_installed ) : ?>
+		<?php if ( '1' !== $lp_pro_active ) : ?>
 		<div id="lp_generalid_right">
 			<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_campaign=wplegalpages&utm_content=upgrade-to-pro-for-all-templates" style="text-decoration:none;padding-left:20px;" target="_blank">
 			<?php esc_attr_e( 'Upgrade to Pro for All templates', 'wplegalpages' ); ?>

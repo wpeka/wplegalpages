@@ -36,7 +36,6 @@ var gen = new Vue({
             privacy_page: '',
             is_footer: obj.lp_options.hasOwnProperty('is_footer') ? Boolean( parseInt( obj.lp_options.is_footer ) ) : false,
             is_banner: obj.lp_options.hasOwnProperty('is_banner') ? Boolean( parseInt( obj.lp_options['is_banner'] ) ) : false,
-            is_cookie: obj.lp_options.hasOwnProperty('is_cookie') ? obj.lp_options['is_cookie'] : null,
             is_age: obj.lp_options.hasOwnProperty('is_age') ? obj.lp_options['is_age'] : null,
             is_popup: obj.lp_options.hasOwnProperty('is_popup') ? obj.lp_options['is_popup'] : null,
             show_footer_form: false,
@@ -61,7 +60,6 @@ var gen = new Vue({
             banner_font: obj.lp_banner_options.hasOwnProperty('banner_font') ? obj.lp_banner_options['banner_font'] : 'Open Sans',
             banner_font_id: obj.lp_banner_options.hasOwnProperty('banner_font_id') ? obj.lp_banner_options['banner_font_id'] : 'Open+Sans',
             banner_text_color: obj.lp_banner_options.hasOwnProperty('banner_text_color') ? obj.lp_banner_options['banner_text_color']: '#000000',
-           // banner_font_size: obj.lp_banner_options.hasOwnProperty('banner_font_size') ? obj.lp_banner_options['banner_font_size']: '20px',
             banner_link_color: obj.lp_banner_options.hasOwnProperty('banner_link_color') ? obj.lp_banner_options['banner_link_color']: '#000000',
             banner_number_of_days: Array.from(obj.number_of_days),
             bar_num_of_days:'1',
@@ -82,7 +80,7 @@ var gen = new Vue({
             ["clean"] ],
             banner_close_message: obj.lp_banner_options.hasOwnProperty('banner_close_message') ? obj.lp_banner_options['banner_close_message']: 'Close',
             banner_font_size_option: Array.from(obj.font_size_options),
-            banner_font_size:'12',
+            banner_font_size:'16',
             banner_message: obj.lp_banner_options.hasOwnProperty('banner_message') ? obj.lp_banner_options['banner_message'] : 'Our [wplegalpages_page_link] have been updated on [wplegalpages_last_updated].',
             banner_multiple_message: obj.lp_banner_options.hasOwnProperty('banner_multiple_message') ? obj.lp_banner_options['banner_multiple_message'] : 'Our [wplegalpages_page_link] pages have recently been updated.',
         }
@@ -93,8 +91,7 @@ var gen = new Vue({
             this.search =  this.$refs.hasOwnProperty('search')? this.$refs.search.checked : null; 
             this.affiliate_disclosure =this.$refs.hasOwnProperty('affiliate_disclosure')? this.$refs.affiliate_disclosure.checked:null;  
             this.is_adult = this.$refs.hasOwnProperty('is_adult')?this.$refs.is_adult.checked:null; 
-            this.privacy =this.$refs.hasOwnProperty('privacy')? this.$refs.privacy.checked:null;        
-            this.is_cookie =this.$refs.hasOwnProperty('cookie') && '1' === this.$refs.cookie.value ? true :null;  
+            this.privacy =this.$refs.hasOwnProperty('privacy')? this.$refs.privacy.checked:null; 
             this.is_age =this.$refs.hasOwnProperty('ageverify') && '1' === this.$refs.ageverify.value ? true :null;  
             this.is_popup =this.$refs.hasOwnProperty('popup') && '1' === this.$refs.popup.value ? true :null;  
             this.privacy_page = this.$refs.hasOwnProperty('privacy_page_mount') && this.$refs.privacy_page_mount.value ? this.$refs.privacy_page_mount.value : '';
@@ -137,10 +134,6 @@ var gen = new Vue({
         onClickBanner() {
             this.is_banner = !this.is_banner;
             this.$refs.banner.value = this.is_banner ? '1' : '0';
-        },
-        onClickCookie() {
-            this.is_cookie = !this.is_cookie;
-            this.$refs.cookie.value = this.is_cookie ? '1' : '0';
         },
         onClickAge() {
             this.is_age = !this.is_age;
