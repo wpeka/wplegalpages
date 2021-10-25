@@ -223,7 +223,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 				<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=<?php echo esc_attr( $banner_font_id ); ?>"> 
 				<?php //phpcs:enable ?>
 				<div class="wplegalpages_banner_content" 
-					style="background-color:red; 
+					style="background-color:red;z-index:1000; 
 					<?php if ( 'top' === $banner_position ) { ?>
 					top: 32px; 
 						<?php
