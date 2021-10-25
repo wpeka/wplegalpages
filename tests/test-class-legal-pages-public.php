@@ -96,7 +96,7 @@ class WP_Legal_Pages_Public_Test extends WP_UnitTestCase {
 			'footer_font_id'     => 'Arial',
 			'footer_font_size'   => '20',
 			'footer_new_tab'     => '0',
-			'footer_legal_pages' => 'Privacy Policy',
+			'footer_legal_pages' => 'Privacy Policy, Earnings Disclaimer',
 			'footer_custom_css'  => '#wplegalpages_footer_links_container{text-decoration: underline};',
 		);
 		update_option( 'lp_footer_options', $lp_footer_options );
