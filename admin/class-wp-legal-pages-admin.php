@@ -1171,6 +1171,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					if ( strpos( $href, 'forms.css' ) !== false || strpos( $href, 'revisions' ) ) {
 						return false;
 					}
+					if ( strpos( $href, 'bootstrap.min.css' ) !== false || strpos( $href, 'revisions' ) ) {
+						return false;
+					}
 				}
 			}
 			return $href;
@@ -1190,6 +1193,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					unset( $to_dos[ $key ] );
 					$key = array_search( 'revisions', $to_dos, true );
 					unset( $to_dos[ $key ] );
+					
 				}
 			}
 			return $to_dos;
