@@ -8,14 +8,12 @@ import ColorPicker from './colorpicker';
 import { VueEditor } from "vue2-editor";
 import '@coreui/coreui/dist/css/coreui.min.css';
 import 'vue-select/dist/vue-select.css';
-// import VueModal from '@kouts/vue-modal';
-// import {VueFinalModal} from 'vue-final-modal';
-// import '@kouts/vue-modal/dist/vue-modal.css'
+import vmodal from 'vue-js-modal'
 var font_options = require('./google-fonts.json');
 
 import { cilPencil, cilSettings, cilInfo, cibGoogleKeep } from '@coreui/icons';
 Vue.use(CoreuiVue);
-// Vue.component('vue-final-modal', VueFinalModal);
+Vue.use(vmodal, { componentName: 'v-js-modal' } )
 Vue.component('vue-editor', VueEditor);
 Vue.component('draggable', Draggable);
 Vue.component('font-picker', FontPicker);
@@ -104,12 +102,15 @@ var gen = new Vue({
         },
         showFooterForm() {
             this.show_footer_form = !this.show_footer_form;
-            if(this.show_footer_form) {
-                j('#wplegalpages-form-modal-footer-form').css('display', 'flex');
-            }
-            else {
-                j('#wplegalpages-form-modal-footer-form').css('display', 'none')
-            }
+
+			if ( this.show_footer_form ) {
+				this.$modal.show('complainceModal', {
+					height: 'auto',
+				})
+			}
+			else {
+				this.$modal.hide('complainceModal');
+			}
         },
         onSwitchFooter() {
             this.is_footer = !this.is_footer;
@@ -148,37 +149,23 @@ var gen = new Vue({
         onClickBanner() {
             this.is_banner = !this.is_banner;
             this.$refs.banner.value = this.is_banner ? '1' : '0';
-        }
-    },
-    mounted() {
-        this.setValues();
-        var that = this;
-        j('#testing').css('display','none');
-        j('.wplegalpages-save-button').click(function() {
+        },
+
+		saveData() {
+			console.log('Button clicked!')
             jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
-            var dataV = jQuery("#lp-save-settings-form").serialize();
-            jQuery.ajax({
-                type: 'POST',
-                url: obj.ajaxurl,
-                data: dataV + '&action=lp_save_admin_settings', 
-            }).done(function (data) {
-                j("#wplegalpages-save-settings-alert").fadeOut(2500);
-            });
-        })
-        j('#wplegalpages-footer-form-submit').click(function() {
-            console.log('Button clicked!')
-            jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
-            var show_footer = that.is_footer;
-            var pages = JSON.parse(JSON.stringify(that.footer_legal_pages)).join(',');
+            var show_footer = this.is_footer;
+			console.log(this.is_footer);
+            var pages = JSON.parse(JSON.stringify(this.footer_legal_pages)).join(',');
             var link_bg_color = j('#wplegalpages-lp-form-bg-color').val();
-            var footer_font_family = that.footer_font;
-            var footer_font_family_id = that.footer_font.split(' ').join('+');
-            var footer_fontsize = that.footer_font_size;
+            var footer_font_family = this.footer_font;
+            var footer_font_family_id = this.footer_font.split(' ').join('+');
+            var footer_fontsize = this.footer_font_size;
             var text_color = j('#wplegalpages-lp-form-text-color').val();
-            var footer_align = that.footer_text_align;
+            var footer_align = this.footer_text_align;
             var link_color = j('#wplegalpages-lp-form-link-color').val();
             var separator = j('#wplegalpages-lp-form-separator').val();
-            var footer_new_tab = that.footer_new_tab;
+            var footer_new_tab = this.footer_new_tab;
             var footer_css = j('#wplegalpages-lp-footer-custom-css').text();
             j.ajax({
                 type: 'POST',
@@ -203,6 +190,24 @@ var gen = new Vue({
 					j("#wplegalpages-save-settings-alert").fadeOut(2500);
                 }    
             })
+
+			this.showFooterForm();
+		}
+    },
+    mounted() {
+        this.setValues();
+        var that = this;
+        j('#testing').css('display','none');
+        j('.wplegalpages-save-button').click(function() {
+            jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
+            var dataV = jQuery("#lp-save-settings-form").serialize();
+            jQuery.ajax({
+                type: 'POST',
+                url: obj.ajaxurl,
+                data: dataV + '&action=lp_save_admin_settings', 
+            }).done(function (data) {
+                j("#wplegalpages-save-settings-alert").fadeOut(2500);
+            });
         })
     },
     icons: { cilPencil, cilSettings, cilInfo, cibGoogleKeep }

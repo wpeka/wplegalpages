@@ -121,6 +121,117 @@ if ( false === $lp_footer_options || empty( $lp_footer_options ) ) {
 					<?php do_action( 'wp_legalpages_after_general_tab' ); ?>
 					<?php do_action( 'wp_legalpages_after_data_tab' ); ?>
 					<c-tab title="<?php esc_attr_e( 'Compliances', 'wplegalpages' ); ?>" href="#compliances">
+					<input type="hidden" name="lp-is-footer" v-model="is_footer">
+					<input type="hidden" ref="footer_legal_pages" v-model="footer_legal_pages" name="footer_legal_pages">
+					<input type="hidden" ref="footer_font_family" v-model="footer_font" name="lp-footer-font-family">
+												<input type="hidden" ref="footer_font_family_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_font'] ) ); ?>">
+												<input type="hidden" ref="footer_legal_pages_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_legal_pages'] ) ); ?>">
+												<input type="hidden" ref="footer_font_size" v-model="footer_font_size" name="lp-footer-font-size">
+												<input type="hidden" ref="footer_font_size_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_font_size'] ) ); ?>">
+												<input type="hidden" name="lp-footer-new-tab" v-model="footer_new_tab">
+												<input type="hidden" ref="footer_text_align" v-model="footer_text_align" name="lp-footer-text-align">
+												<input type="hidden" ref="footer_text_align_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_text_align'] ) ); ?>">
+						<v-js-modal name="complainceModal" @on-close="close">	
+								<c-card class="wplegalpages-form-modal-dialog">
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Enabled', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Add Privacy Policy links to the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<c-switch v-bind="labelIcon" ref="switch_footer" v-model="is_footer" id="wplegalpages-show-footer" variant="3d" color="success" :checked="is_footer" v-on:update:checked="onSwitchFooter"></c-switch>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Legal Pages', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the Legal Pages you want to add to the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<v-select id="wplegalpages-footer-pages" class="form-group" :options="page_options" multiple v-model="footer_legal_pages"  >
+												</v-select>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Background Color', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the background color for the footer section', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<!-- <colorpicker id="wplegalpages-footer-bgcolor" :color="link_bg_color" v-model="link_bg_color" /> -->
+												<c-input id="wplegalpages-lp-form-bg-color" type="color" name="lp-footer-bg-color" value="<?php echo esc_html( $lp_footer_options['footer_bg_color'] ); ?>"></c-input>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Font', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the font.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<!-- <font-picker id="wplegalpages-footer-font" :api-key="apiKey"  :active-font="footer_font" @change="onFooterFont"></font-picker> -->
+												<v-select class="form-group" id="wplegalpages-footer-font" :options="font_options" v-model="footer_font">
+												</v-select>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Font Size', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the Font size for the footer section.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<v-select class="form-group" id="wplegalpages-footer-font-size" :options="font_size_options" v-model="footer_font_size">
+												</v-select>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Text Color', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the color for the text.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<c-input id="wplegalpages-lp-form-text-color" type="color" name="lp-footer-text-color" value="<?php echo esc_html( $lp_footer_options['footer_text_color'] ); ?>"></c-input>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Text Alignment', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the text alignment.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<v-select class="form-group" id="wplegalpages-footer-align" :options="footer_align_options" v-model="footer_text_align">
+												</v-select>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Link Color', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the color for links in the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<!-- <colorpicker class="wplegalpages-input-color-picker" id="wplegalpages-footer-link-color" :color="footer_link_color" v-model="footer_link_color"></colorpicker> -->
+												<c-input id="wplegalpages-lp-form-link-color" type="color" name="lp-footer-link-color" value="<?php echo esc_html( $lp_footer_options['footer_link_color'] ); ?>"></c-input>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Links Separator', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select link separator element.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<c-input id="wplegalpages-lp-form-separator" type="text" name="lp-footer-separator" value="<?php echo esc_html( $lp_footer_options['footer_separator'] ); ?>"></c-input>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Open Link in New Tab', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enable if you want to open links in the New Tab.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<c-switch v-bind="labelIcon" ref="footer_new_tab" v-model="footer_new_tab" id="wplegalpages-footer-new-tab" variant="3d" color="success" :checked="footer_new_tab" v-on:update:checked="onClickNewTab"></c-switch>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Additional CSS', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'You can add CSS to change the style of the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<vue-editor id="wplegalpages-lp-footer-custom-css" :editor-toolbar="customToolbarForm" v-model="footer_custom_css"></vue-editor>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"></c-col>
+											<c-col class="col-sm-8">
+												<p class="wplegalpages-custom-css-heading">Available CSS Selectors</p>
+												<p class="wplegalpages-custom-css-selector">Container ID's: <span class="wplegalpages-custom-css-links" @click="addContainerID">#wplegalpages_footer_links_container</span></p>
+												<p class="wplegalpages-custom-css-selector">Links class: <span class="wplegalpages-custom-css-links" @click="addLinksClass">.wplegalpages_footer_link</span></p>
+												<p class="wplegalpages-custom-css-selector">Text class: <span class="wplegalpages-custom-css-links" @click="addTextClass">.wplegalpages_footer_separator_text</span></p>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Links Order', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Drag to reorder the links.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-8">
+												<draggable id="wplegalpages-footer-order-links" v-model="footer_legal_pages">
+													<div class="wplegalpages-draggable-item" v-for="footer_page in footer_legal_pages" :key="footer_page">{{footer_page}}</div>
+												</draggable>
+											</c-col>
+										</c-row>
+										<c-row>
+											<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-footer-form-nonce" name="lp-footer-form-nonce" value="<?php echo wp_create_nonce( 'settings_footer_form_nonce' ); ?>"/></c-col>
+											<c-col class="col-sm-8">
+												<c-button @click="saveData" color="info"><span>Save</span></c-button>
+												<c-button color="secondary" @click="showFooterForm"><span>Cancel</span></c-button>
+											</c-col>
+										</c-row>
+								</c-card>
+						</v-js-modal>
 						<div class="wplegalpages-additonal-features-tab">
 							<c-card>
 								<c-card-header><?php esc_html_e( 'Add Legal Pages Link to the Footer', 'wplegalpages' ); ?></c-card-header>
@@ -156,123 +267,6 @@ if ( false === $lp_footer_options || empty( $lp_footer_options ) ) {
 										</c-button>
 									</div>
 									<input type="hidden" name="lp-banner" ref="banner" v-model="is_banner">
-								</c-card-body>
-							</c-card>
-						</div>
-						<div id="wplegalpages-form-modal-footer-form">
-							<c-card class="wplegalpages-form-modal-dialog">
-								<c-card-header class="wplegalpages-form-header">
-									<span><?php esc_html_e( 'Add Legal Pages Link to the Footer', 'wplegalpages' ); ?></span>
-									<span @click="showFooterForm">X</span>
-								</c-card-header>
-								<c-card-body>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Enabled', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Add Privacy Policy links to the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<c-switch v-bind="labelIcon" ref="switch_footer" v-model="is_footer" id="wplegalpages-show-footer" variant="3d" color="success" :checked="is_footer" v-on:update:checked="onSwitchFooter"></c-switch>
-											<input type="hidden" name="lp-is-footer" v-model="is_footer">
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Legal Pages', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the Legal Pages you want to add to the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<input type="hidden" ref="footer_legal_pages" v-model="footer_legal_pages" name="footer_legal_pages">
-											<input type="hidden" ref="footer_legal_pages_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_legal_pages'] ) ); ?>">
-											<v-select id="wplegalpages-footer-pages" class="form-group" :options="page_options" multiple v-model="footer_legal_pages"  >
-											</v-select>
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Background Color', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the background color for the footer section', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<!-- <colorpicker id="wplegalpages-footer-bgcolor" :color="link_bg_color" v-model="link_bg_color" /> -->
-											<c-input id="wplegalpages-lp-form-bg-color" type="color" name="lp-footer-bg-color" value="<?php echo esc_html( $lp_footer_options['footer_bg_color'] ); ?>"></c-input>
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Font', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the font.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<!-- <font-picker id="wplegalpages-footer-font" :api-key="apiKey"  :active-font="footer_font" @change="onFooterFont"></font-picker> -->
-											<input type="hidden" ref="footer_font_family" v-model="footer_font" name="lp-footer-font-family">
-											<input type="hidden" ref="footer_font_family_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_font'] ) ); ?>">
-											<v-select class="form-group" id="wplegalpages-footer-font" :options="font_options" v-model="footer_font">
-											</v-select>
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Font Size', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the Font size for the footer section.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<input type="hidden" ref="footer_font_size" v-model="footer_font_size" name="lp-footer-font-size">
-											<input type="hidden" ref="footer_font_size_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_font_size'] ) ); ?>">
-											<v-select class="form-group" id="wplegalpages-footer-font-size" :options="font_size_options" v-model="footer_font_size">
-											</v-select>
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Text Color', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the color for the text.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<c-input id="wplegalpages-lp-form-text-color" type="color" name="lp-footer-text-color" value="<?php echo esc_html( $lp_footer_options['footer_text_color'] ); ?>"></c-input>
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Text Alignment', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the text alignment.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<input type="hidden" ref="footer_text_align" v-model="footer_text_align" name="lp-footer-text-align">
-											<input type="hidden" ref="footer_text_align_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_text_align'] ) ); ?>">
-											<v-select class="form-group" id="wplegalpages-footer-align" :options="footer_align_options" v-model="footer_text_align">
-											</v-select>
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Link Color', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the color for links in the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<!-- <colorpicker class="wplegalpages-input-color-picker" id="wplegalpages-footer-link-color" :color="footer_link_color" v-model="footer_link_color"></colorpicker> -->
-											<c-input id="wplegalpages-lp-form-link-color" type="color" name="lp-footer-link-color" value="<?php echo esc_html( $lp_footer_options['footer_link_color'] ); ?>"></c-input>
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Links Separator', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select link separator element.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<c-input id="wplegalpages-lp-form-separator" type="text" name="lp-footer-separator" value="<?php echo esc_html( $lp_footer_options['footer_separator'] ); ?>"></c-input>
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Open Link in New Tab', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enable if you want to open links in the New Tab.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<c-switch v-bind="labelIcon" ref="footer_new_tab" v-model="footer_new_tab" id="wplegalpages-footer-new-tab" variant="3d" color="success" :checked="footer_new_tab" v-on:update:checked="onClickNewTab"></c-switch>
-											<input type="hidden" name="lp-footer-new-tab" v-model="footer_new_tab">
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Additional CSS', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'You can add CSS to change the style of the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<vue-editor id="wplegalpages-lp-footer-custom-css" :editor-toolbar="customToolbarForm" v-model="footer_custom_css"></vue-editor>
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"></c-col>
-										<c-col class="col-sm-8">
-											<p class="wplegalpages-custom-css-heading">Available CSS Selectors</p>
-											<p class="wplegalpages-custom-css-selector">Container ID's: <span class="wplegalpages-custom-css-links" @click="addContainerID">#wplegalpages_footer_links_container</span></p>
-											<p class="wplegalpages-custom-css-selector">Links class: <span class="wplegalpages-custom-css-links" @click="addLinksClass">.wplegalpages_footer_link</span></p>
-											<p class="wplegalpages-custom-css-selector">Text class: <span class="wplegalpages-custom-css-links" @click="addTextClass">.wplegalpages_footer_separator_text</span></p>
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Links Order', 'wplegalpages' ); ?><c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Drag to reorder the links.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8">
-											<draggable id="wplegalpages-footer-order-links" v-model="footer_legal_pages">
-												<div class="wplegalpages-draggable-item" v-for="footer_page in footer_legal_pages" :key="footer_page">{{footer_page}}</div>
-											</draggable>
-										</c-col>
-									</c-row>
-									<c-row>
-										<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-footer-form-nonce" name="lp-footer-form-nonce" value="<?php echo wp_create_nonce( 'settings_footer_form_nonce' ); ?>"/></c-col>
-										<c-col class="col-sm-8">
-											<c-button id="wplegalpages-footer-form-submit" color="info"><span>Save</span></c-button>
-											<c-button color="secondary" @click="showFooterForm"><span>Cancel</span></c-button>
-										</c-col>
-									</c-row>
 								</c-card-body>
 							</c-card>
 						</div>
