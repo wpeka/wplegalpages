@@ -13,7 +13,7 @@ var font_options = require('./google-fonts.json');
 
 import { cilPencil, cilSettings, cilInfo, cibGoogleKeep } from '@coreui/icons';
 Vue.use(CoreuiVue);
-Vue.use(vmodal, { componentName: 'v-js-modal' } )
+Vue.use(vmodal, { componentName: 'v-js-modal'} )
 Vue.component('vue-editor', VueEditor);
 Vue.component('draggable', Draggable);
 Vue.component('font-picker', FontPicker);
@@ -32,7 +32,6 @@ var gen = new Vue({
                 labelOn: '\u2713',
                 labelOff: '\u2715'
             },
-            apiKey: 'AIzaSyDu1nDK2o4FpxhrIlNXyPNckVW5YP9HRu8',
             customToolbarForm:  [],
             domain:'',
             generate:null,
@@ -58,7 +57,23 @@ var gen = new Vue({
             footer_separator: obj.lp_footer_options.hasOwnProperty('footer_separator') ? obj.lp_footer_options['footer_separator'] : '',
             footer_new_tab: obj.lp_footer_options.hasOwnProperty('footer_new_tab') ? Boolean( parseInt( obj.lp_footer_options['footer_new_tab'] ) ) : false,
             footer_custom_css: obj.lp_footer_options.hasOwnProperty('footer_custom_css') ? obj.lp_footer_options['footer_custom_css'] : '',
-            font_options: font_options,
+            font_options: font_options,bar_position_options:['top','bottom'],
+            bar_position:'top',
+            bar_type_options:['fixed','static'],
+            bar_type:'fixed',
+            banner_bg_color: obj.lp_banner_options.hasOwnProperty('banner_bg_color') ? obj.lp_banner_options['banner_bg_color']: '#ffffff',
+            banner_font: obj.lp_banner_options.hasOwnProperty('banner_font') ? obj.lp_banner_options['banner_font'] : 'Open Sans',
+            banner_font_id: obj.lp_banner_options.hasOwnProperty('banner_font_id') ? obj.lp_banner_options['banner_font_id'] : 'Open+Sans',
+            banner_text_color: obj.lp_banner_options.hasOwnProperty('banner_text_color') ? obj.lp_banner_options['banner_text_color']: '#000000',
+            banner_link_color: obj.lp_banner_options.hasOwnProperty('banner_link_color') ? obj.lp_banner_options['banner_link_color']: '#000000',
+            banner_number_of_days: Array.from(obj.number_of_days),
+            bar_num_of_days:'1',
+            banner_custom_css: obj.lp_banner_options.hasOwnProperty('banner_custom_css') ? obj.lp_banner_options['banner_custom_css'] : '',
+            banner_close_message: obj.lp_banner_options.hasOwnProperty('banner_close_message') ? obj.lp_banner_options['banner_close_message']: 'Close',
+            banner_font_size_option: Array.from(obj.font_size_options),
+            banner_font_size:'16',
+            banner_message: obj.lp_banner_options.hasOwnProperty('banner_message') ? obj.lp_banner_options['banner_message'] : 'Our [wplegalpages_page_link] have been updated on [wplegalpages_last_updated].',
+            banner_multiple_message: obj.lp_banner_options.hasOwnProperty('banner_multiple_message') ? obj.lp_banner_options['banner_multiple_message'] : 'Our [wplegalpages_page_link] pages have recently been updated.',
         }
     },
     methods: {
@@ -75,6 +90,11 @@ var gen = new Vue({
             this.footer_font = this.$refs.footer_font_family_mount.value ? this.$refs.footer_font_family_mount.value : 'Open Sans';
             this.footer_font_size = this.$refs.footer_font_size_mount.value ? this.$refs.footer_font_size_mount.value : '16';
             this.footer_text_align = this.$refs.footer_text_align_mount.value ? this.$refs.footer_text_align_mount.value : 'center';
+            this.bar_position = this.$refs.hasOwnProperty('bar_position_mount') && this.$refs.bar_position_mount.value ? this.$refs.bar_position_mount.value : '';
+            this.bar_type = this.$refs.hasOwnProperty('bar_type_mount') && this.$refs.bar_type_mount.value ? this.$refs.bar_type_mount.value : '';
+            this.footer_font = this.$refs.banner_font_family_mount.value ? this.$refs.banner_font_family_mount.value : 'Open Sans';
+            this.bar_num_of_days = this.$refs.hasOwnProperty('bar_num_of_days_mount') && this.$refs.bar_num_of_days_mount.value ? this.$refs.bar_num_of_days_mount.value : '';
+            this.banner_font_size = this.$refs.hasOwnProperty('banner_font_size_mount') && this.$refs.banner_font_size_mount.value ? this.$refs.banner_font_size_mount.value : '';
         },
         onChangeCredit(){
             this.generate= !this.generate;
@@ -104,12 +124,10 @@ var gen = new Vue({
             this.show_footer_form = !this.show_footer_form;
 
 			if ( this.show_footer_form ) {
-				this.$modal.show('complainceModal', {
-					height: 'auto',
-				})
+				this.$modal.show('footerModal');
 			}
 			else {
-				this.$modal.hide('complainceModal');
+				this.$modal.hide('footerModal');
 			}
         },
         onSwitchFooter() {
@@ -139,19 +157,55 @@ var gen = new Vue({
         },
         showBannerForm() {
             this.show_banner_form = !this.show_banner_form;
-            // if(this.show_banner_form) {
-            //     j('#wplegalpages-announcement-popup-form').css('display', 'flex');
-            // }
-            // else {
-            //     j('#wplegalpages-announcement-popup-form').css('display', 'none')
-            // }
+            if ( this.show_banner_form ) {
+				this.$modal.show('bannerModal');
+			}
+			else {
+				this.$modal.hide('bannerModal');
+			}
         },
         onClickBanner() {
             this.is_banner = !this.is_banner;
             this.$refs.banner.value = this.is_banner ? '1' : '0';
         },
-
-		saveData() {
+        onSwitchBanner(){
+            this.is_banner = !this.is_banner;
+            this.$refs.switch_banner = this.is_banner ? '1' : '0';
+        },
+        addBannerContainerID() {
+            this.banner_custom_css += `\n.wplegalpages_banner_content{\n\n}\n`;
+        },
+        addBannerLinksClass(){
+            this.banner_custom_css += `\n.wplegalpages_banner_link{\n\n}\n`;
+        },
+        addBannerPageCode() {
+            this.banner_message +=  '[wplegalpages_page_title]';
+        },
+        addBannerPageLinkTitle() {
+            this.banner_message += '[wplegalpages_page_link]';
+        },
+        addBannerPageHref() {
+            this.banner_message += '[wplegalpages_page_href]';
+        },
+        addBannerPageLed() {
+            this.banner_message += '[wplegalpages_last_updated]';
+        },
+        addBannerDefaultMsg() {
+            this.banner_message = 'Our [wplegalpages_page_link] have been updated on [wplegalpages_last_updated].';
+        },
+        addBannerMultiplePageCode() {
+            this.banner_multiple_message +=  '[wplegalpages_page_title]';
+        },
+        addBannerMultiplePageLinkTitle() {
+            this.banner_multiple_message += '[wplegalpages_page_link]';
+        },
+        addBannerMultipleDefaultMsg() {
+            this.banner_multiple_message = 'Our [wplegalpages_page_link] pages have recently been updated.';
+        },
+        addBannerMultiplePageLed() {
+            this.banner_multiple_message += '[wplegalpages_last_updated]';
+        },
+		saveFooterData() {
 			console.log('Button clicked!')
             jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
             var show_footer = this.is_footer;
@@ -192,7 +246,49 @@ var gen = new Vue({
             })
 
 			this.showFooterForm();
-		}
+		},
+        saveBannerData() {
+            var show_banner = this.is_banner;
+            var bar_pos = this.bar_position;
+            var type_bar = this.bar_type;
+            var banner_back_color = j('#wplegalpages-lp-banner-bg-color').val();
+            var banner_fnt = this.banner_font;
+            var banner_font_id = this.banner_font.split(' ').join('+');
+            var banner_text_color = j('#wplegalpages-lp-banner-text-color').val();
+            var banner_font_size = this.banner_font_size;
+            var banner_link_color = j('#wplegalpages-lp-banner-link-color').val();
+            var bar_days = this.bar_num_of_days;
+            var banner_css = j('#wplegalpages-lp-banner-custom-css').text();
+            var banner_close_message = this.banner_close_message;
+            var banner_msg = j('#wplegalpages-lp-banner-message').text(); 
+            var banner_multiple_msg = j('#wplegalpages-lp-banner-multiple-message').text();
+            j.ajax({
+                type: 'POST',
+                url: obj.ajaxurl,
+                data: {
+                'action': 'save_banner_form',
+                'lp-is-banner': show_banner,
+                'lp-bar-position':bar_pos,
+                'lp-bar-type':type_bar,
+                'lp-banner-bg-color':banner_back_color,
+                'lp-banner-font':banner_fnt,
+                'lp-banner-font-id':banner_font_id,
+                'lp-banner-text-color':banner_text_color,
+                'lp-banner-font-size': banner_font_size,
+                'lp-banner-link-color':banner_link_color,
+                'lp-bar-num-of-days':bar_days,
+                'lp-banner-css': banner_css,
+                'lp-banner-close-message': banner_close_message,
+                'lp-banner-message' : banner_msg,
+                'lp-banner-multiple-msg': banner_multiple_msg,
+                'lp_banner_nonce_data': j('#wplegalpages-banner-form-nonce').val(),
+            },
+            success: function(data) {
+                j("#wplegalpages-save-settings-alert").fadeOut(2500);
+            }
+            })
+            this.showBannerForm();
+        }
     },
     mounted() {
         this.setValues();
