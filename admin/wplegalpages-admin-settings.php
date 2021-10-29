@@ -18,7 +18,19 @@
 				$localized_data           = array(
 					'wplegalpages_pro_version' => $wplegalpages_pro_version,
 				);
-				wp_localize_script( $this->plugin_name . '-main', 'localized_data', $localized_data );
-				wp_enqueue_script( $this->plugin_name . '-main' );
-				require_once plugin_dir_path( __FILE__ ) . '/admin-settings.php';
+				if ( get_option( 'wplegalpages_pro_version' ) && version_compare( get_option( 'wplegalpages_pro_version' ), '8.2.0' ) < 0 ) {
+					?>
+					<div class="wrap">
+						<div class="wplegalpages_settings_left">
+						<?php
+						require_once plugin_dir_path( __FILE__ ) . '/old-admin-settings-ver818.php';
+						?>
+						</div>
+					</div>
+					<?php
+				} else {
+					wp_localize_script( $this->plugin_name . '-main', 'localized_data', $localized_data );
+					wp_enqueue_script( $this->plugin_name . '-main' );
+					require_once plugin_dir_path( __FILE__ ) . '/admin-settings.php';
+				}
 				?>
