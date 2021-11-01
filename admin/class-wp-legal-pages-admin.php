@@ -360,7 +360,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		public function admin_setting() {
 			$this->enqueue_common_style_scripts();
 			if ( get_option( 'wplegalpages_pro_version' ) && version_compare( get_option( 'wplegalpages_pro_version' ), '8.2.0' ) < 0 ) {
-				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin-settings.php';
+				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin-settings-ver818.php';
 			} else {
 				$lp_pages = get_posts(
 					array(
@@ -1171,8 +1171,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					if ( strpos( $href, 'forms.css' ) !== false || strpos( $href, 'revisions' ) ) {
 						return false;
 					}
-					if ( strpos( $href, 'bootstrap.min.css' ) !== false || strpos( $href, 'revisions' ) ) {
-						return false;
+					if ( get_option( 'wplegalpages_pro_version' ) && version_compare( get_option( 'wplegalpages_pro_version' ), '8.2.0' ) >= 0 ) {
+						if ( strpos( $href, 'bootstrap.min.css' ) !== false || strpos( $href, 'revisions' ) ) {
+							return false;
+						}
 					}
 				}
 			}
