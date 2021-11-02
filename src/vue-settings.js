@@ -8,12 +8,15 @@ import ColorPicker from './colorpicker';
 import { VueEditor } from "vue2-editor";
 import '@coreui/coreui/dist/css/coreui.min.css';
 import 'vue-select/dist/vue-select.css';
-import vmodal from 'vue-js-modal'
+// import vmodal from 'vue-js-modal';
+import VueModal from '@kouts/vue-modal'
+import '@kouts/vue-modal/dist/vue-modal.css';
 var font_options = require('./google-fonts.json');
 
 import { cilPencil, cilSettings, cilInfo, cibGoogleKeep } from '@coreui/icons';
 Vue.use(CoreuiVue);
-Vue.use(vmodal, { componentName: 'v-js-modal'} )
+// Vue.use(vmodal, { componentName: 'v-js-modal'} )
+Vue.component('v-modal', VueModal);
 Vue.component('vue-editor', VueEditor);
 Vue.component('draggable', Draggable);
 Vue.component('font-picker', FontPicker);
@@ -32,6 +35,7 @@ var gen = new Vue({
                 labelOn: '\u2713',
                 labelOff: '\u2715'
             },
+            appendField: ".wplegalpages-settings-container",
             customToolbarForm:  [],
             domain:'',
             generate:null,
@@ -123,12 +127,12 @@ var gen = new Vue({
         showFooterForm() {
             this.show_footer_form = !this.show_footer_form;
 
-			if ( this.show_footer_form ) {
-				this.$modal.show('footerModal');
-			}
-			else {
-				this.$modal.hide('footerModal');
-			}
+			// if ( this.show_footer_form ) {
+			// 	this.$modal.show('footerModal');
+			// }
+			// else {
+			// 	this.$modal.hide('footerModal');
+			// }
         },
         onSwitchFooter() {
             this.is_footer = !this.is_footer;
@@ -143,26 +147,26 @@ var gen = new Vue({
         },
         addContainerID() {
             if( !this.footer_custom_css.includes('#wplegalpages_footer_links_container') ) {
-                this.footer_custom_css += `\n#wplegalpages_footer_links_container {\n\n}\n`;
+                this.footer_custom_css += `#wplegalpages_footer_links_container {\n\n}\n`;
             }
         },
         addLinksClass() {
             if( !this.footer_custom_css.includes('.wplegalpages_footer_link') ) {
-                this.footer_custom_css += `\n.wplegalpages_footer_link {\n\n}\n`;}
+                this.footer_custom_css += `.wplegalpages_footer_link {\n\n}\n`;}
         },
         addTextClass() {
             if( !this.footer_custom_css.includes('.wplegalpages_footer_separator_text') ) {
-                this.footer_custom_css += `\n.wplegalpages_footer_separator_text {\n\n}\n`;
+                this.footer_custom_css += `.wplegalpages_footer_separator_text {\n\n}\n`;
             }
         },
         showBannerForm() {
             this.show_banner_form = !this.show_banner_form;
-            if ( this.show_banner_form ) {
-				this.$modal.show('bannerModal');
-			}
-			else {
-				this.$modal.hide('bannerModal');
-			}
+            // if ( this.show_banner_form ) {
+			// 	this.$modal.show('bannerModal');
+			// }
+			// else {
+			// 	this.$modal.hide('bannerModal');
+			// }
         },
         onClickBanner() {
             this.is_banner = !this.is_banner;
@@ -173,40 +177,60 @@ var gen = new Vue({
             this.$refs.switch_banner = this.is_banner ? '1' : '0';
         },
         addBannerContainerID() {
-            this.banner_custom_css += `\n.wplegalpages_banner_content{\n\n}\n`;
+            if(!this.banner_custom_css.includes('.wplegalpages_banner_content')) {
+                this.banner_custom_css += `.wplegalpages_banner_content{\n\n}\n`;
+            }
         },
         addBannerLinksClass(){
-            this.banner_custom_css += `\n.wplegalpages_banner_link{\n\n}\n`;
+            if(!this.banner_custom_css.includes('.wplegalpages_banner_link')) {
+                this.banner_custom_css += `.wplegalpages_banner_link{\n\n}\n`;
+            }
         },
         addBannerPageCode() {
-            this.banner_message +=  '[wplegalpages_page_title]';
+            if(!this.banner_message.includes('[wplegalpages_page_title]')) {
+                this.banner_message = this.banner_message.slice(0, this.banner_message.length)
+                this.banner_message +=  '[wplegalpages_page_title]';
+            }
         },
         addBannerPageLinkTitle() {
-            this.banner_message += '[wplegalpages_page_link]';
+            if(!this.banner_message.includes('[wplegalpages_page_link]')) {
+                this.banner_message = this.banner_message.slice(0, this.banner_message.length)
+                this.banner_message += '[wplegalpages_page_link]';
+            }
         },
         addBannerPageHref() {
-            this.banner_message += '[wplegalpages_page_href]';
+            if(!this.banner_message.includes('[wplegalpages_page_href]')){
+                this.banner_message = this.banner_message.slice(0, this.banner_message.length)
+                this.banner_message += '[wplegalpages_page_href]';
+            }
         },
         addBannerPageLed() {
-            this.banner_message += '[wplegalpages_last_updated]';
+            if(!this.banner_message.includes('[wplegalpages_last_updated]')) {
+                this.banner_message += '[wplegalpages_last_updated]';
+            }
         },
         addBannerDefaultMsg() {
             this.banner_message = 'Our [wplegalpages_page_link] have been updated on [wplegalpages_last_updated].';
         },
         addBannerMultiplePageCode() {
-            this.banner_multiple_message +=  '[wplegalpages_page_title]';
+            if(!this.banner_multiple_message.includes('[wplegalpages_page_title]')) {
+                this.banner_multiple_message +=  '[wplegalpages_page_title]';
+            }
         },
         addBannerMultiplePageLinkTitle() {
-            this.banner_multiple_message += '[wplegalpages_page_link]';
+            if(!this.banner_multiple_message.includes('[wplegalpages_page_link]')) {
+                this.banner_multiple_message += '[wplegalpages_page_link]';
+            }
         },
         addBannerMultipleDefaultMsg() {
             this.banner_multiple_message = 'Our [wplegalpages_page_link] pages have recently been updated.';
         },
         addBannerMultiplePageLed() {
-            this.banner_multiple_message += '[wplegalpages_last_updated]';
+            if(!this.banner_multiple_message.includes('[wplegalpages_last_updated]')) {
+                this.banner_multiple_message += '[wplegalpages_last_updated]';
+            }
         },
 		saveFooterData() {
-			console.log('Button clicked!')
             jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
             var show_footer = this.is_footer;
 			console.log(this.is_footer);
@@ -248,6 +272,7 @@ var gen = new Vue({
 			this.showFooterForm();
 		},
         saveBannerData() {
+            jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
             var show_banner = this.is_banner;
             var bar_pos = this.bar_position;
             var type_bar = this.bar_type;
@@ -288,13 +313,8 @@ var gen = new Vue({
             }
             })
             this.showBannerForm();
-        }
-    },
-    mounted() {
-        this.setValues();
-        var that = this;
-        j('#testing').css('display','none');
-        j('.wplegalpages-save-button').click(function() {
+        },
+        saveGeneralSettings() {
             jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
             var dataV = jQuery("#lp-save-settings-form").serialize();
             jQuery.ajax({
@@ -304,7 +324,11 @@ var gen = new Vue({
             }).done(function (data) {
                 j("#wplegalpages-save-settings-alert").fadeOut(2500);
             });
-        })
+        }
+    },
+    mounted() {
+        this.setValues();
+        j('#testing').css('display','none');
     },
     icons: { cilPencil, cilSettings, cilInfo, cibGoogleKeep }
 })

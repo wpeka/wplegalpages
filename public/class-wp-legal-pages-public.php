@@ -287,7 +287,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 						}
 					}
 					?>
-					<a> <?php echo esc_attr( $banner_close_message ); ?> </a>
+					<a style="cursor:pointer;"> <?php echo esc_attr( $banner_close_message ); ?> </a>
 				</div>
 				<script type="text/javascript">
 					jQuery(document).ready(function(){
