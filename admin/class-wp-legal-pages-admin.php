@@ -360,7 +360,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		public function admin_setting() {
 			$this->enqueue_common_style_scripts();
 			if ( get_option( 'wplegalpages_pro_version' ) && version_compare( get_option( 'wplegalpages_pro_version' ), '8.2.0' ) < 0 ) {
-				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin-settings.php';
+				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/admin-settings-ver818.php';
 			} else {
 				$lp_pages = get_posts(
 					array(
@@ -1138,8 +1138,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 			$lp_banner_options = array(
 				'show_banner'             => isset( $_POST['lp-is-banner'] ) && ( true === $_POST['lp-is-banner'] || 'true' === $_POST['lp-is-banner'] ) ? '1' : '0',
-				'bar_position'            => isset( $_POST['lp-bar-position'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-bar-position'] ) ) : '',
-				'bar_type'                => isset( $_POST['lp-bar-type'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-bar-type'] ) ) : '',
+				'bar_position'            => isset( $_POST['lp-bar-position'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-bar-position'] ) ) : 'top',
+				'bar_type'                => isset( $_POST['lp-bar-type'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-bar-type'] ) ) : 'static',
 				'banner_bg_color'         => isset( $_POST['lp-banner-bg-color'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-banner-bg-color'] ) ) : '#ffffff',
 				'banner_font'             => isset( $_POST['lp-banner-font'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-banner-font'] ) ) : 'Open Sans',
 				'banner_font_id'          => isset( $_POST['lp-banner-font-id'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-banner-font-id'] ) ) : 'Open+Sans',
@@ -1171,6 +1171,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					if ( strpos( $href, 'forms.css' ) !== false || strpos( $href, 'revisions' ) ) {
 						return false;
 					}
+					if ( get_option( 'wplegalpages_pro_version' ) && version_compare( get_option( 'wplegalpages_pro_version' ), '8.2.0' ) >= 0 ) {
+						if ( strpos( $href, 'bootstrap.min.css' ) !== false || strpos( $href, 'revisions' ) ) {
+							return false;
+						}
+					}
 				}
 			}
 			return $href;
@@ -1190,6 +1195,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					unset( $to_dos[ $key ] );
 					$key = array_search( 'revisions', $to_dos, true );
 					unset( $to_dos[ $key ] );
+					
 				}
 			}
 			return $to_dos;

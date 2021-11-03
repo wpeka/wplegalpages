@@ -15,6 +15,10 @@ module.exports = function (grunt) {
 		{
 
 			pkg: grunt.file.readJSON( 'package.json' ),
+			
+			shell: {
+				build: [ 'grunt updatefonts', 'npm run build' ].join( ' && ' )
+			},
 			clean: {
 				build: ['release/<%= pkg.version %>']
 			},
@@ -142,6 +146,7 @@ module.exports = function (grunt) {
 					}
 				},
 			},
+			
 
 			makepot: {
 				target: {
@@ -162,6 +167,26 @@ module.exports = function (grunt) {
 		}
 	);
 
+	grunt.registerTask('google-fonts', function () {
+		var done = this.async();
+		var request = require('request');
+		var fs = require('fs');
+		request('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyDu1nDK2o4FpxhrIlNXyPNckVW5YP9HRu8&sort=popularity', function (error, response, body) {
+			if (response && response.statusCode == 200) {
+				var fonts = JSON.parse(body).items.map(function (font) {
+					return font.family;
+				});
+				fs.writeFile('./src/google-fonts.json', JSON.stringify(fonts, undefined, 4), function (err) {
+					if (! err ) {
+						console.log("Google Fonts Updated!");
+					}
+				});
+			}
+		});
+	});
+
+	grunt.registerTask( 'updatefonts', [ 'google-fonts' ] );
+	grunt.loadNpmTasks('grunt-shell');
 	grunt.loadNpmTasks( 'grunt-wp-i18n' );
 	grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
@@ -172,7 +197,7 @@ module.exports = function (grunt) {
 	grunt.registerTask( 'default', ['i18n', 'readme'] );
 	grunt.registerTask( 'i18n', ['addtextdomain', 'makepot'] );
 	grunt.registerTask( 'readme', ['wp_readme_to_markdown'] );
-	grunt.registerTask( 'build', ['clean:build', 'copy:build', 'uglify:admin', 'uglify:frontend', 'cssmin:admin', 'cssmin:frontend', 'compress:build'] );
+	grunt.registerTask( 'build', ['shell:build', 'clean:build',  'copy:build', 'uglify:admin', 'uglify:frontend', 'cssmin:admin', 'cssmin:frontend', 'compress:build'] );
 
 	grunt.util.linefeed = '\n';
 
