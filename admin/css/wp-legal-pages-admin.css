@@ -611,6 +611,17 @@ div.ql-toolbar.ql-snow {
 	color: #321fdb;
 }
 
+.wplegalpages-modal-buttons {
+	display: flex;
+	justify-content: end;
+	margin-top: 0.25rem;
+	margin-bottom: 0.25rem;
+}
+
+.wplegalpages-modal-button {
+	margin-left: 5px;
+}
+
 /***Vue Modal CSS***/
 #wplegalpages-settings-app .wplegalpages-settings-container .vm {
     left: 5%;

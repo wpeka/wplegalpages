@@ -241,9 +241,9 @@ if ( '1' === $lpterms ) {
 						</c-row>
 						<c-row>
 							<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-footer-form-nonce" name="lp-footer-form-nonce" value="<?php echo wp_create_nonce( 'settings_footer_form_nonce' ); ?>"/></c-col>
-							<c-col class="col-sm-8">
-								<c-button @click="saveFooterData" color="info"><span>Save</span></c-button>
-								<c-button color="secondary" @click="showFooterForm"><span>Cancel</span></c-button>
+							<c-col class="col-sm-8 wplegalpages-modal-buttons">
+								<c-button class="wplegalpages-modal-button" @click="saveFooterData" color="info"><span>Save</span></c-button>
+								<c-button class="wplegalpages-modal-button" color="secondary" @click="showFooterForm"><span>Cancel</span></c-button>
 							</c-col>
 						</c-row>
 					</v-modal>
@@ -373,9 +373,9 @@ if ( '1' === $lpterms ) {
 								</c-row>
 								<c-row>
 									<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-banner-form-nonce" name="lp-banner-form-nonce" value="<?php echo wp_create_nonce( 'settings_banner_form_nonce' ); ?>"/></c-col>
-									<c-col class="col-sm-8">
-										<c-button @click="saveBannerData" color="info"><span>Save</span></c-button>
-										<c-button color="secondary" @click="showBannerForm"><span>Cancel</span></c-button>
+									<c-col class="col-sm-8 wplegalpages-modal-buttons">
+										<c-button class="wplegalpages-modal-button" @click="saveBannerData" color="info"><span>Save</span></c-button>
+										<c-button class="wplegalpages-modal-button" color="secondary" @click="showBannerForm"><span>Cancel</span></c-button>
 									</c-col>
 								</c-row>
 						</v-modal>

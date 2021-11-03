@@ -8,14 +8,12 @@ import ColorPicker from './colorpicker';
 import { VueEditor } from "vue2-editor";
 import '@coreui/coreui/dist/css/coreui.min.css';
 import 'vue-select/dist/vue-select.css';
-// import vmodal from 'vue-js-modal';
 import VueModal from '@kouts/vue-modal'
 import '@kouts/vue-modal/dist/vue-modal.css';
 var font_options = require('./google-fonts.json');
 
 import { cilPencil, cilSettings, cilInfo, cibGoogleKeep } from '@coreui/icons';
 Vue.use(CoreuiVue);
-// Vue.use(vmodal, { componentName: 'v-js-modal'} )
 Vue.component('v-modal', VueModal);
 Vue.component('vue-editor', VueEditor);
 Vue.component('draggable', Draggable);
@@ -126,13 +124,6 @@ var gen = new Vue({
         },
         showFooterForm() {
             this.show_footer_form = !this.show_footer_form;
-
-			// if ( this.show_footer_form ) {
-			// 	this.$modal.show('footerModal');
-			// }
-			// else {
-			// 	this.$modal.hide('footerModal');
-			// }
         },
         onSwitchFooter() {
             this.is_footer = !this.is_footer;
@@ -161,12 +152,6 @@ var gen = new Vue({
         },
         showBannerForm() {
             this.show_banner_form = !this.show_banner_form;
-            // if ( this.show_banner_form ) {
-			// 	this.$modal.show('bannerModal');
-			// }
-			// else {
-			// 	this.$modal.hide('bannerModal');
-			// }
         },
         onClickBanner() {
             this.is_banner = !this.is_banner;
