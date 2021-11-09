@@ -244,7 +244,7 @@ if ( '1' === $lpterms ) {
 										</draggable>
 									</c-col>
 								</c-row>
-								<c-row>
+								<c-row class="wplegalpages-modal-footer">
 									<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-footer-form-nonce" name="lp-footer-form-nonce" value="<?php echo wp_create_nonce( 'settings_footer_form_nonce' ); ?>"/></c-col>
 									<c-col class="col-sm-8 wplegalpages-modal-buttons">
 										<c-button class="wplegalpages-modal-button" @click="saveFooterData" color="info"><span>Save</span></c-button>
@@ -383,7 +383,7 @@ if ( '1' === $lpterms ) {
 											<p class="wplegalpages-custom-css-selector">Links class: <span class="wplegalpages-custom-css-links" @click="addBannerLinksClass">.wplegalpages_banner_link</span></p>
 										</c-col>
 									</c-row>
-									<c-row>
+									<c-row class="wplegalpages-modal-footer">
 										<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-banner-form-nonce" name="lp-banner-form-nonce" value="<?php echo wp_create_nonce( 'settings_banner_form_nonce' ); ?>"/></c-col>
 										<c-col class="col-sm-8 wplegalpages-modal-buttons">
 											<c-button class="wplegalpages-modal-button" @click="saveBannerData" color="info"><span>Save</span></c-button>
