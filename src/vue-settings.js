@@ -97,6 +97,16 @@ var gen = new Vue({
             this.footer_font = this.$refs.banner_font_family_mount.value ? this.$refs.banner_font_family_mount.value : 'Open Sans';
             this.bar_num_of_days = this.$refs.hasOwnProperty('bar_num_of_days_mount') && this.$refs.bar_num_of_days_mount.value ? this.$refs.bar_num_of_days_mount.value : '';
             this.banner_font_size = this.$refs.hasOwnProperty('banner_font_size_mount') && this.$refs.banner_font_size_mount.value ? this.$refs.banner_font_size_mount.value : '';
+            let navLinks = j('.nav-link').map(function () {
+                return this.getAttribute('href');
+            });
+            for (let i = 0; i < navLinks.length; i++) {
+                let re = new RegExp(navLinks[i]);
+                if (window.location.href.match(re)) {
+                    this.$refs.active_tab.activeTabIndex = i;
+                    break;
+                }
+            }
         },
         onChangeCredit(){
             this.generate= !this.generate;
