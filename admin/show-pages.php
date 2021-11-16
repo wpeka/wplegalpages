@@ -47,16 +47,6 @@ if ( ( isset( $_REQUEST['mode'] ) && 'delete' === $_REQUEST['mode'] && current_u
 }
 $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
 ?>
-	<?php
-	$lp_pro_installed = get_option( '_lp_pro_installed' );
-	if ( '1' !== $lp_pro_installed ) :
-		?>
-<div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
-<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=legalpages%20lite%20banner&utm_campaign=legal%20pages%20lite%20banner&utm_medium=banner" target="_blank">
-<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/upgrade-to-pro.jpg'; ?>">
-</a>
-</div>
-<?php endif; ?>
 <h2 class="hndle myLabel-head"> <?php esc_attr_e( 'Available Pages', 'wplegalpages' ); ?> </h2>
 <table class="widefat fixed comments table table-striped">
 	<thead>
