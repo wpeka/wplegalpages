@@ -225,7 +225,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 				<div class="wplegalpages_banner_content" 
 					style="background-color:red;z-index:1000; 
 					<?php if ( 'top' === $banner_position ) { ?>
-					top: 32px; 
+					top: 0px; 
 						<?php
 					} else {
 						?>
