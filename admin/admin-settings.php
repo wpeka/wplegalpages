@@ -88,7 +88,7 @@ if ( '1' === $lpterms ) {
 			<input type="hidden" name="settings_form_nonce" value="<?php echo wp_create_nonce( 'settings-form-nonce' ); ?>"/>
 			<div class="wplegalpages-settings-top">
 				<div class="wplegalpages-save-button">
-					<c-button color="info"><span>Save Changes</span></c-button>
+					<c-button color="info" @click="saveGeneralSettings"><span>Save Changes</span></c-button>
 				</div>
 			</div>
 			<div class="wplegalpages-settings-content">
