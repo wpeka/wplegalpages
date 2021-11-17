@@ -1119,10 +1119,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( 'yes' === get_post_meta( $post_id, 'is_legal', true ) && 'publish' === get_post_status( $post_id ) ) {
 				$lp_banner_options = get_option( 'lp_banner_options' );
 				if ( $lp_banner_options ) {
-					$cookie_days     = $lp_banner_options['bar_num_of_days'];
-					$cookie_duration = $cookie_days * 86400;
-					$cookie_name     = 'wplegalpages-update-notice-' . $post_id;
-					setcookie( $cookie_name, 1, time() + $cookie_duration, '/' );
+					$cookie_days = $lp_banner_options['bar_num_of_days'];
+					if ( false === get_option( 'banner_cookie_options' ) || ! get_option( 'banner_cookie_options' ) ) {
+						update_option( 'banner_cookie_options', array() );
+					}
+					$banner_cookie_options             = get_option( 'banner_cookie_options' );
+					$banner_cookie_options[ $post_id ] = array(
+						'cookie_start' => time(),
+						'cookie_end'   => time() + ( 86400 * $cookie_days ),
+						'cookie_name'  => 'wplegalpages-update-notice-' . $post_id,
+					);
+					update_option( 'banner_cookie_options', $banner_cookie_options );
 				}
 			}
 		}
@@ -1195,7 +1202,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					unset( $to_dos[ $key ] );
 					$key = array_search( 'revisions', $to_dos, true );
 					unset( $to_dos[ $key ] );
-					
 				}
 			}
 			return $to_dos;

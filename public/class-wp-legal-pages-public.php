@@ -188,7 +188,22 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 		/** Show Announcement bar contents
 		 */
 		public function wplegal_announce_bar_content() {
-			$lp_banner_options = get_option( 'lp_banner_options' );
+			$lp_banner_options     = get_option( 'lp_banner_options' );
+			$banner_cookie_options = get_option( 'banner_cookie_options' );
+			$cookies_array         = array();
+			if ( ! $banner_cookie_options || count( $banner_cookie_options ) === 0 ) {
+				return;
+			}
+			foreach ( $banner_cookie_options as $cookie_option ) {
+				if ( ! isset( $_COOKIE[ $cookie_option['cookie_name'] ] ) && time() < $cookie_option['cookie_end'] ) {
+					$cookie_option['cookie_expire'] = $cookie_option['cookie_end'] - time();
+					array_push( $cookies_array, $cookie_option );
+				}
+			}
+			if ( count( $cookies_array ) > 0 ) {
+				wp_localize_script( $this->plugin_name . 'banner-cookie', 'cookies', $cookies_array );
+				wp_enqueue_script( $this->plugin_name . 'banner-cookie' );
+			}
 			if ( '1' === $lp_banner_options['show_banner'] ) {
 				foreach ( $_COOKIE as $key => $val ) {
 					if ( preg_match( '/wplegalpages-update-notice-\d+/', $key ) ) {
