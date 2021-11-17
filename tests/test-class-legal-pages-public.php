@@ -137,32 +137,4 @@ class WP_Legal_Pages_Public_Test extends WP_UnitTestCase {
 		$html = ob_get_clean();
 		$this->assertTrue( is_string( $html ) && ( wp_strip_all_tags( $html ) !== $html ) );
 	}
-
-	/**
-	 * Test for wplegal_announce_bar_content
-	 */
-	public function test_wplegal_announce_bar_content() {
-		$lp_banner_options = array(
-			'show_banner'             => '1',
-			'bar_position'            => 'top',
-			'bar_type'                => 'static',
-			'banner_bg_color'         => '#ffffff',
-			'banner_font'             => 'Roboto',
-			'banner_font_id'          => 'Roboto',
-			'banner_text_color'       => '#000000',
-			'banner_font_size'        => 18,
-			'banner_link_color'       => '#000000',
-			'bar_num_of_days'         => 1,
-			'banner_custom_css'       => '.wplegalpages_banner_content { height: 100px; }',
-			'banner_close_message'    => 'X',
-			'banner_message'          => 'The page [wplegalpages_page_title] has been updated',
-			'banner_multiple_message' => 'The pages [wplegalpages_page_title] has been updated',
-		);
-		update_option( 'lp_banner_options', $lp_banner_options );
-		$_COOKIE[ 'wplegalpages-update-notice-' . self::$lp_ids[0] ] = 'wplegalpages-update-notice-' . self::$lp_ids[0];
-		ob_start();
-		self::$wplegalpages_public->wplegal_announce_bar_content();
-		$html = ob_get_clean();
-		$this->assertTrue( is_string( $html ) && ( wp_strip_all_tags( $html ) !== $html ) );
-	}
 }
