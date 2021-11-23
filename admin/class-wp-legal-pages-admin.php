@@ -453,16 +453,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$this->plugin_name . '-vue-js',
 				'obj',
 				array(
-					'menu_items'          => array(
-						'support_text'       => __( 'Support', 'wplegalpages' ),
-						'support_url'        => $support_url,
-						'documentation_text' => __( 'Documentation', 'wplegalpages' ),
-						'documentation_url'  => 'https://docs.wpeka.com/wp-legal-pages/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=documentation',
-						'faq_text'           => __( 'FAQ', 'wplegalpages' ),
-						'faq_url'            => 'https://docs.wpeka.com/wp-legal-pages/faq/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=faq',
-						'upgrade_text'       => __( 'Upgrade to Pro &raquo;', 'wplegalpages' ),
-						'upgrade_url'        => 'https://club.wpeka.com/product/wplegalpages/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=upgrade-to-pro',
-					),
 					'ajax_url'            => admin_url( 'admin-ajax.php' ),
 					'ajax_nonce'          => wp_create_nonce( 'admin-ajax-nonce' ),
 					'is_pro'              => $is_pro,
