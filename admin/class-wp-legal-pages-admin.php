@@ -1205,8 +1205,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					if ( strpos( $href, 'forms.css' ) !== false || strpos( $href, 'revisions' ) ) {
 						return false;
 					}
-					if ( strpos( $href, 'bootstrap.min.css' ) !== false || strpos( $href, 'revisions' ) ) {
-						return false;
+					if ( version_compare( $this->version, '2.6.0', '>=' ) ) {
+						if ( strpos( $href, 'bootstrap.min.css' ) !== false || strpos( $href, 'revisions' ) ) {
+							return false;
+						}
 					}
 				}
 			}
