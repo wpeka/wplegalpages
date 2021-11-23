@@ -273,7 +273,6 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		$end   = strrpos( $data, '}' );
 		$data  = substr( $data, $start, ( $end - $start ) + 1 );
 		$data  = json_decode( $data, true );
-		$this->assertArrayHasKey( 'menu_items', $data, 'Failed to localize array index menu_items.' );
 		$this->assertArrayHasKey( 'ajax_url', $data, 'Failed to localize array index ajax_url.' );
 		$this->assertArrayHasKey( 'ajax_nonce', $data, 'Failed to localize array index ajax_nonce.' );
 		$this->assertArrayHasKey( 'is_pro', $data, 'Failed to localize array index is_pro.' );
