@@ -93,6 +93,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_register_script( $this->plugin_name . '-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue.js', array(), $this->version, true );
 			wp_register_script( $this->plugin_name . '-vue-js', plugin_dir_url( __FILE__ ) . 'js/vue/vue-getting-started.js', array( 'jquery' ), $this->version, true );
 			wp_register_script( $this->plugin_name . '-main', plugin_dir_url( __FILE__ ) . 'js/vue/wplegalpages-admin-main.js', array( 'jquery' ), $this->version, false );
+			wp_register_script( $this->plugin_name . '-vue-mascot', plugin_dir_url( __FILE__ ) . 'js/vue/vue-mascot.js', array( 'jquery' ), $this->version, true );
 		}
 
 		/**
@@ -399,6 +400,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				wp_localize_script( $this->plugin_name . '-main', 'obj', $options_object );
 				wp_enqueue_script( $this->plugin_name . '-main' );
 				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wplegalpages-admin-settings.php';
+				?>
+				<div id="wplegal-mascot-app"></div>
+				<?php
 			}
 		}
 
@@ -444,9 +448,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			} else {
 				$support_url = 'https://wordpress.org/support/plugin/wplegalpages/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=forums';
 			}
-			wp_enqueue_style( $this->plugin_name . '-vue-style' );
-			wp_enqueue_script( $this->plugin_name . '-vue' );
-			wp_enqueue_script( $this->plugin_name . '-vue-js' );
 
 			wp_localize_script(
 				$this->plugin_name . '-vue-js',
@@ -561,10 +562,46 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					),
 				)
 			);
+			wp_enqueue_style( $this->plugin_name . '-vue-style' );
+			wp_enqueue_script( $this->plugin_name . '-vue' );
+			wp_enqueue_script( $this->plugin_name . '-vue-js' );
 			?>
 			<div id="gettingstartedapp"></div>
 			<div id="wplegal-mascot-app"></div>
 			<?php
+		}
+
+		/**
+		 * Function to enqueue mascot files
+		 */
+		public function wplegalpages_mascot_enqueue() {
+			$is_pro = get_option( '_lp_pro_active' );
+			if ( $is_pro ) {
+				$support_url = 'https://club.wpeka.com/my-account/orders/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=support';
+			} else {
+				$support_url = 'https://wordpress.org/support/plugin/wplegalpages/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=forums';
+			}
+			wp_localize_script(
+				$this->plugin_name . '-vue-mascot',
+				'data',
+				array(
+					'menu_items'       => array(
+						'support_text'       => __( 'Support', 'wplegalpages' ),
+						'support_url'        => $support_url,
+						'documentation_text' => __( 'Documentation', 'wplegalpages' ),
+						'documentation_url'  => 'https://docs.wpeka.com/wp-legal-pages/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=documentation',
+						'faq_text'           => __( 'FAQ', 'wplegalpages' ),
+						'faq_url'            => 'https://docs.wpeka.com/wp-legal-pages/faq/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=faq',
+						'upgrade_text'       => __( 'Upgrade to Pro &raquo;', 'wplegalpages' ),
+						'upgrade_url'        => 'https://club.wpeka.com/product/wplegalpages/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=upgrade-to-pro',
+					),
+					'is_pro'           => $is_pro,
+					'quick_links_text' => __( 'See Quick Links', 'wplegalpages' ),
+				)
+			);
+			wp_enqueue_style( $this->plugin_name . '-vue-style' );
+			wp_enqueue_script( $this->plugin_name . '-vue' );
+			wp_enqueue_script( $this->plugin_name . '-vue-mascot' );
 		}
 
 		/**
@@ -1178,10 +1215,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					if ( strpos( $href, 'forms.css' ) !== false || strpos( $href, 'revisions' ) ) {
 						return false;
 					}
-					if ( get_option( 'wplegalpages_pro_version' ) && version_compare( get_option( 'wplegalpages_pro_version' ), '8.2.0' ) >= 0 ) {
-						if ( strpos( $href, 'bootstrap.min.css' ) !== false || strpos( $href, 'revisions' ) ) {
-							return false;
-						}
+					if ( strpos( $href, 'bootstrap.min.css' ) !== false || strpos( $href, 'revisions' ) ) {
+						return false;
 					}
 				}
 			}
