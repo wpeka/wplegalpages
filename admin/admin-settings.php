@@ -250,7 +250,7 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-4"><label><?php esc_attr_e( 'Links Order', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Drag to reorder the links.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 									<c-col class="col-sm-8">
 										<draggable id="wplegalpages-footer-order-links" v-model="footer_legal_pages">
-											<p class="wplegalpages-draggable-item" v-for="footer_page in footer_legal_pages" :key="footer_page">{{footer_page}}</p>
+											<p class="wplegalpages-draggable-item" v-for="footer_page in footer_legal_pages" :key="footer_page">{{footer_page}}<img src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/drag-icon.png'; ?>"/></p>
 										</draggable>
 									</c-col>
 								</c-row>
