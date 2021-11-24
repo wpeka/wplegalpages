@@ -204,7 +204,6 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$this->loader->add_action( 'wp_ajax_save_accept_terms', $plugin_admin, 'wplegal_save_accept_terms' );
 			$this->loader->add_filter( 'nav_menu_meta_box_object', $plugin_admin, 'wplegalpages_add_menu_meta_box', 10, 1 );
 			$this->loader->add_action( 'wp_ajax_wplegalpages_disable_settings_warning', $plugin_admin, 'wplegalpages_disable_settings_warning', 10, 1 );
-			$this->loader->add_action( 'wp_legalpages_notice', $plugin_admin, 'wplegalpages_notice' );
 			$this->loader->add_action( 'wp_ajax_lp_save_admin_settings', $plugin_admin, 'wplegalpages_ajax_save_settings', 10, 1 );
 			$this->loader->add_filter( 'style_loader_src', $plugin_admin, 'wplegalpages_dequeue_styles' );
 			$this->loader->add_filter( 'print_styles_array', $plugin_admin, 'wplegalpages_remove_forms_style' );

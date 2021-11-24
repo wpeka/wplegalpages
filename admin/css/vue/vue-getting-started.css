@@ -3,9 +3,6 @@ body {
 	color: #444;
 	margin: 0;
 }
-#wpcontent {
-	padding: 0;
-}
 #wpbody-content .notice {
 	display: none;
 }
