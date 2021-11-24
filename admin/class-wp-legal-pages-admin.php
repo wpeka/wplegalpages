@@ -1014,33 +1014,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		/**
-		 * Set notice for setting page
-		 */
-		public function wplegalpages_notice() {
-			?>
-			<c-card class="wplegalpages-welcome-card">
-				<c-card-header class="wplegalpages-welcome-header"><?php esc_html_e( 'Welcome to WPLegalPages', 'wpadcenter' ); ?></c-card-header>
-				<c-card-body class="wplegalpages-welcome-body">
-				To get started, please take a look at our videos <a href="https://youtu.be/FmzIfboIVcI" target="_blank"> How to configure the Settings of WPLegalPages</a> and <a href="https://youtu.be/91tMgpQnOZw" target="_blank"> How to use the Wizard function to create a legal page.</a>
-				</c-card-body>
-			</c-card>
-			<?php
-			$lp_pro_installed = get_option( '_lp_pro_active' );
-			if ( '1' !== $lp_pro_installed ) {
-				?>
-				<c-card class="wplegalpages-licence-card">
-					<c-card-header class="wplegalpages-licence-header"><?php esc_html_e( 'You are using WPLegalPages Free version - no license key needed.', 'wpadcenter' ); ?></c-card-header>
-					<c-card-body class="wplegalpages-licence-body">
-						<p class="wplegalpages-licence-para-1">To unlock more features consider <a href="https://club.wpeka.com/product/wplegalpages/" target= "_blank" >upgrading to PRO.</a></p>
-
-					</c-card-body>
-				</c-card>
-				<?php
-			}
-			do_action( 'activate_key_card' );
-		}
-
-		/**
 		 * Ajax callback for setting page
 		 */
 		public function wplegalpages_ajax_save_settings() {

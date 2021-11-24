@@ -308,16 +308,5 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		$option_value = get_option( 'wplegalpages_disable_settings_warning' );
 		$this->assertEquals( $option_value, '1' );
 	}
-
-	/**
-	 * Test for wplegalpages_notice
-	 */
-	public function test_wplegalpages_notice() {
-		update_option( '_lp_pro_active', '1' );
-		ob_start();
-		self::$wplegalpages_admin->wplegalpages_notice();
-		$html = ob_get_clean();
-		$this->assertTrue( is_string( $html ) && wp_strip_all_tags( $html ) );
-	}
 }
 
