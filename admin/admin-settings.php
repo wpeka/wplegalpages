@@ -440,6 +440,7 @@ if ( '1' === $lpterms ) {
 									<input type="hidden" name="lp-banner" ref="banner" v-model="is_banner">
 								</c-card-body>
 							</c-card>
+							<?php do_action( 'wplegalpages_compliances_settings' ); ?>
 						</div>
 					</c-tab>
 				</c-tabs>

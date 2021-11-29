@@ -44,6 +44,8 @@ var gen = new Vue({
             privacy_page: '',
             is_footer: obj.lp_options.hasOwnProperty('is_footer') ? Boolean( parseInt( obj.lp_options.is_footer ) ) : false,
             is_banner: obj.lp_options.hasOwnProperty('is_banner') ? Boolean( parseInt( obj.lp_options['is_banner'] ) ) : false,
+            is_age: obj.lp_options.hasOwnProperty('is_age') ? Boolean( parseInt( obj.lp_options['is_age'] ) ) : false,
+            is_popup: obj.lp_options.hasOwnProperty('is_popup') ? Boolean( parseInt( obj.lp_options['is_popup'] ) ) : false,
             page_options: obj.page_options,
             show_footer_form: false,
             show_banner_form: false,
@@ -86,7 +88,6 @@ var gen = new Vue({
             this.is_adult = this.$refs.hasOwnProperty('is_adult')?this.$refs.is_adult.checked:null; 
             this.privacy =this.$refs.hasOwnProperty('privacy')? this.$refs.privacy.checked:null; 
             this.privacy_page = this.$refs.hasOwnProperty('privacy_page_mount') && this.$refs.privacy_page_mount.value ? this.$refs.privacy_page_mount.value : '';
-            this.is_popup =this.$refs.hasOwnProperty('popup') && '1' === this.$refs.popup.value ? true :null;
             this.privacy_page = this.$refs.hasOwnProperty('privacy_page_mount') && this.$refs.privacy_page_mount.value ? this.$refs.privacy_page_mount.value : '';
             this.footer_legal_pages = this.$refs.footer_legal_pages_mount.value ? this.$refs.footer_legal_pages_mount.value.split(',') : [];
             this.footer_font = this.$refs.footer_font_family_mount.value ? this.$refs.footer_font_family_mount.value : 'Open Sans';
@@ -224,6 +225,14 @@ var gen = new Vue({
             if(!this.banner_multiple_message.includes('[wplegalpages_last_updated]')) {
                 this.banner_multiple_message += '[wplegalpages_last_updated]';
             }
+        },
+        onClickAge() {
+            this.is_age = !this.is_age;
+            this.$refs.ageverify = this.is_age ? '1' : '0';
+        },
+        onClickPopup() {
+            this.is_popup = !this.is_popup;
+            this.$refs.popup= this.popup ? '1' : '0';
         },
 		saveFooterData() {
             jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
