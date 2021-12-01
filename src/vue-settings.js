@@ -86,8 +86,8 @@ var gen = new Vue({
             age_type_options: ['Input DOB', 'Yes/No Buttons'],
             age_type_option: 'Yes/No Buttons',
             age_buttons: true,
-            age_yes_button: obj.age_yes_button ? obj.age_yes_button : 'I agree',
-            age_no_button: obj.age_no_button ? obj.age_no_button : 'No',
+            age_yes_button: obj.age_yes_button ? obj.age_yes_button : 'Yes, I am',
+            age_no_button: obj.age_no_button ? obj.age_no_button : 'No, I am not',
             age_description: obj.age_description ? obj.age_description : `You must be atleast {age} years of age to visit this site.\n{form}`,
             invalid_age_description: obj.invalid_age_description ? obj.invalid_age_description : `We are Sorry. You are not of valid age.`
         }
@@ -246,8 +246,6 @@ var gen = new Vue({
             this.show_age_verification_form = !this.show_age_verification_form;
         },
         onClickAge() {
-            // this.is_age = !this.is_age;
-            // this.$refs.ageverify = this.is_age ? '1' : '0';
             this.is_age = this.is_age === 'content' ? 'site' : 'content';
             this.$refs.ageverify = this.is_age;
             this.age_button_content = this.is_age === 'content' ? false : true;
