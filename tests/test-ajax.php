@@ -39,7 +39,7 @@ class AjaxTestCLASS extends WP_Ajax_UnitTestCase {
 	 * @param WP_UnitTest_Factory $factory helper for unit test functionality.
 	 */
 	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
-		self::$wplegalpages_admin = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.6.0' );
+		self::$wplegalpages_admin = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.7.0' );
 	}
 
 	/**
