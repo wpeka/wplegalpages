@@ -45,14 +45,14 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 	 */
 	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$lp_ids             = $factory->post->create_many( 2, array( 'post_type' => 'page' ) );
-		self::$wplegalpages_admin = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.6.0' );
+		self::$wplegalpages_admin = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.7.0' );
 	}
 
 	/**
 	 * Test for construction function
 	 */
 	public function test_construct() {
-		$obj = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.6.0' );
+		$obj = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.7.0' );
 		$this->assertTrue( $obj instanceof WP_Legal_Pages_Admin );
 	}
 

@@ -397,6 +397,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'lp_banner_options' => $lp_banner_options,
 					'font_size_options' => range( 8, 72 ),
 				);
+				$options_object    = apply_filters( 'wplegalpages_compliances_options', $options_object );
 				wp_localize_script( $this->plugin_name . '-main', 'obj', $options_object );
 				wp_enqueue_script( $this->plugin_name . '-main' );
 				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wplegalpages-admin-settings.php';

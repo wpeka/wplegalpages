@@ -403,6 +403,7 @@ if ( '1' === $lpterms ) {
 								</c-card-body>
 							</c-card>
 						</v-modal>
+						<?php do_action( 'wplegalpages_compliances_settings_modals' ); ?>
 						<div class="wplegalpages-additonal-features-tab">
 							<c-card>
 								<c-card-header><?php esc_html_e( 'Add Legal Pages Link to the Footer', 'wplegalpages' ); ?></c-card-header>

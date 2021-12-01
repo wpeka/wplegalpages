@@ -40,14 +40,14 @@ class WP_Legal_Pages_Public_Test extends WP_UnitTestCase {
 	 */
 	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$lp_ids              = $factory->post->create_many( 2, array( 'post_type' => 'page' ) );
-		self::$wplegalpages_public = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.6.0' );
+		self::$wplegalpages_public = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.7.0' );
 	}
 
 	/**
 	 * Test for constructor function
 	 */
 	public function test_constructor() {
-		$obj = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.6.0' );
+		$obj = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.7.0' );
 		$this->assertTrue( $obj instanceof WP_Legal_Pages_Public );
 	}
 
