@@ -83,7 +83,7 @@ var gen = new Vue({
             age_verify_for: 'Guests only',
             age_verify_for_options: ['Guests only', 'All visitors'],
             minimum_age: obj.minimum_age ? obj.minimum_age : 18,
-            age_type_options: ['Input DOB', 'Yes/No Buttons'],
+            age_type_options: ['Input Date of Birth', 'Yes/No Buttons'],
             age_type_option: 'Yes/No Buttons',
             age_buttons: true,
             age_yes_button: obj.age_yes_button ? obj.age_yes_button : 'Yes, I am',
