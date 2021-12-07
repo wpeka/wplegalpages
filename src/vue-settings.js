@@ -46,11 +46,12 @@ var gen = new Vue({
             is_banner: obj.lp_options.hasOwnProperty('is_banner') ? Boolean( parseInt( obj.lp_options['is_banner'] ) ) : false,
             is_age: obj.age_verify_enable ? obj.age_verify_enable : 'content',
             age_button_content: this.is_age === 'site' ? true : false,
-            is_popup: obj.lp_options.hasOwnProperty('is_popup') ? Boolean( parseInt( obj.lp_options['is_popup'] ) ) : false,
+            is_popup: obj.popup_enabled ? Boolean( parseInt( obj.popup_enabled ) ) : false,
             page_options: obj.page_options,
             show_footer_form: false,
             show_banner_form: false,
             show_age_verification_form: false,
+            show_popup_form: false,
             footer_legal_pages: [],
             link_bg_color: obj.lp_footer_options.hasOwnProperty('footer_bg_color') ? obj.lp_footer_options['footer_bg_color']: '#ffffff',
             footer_font: obj.lp_footer_options.hasOwnProperty('footer_font') ? obj.lp_footer_options['footer_font'] : 'Open Sans',
@@ -83,7 +84,7 @@ var gen = new Vue({
             age_verify_for: 'Guests only',
             age_verify_for_options: ['Guests only', 'All visitors'],
             minimum_age: obj.minimum_age ? obj.minimum_age : 18,
-            age_type_options: ['Input DOB', 'Yes/No Buttons'],
+            age_type_options: ['Input Date of Birth', 'Yes/No Buttons'],
             age_type_option: 'Yes/No Buttons',
             age_buttons: true,
             age_yes_button: obj.age_yes_button ? obj.age_yes_button : 'Yes, I am',
@@ -277,9 +278,23 @@ var gen = new Vue({
         showButtonOptions() {
             this.age_buttons = this.age_type_option === 'Yes/No Buttons' ? true : false;
         },
+        showPopupForm() {
+            this.show_popup_form = !this.show_popup_form;
+        },
         onClickPopup() {
             this.is_popup = !this.is_popup;
-            this.$refs.popup= this.popup ? '1' : '0';
+            this.$refs.popup= this.is_popup ? '1' : '0';
+        },
+        onSwitchPopup(){
+            this.is_popup = !this.is_popup;
+            this.$refs.switch_popup = this.is_popup ? '1' : '0';
+            // Display/Hide the 'Create Popup' submenu according to the toggle button in modal of 'Create Popus' card of 'Compliances Tab'
+            if( this.is_popup ) {
+                jQuery('.wplegalpages-popup-submenu').css('display', 'block')
+            }
+            else {
+                jQuery('.wplegalpages-popup-submenu').css('display', 'none')
+            }
         },
         onClickCookie(){
             this.is_cookie_bar = this.is_cookie_bar === 'ON' ? 'off' : 'ON';
@@ -449,11 +464,27 @@ var gen = new Vue({
             success: function(data) {
                 j("#wplegalpages-save-settings-alert").fadeOut(2500);
             }
-            
             })
             this.showCookieBar();
         },
 
+        savePopupData() {
+            jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
+            var show_popup = this.is_popup;
+            j.ajax({
+                type: 'POST',
+                url: obj.ajaxurl,
+                data: {
+                'action': 'save_popup_form',
+                'lp-is-popup': show_popup,
+                'lp_popup_nonce_data': j('#wplegalpages-popup-form-nonce').val(),
+            },
+            success: function(data) {
+                j("#wplegalpages-save-settings-alert").fadeOut(2500);
+            }
+            })
+            this.showPopupForm();
+        },
         saveGeneralSettings() {
             jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
             var dataV = jQuery("#lp-save-settings-form").serialize();
