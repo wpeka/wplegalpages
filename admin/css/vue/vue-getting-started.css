@@ -3,9 +3,6 @@ body {
 	color: #444;
 	margin: 0;
 }
-#wpbody-content .notice {
-	display: none;
-}
 .wplegal-container {
 	position: relative;
 	/*min-height: 100vh;*/
@@ -403,4 +400,3 @@ body {
 	box-shadow: none;
 	-moz-outline-style: none;
 }
-
