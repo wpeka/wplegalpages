@@ -118,7 +118,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				add_submenu_page( 'legal-pages', __( 'Settings', 'wplegalpages' ), __( 'Settings', 'wplegalpages' ), 'manage_options', 'legal-pages', array( $this, 'admin_setting' ) );
 				add_submenu_page( 'legal-pages', __( 'All Legal Pages', 'wplegalpages' ), __( 'All Legal Pages', 'wplegalpages' ), 'manage_options', 'lp-show-pages', array( $this, 'show_pages' ) );
 				add_submenu_page( 'legal-pages', __( 'Create Legal Page', 'wplegalpages' ), __( 'Create Legal Page', 'wplegalpages' ), 'manage_options', 'lp-create-page', array( $this, 'create_page' ) );
-				add_submenu_page( 'legal-pages', __( 'Cookie Bar', 'wplegalpages' ), __( 'Cookie Bar', 'wplegalpages' ), 'manage_options', 'lp-eu-cookies', array( $this, 'update_eu_cookies' ) );
+				if(  version_compare( $this->version, '2.7.0', '<' ) ){
+					add_submenu_page( 'legal-pages', __( 'Cookie Bar', 'wplegalpages' ), __( 'Cookie Bar', 'wplegalpages' ), 'manage_options', 'lp-eu-cookies', array( $this, 'update_eu_cookies' ) );
+				}
 				do_action( 'wplegalpages_admin_menu' );
 				add_submenu_page( 'legal-pages', __( 'Getting Started', 'wplegalpages' ), __( 'Getting Started', 'wplegalpages' ), 'manage_options', 'getting-started', array( $this, 'vue_getting_started' ) );
 			}
@@ -388,15 +390,50 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$lp_options        = get_option( 'lp_general' );
 				$lp_banner_options = get_option( 'lp_banner_options' );
 				$lp_footer_options = get_option( 'lp_footer_options' );
+				$lp_eu_theme_css         = get_option( 'lp_eu_theme_css' );
+				$lp_eu_get_visibility    = get_option( 'lp_eu_cookie_enable' );
+				$lp_eu_title             = get_option( 'lp_eu_cookie_title' );
+				$lp_eu_message           = get_option( 'lp_eu_cookie_message' );
+				$lp_eu_box_color         = get_option( 'lp_eu_box_color' );
+				$lp_eu_button_color      = get_option( 'lp_eu_button_color' );
+				$lp_eu_button_text_color = get_option( 'lp_eu_button_text_color' );
+				$lp_eu_text_color        = get_option( 'lp_eu_text_color' );
+				$lp_eu_button_text       = get_option( 'lp_eu_button_text' );
+				$lp_eu_link_text         = get_option( 'lp_eu_link_text' );
+				$lp_eu_link_url          = get_option( 'lp_eu_link_url' );
+				$lp_eu_text_size         = get_option( 'lp_eu_text_size' );
+				$lp_eu_link_color        = get_option( 'lp_eu_link_color' );
+				$cookie_text_size_options = array();
+				for ( $i = 10; $i < 32; $i += 2 ) {
+					array_push( $cookie_text_size_options, $i );
+				}
+				if( !$lp_eu_get_visibility ){
+					$lp_eu_get_visibility = 'off';
+				}
 				$options_object    = array(
-					'lp_options'        => $lp_options,
-					'page_options'      => $options,
-					'lp_footer_options' => $lp_footer_options,
-					'ajaxurl'           => admin_url( 'admin-ajax.php' ),
-					'number_of_days'    => range( 1, 30 ),
-					'lp_banner_options' => $lp_banner_options,
-					'font_size_options' => range( 8, 72 ),
+					'lp_options'              => $lp_options,
+					'page_options'            => $options,
+					'lp_footer_options'       => $lp_footer_options,
+					'ajaxurl'                 => admin_url( 'admin-ajax.php' ),
+					'number_of_days'          => range( 1, 30 ),
+					'lp_banner_options'       => $lp_banner_options,
+					'font_size_options'       => range( 8, 72 ),
+					'lp_eu_theme_css'         => $lp_eu_theme_css,
+					'lp_eu_cookie_enable'     => $lp_eu_get_visibility,
+					'lp_eu_cookie_title'      => $lp_eu_title,
+					'lp_eu_cookie_message'    => $lp_eu_message,
+					'lp_eu_box_color'         => $lp_eu_box_color,
+					'lp_eu_button_color'      => $lp_eu_box_color,
+					'lp_eu_button_text_color' => $lp_eu_button_text_color,
+					'lp_eu_text_color'        => $lp_eu_text_color,
+					'lp_eu_button_text'       => $lp_eu_button_text,
+					'lp_eu_link_text'         => $lp_eu_link_text,
+					'lp_eu_link_url'          => $lp_eu_link_url,
+					'lp_eu_text_size'         => $lp_eu_text_size,
+					'lp_eu_link_color'        => $lp_eu_link_color,
+					'cookie_text_size_options'=> $cookie_text_size_options,
 				);
+
 				$options_object    = apply_filters( 'wplegalpages_compliances_options', $options_object );
 				wp_localize_script( $this->plugin_name . '-main', 'obj', $options_object );
 				wp_enqueue_script( $this->plugin_name . '-main' );
@@ -1080,6 +1117,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$lp_banner_options                = get_option( 'lp_banner_options' );
 			$lp_banner_options['show_banner'] = isset( $_POST['lp-banner'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-banner'] ) ) : '0';
 			update_option( 'lp_banner_options', $lp_banner_options );
+
+			if(isset($_POST['lp-cookie-bar'])){
+				update_option( 'lp_eu_cookie_enable', sanitize_text_field( wp_unslash( $_POST['lp-cookie-bar'] ) ) );
+			}
+			 
 			wp_send_json_success( array( 'form_options_saved' => true ) );
 		}
 
@@ -1164,6 +1206,57 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$lp_general              = get_option( 'lp_general' );
 			$lp_general['is_banner'] = isset( $_POST['lp-is-banner'] ) && ( true === $_POST['lp-is-banner'] || 'true' === $_POST['lp-is-banner'] ) ? '1' : '0';
 			update_option( 'lp_general', $lp_general );
+			wp_send_json_success( array( 'form_options_saved' => true ) );
+		}
+		
+		/**
+		* Ajax callback for Cookie Bar form
+		*/
+		public function wplegalpages_save_cookie_bar_form() {
+			if ( isset( $_POST['lp-cookie-bar-nonce'] ) ) {
+				if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['lp-cookie-bar-nonce'] ) ), 'settings_cookie_bar_form_nonce' ) ) {
+					return;
+				}
+			}
+			if ( isset( $_POST['lp-cookie-bar-enable'] ) ) {
+				update_option( 'lp_eu_cookie_enable', sanitize_text_field( wp_unslash( $_POST['lp-cookie-bar-enable'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-bar-title'] ) ) {
+				update_option( 'lp_eu_cookie_title', sanitize_text_field( wp_unslash( $_POST['lp-cookie-bar-title'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-message-body'] ) ) {
+				update_option( 'lp_eu_cookie_message', sanitize_text_field( wp_unslash( $_POST['lp-cookie-message-body'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-button-text'] ) ) {
+				update_option( 'lp_eu_button_text', sanitize_text_field( wp_unslash( $_POST['lp-cookie-button-text'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-link-text'] ) ) {
+				update_option( 'lp_eu_link_text', sanitize_text_field( wp_unslash( $_POST['lp-cookie-link-text'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-link-url'] ) ) {
+				update_option( 'lp_eu_link_url', sanitize_text_field( wp_unslash( $_POST['lp-cookie-link-url'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-use-theme-css'] ) ) {
+				update_option( 'lp_eu_theme_css', sanitize_text_field( wp_unslash( $_POST['lp-cookie-use-theme-css'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-box-background-color'] ) ) {
+				update_option( 'lp_eu_box_color', sanitize_text_field( wp_unslash( $_POST['lp-cookie-box-background-color'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-box-text-color'] ) ) {
+				update_option( 'lp_eu_text_color', sanitize_text_field( wp_unslash( $_POST['lp-cookie-box-text-color'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-button-background-color'] ) ) {
+				update_option( 'lp_eu_button_color', sanitize_text_field( wp_unslash( $_POST['lp-cookie-button-background-color'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-button-text-color'] ) ) {
+				update_option( 'lp_eu_button_text_color', sanitize_text_field( wp_unslash( $_POST['lp-cookie-button-text-color'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-link-color'] ) ) {
+				update_option( 'lp_eu_link_color', sanitize_text_field( wp_unslash( $_POST['lp-cookie-link-color'] ) ) );
+			}
+			if ( isset( $_POST['lp-cookie-text-size'] ) ) {
+				update_option( 'lp_eu_text_size', sanitize_text_field( wp_unslash( $_POST['lp-cookie-text-size'] ) ) );
+			}
 			wp_send_json_success( array( 'form_options_saved' => true ) );
 		}
 
