@@ -168,6 +168,7 @@ Vue.component('TermsSection', {
         }
     },
     mounted: function(){
+        $('.notice').css('display', 'none');
         $.get(obj.ajax_url,{'action':'get_accept_terms','nonce':obj.ajax_nonce}).then((response => {
             if(response.success) {
                 if(response.data == '1') {
@@ -479,7 +480,16 @@ Vue.component('FeaturesSection', {
             domProps: {
                 textContent: obj.features.multilingual_desc
             }
-        })])])])]);
+        })])])]),createElement('a', {
+            attrs: {
+                target: 'blank',
+            },
+            staticClass: 'wplegal-button',
+            domProps: {
+                textContent: obj.features.button_text,
+                href:obj.features.url
+            }
+        })]);
     }
 });
 

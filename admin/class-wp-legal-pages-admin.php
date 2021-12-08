@@ -521,6 +521,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'helpful_desc'      => __( 'Even if you get stuck using WPLegalPages, you can use our easy to follow docs & guides.', 'wplegalpages' ),
 						'multilingual_text' => __( 'Multilingual support', 'wplegalpages' ),
 						'multilingual_desc' => __( 'Supports multi-language translations for English, French, Spanish, German, Italian, Portuguese.', 'wplegalpages' ),
+						'button_text'       => __( 'Upgrade Now', 'wplegalpages' ),
+						'url'               => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=getting-started&utm_campaign=upgrade',
 					),
 					'configure'           => array(
 						'text'        => __( 'WPLegalPages generates personalized legal pages for your website. To do this it needs to know a few details about your website. Please take a couple of minutes to set up your business details before you can generate a policy page for this website.', 'wplegalpages' ),
