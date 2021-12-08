@@ -213,4 +213,31 @@ class AjaxTestCLASS extends WP_Ajax_UnitTestCase {
 		$response = json_decode( $this->_last_response, true );
 		$this->assertTrue( $response['success'] );
 	}
+
+	/**
+	 * Test for wplegalpages_save_banner_form
+	 */
+	public function test_wplegalpages_save_cookie_bar_form() {
+		$_POST['lp-cookie-bar-nonce']    			= wp_create_nonce( 'settings_cookie_bar_form_nonce' );
+		$_POST['lp-cookie-bar-enable']   			= '';
+		$_POST['lp-cookie-bar-title']    			= '';
+		$_POST['lp-cookie-message-body']    		= '';
+		$_POST['lp-cookie-button-text']     		= '';
+		$_POST['lp-cookie-link-text']          		= '';
+		$_POST['lp-cookie-link-url']       			= '';
+		$_POST['lp-cookie-use-theme-css']    		= '';
+		$_POST['lp-cookie-box-background-color']    = '';
+		$_POST['lp-cookie-box-text-color']    		= '';
+		$_POST['lp-cookie-button-background-color'] = '';
+		$_POST['lp-cookie-button-text-color']       = '';
+		$_POST['lp-cookie-link-color'] 				= '';
+		$_POST['lp-cookie-text-size']       		= '';
+		try {
+			$this->_handleAjax( 'save_cookie_bar_form' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+		$response = json_decode( $this->_last_response, true );
+		$this->assertTrue( $response['success'] );
+	}
 }
