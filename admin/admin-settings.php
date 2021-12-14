@@ -421,83 +421,83 @@ if ( '1' === $lpterms ) {
 							<c-card>
 								<c-card-body>
 									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Enabled', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enable the Cookie Bar.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Enabled', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enable cookie bar option by turning this on', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8">
 											<c-switch ref="switch_cookie" v-bind="labelIcon" v-model="is_cookie_bar" id="wplegalpages-show-footer" variant="3d"  color="success" :checked="cookie_enable" v-on:update:checked="onSwitchCookie"></c-switch>
 										</c-col>
 									</c-row>
 									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Cookie Title', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Title for the Cookie Bar', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Cookie Title', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enter the title you want to display on your cookie bar', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8">
 										<c-input type="text" name="lp-cookie-bar-title" id="wplegalpages-cookie-bar-title" v-model="cookie_bar_title" value="<?php echo ! empty( $cookie_bar_title ) ? esc_attr( $cookie_bar_title ) : ''; ?>"></c-input>
 										</c-col>
 									</c-row>
 									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Cookie Message Body', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( '', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Cookie Message Body', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enter the cookie bar message to be displayed', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8">
 										<vue-editor id="wplegalpages-lp-cookie-message-body" :editor-toolbar="customToolbarForm" v-model="cookie_message"></vue-editor></c-col>
 									</c-row>
 									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Button Text', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enter the text you want to display on the Accept button on Cookie bar.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Button Text', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enter the text for the button', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8">
 											<c-input type="text" name="lp-cookie-button-text" id="wplegalpages-cookie-button-text" v-model="cookie_button_text" value="<?php echo ! empty( $lp_eu_button_text ) ? esc_attr( $lp_eu_button_text ) : 'I agree'; ?>"></c-input>
 										</c-col>
 									</c-row>
 									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Link Text', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( '', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Link Text', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enter the URL text', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8">
 											<c-input type="text" name="lp-cookie-link-text" id="wplegalpages-cookie-link-text" v-model="cookie_link_text" value="<?php echo ! empty( $lp_eu_link_text ) ? esc_attr( $lp_eu_link_text ) : ''; ?>"></c-input>
 										</c-col>
 									</c-row>
 									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Link URL', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( '', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Link URL', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enter the URL you want to add to the Cookie Bar', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8">
 											<c-input type="text" name="lp-cookie-link-url" id="wplegalpages-cookie-link-url" v-model="cookie_link_url" value="<?php echo ! empty( $lp_eu_link_url ) ? esc_attr( $lp_eu_link_url ) : ''; ?>"></c-input>
 										</c-col>
 									</c-row>
 									<c-row>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Use Theme CSS', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( '', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Use Theme CSS', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Turn this on to use theme CSS', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8">
 											<c-switch ref="cookie_use_theme_css_ref" v-bind="labelIcon" v-model="cookie_use_theme_css" id="wplegalpages-cookie-use-theme-css" variant="3d"  color="success" :checked="cookie_use_theme_enabled" v-on:update:checked="onClickUseTheme"></c-switch>
 										</c-col>
 									</c-row>
 									<c-row v-show="!cookie_use_theme_enabled">
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Box Background Color', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( '', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Box Background Color', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the color of the box background', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8 wplegalpages-color-pick">
 											<c-input class="wplegalpages-color-input" type="text" v-model="cookie_box_background_color"></c-input>
 											<c-input class="wplegalpages-color-select" id="wplegalpages-cookie-box-background-color" type="color" name="lp-cookie-box-background-color" v-model="cookie_box_background_color"></c-input>
 										</c-col>
 									</c-row>
 									<c-row v-show="!cookie_use_theme_enabled">
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Box Text Color', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( '', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Box Text Color', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the color of text in the box', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8 wplegalpages-color-pick">
 											<c-input class="wplegalpages-color-input" type="text" v-model="cookie_box_text_color"></c-input>
 											<c-input class="wplegalpages-color-select" id="wplegalpages-cookie-box-text-color" type="color" name="lp-cookie-box-text-color" v-model="cookie_box_text_color"></c-input>
 										</c-col>
 									</c-row>
 									<c-row v-show="!cookie_use_theme_enabled">
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Button Background Color', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( '', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Button Background Color', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the color of the button background', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8 wplegalpages-color-pick">
 											<c-input class="wplegalpages-color-input" type="text" v-model="cookie_button_background_color"></c-input>
 											<c-input class="wplegalpages-color-select" id="wplegalpages-cookie-button-background-color" type="color" name="lp-cookie-button-background-color" v-model="cookie_button_background_color"></c-input>
 										</c-col>
 									</c-row>
 									<c-row v-show="!cookie_use_theme_enabled">
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Button Text Color', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( '', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Button Text Color', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the color of the button text', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8 wplegalpages-color-pick">
 											<c-input class="wplegalpages-color-input" type="text" v-model="cookie_button_text_color"></c-input>
 											<c-input class="wplegalpages-color-select" id="wplegalpages-cookie-button-text-color" type="color" name="lp-cookie-button-text-color" v-model="cookie_button_text_color"></c-input>
 										</c-col>
 									</c-row>
 									<c-row v-show="!cookie_use_theme_enabled">
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Link Color', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( '', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Link Color', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the color for the link', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8 wplegalpages-color-pick">
 											<c-input class="wplegalpages-color-input" type="text" v-model="cookie_link_color"></c-input>
 											<c-input class="wplegalpages-color-select" id="wplegalpages-cookie-link-color" type="color" name="lp-cookie-link-color" v-model="cookie_link_color"></c-input>
 										</c-col>
 									</c-row>
 									<c-row v-show="!cookie_use_theme_enabled">
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Text Size', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the text size.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Text Size', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the font size', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8">
 											<v-select class="form-group" id="wplegalpages-cookie-text-size" :options="cookie_text_size_options" v-model="cookie_text_size">
 											</v-select>
