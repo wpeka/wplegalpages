@@ -310,6 +310,11 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 				$lp_eu_link_color        = get_option( 'lp_eu_link_color' );
 				$lp_eu_head_text_size    = $lp_eu_text_size + 4;
 
+				if ( ! $lp_eu_button_text || $lp_eu_button_text === '' ) {
+					$lp_eu_button_text = 'I agree';
+					update_option( 'lp_eu_button_text', $lp_eu_button_text );
+				}
+				
 				$lp_eu_html  = '<div id="lp_eu_container">';
 				$lp_eu_html .= '<table id="lp_eu_table" class="lp_eu_table" style="border:none;"><tr><td width="90%">';
 
