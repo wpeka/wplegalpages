@@ -268,7 +268,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 			add_option( 'lp_eu_cookie_message', htmlentities( $message_body ) );
 			add_option( 'lp_eu_cookie_enable', 'OFF' );
 			add_option( 'lp_eu_box_color', '#000000' );
-
+			add_option( 'lp_eu_button_text', 'I agree' );
+			add_option( 'lp_eu_theme_css', '1' );
 			add_option( 'lp_eu_cookie_message', htmlentities( $message_body ) );
 			add_option( 'lp_eu_cookie_enable', 'OFF' );
 			add_option( 'lp_eu_box_color', '#000000' );

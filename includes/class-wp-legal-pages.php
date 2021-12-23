@@ -85,7 +85,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 
 			global $table_prefix;
 			$this->plugin_name = 'wp-legal-pages';
-			$this->version     = '2.6.0';
+			$this->version     = '2.7.0';
 			$this->tablename   = $table_prefix . 'legal_pages';
 			$this->popuptable  = $table_prefix . 'lp_popups';
 			$this->plugin_url  = plugin_dir_path( dirname( __FILE__ ) );
@@ -209,6 +209,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$this->loader->add_filter( 'print_styles_array', $plugin_admin, 'wplegalpages_remove_forms_style' );
 			$this->loader->add_action( 'wp_ajax_lp_save_footer_form', $plugin_admin, 'wplegalpages_save_footer_form' );
 			$this->loader->add_filter( 'wp_ajax_save_banner_form', $plugin_admin, 'wplegalpages_save_banner_form' );
+			$this->loader->add_action( 'wp_ajax_save_cookie_bar_form', $plugin_admin, 'wplegalpages_save_cookie_bar_form' );
 			$this->loader->add_action( 'post_updated', $plugin_admin, 'wplegalpages_post_updated', 10, 1 );
 		}
 
@@ -309,6 +310,11 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 				$lp_eu_link_color        = get_option( 'lp_eu_link_color' );
 				$lp_eu_head_text_size    = $lp_eu_text_size + 4;
 
+				if ( ! $lp_eu_button_text || $lp_eu_button_text === '' ) {
+					$lp_eu_button_text = 'I agree';
+					update_option( 'lp_eu_button_text', $lp_eu_button_text );
+				}
+				
 				$lp_eu_html  = '<div id="lp_eu_container">';
 				$lp_eu_html .= '<table id="lp_eu_table" class="lp_eu_table" style="border:none;"><tr><td width="90%">';
 
@@ -319,7 +325,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 				$lp_eu_html .= '<p id="lp_eu_body">' . stripslashes( html_entity_decode( $lp_eu_message ) );
 
 				$lp_eu_html .= ' <a id="lp_eu_link" target="_blank" href="' . $lp_eu_link_url . '">' . $lp_eu_link_text . '</a></p></td>';
-				$lp_eu_html .= '<td width="10%"><p id="lp_eu_btnContainer"><button type="button" id="lp_eu_btn_agree">' . $lp_eu_button_text . '</button></p></td></tr></table>';
+				$lp_eu_html .= '<td width="10%" ><div id="lp_eu_right_container"><p id="lp_eu_close_button"></p><p style="min-height:50%"></p><p id="lp_eu_btnContainer"><button type="button" id="lp_eu_btn_agree">' . $lp_eu_button_text . '</button></p></td></div></tr></table>';
 				$lp_eu_html .= '</div>';
 				echo '<style>
 					.lp_eu_table td{
@@ -350,9 +356,27 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 						box-sizing : border-box;
 						opacity: 0.8;
 					}
-
+					#lp_eu_close_button:before{
+						content: "\2716";
+						font-size: ' . $lp_eu_text_size . 'px;
+					}
+					#lp_eu_close_button{
+						padding-left: 85%;
+						position: absolute;
+						top: 0px;
+						right: 15px;
+					}
+					#lp_eu_right_container{
+						display:flex;
+						flex-direction: column;
+						align-items : end;	
+					}
 					#lp_eu_btnContainer{
-					text-align: center;
+						text-align: center;
+						padding-right: 15%;
+						align-items: center;
+						display: flex;
+						justify-content: center;
 					}
 					#lp_eu_title{
 						margin: inherit;
@@ -388,6 +412,10 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 									jQuery.cookie('lp_eu_agree', 'YES', { expires: 7, path: '/' });
 									jQuery('#lp_eu_container').hide(500);
 								});
+								jQuery('#lp_eu_close_button').click(function(){
+										jQuery('#lp_eu_container').css('display','none');
+										jQuery.cookie('lp_eu_agree', 'close', { expires: 7, path: '/' });
+								})
 							});
 							function lp_eu_show_cookie_bar(){
 								jQuery('body').prepend('<?php echo $lp_eu_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>');
@@ -411,7 +439,8 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 																			'border-radius'	  : '5px',
 																			'box-shadow'		  : 'inset 0 0 1px 1px #f6f6f6',
 																			'line-height'	  : 1,
-																			'padding'		  : '3px 5px',
+																			'padding'		  : '7px',
+																			'padding-bottom'  : '9px',
 																			'text-align'		  : 'center',
 																			'text-shadow'      : '0 1px 0 #fff',
 																			'cursor'			  : 'pointer',
