@@ -52,6 +52,13 @@ Customizable for various types of websites which sell in multiple countries like
 = Easy to customize privacy policy pages =
 Generated policy pages are regular WordPress pages. You can easily edit and update them.
 
+= Compliance Settings =
+The Compliance Settings tab  has a set of useful settings that can help you with certain legal requirements.
+- **Add Legal Pages Link To The Footer**
+It is important that your legal pages are always visible and easily accessible to your website visitors. Using the footer link option you can automatically insert the links of your legal pages to the footer section of your website. You can also customize the appearance of the links added.
+- **Announcement Banner For Legal Pages**
+Whenever your legal pages get updated, it is essential to keep your users informed. Using this option, you can display an announcement banner on your website whenever your legal pages get updated. You can set the duration and customize the banner as per your choice.
+
 = Integrates with your favorite contact form (Pro Feature) =
 WPLegalPages seamlessly works with your favorite contact form plugin. Users are informed about data being collected and can read the privacy policy before form submission. This helps in getting informed consent as per the privacy requirements.
 
