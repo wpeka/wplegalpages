@@ -711,3 +711,6 @@ div.ql-toolbar.ql-snow {
 .wplegalpages-modal-footer {
 	margin-bottom: 0 !important;
 }
+.wplegalpages-additional-features-descripiton  p{
+	min-height: 60px;
+}

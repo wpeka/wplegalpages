@@ -40,14 +40,14 @@ class WP_Legal_Pages_Public_Test extends WP_UnitTestCase {
 	 */
 	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$lp_ids              = $factory->post->create_many( 2, array( 'post_type' => 'page' ) );
-		self::$wplegalpages_public = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.6.0' );
+		self::$wplegalpages_public = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.7.0' );
 	}
 
 	/**
 	 * Test for constructor function
 	 */
 	public function test_constructor() {
-		$obj = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.6.0' );
+		$obj = new WP_Legal_Pages_Public( 'wp-legal-pages', '2.7.0' );
 		$this->assertTrue( $obj instanceof WP_Legal_Pages_Public );
 	}
 
@@ -134,6 +134,40 @@ class WP_Legal_Pages_Public_Test extends WP_UnitTestCase {
 		$_COOKIE[ 'wplegalpages-update-notice-' . self::$lp_ids[1] ] = 'wplegalpages-update-notice-' . self::$lp_ids[1];
 		ob_start();
 		self::$wplegalpages_public->lp_banner_contents_display();
+		$html = ob_get_clean();
+		$this->assertTrue( is_string( $html ) && ( wp_strip_all_tags( $html ) !== $html ) );
+	}
+
+	/**
+	 * Test for wplegal_announce_bar_content
+	 */
+	public function test_wplegal_announce_bar_content() {
+		$lp_banner_options = array(
+			'show_banner'             => '1',
+			'bar_position'            => 'top',
+			'bar_type'                => 'static',
+			'banner_bg_color'         => '#ffffff',
+			'banner_font'             => 'Roboto',
+			'banner_font_id'          => 'Roboto',
+			'banner_text_color'       => '#000000',
+			'banner_font_size'        => 18,
+			'banner_link_color'       => '#000000',
+			'bar_num_of_days'         => 1,
+			'banner_custom_css'       => '.wplegalpages_banner_content { height: 100px; }',
+			'banner_close_message'    => 'X',
+			'banner_message'          => 'The page [wplegalpages_page_title] has been updated',
+			'banner_multiple_message' => 'The pages [wplegalpages_page_title] has been updated',
+		);
+		update_option( 'lp_banner_options', $lp_banner_options );
+		$banner_cookie_options = array(
+			array(
+				'cookie_name' => 'wplegalpages-update-notice-' . self::$lp_ids[0],
+				'cookie_end'  => time() + 2000,
+			),
+		);
+		update_option( 'banner_cookie_options', $banner_cookie_options );
+		ob_start();
+		self::$wplegalpages_public->wplegal_announce_bar_content();
 		$html = ob_get_clean();
 		$this->assertTrue( is_string( $html ) && ( wp_strip_all_tags( $html ) !== $html ) );
 	}

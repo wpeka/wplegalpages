@@ -3,11 +3,11 @@ Contributors: WPEka Club
 Donate link: https://club.wpeka.com/product/wplegalpages
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD, CalOPPA, datenschutz, impressum, coppa, terms and conditions, terms of service, disclosure, disclaimer, disclosure statement, affiliate, affiliate links, amazon, woo commerce, woo, antispam, confidentiality, refund, refund policy, returns, earnings, ftc, medical disclaimer, adsense, analytics, google ads, law, legal, cookie consent, cookie notice, cookie, comments, testimonial, webshop
+Tags: gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD, CalOPPA, datenschutz, impressum, coppa, terms and conditions, terms of service, disclosure, disclaimer, disclosure statement, affiliate, affiliate links, amazon, woo commerce, woo, antispam, confidentiality, refund, refund policy, returns, earnings, ftc, medical disclaimer, adsense, analytics, google ads, law, legal, cookie consent, cookie notice, cookie, comments, testimonial, webshop, ttdsg
 Requires at least: 5.0
 Requires PHP: 7.0
 Tested up to: 5.8
-Stable tag: 2.6.0
+Stable tag: 2.7.0
 
 Easiest way to generate legal pages (Privacy, Terms, Disclaimers & more) on your website. Ideal for blogs, ecommerce and marketing websites.
 
@@ -51,6 +51,20 @@ Customizable for various types of websites which sell in multiple countries like
 
 = Easy to customize privacy policy pages =
 Generated policy pages are regular WordPress pages. You can easily edit and update them.
+
+= Compliance Settings =
+The Compliance Settings tab  has a set of useful settings that can help you with certain legal requirements.
+- **Add Legal Pages Link To The Footer**
+It is important that your legal pages are always visible and easily accessible to your website visitors. Using the footer link option you can automatically insert the links of your legal pages to the footer section of your website. You can also customize the appearance of the links added.
+- **Announcement Banner For Legal Pages**
+Whenever your legal pages get updated, it is essential to keep your users informed. Using this option, you can display an announcement banner on your website whenever your legal pages get updated. You can set the duration and customize the banner as per your choice.
+
+= TTDSG Compliant Cookie Policy =
+TTTDSG (Telekommunikation-Telemedien-Datenschutzgesetz) is the Telecommunications and Telemedia Data Protection law adopted by the German Parliament recently.
+
+**What information does a TTDSG - compliant cookie policy need to include?**
+
+The information must be provided in accordance with the GDPR and must be clear and comprehensive. Using our GDPR Cookie Policy template in [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wprepo&utm_medium=link&utm_campaign=wplliteplugin), you can display a TTDSG compliant Cookie policy on your website.
 
 = Integrates with your favorite contact form (Pro Feature) =
 WPLegalPages seamlessly works with your favorite contact form plugin. Users are informed about data being collected and can read the privacy policy before form submission. This helps in getting informed consent as per the privacy requirements.
@@ -207,11 +221,14 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 WPLegalPages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 == Changelog ==
+
+= 2.7.0 =
+* Update: Option to add Cookie bar.
+
 = 2.6.0 =
 * Update: UI Changes on Settings Page.
 * Update: Option to add Legal Pages link in Footer.
 * Update: Option to add announcement banner.
-
 
 = 2.5.3 =
 * Fix: Minor plugin fix.

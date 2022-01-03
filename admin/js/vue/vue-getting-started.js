@@ -480,7 +480,16 @@ Vue.component('FeaturesSection', {
             domProps: {
                 textContent: obj.features.multilingual_desc
             }
-        })])])])]);
+        })])])]),createElement('a', {
+            attrs: {
+                target: 'blank',
+            },
+            staticClass: 'wplegal-button',
+            domProps: {
+                textContent: obj.features.button_text,
+                href:obj.features.url
+            }
+        })]);
     }
 });
 
