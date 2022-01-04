@@ -81,6 +81,9 @@ class Analytics_Tracking {
 	 * @return array
 	 */
 	public function analytics_tracking_send_clicks() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( -1 );
+		}
 		if ( isset( $_POST['data'] ) && ! empty( $_POST['data'] ) ) {
 			if ( isset( $_POST['data']['nonce'] ) && ! empty( $_POST['data']['nonce'] ) ) {
 				$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';

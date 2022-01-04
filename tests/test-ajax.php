@@ -82,6 +82,7 @@ class AjaxTestCLASS extends WP_Ajax_UnitTestCase {
 	 * Test for wplegal_accept_terms
 	 */
 	public function test_wplegal_accept_terms() {
+		$this->_setRole( 'administrator' );
 		$_POST['_wpnonce'] = wp_create_nonce( 'lp-accept-terms' );
 		try {
 			$this->_handleAjax( 'lp_accept_terms' );
@@ -96,6 +97,7 @@ class AjaxTestCLASS extends WP_Ajax_UnitTestCase {
 	 * Test for get_accept_terms
 	 */
 	public function test_get_accept_terms() {
+		$this->_setRole( 'administrator' );
 		$_GET['nonce']  = wp_create_nonce( 'admin-ajax-nonce' );
 		$_GET['action'] = 'get_accept_terms';
 		try {
@@ -111,6 +113,7 @@ class AjaxTestCLASS extends WP_Ajax_UnitTestCase {
 	 * Test for save_accept_terms
 	 */
 	public function test_save_accept_terms() {
+		$this->_setRole( 'administrator' );
 		$_POST['nonce']                   = wp_create_nonce( 'admin-ajax-nonce' );
 		$_POST['action']                  = 'save_accept_terms';
 		$_POST['data']['lp_accept_terms'] = '1';
@@ -127,6 +130,7 @@ class AjaxTestCLASS extends WP_Ajax_UnitTestCase {
 	 * Test for wplegalpages_ajax_save_settings
 	 */
 	public function test_wplegalpages_ajax_save_settings() {
+		$this->_setRole( 'administrator' );
 		$_POST['settings_form_nonce']     = wp_create_nonce( 'settings-form-nonce' );
 		$_POST['lp-generate']             = true;
 		$_POST['lp-search']               = true;
@@ -159,6 +163,7 @@ class AjaxTestCLASS extends WP_Ajax_UnitTestCase {
 	 * Test for wplegalpages_ajax_save_settings - false part
 	 */
 	public function test_wplegalpages_ajax_save_settings_else_part() {
+		$this->_setRole( 'administrator' );
 		$_POST['settings_form_nonce']     = wp_create_nonce( 'settings-form-nonce' );
 		$_POST['lp-generate']             = '';
 		$_POST['lp-search']               = '';
@@ -191,6 +196,7 @@ class AjaxTestCLASS extends WP_Ajax_UnitTestCase {
 	 * Test for wplegalpages_save_banner_form
 	 */
 	public function test_wplegalpages_save_banner_form() {
+		$this->_setRole( 'administrator' );
 		$_POST['lp_banner_nonce_data']    = wp_create_nonce( 'settings_banner_form_nonce' );
 		$_POST['lp-is-banner']            = '';
 		$_POST['lp-bar-position']         = '';
@@ -218,6 +224,7 @@ class AjaxTestCLASS extends WP_Ajax_UnitTestCase {
 	 * Test for wplegalpages_save_banner_form
 	 */
 	public function test_wplegalpages_save_cookie_bar_form() {
+		$this->_setRole( 'administrator' );
 		$_POST['lp-cookie-bar-nonce']    			= wp_create_nonce( 'settings_cookie_bar_form_nonce' );
 		$_POST['lp-cookie-bar-enable']   			= '';
 		$_POST['lp-cookie-bar-title']    			= '';
