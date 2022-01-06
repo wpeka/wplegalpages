@@ -35,8 +35,6 @@ jQuery( document ).ready(
 );
 function lp_eu_show_cookie_bar() {
 	jQuery('#lp_eu_container').css('display','block');
-	console.log(obj);
-	console.log('COOKIE WORKS!');
 	if ( '0' === obj.lp_eu_theme_css ) {
 		// container deisgn
 		jQuery('#lp_eu_container').css( { 'background-color' : obj.lp_eu_box_color,
