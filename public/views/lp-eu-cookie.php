@@ -3,6 +3,9 @@
  * Provide php for cookie feature.
  *
  * This file is used to markup the cookie feature.
+ *
+ *  @package    Wplegalpages
+ *  @subpackage Wplegalpages/admin
  */
 
 // If this file is called directly, abort.

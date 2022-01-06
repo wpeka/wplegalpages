@@ -7,6 +7,7 @@
  * @package    Wplegalpages
  * @subpackage Wplegalpages/admin
  */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -77,7 +78,7 @@ if ( false === $lp_banner_options || empty( $lp_banner_options ) ) {
 	update_option( 'lp_banner_options', $lp_banner_options );
 }
 if ( '1' === $lpterms ) {
-?>
+	?>
 <div class="wplegalpages-app-container" id="wplegalpages-settings-app">
 	<c-container class="wplegalpages-settings-container">
 		<div class="wplegalpages-marketing-banner">
@@ -97,7 +98,7 @@ if ( '1' === $lpterms ) {
 		?>
 		</div>
 		<c-form id="lp-save-settings-form" spellcheck="false" class="wplegalpages-settings-form">
-			<input type="hidden" name="settings_form_nonce" value="<?php echo wp_create_nonce( 'settings-form-nonce' ); ?>"/>
+			<input type="hidden" name="settings_form_nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings-form-nonce' ) ); ?>"/>
 			<div class="wplegalpages-settings-top">
 				<div class="wplegalpages-save-button">
 					<c-button color="info" @click="saveGeneralSettings"><span>Save Changes</span></c-button>
@@ -266,7 +267,7 @@ if ( '1' === $lpterms ) {
 									</c-col>
 								</c-row>
 								<c-row class="wplegalpages-modal-footer">
-									<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-footer-form-nonce" name="lp-footer-form-nonce" value="<?php echo wp_create_nonce( 'settings_footer_form_nonce' ); ?>"/></c-col>
+									<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-footer-form-nonce" name="lp-footer-form-nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings_footer_form_nonce' ) ); ?>"/></c-col>
 									<c-col class="col-sm-8 wplegalpages-modal-buttons">
 										<c-button class="wplegalpages-modal-button" @click="saveFooterData" color="info"><span>Save</span></c-button>
 										<c-button class="wplegalpages-modal-button" color="secondary" @click="showFooterForm"><span>Cancel</span></c-button>
@@ -405,7 +406,7 @@ if ( '1' === $lpterms ) {
 										</c-col>
 									</c-row>
 									<c-row class="wplegalpages-modal-footer">
-										<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-banner-form-nonce" name="lp-banner-form-nonce" value="<?php echo wp_create_nonce( 'settings_banner_form_nonce' ); ?>"/></c-col>
+										<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-banner-form-nonce" name="lp-banner-form-nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings_banner_form_nonce' ) ); ?>"/></c-col>
 										<c-col class="col-sm-8 wplegalpages-modal-buttons">
 											<c-button class="wplegalpages-modal-button" @click="saveBannerData" color="info"><span>Save</span></c-button>
 											<c-button class="wplegalpages-modal-button" color="secondary" @click="showBannerForm"><span>Cancel</span></c-button>
@@ -504,7 +505,7 @@ if ( '1' === $lpterms ) {
 										</c-col>
 									</c-row>
 									<c-row class="wplegalpages-modal-footer">
-										<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-cookie-bar-nonce" name="lp-cookie-bar-nonce" value="<?php echo wp_create_nonce( 'settings_cookie_bar_form_nonce' ); ?>"/></c-col>
+										<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-cookie-bar-nonce" name="lp-cookie-bar-nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings_cookie_bar_form_nonce' ) ); ?>"/></c-col>
 										<c-col class="col-sm-8 wplegalpages-modal-buttons">
 											<c-button class="wplegalpages-modal-button" @click="saveCookieData" color="info"><span>Save</span></c-button>
 											<c-button class="wplegalpages-modal-button" color="secondary" @click="showCookieBar"><span>Cancel</span></c-button>
@@ -582,7 +583,7 @@ if ( '1' === $lpterms ) {
 		</c-form>
 	</c-container>
 </div>
-<?php
+	<?php
 } else {
 	?>
 	<h2 class="hndle myLabel-head">DISCLAIMER</h2>
