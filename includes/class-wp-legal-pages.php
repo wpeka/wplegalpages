@@ -85,7 +85,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 
 			global $table_prefix;
 			$this->plugin_name = 'wp-legal-pages';
-			$this->version     = '2.7.1';
+			$this->version     = '2.7.2';
 			$this->tablename   = $table_prefix . 'legal_pages';
 			$this->popuptable  = $table_prefix . 'lp_popups';
 			$this->plugin_url  = plugin_dir_path( dirname( __FILE__ ) );
@@ -228,7 +228,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 				$this->loader->add_filter( 'the_content', $plugin_public, 'wplegal_post_generate' );
 			}
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_script' ) );
-			add_action( 'wp_footer', array( $this, 'wp_legalpages_show_eu_cookie_message' ) );
+			$this->loader->add_action( 'wp_footer', $plugin_public, 'wp_legalpages_show_eu_cookie_message' );
 			$this->loader->add_action( 'wp_footer', $plugin_public, 'wp_legalpages_show_footer_message' );
 			if ( isset( $lp_banner_options['bar_position'] ) && 'bottom' === $lp_banner_options['bar_position'] ) {
 				$this->loader->add_action( 'wp_footer', $plugin_public, 'wplegal_announce_bar_content' );
@@ -236,7 +236,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			if ( isset( $lp_banner_options['bar_position'] ) && 'top' === $lp_banner_options['bar_position'] ) {
 				$this->loader->add_action( 'wp_head', $plugin_public, 'wplegal_announce_bar_content' );
 			}
-
+			$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		}
 
 		/**
@@ -286,185 +286,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			wp_register_script( $this->plugin_name . '-jquery-cookie', WPL_LITE_PLUGIN_URL . 'admin/js/jquery.cookie.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( $this->plugin_name . '-jquery-cookie' );
 			wp_register_script( $this->plugin_name . 'banner-cookie', WPL_LITE_PLUGIN_URL . 'public/js/wplegalpages-banner-cookie' . WPLPP_SUFFIX . '.js', array(), $this->version, true );
+			wp_register_script( $this->plugin_name . 'lp-eu-cookie', WPL_LITE_PLUGIN_URL . 'public/js/wplegalpages-eu-cookie' . WPLPP_SUFFIX . '.js', array(), $this->version, true );
 		}
-
-		/**
-		 * Display EU cookie message on frontend.
-		 */
-		public function wp_legalpages_show_eu_cookie_message() {
-
-			$lp_eu_get_visibility = get_option( 'lp_eu_cookie_enable' );
-
-			if ( 'ON' === $lp_eu_get_visibility ) {
-				$lp_eu_theme_css         = get_option( 'lp_eu_theme_css' );
-				$lp_eu_title             = get_option( 'lp_eu_cookie_title' );
-				$lp_eu_message           = get_option( 'lp_eu_cookie_message' );
-				$lp_eu_box_color         = get_option( 'lp_eu_box_color' );
-				$lp_eu_button_color      = get_option( 'lp_eu_button_color' );
-				$lp_eu_button_text_color = get_option( 'lp_eu_button_text_color' );
-				$lp_eu_text_color        = get_option( 'lp_eu_text_color' );
-				$lp_eu_button_text       = get_option( 'lp_eu_button_text' );
-				$lp_eu_link_text         = get_option( 'lp_eu_link_text' );
-				$lp_eu_link_url          = get_option( 'lp_eu_link_url' );
-				$lp_eu_text_size         = get_option( 'lp_eu_text_size' );
-				$lp_eu_link_color        = get_option( 'lp_eu_link_color' );
-				$lp_eu_head_text_size    = $lp_eu_text_size + 4;
-
-				if ( ! $lp_eu_button_text || $lp_eu_button_text === '' ) {
-					$lp_eu_button_text = 'I agree';
-					update_option( 'lp_eu_button_text', $lp_eu_button_text );
-				}
-				
-				$lp_eu_html  = '<div id="lp_eu_container">';
-				$lp_eu_html .= '<table id="lp_eu_table" class="lp_eu_table" style="border:none;"><tr><td width="90%">';
-
-				if ( ! empty( $lp_eu_title ) ) {
-					$lp_eu_html .= '<b id="lp_eu_title">' . $lp_eu_title . '</b>';
-				}
-
-				$lp_eu_html .= '<p id="lp_eu_body">' . stripslashes( html_entity_decode( $lp_eu_message ) );
-
-				$lp_eu_html .= ' <a id="lp_eu_link" target="_blank" href="' . $lp_eu_link_url . '">' . $lp_eu_link_text . '</a></p></td>';
-				$lp_eu_html .= '<td width="10%" ><div id="lp_eu_right_container"><p id="lp_eu_close_button"></p><p style="min-height:50%"></p><p id="lp_eu_btnContainer"><button type="button" id="lp_eu_btn_agree">' . $lp_eu_button_text . '</button></p></td></div></tr></table>';
-				$lp_eu_html .= '</div>';
-				echo '<style>
-					.lp_eu_table td{
-						border:none;
-					}
-					#lp_eu_table{
-						border-color:rgba(255,255,255,0.9);
-						margin-bottom : 0em;
-								margin-top : 0em;
-								width: 100%;
-							}
-							#lp_eu_table td	{
-								vertical-align: middle;
-		            		}
-							#lp_eu_table th, td {
-							    padding: inherit;
-		 					}
-					#lp_eu_container{
-						display: none;
-						margin: 1%;
-						padding: 5px 10px;
-						width: 98%;
-						z-index: 9999;
-						position: fixed;
-						bottom: 0px;
-						border-radius: 10px;
-						box-shadow: 2px 2px 5px #888 inset;
-						box-sizing : border-box;
-						opacity: 0.8;
-					}
-					#lp_eu_close_button:before{
-						content: "\2716";
-						font-size: ' . $lp_eu_text_size . 'px;
-					}
-					#lp_eu_close_button{
-						padding-left: 85%;
-						position: absolute;
-						top: 0px;
-						right: 15px;
-					}
-					#lp_eu_right_container{
-						display:flex;
-						flex-direction: column;
-						align-items : end;	
-					}
-					#lp_eu_btnContainer{
-						text-align: center;
-						padding-right: 15%;
-						align-items: center;
-						display: flex;
-						justify-content: center;
-					}
-					#lp_eu_title{
-						margin: inherit;
-					}
-					#lp_eu_body,#lp_eu_btnContainer{
-						margin: 0px;
-					}
-					a#lp_eu_link{
-            		  border-bottom: 1px dotted;
-					  text-decoration: none;
-            		}
-					@media only screen and (max-width: 360px) {
-						#lp_eu_table td {
-						    border-width: 0 1px 1px 0;
-						    box-sizing: border-box;
-						    display: block;
-						    width: 100%;
-						}
- 					}
-				</style>';
-
-				?>
-							<script type="text/javascript">
-								jQuery(document).ready(function(){
-									if (jQuery.cookie('lp_eu_agree') == null) {
-										jQuery.cookie('lp_eu_agree', 'NO', { expires: 7, path: '/' });
-										lp_eu_show_cookie_bar();
-									}
-									else if (jQuery.cookie('lp_eu_agree') == 'NO') {
-										lp_eu_show_cookie_bar();
-									}
-									jQuery('#lp_eu_btn_agree').click(function (){
-									jQuery.cookie('lp_eu_agree', 'YES', { expires: 7, path: '/' });
-									jQuery('#lp_eu_container').hide(500);
-								});
-								jQuery('#lp_eu_close_button').click(function(){
-										jQuery('#lp_eu_container').css('display','none');
-										jQuery.cookie('lp_eu_agree', 'close', { expires: 7, path: '/' });
-								})
-							});
-							function lp_eu_show_cookie_bar(){
-								jQuery('body').prepend('<?php echo $lp_eu_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>');
-									<?php if ( '0' === $lp_eu_theme_css ) { ?>
-												// container deisgn
-										jQuery('#lp_eu_container').css( { 'background-color' : '<?php echo esc_attr( $lp_eu_box_color ); ?>',
-																					'border-color'	  :	'<?php echo esc_attr( $lp_eu_text_color ); ?>',
-																					'color'            : '<?php echo esc_attr( $lp_eu_text_color ); ?>' });
-
-										//Text font
-										jQuery('p#lp_eu_body').css('font-size', '<?php echo esc_attr( $lp_eu_text_size ) . 'px'; ?>');
-
-										// Title design.
-										jQuery('#lp_eu_title').css('font-size','<?php echo esc_attr( $lp_eu_head_text_size ) . 'px'; ?>');
-
-										// agree button design
-										jQuery('#lp_eu_btn_agree').css( { 'background-color' : '<?php echo esc_attr( $lp_eu_button_color ); ?>',
-																			'color'            : '<?php echo esc_attr( $lp_eu_button_text_color ); ?>',
-																			'border-style'	  : 'none',
-																			'border'			  : '1px solid #bbb',
-																			'border-radius'	  : '5px',
-																			'box-shadow'		  : 'inset 0 0 1px 1px #f6f6f6',
-																			'line-height'	  : 1,
-																			'padding'		  : '7px',
-																			'padding-bottom'  : '9px',
-																			'text-align'		  : 'center',
-																			'text-shadow'      : '0 1px 0 #fff',
-																			'cursor'			  : 'pointer',
-																			'font-size'		    : '<?php echo esc_attr( $lp_eu_text_size ) . 'px'; ?>'
-																		});
-
-										// link color.
-										jQuery('#lp_eu_link').css({ 'color' : '<?php echo esc_attr( $lp_eu_link_color ); ?>' });
-
-										<?php
-									} else {
-										// container design.
-										?>
-										jQuery('#lp_eu_container').css({ 'background-color' : '<?php echo 'inherit'; ?>', 'color' : '<?php echo 'inherit'; ?>' });
-
-										<?php
-									}
-									?>
-									jQuery('#lp_eu_container').show(500);
-								}
-							</script>
-								<?php
-			}
-		}
-
 	}
 }

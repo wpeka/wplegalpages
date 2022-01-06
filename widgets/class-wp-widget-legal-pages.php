@@ -89,11 +89,12 @@ class WP_Widget_Legal_Pages extends WP_Widget {
 				$instance
 			)
 		);
-
+		// phpcs comment is added after referring the WordPress core code.
 		if ( ! empty( $out ) ) {
+			// phpcs comment is added after referring the WordPress core code.
 			echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			if ( $title ) {
-				echo $args['before_title'] . $title . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $args['before_title'] . esc_html( $title ) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 
 			$format = current_theme_supports( 'html5', 'navigation-widgets' ) ? 'html5' : 'xhtml';
@@ -107,6 +108,7 @@ class WP_Widget_Legal_Pages extends WP_Widget {
 				$aria_label = $title ? $title : $default_title;
 				echo '<nav role="navigation" aria-label="' . esc_attr( $aria_label ) . '">';
 			}
+			// phpcs comment is added after referring the WordPress core code.
 			?>
 
 			<ul>
@@ -118,6 +120,7 @@ class WP_Widget_Legal_Pages extends WP_Widget {
 				echo '</nav>';
 			}
 
+			// phpcs comment is added after referring the WordPress core code.
 			echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 	}

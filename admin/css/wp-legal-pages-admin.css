@@ -118,6 +118,7 @@ a{
 
 .myLink{
 	text-decoration:none !important;
+	color: #007bff !important;
 }
 
 .myLabel{
@@ -133,6 +134,21 @@ a{
 .myAlert{
 	font-size:12px !important;
 	padding:5px !important;
+}
+
+.label-success {
+    background-color: #5cb85c;
+}
+
+.label {
+    display: inline;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25em;
 }
 
 /* toggle css */
