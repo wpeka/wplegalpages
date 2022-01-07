@@ -65,7 +65,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 			$search_query = "SHOW TABLES LIKE '%" . $legal_pages->tablename . "%'";
 			if ( ! $wpdb->get_results( $search_query, ARRAY_N ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-				$sql = 'CREATE TABLE IF NOT EXISTS ' . $legal_pages->tablename . ' (
+				$sql = 'CREATE TABLE IF NOT EXISTS ' . $legal_pages->tablename . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+							' (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `title` text NOT NULL,
                               `content` longtext NOT NULL,
@@ -83,7 +84,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 			}
 			$search_query = "SHOW TABLES LIKE '%" . $legal_pages->popuptable . "%'";
 			if ( ! $wpdb->get_results( $search_query, ARRAY_N ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-				$popup_sql = 'CREATE TABLE IF NOT EXISTS ' . $legal_pages->popuptable . ' (
+				$popup_sql = 'CREATE TABLE IF NOT EXISTS ' . $legal_pages->popuptable . // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+							' (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `popup_name` text NOT NULL,
                               `content` longtext NOT NULL,

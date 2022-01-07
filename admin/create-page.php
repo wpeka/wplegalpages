@@ -43,27 +43,29 @@ $lp_pro_active = get_option( '_lp_pro_active' );
 		</div>
 		<?php
 	}
-	if ( ! empty( $_POST ) && isset( $_POST['lp-submit'] ) && 'Publish' === $_POST['lp-submit'] ) :
+	if ( ! empty( $_POST ) && isset( $_POST['lp-submit'] ) ) :
 		check_admin_referer( 'lp-submit-create-page' );
-		$page_title    = isset( $_POST['lp-title'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-title'] ) ) : '';
-		$content       = isset( $_POST['lp-content'] ) ? wp_kses_post( wp_unslash( $_POST['lp-content'] ) ) : '';
-		$template_lang = isset( $_POST['template_language'] ) ? sanitize_text_field( wp_unslash( $_POST['template_language'] ) ) : '';
-		$post_args     = array(
-			'post_title'   => apply_filters( 'the_title', $page_title ),
-			'post_content' => $content,
-			'post_type'    => 'page',
-			'post_status'  => 'publish',
-			'post_author'  => 1,
-		);
-		$pid           = wp_insert_post( $post_args );
-		update_post_meta( $pid, 'is_legal', 'yes' );
-		$url = get_permalink( $pid );
-		?>
+		if ( 'Publish' === $_POST['lp-submit'] ) :
+			$page_title    = isset( $_POST['lp-title'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-title'] ) ) : '';
+			$content       = isset( $_POST['lp-content'] ) ? wp_kses_post( wp_unslash( $_POST['lp-content'] ) ) : '';
+			$template_lang = isset( $_POST['template_language'] ) ? sanitize_text_field( wp_unslash( $_POST['template_language'] ) ) : '';
+			$post_args     = array(
+				'post_title'   => apply_filters( 'the_title', $page_title ),
+				'post_content' => $content,
+				'post_type'    => 'page',
+				'post_status'  => 'publish',
+				'post_author'  => 1,
+			);
+			$pid           = wp_insert_post( $post_args );
+			update_post_meta( $pid, 'is_legal', 'yes' );
+			$url = get_permalink( $pid );
+			?>
 	<div id="message">
 		<p><span class="label label-success myAlert"><?php esc_attr_e( 'Page Successfully Created. You can view your page as a normal Page in Pages Menu.', 'wplegalpages' ); ?> </span></p>
 		<p><a href="<?php echo esc_url_raw( get_admin_url() ); ?>/post.php?post=<?php echo esc_attr( $pid ); ?>&action=edit"><?php esc_attr_e( 'Edit', 'wplegalpages' ); ?></a> | <a href="<?php echo esc_url( $url ); ?>"><?php esc_attr_e( 'View', 'wplegalpages' ); ?></a></p>
 	</div>
-		<?php
+			<?php
+		endif;
 	endif;
 	$current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
 	$lptype       = isset( $_REQUEST['lp-type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lp-type'] ) ) : '';
