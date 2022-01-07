@@ -671,11 +671,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'data'    => false,
 			);
 			if ( isset( $_GET['action'] ) ) {
-				$nonce = isset( $_GET['nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['nonce'] ) ) : '';
-				if ( wp_verify_nonce( $nonce, 'admin-ajax-nonce' ) ) {
-					$result['success'] = true;
-					$result['data']    = get_option( 'lp_accept_terms' );
-				}
+				check_ajax_referer( 'admin-ajax-nonce', 'nonce' );
+				$result['success'] = true;
+				$result['data']    = get_option( 'lp_accept_terms' );
 			}
 			return wp_send_json( $result );
 		}
@@ -692,15 +690,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'data'    => false,
 			);
 			if ( isset( $_POST['action'] ) ) {
-				$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
-				if ( wp_verify_nonce( $nonce, 'admin-ajax-nonce' ) ) {
-					if ( isset( $_POST['data']['lp_accept_terms'] ) ) {
-						$lp_accept_terms = sanitize_text_field( wp_unslash( $_POST['data']['lp_accept_terms'] ) );
-						update_option( 'lp_accept_terms', $lp_accept_terms );
-						add_submenu_page( 'legal-pages', __( 'Getting Started', 'wplegalpages' ), __( 'Getting Started', 'wplegalpages' ), 'manage_options', 'getting-started', array( $this, 'vue_getting_started' ) );
-						$result['success'] = true;
-						$result['data']    = get_option( 'lp_accept_terms' );
-					}
+				check_ajax_referer( 'admin-ajax-nonce', 'nonce' );
+				if ( isset( $_POST['data']['lp_accept_terms'] ) ) {
+					$lp_accept_terms = sanitize_text_field( wp_unslash( $_POST['data']['lp_accept_terms'] ) );
+					update_option( 'lp_accept_terms', $lp_accept_terms );
+					add_submenu_page( 'legal-pages', __( 'Getting Started', 'wplegalpages' ), __( 'Getting Started', 'wplegalpages' ), 'manage_options', 'getting-started', array( $this, 'vue_getting_started' ) );
+					$result['success'] = true;
+					$result['data']    = get_option( 'lp_accept_terms' );
 				}
 			}
 			return wp_send_json( $result );
@@ -880,15 +876,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$walker = new Walker_Nav_Menu_Checklist( $db_fields );
 
 			$current_tab = 'most-recent';
-
-			if ( isset( $_REQUEST[ $tab_name ] ) && in_array( $_REQUEST[ $tab_name ], array( 'all', 'search' ), true ) ) { // phpcs:ignore CSRF ok
-				$current_tab = sanitize_title( wp_unslash( $_REQUEST[ $tab_name ] ) );  // phpcs:ignore CSRF ok
+			// Added below phpcs disable after referring core code.
+			// phpcs:disable WordPress.Security.NonceVerification.Recommended
+			if ( isset( $_REQUEST[ $tab_name ] ) ) {
+				$request_tab_name = sanitize_title( wp_unslash( $_REQUEST[ $tab_name ] ) );
+				if ( in_array( $request_tab_name, array( 'all', 'search' ), true ) ) {
+					$current_tab = $request_tab_name;
+				}
 			}
-			// the phpcs ignore comment is added after referring WordPress core code.
-			if ( ! empty( $_REQUEST[ 'quick-search-posttype-' . $post_type_name ] ) ) { // phpcs:ignore CSRF ok
+			if ( ! empty( $_REQUEST[ 'quick-search-posttype-' . $post_type_name ] ) ) {
 				$current_tab = 'search';
 			}
-
+			// phpcs:enable WordPress.Security.NonceVerification.Recommended
 			$removed_args = array(
 				'action',
 				'customlink-tab',

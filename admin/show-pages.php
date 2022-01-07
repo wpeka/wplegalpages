@@ -28,22 +28,24 @@ if ( '1' !== $lp_pro_active ) :
 	<?php
 endif;
 
-if ( ( isset( $_REQUEST['mode'] ) && 'delete' === $_REQUEST['mode'] && current_user_can( 'manage_options' ) ) && isset( $_REQUEST['_wpnonce'] ) ) {
-	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'my-nonce' ) ) {
+if ( isset( $_REQUEST['mode'] ) ) {
+	check_ajax_referer( 'my-nonce', 'my-_wpnonce' );
+	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( esc_attr__( 'Security Check.', 'wplegalpages' ) );
 	}
-
-	if ( isset( $_REQUEST['pid'] ) ) {
-		if ( ! wp_trash_post( sanitize_text_field( wp_unslash( $_REQUEST['pid'] ) ) ) ) {
-			wp_die( esc_attr__( 'Error in moving to Trash.', 'wplegalpages' ) );
+	if ( 'delete' === $_REQUEST['mode'] ) {
+		if ( isset( $_REQUEST['pid'] ) ) {
+			if ( ! wp_trash_post( sanitize_text_field( wp_unslash( $_REQUEST['pid'] ) ) ) ) {
+				wp_die( esc_attr__( 'Error in moving to Trash.', 'wplegalpages' ) );
+			}
 		}
-	}
-	?>
+		?>
 		<div id="message" >
 			<p><span class="label label-success myAlert">Legal page moved to trash.</span></p>
 		</div>
 
-	<?php
+		<?php
+	}
 }
 $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
 ?>
