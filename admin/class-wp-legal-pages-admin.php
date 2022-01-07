@@ -782,7 +782,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$important_pages[]   = $front_page_obj;
 					$suppress_page_ids[] = $front_page_obj->ID;
 				} else {
-					$_nav_menu_placeholder = ( 0 > $_nav_menu_placeholder ) ? (int) $_nav_menu_placeholder - 1 : -1;
+					// phpcs comment is added after referring WordPress core code.
+					$_nav_menu_placeholder = ( 0 > $_nav_menu_placeholder ) ? (int) $_nav_menu_placeholder - 1 : -1; // phpcs:ignore
 					$front_page_obj        = (object) array(
 						'front_or_home' => true,
 						'ID'            => 0,

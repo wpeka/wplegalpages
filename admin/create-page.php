@@ -35,7 +35,7 @@ $lp_pro_active = get_option( '_lp_pro_active' );
 		?>
 		<div id="wplegalpages_settings_warning" class="notice notice-warning is-dismissible wplegalpages_settings_warning">
 			<div>
-				<p>Please make sure the website information is correct at the <a href="<?php echo esc_url_raw( admin_url() . "admin.php?page=legal-pages" ); ?>">Settings page</a> before you create a legal page.</p>
+				<p>Please make sure the website information is correct at the <a href="<?php echo esc_url_raw( admin_url() . 'admin.php?page=legal-pages' ); ?>">Settings page</a> before you create a legal page.</p>
 			</div> 
 			<div>
 				<button id="wplegal_pages_settings_warning_disable" class="button-primary">Do not show again</button>
@@ -238,7 +238,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 					<div class="wplegal-refund-list" id="wplegal_refund_list" style="display : none">
 					<?php
 					if ( 'eng' === $template_lang ) :
-					?>
+						?>
 						<li class="wplegal-template-fr"><span><a class="myLink" href="<?php echo esc_url( admin_url() ); ?>index.php?page=wplegal-wizard#/">Use Guided Wizard
 									<span class="wplegal-tooltip"><span class="dashicons dashicons-info"></span>
 										<span class="wplegal-tooltiptext">Easy Q&A wizard to help you customize your policy as per your business</span>
@@ -250,7 +250,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 										<span class="wplegal-tooltiptext">Easy Q&A wizard to help you customize your policy as per your business</span>
 									</span>
 								</a></span></li>			
-					<?php
+						<?php
 					endif;
 					$refund_start = true;
 				}
