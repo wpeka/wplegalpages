@@ -19,7 +19,7 @@ if ( isset( $_SERVER['PHP_SELF'] ) ) {
 
 if ( isset( $_POST['lp_submit'] ) ) {
 	check_admin_referer( 'lp-submit-accept-terms' );
-	if ( 'Accept' === sanitise_title( wp_unslash( $_POST['lp_submit'] ) ) ) {
+	if ( 'Accept' === sanitize_title( wp_unslash( $_POST['lp_submit'] ) ) ) {
 		update_option( 'lp_accept_terms', isset( $_POST['lp_accept_terms'] ) ? sanitize_text_field( wp_unslash( $_POST['lp_accept_terms'] ) ) : '' );
 	}
 }
