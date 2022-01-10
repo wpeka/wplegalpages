@@ -44,9 +44,6 @@ $lp_pro_active = get_option( '_lp_pro_active' );
 		<?php
 	}
 	if ( ! empty( $_POST ) && isset( $_POST['lp-submit'] ) ) :
-		if ( 'Publish' !== $_POST['lp-submit'] ) :
-			return;
-		endif;
 		check_admin_referer( 'lp-submit-create-page' );
 		if ( 'Publish' === $_POST['lp-submit'] ) :
 			$page_title    = isset( $_POST['lp-title'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-title'] ) ) : '';
