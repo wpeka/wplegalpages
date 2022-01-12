@@ -207,8 +207,6 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 	 * Test for create_page function
 	 */
 	public function test_create_page() {
-		$_POST['lp-submit']         = 'Submit';
-		$_POST['template_language'] = 'fr';
 		ob_start();
 		self::$wplegalpages_admin->create_page();
 		$expected_html = ob_get_clean();

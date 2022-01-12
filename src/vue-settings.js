@@ -42,6 +42,7 @@ var gen = new Vue({
             is_adult:null,
             privacy:null,
             privacy_page: '',
+            analytics_on: true === obj.ask_for_usage_optin || '1' === obj.ask_for_usage_optin ? true : false,
             is_footer: obj.lp_options.hasOwnProperty('is_footer') ? Boolean( parseInt( obj.lp_options.is_footer ) ) : false,
             is_banner: obj.lp_options.hasOwnProperty('is_banner') ? Boolean( parseInt( obj.lp_options['is_banner'] ) ) : false,
             is_age: obj.age_verify_enable ? obj.age_verify_enable : 'content',
@@ -144,6 +145,9 @@ var gen = new Vue({
                     break;
                 }
             }
+        },
+        onChangeAskForUsage() {
+            this.analytics_on = !this.analytics_on;
         },
         onChangeCredit(){
             this.generate= !this.generate;

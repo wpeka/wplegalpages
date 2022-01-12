@@ -403,6 +403,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$lp_eu_link_url           = get_option( 'lp_eu_link_url' );
 				$lp_eu_text_size          = get_option( 'lp_eu_text_size' );
 				$lp_eu_link_color         = get_option( 'lp_eu_link_color' );
+				$ask_for_usage_optin      = get_option( 'wplegalpages-ask-for-usage-optin' );
 				$cookie_text_size_options = array();
 				for ( $i = 10; $i < 32; $i += 2 ) {
 					array_push( $cookie_text_size_options, $i );
@@ -432,6 +433,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'lp_eu_text_size'          => $lp_eu_text_size,
 					'lp_eu_link_color'         => $lp_eu_link_color,
 					'cookie_text_size_options' => $cookie_text_size_options,
+					'ask_for_usage_optin'      => $ask_for_usage_optin,
 				);
 
 				$options_object = apply_filters( 'wplegalpages_compliances_options', $options_object );
@@ -1079,6 +1081,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_die( -1 );
+			}
+			if ( isset( $_POST['lp-analytics-on'] ) ) {
+				$ask_for_usage_analytics = true === sanitize_text_field( wp_unslash( $_POST['lp-analytics-on'] ) ) || 'true' === sanitize_text_field( wp_unslash( $_POST['lp-analytics-on'] ) ) ? '1' : '0';
+				update_option( 'wplegalpages-ask-for-usage-optin', $ask_for_usage_analytics );
+				update_option( 'wplegalpages-ask-for-usage-dismissed', '1' );
 			}
 			if ( isset( $_POST['lp-generate'] ) && ( 'true' === $_POST['lp-generate'] || true === $_POST['lp-generate'] ) ) {
 				$_POST['lp-generate'] = '1';
