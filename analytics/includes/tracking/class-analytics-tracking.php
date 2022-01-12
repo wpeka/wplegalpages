@@ -81,7 +81,7 @@ class Analytics_Tracking {
 	 * @return array
 	 */
 	public function analytics_tracking_send_clicks() {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_options' ) || ! $this->analytics_tracking_enabled() ) {
 			wp_die( -1 );
 		}
 		if ( isset( $_POST['data'] ) && ! empty( $_POST['data'] ) ) {
@@ -123,6 +123,10 @@ class Analytics_Tracking {
 			return;
 		}
 
+		if ( ! $this->analytics_tracking_enabled() ) {
+			return;
+		}
+
 		/*
 		 * To uniquely identify the scheduled cron event, `wp_next_scheduled()`
 		 * needs to receive the same arguments as those used when originally
@@ -143,6 +147,10 @@ class Analytics_Tracking {
 	 * @param bool $force Whether to send the tracking data ignoring the week time treshhold. Default false.
 	 */
 	public function analytics_tracking_send( $force = false ) {
+		if ( ! $this->analytics_tracking_enabled() ) {
+			return;
+		}
+
 		if ( ! $this->analytics_tracking_should_send_data( $force ) ) {
 			return;
 		}
@@ -167,12 +175,8 @@ class Analytics_Tracking {
 
 	public function analytics_tracking_get_default_data() {
 		$data = array(
-			'site_title'    => get_option( 'blogname' ),
 			'timestamp'     => (int) date( 'Uv' ),
 			'wp_version'    => $this->analytics_tracking_get_wordpress_version(),
-			'home_url'      => home_url(),
-			'admin_url'     => admin_url(),
-			'admin_email'   => get_bloginfo( 'admin_email' ),
 			'is_multisite'  => is_multisite(),
 			'site_language' => get_bloginfo( 'language' ),
 		);
@@ -182,13 +186,6 @@ class Analytics_Tracking {
 
 	public function analytics_tracking_get_server_data() {
 		$data = array();
-
-		// Validate if the server address is a valid IP-address.
-		$ipaddress = filter_input( INPUT_SERVER, 'SERVER_ADDR', FILTER_VALIDATE_IP );
-		if ( $ipaddress ) {
-			$data['ip']       = $ipaddress;
-			$data['hostname'] = gethostbyaddr( $ipaddress );
-		}
 
 		$data['os']             = php_uname();
 		$data['php_version']    = PHP_VERSION;

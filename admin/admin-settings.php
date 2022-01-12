@@ -147,6 +147,7 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-4"><label><?php esc_attr_e( 'Niche', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( ' Fill the general niche of your business. Use [Niche] as shortcode.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 									<c-col class="col-sm-8"><c-input type="text" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>"></c-input></c-col>
 								</c-row>
+								<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
 								<c-row>
 									<c-col class="col-sm-4">
 										<label><?php esc_attr_e( 'Give Credit', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Display credits at bottom of your legal pages.', 'wplegalpages' ); ?>'"></c-icon></label>
@@ -156,7 +157,15 @@ if ( '1' === $lpterms ) {
 										<c-switch v-bind="labelIcon" ref="generate"  id="inline-form-credits" variant="3d" color="success" <?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?> v-on:update:checked="onChangeCredit"></c-col>
 									</c-col>
 								</c-row>
-								<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
+								<c-row>
+									<c-col class="col-sm-4">
+										<label><?php esc_attr_e( 'Allow Usage Tracking', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Allow non-sensitive usage tracking to help us provide improved features and faster fixes. No personal data is tracked or stored.', 'wplegalpages' ); ?>'"></c-icon></label>
+									</c-col>
+									<c-col class="col-sm-8">
+										<c-switch v-bind="labelIcon" v-model="analytics_on" id="lp-analytics-on" variant="3d"  color="success" :checked="analytics_on" v-on:update:checked="onChangeAskForUsage"></c-switch>
+										<input type="hidden" name="lp-analytics-on" v-model="analytics_on">
+									</c-col>
+								</c-row>
 							</c-card-body>
 						</c-card>
 					</c-tab>
