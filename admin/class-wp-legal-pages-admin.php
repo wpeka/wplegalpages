@@ -1083,7 +1083,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				wp_die( -1 );
 			}
 			if ( isset( $_POST['lp-analytics-on'] ) ) {
-				$ask_for_usage_analytics = true === $_POST['lp-analytics-on'] || 'true' === $_POST['lp-analytics-on'] ? '1' : '0';
+				$ask_for_usage_analytics = true === sanitize_text_field( wp_unslash( $_POST['lp-analytics-on'] ) ) || 'true' === sanitize_text_field( wp_unslash( $_POST['lp-analytics-on'] ) ) ? '1' : '0';
 				update_option( 'wplegalpages-ask-for-usage-optin', $ask_for_usage_analytics );
 				update_option( 'wplegalpages-ask-for-usage-dismissed', '1' );
 			}
