@@ -12,20 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Analytics SDK Version.
- *
- * @var string
- */
-$this_sdk_version = '2.4.1';
-
 require_once dirname( __FILE__ ) . '/includes/analytics-essential-functions.php';
 
 if ( ! class_exists( 'Analytics' ) ) {
-	if ( ! defined( 'WP_STAT__SDK_VERSION' ) ) {
-		define( 'WP_STAT__SDK_VERSION', $this_sdk_version );
-	}
-
+	
 	// Load SDK files.
 	require_once dirname( __FILE__ ) . '/require.php';
 
