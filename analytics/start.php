@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once dirname( __FILE__ ) . '/includes/analytics-essential-functions.php';
 
 if ( ! class_exists( 'Analytics' ) ) {
-	
+
 	// Load SDK files.
 	require_once dirname( __FILE__ ) . '/require.php';
 
