@@ -58,6 +58,13 @@ The Compliance Settings tab  has a set of useful settings that can help you with
 It is important that your legal pages are always visible and easily accessible to your website visitors. Using the footer link option you can automatically insert the links of your legal pages to the footer section of your website. You can also customize the appearance of the links added.
 - **Announcement Banner For Legal Pages**
 Whenever your legal pages get updated, it is essential to keep your users informed. Using this option, you can display an announcement banner on your website whenever your legal pages get updated. You can set the duration and customize the banner as per your choice.
+- **Cookie bar**
+Display a standard cookie consent notice on your WordPress website. Use the [GDPR Cookie Consent](https://wordpress.org/plugins/gdpr-cookie-consent/) plugin to display a cookie consent notice according to GDPR standards.
+- **Add age verification popup (Pro)**
+Using this feature, you can put a pop-up to restrict users below a particular age from entering your website. You can either add a Yes/No button, or ask the users to enter their date of birth. Required  for websites, blogs and ecommerce sites that provide adult content or sell products/services meant for adults.
+- **Create popups (Pro)**
+You can enable this option to add popup messages to your website. In a few quick steps, you can choose the legal pages that you want to show as pop ups on your website.
+
 
 = TTDSG Compliant Cookie Policy =
 TTTDSG (Telekommunikation-Telemedien-Datenschutzgesetz) is the Telecommunications and Telemedia Data Protection law adopted by the German Parliament recently.
@@ -139,12 +146,6 @@ Generates a standard External Links policy page. Covers the links to or from ext
 = Anti Spam Policy =
 Generate a standard anti-spam policy. Required for businesses, applications or websites who allow users to send emails in bulk.
 
-= Age Verification Policy with Consent Popup =
-Generate an age verification policy with consent popup. Required  for websites, blogs and ecommerce sites that provide adult content or sell products/services meant for adults.
-
-= Cookie Consent Notice =
-Display a standard cookie consent notice on your WordPress website. Use the [GDPR Cookie Consent](https://wordpress.org/plugins/gdpr-cookie-consent/) plugin to display a cookie consent notice according to GDPR standards.
-
 WPML Compatible - [Learn more](https://docs.wpeka.com/wp-legal-pages/faq#how-to-translate-wplegalpages-plugin-using-wpml?utm_source=wporg&utm_medium=wp-legal-pages&utm_campaign=link&utm_content=wpml-compatible-faq)
 
 Endorsements: If you need to disclose about your affiliate links on your website. This feature enables you to include disclaimer at the end of your posts which has affiliate links. You can also use the Affiliate Disclosure Block to add the disclaimer easily anywhere in your content on page or posts.
@@ -200,6 +201,13 @@ The Pro version is ideal:
 - Use the guided wizard (Terms & Conditions)
 - Specific Legal Needs (Disclaimers & Disclosures - Affiliates, Consultants, Medical Blogs, Marketers)
 - Returns and Refunds (WooCommerce or e-Commerce Websites)
+
+= Can I generate a Returns and Refunds Policy for my WooCommerce store? =
+
+Yes! WPLegalPages Pro has a returns and refunds policy for your WooCommerce website. You can use the guided wizard to create a customized returns and refund policy for your WooCommerce store.
+
+= How can I generate a Terms and Conditions policy for my WooCommerce store? =
+WPLegalPages Free version has a Terms Of Use policy page with standard terms and conditions. For a customized Terms and Conditions policy created using a guided wizard, please use the [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wprepo&utm_medium=link&utm_campaign=wplliteplugin&utm_content=faq).
 
 = How to create a GDPR contact form? =
 As your contact forms are generally used to collect user email for being contacted, users consent is needed. This makes the contact forms subject to GDPR consent rules. In WPLegalPages Pro, you can enable contact form integration. This helps to capture informed consent from the users. Users can also easily view the privacy policy before submitting the form.
