@@ -219,7 +219,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 				wp_localize_script( $this->plugin_name . 'banner-cookie', 'cookies', $cookies_array );
 				wp_enqueue_script( $this->plugin_name . 'banner-cookie' );
 			}
-			if ( '1' === $lp_banner_options['show_banner'] ) {
+			if ( '1' === $lp_banner_options['show_banner'] || true === $lp_banner_options['show_banner'] || 'true' === $lp_banner_options['show_banner'] ) {
 				foreach ( $_COOKIE as $key => $val ) {
 					if ( preg_match( '/wplegalpages-update-notice-\d+/', sanitize_key( $key ) ) ) {
 						$this->lp_banner_contents_display();
