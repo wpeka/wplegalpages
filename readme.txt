@@ -7,7 +7,7 @@ Tags: gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD,
 Requires at least: 5.0
 Requires PHP: 7.0
 Tested up to: 5.8
-Stable tag: 2.7.4
+Stable tag: 2.8.0
 
 Easiest way to generate legal pages (Privacy, Terms, Disclaimers & more) on your website. Ideal for blogs, ecommerce and marketing websites.
 
