@@ -50,6 +50,15 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		private $version;
 
 		/**
+		 * The name of the plugin.
+		 *
+		 * @since    2.8.0
+		 * @access   private
+		 * @var      string    $WP Legal Pages_name    The name of this Plugin.
+		 */
+		private static $wplp_plugin_name;
+
+		/**
 		 * Initialize the class and set its properties.
 		 *
 		 * @since    1.0.0
@@ -57,8 +66,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @param      string $version    The version of this WPLegalPages.
 		 */
 		public function __construct( $plugin_name, $version ) {
-			$this->plugin_name = $plugin_name;
-			$this->version     = $version;
+			$this->plugin_name      = $plugin_name;
+			$this->version          = $version;
+			self::$wplp_plugin_name = $this->plugin_name;
 		}
 
 		/**
@@ -443,6 +453,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				?>
 				<div id="wplegal-mascot-app"></div>
 				<?php
+				$this->wplegalpages_mascot_enqueue();
 			}
 		}
 
@@ -455,6 +466,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( $activated ) {
 				$this->enqueue_common_style_scripts();
 				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/create-page.php';
+				?>
+				<div id="wplegal-mascot-app"></div>
+				<?php
+				$this->wplegalpages_mascot_enqueue();
 			}
 		}
 
@@ -466,6 +481,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( $activated ) {
 				$this->enqueue_common_style_scripts();
 				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/show-pages.php';
+				?>
+				<div id="wplegal-mascot-app"></div>
+				<?php
+				$this->wplegalpages_mascot_enqueue();
 			}
 		}
 
@@ -476,6 +495,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_enqueue_style( $this->plugin_name . '-admin' );
 			wp_enqueue_script( $this->plugin_name . '-tooltip' );
 			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/getting-started.php';
+			?>
+			<div id="wplegal-mascot-app"></div>
+			<?php
+			$this->wplegalpages_mascot_enqueue();
 		}
 
 		/**
@@ -601,12 +624,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			<div id="gettingstartedapp"></div>
 			<div id="wplegal-mascot-app"></div>
 			<?php
+			$this->wplegalpages_mascot_enqueue();
 		}
 
 		/**
 		 * Function to enqueue mascot files
 		 */
-		public function wplegalpages_mascot_enqueue() {
+		public static function wplegalpages_mascot_enqueue() {
 			$is_pro = get_option( '_lp_pro_active' );
 			if ( $is_pro ) {
 				$support_url = 'https://club.wpeka.com/my-account/orders/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=support';
@@ -614,7 +638,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$support_url = 'https://wordpress.org/support/plugin/wplegalpages/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=forums';
 			}
 			wp_localize_script(
-				$this->plugin_name . '-vue-mascot',
+				self::$wplp_plugin_name . '-vue-mascot',
 				'data',
 				array(
 					'menu_items'       => array(
@@ -631,9 +655,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'quick_links_text' => __( 'See Quick Links', 'wplegalpages' ),
 				)
 			);
-			wp_enqueue_style( $this->plugin_name . '-vue-style' );
-			wp_enqueue_script( $this->plugin_name . '-vue' );
-			wp_enqueue_script( $this->plugin_name . '-vue-mascot' );
+			wp_enqueue_style( self::$wplp_plugin_name . '-vue-style' );
+			wp_enqueue_script( self::$wplp_plugin_name . '-vue' );
+			wp_enqueue_script( self::$wplp_plugin_name . '-vue-mascot' );
 		}
 
 		/**

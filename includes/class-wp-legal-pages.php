@@ -191,7 +191,6 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 		 */
 		private function define_admin_hooks() {
 			$plugin_admin = new WP_Legal_Pages_Admin( $this->get_plugin_name(), $this->get_version() );
-			$this->loader->add_action( 'admin_footer', $plugin_admin, 'wplegalpages_mascot_enqueue' );
 			$this->loader->add_action( 'admin_menu', $plugin_admin, 'admin_menu' );
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'wplegalpages_hidden_meta_boxes' );
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'wplegal_admin_init' );
