@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="wrap">
+<div id="wplegal-mascot-app"></div>
 <?php
 $lp_pro_active = get_option( '_lp_pro_active' );
 if ( '1' !== $lp_pro_active ) :

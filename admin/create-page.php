@@ -17,6 +17,7 @@ $privacy       = file_get_contents( plugin_dir_path( dirname( __FILE__ ) ) . 'te
 $lp_pro_active = get_option( '_lp_pro_active' );
 ?>
 <div class="wrap">
+<div id="wplegal-mascot-app"></div>
 	<?php
 	if ( '1' !== $lp_pro_active ) :
 		?>
