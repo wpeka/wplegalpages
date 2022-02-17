@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import colorpicker from '../src/colorpicker';
+import colorpicker from '../src/vue-components/colorpicker.js';
 
 it( 'Test for template', () => {
 	var retrievedTemplate = colorpicker.template;

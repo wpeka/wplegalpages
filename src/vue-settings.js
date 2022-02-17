@@ -4,7 +4,8 @@ import vSelect from 'vue-select';
 import {Chrome} from 'vue-color';
 import FontPicker from 'font-picker-vue';
 import Draggable from 'vuedraggable';
-import ColorPicker from './colorpicker';
+import ColorPicker from './vue-components/colorpicker';
+import Tooltip from './vue-components/tooltip';
 import { VueEditor } from "vue2-editor";
 import '@coreui/coreui/dist/css/coreui.min.css';
 import 'vue-select/dist/vue-select.css';
@@ -21,6 +22,7 @@ Vue.component('font-picker', FontPicker);
 Vue.component('v-select', vSelect);
 Vue.component('chrome', Chrome);
 Vue.component('colorpicker', ColorPicker);
+Vue.component('tooltip', Tooltip);
 
 const j = jQuery.noConflict();
 
@@ -33,6 +35,7 @@ var gen = new Vue({
                 labelOn: '\u2713',
                 labelOff: '\u2715'
             },
+            configure_image_url: require('../admin/images/configure-icon.png'),
             appendField: ".wplegalpages-settings-container",
             customToolbarForm:  [],
             domain:'',
@@ -288,6 +291,13 @@ var gen = new Vue({
         onClickPopup() {
             this.is_popup = !this.is_popup;
             this.$refs.popup= this.is_popup ? '1' : '0';
+            // Display/Hide the 'Create Popup' submenu according to the toggle button in modal of 'Create Popus' card of 'Compliances Tab'
+            if( this.is_popup ) {
+                jQuery('.wplegalpages-popup-submenu').css('display', 'block')
+            }
+            else {
+                jQuery('.wplegalpages-popup-submenu').css('display', 'none')
+            }
         },
         onSwitchPopup(){
             this.is_popup = !this.is_popup;
@@ -301,9 +311,9 @@ var gen = new Vue({
             }
         },
         onClickCookie(){
-            this.is_cookie_bar = this.is_cookie_bar === 'ON' ? 'off' : 'ON';
-            this.$refs.cookie_bar = this.is_cookie_bar;
-            this.cookie_enable = this.is_cookie_bar === 'off' ? false : true;
+            this.cookie_enable = !this.cookie_enable;
+            this.is_cookie_bar = this.cookie_enable ? 'ON' : 'off';
+            this.$refs.cookie_bar.value = this.cookie_bar ? '1' : '0';
         },
         showCookieBar(){
             this.show_cookie_form = !this.show_cookie_form;
@@ -504,6 +514,14 @@ var gen = new Vue({
     mounted() {
         this.setValues();
         j('#testing').css('display','none');
+        j('.wplegalpages-settings-nav .nav .nav-item .nav-link').on('click', function() {
+            let adminbar_height = j('#wpadminbar').height();
+            let nav_bar_distance =  j('.wplegalpages-settings-nav').offset().top;
+            let scrolled_distance = nav_bar_distance - j(window).scrollTop();
+            if( scrolled_distance <= adminbar_height ) {
+                window.scroll(0, nav_bar_distance-adminbar_height);
+            }
+        })
     },
     icons: { cilPencil, cilSettings, cilInfo, cibGoogleKeep }
 })
