@@ -15,6 +15,7 @@ $lp_pro_installed = get_option( '_lp_pro_installed' );
 $lp_accept_terms  = get_option( 'lp_accept_terms' );
 ?>
 <div class="clear"></div>
+<div id="wplegal-mascot-app"></div>
 <div class="wrap">
 	<div class="postbox lp-accept-terms">
 		<input type="hidden" name="redirect_url" value="<?php echo esc_url( admin_url() . 'admin.php?page=lp-getting-started' ); ?>">
