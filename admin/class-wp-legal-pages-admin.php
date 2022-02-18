@@ -1184,7 +1184,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 			$footer_legal_pages = array();
 			if ( isset( $_POST['lp-footer-pages'] ) ) {
-				$footer_legal_pages = explode( ',', $_POST['lp-footer-pages'] );
+				$footer_legal_pages = explode( ',', sanitize_text_field( wp_unslash( $_POST['lp-footer-pages'] ) ) );
 			}
 			$lp_footer_options = array(
 				'footer_legal_pages' => $footer_legal_pages,
