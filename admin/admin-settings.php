@@ -291,10 +291,9 @@ if ( '1' === $lpterms ) {
 					?>
 					<c-tab title="<?php esc_attr_e( 'Compliances', 'wplegalpages' ); ?>" href="#compliances">
 					<input type="hidden" name="lp-is-footer" v-model="is_footer">
-					<input type="hidden" ref="footer_legal_pages" v-model="footer_legal_pages" name="footer_legal_pages">
+					<input type="hidden" v-model="footer_legal_pages" name="footer_legal_pages">
 					<input type="hidden" ref="footer_font_family" v-model="footer_font" name="lp-footer-font-family">
 					<input type="hidden" ref="footer_font_family_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_font'] ) ); ?>">
-					<input type="hidden" ref="footer_legal_pages_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_legal_pages'] ) ); ?>">
 					<input type="hidden" ref="footer_font_size" v-model="footer_font_size" name="lp-footer-font-size">
 					<input type="hidden" ref="footer_font_size_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_font_size'] ) ); ?>">
 					<input type="hidden" name="lp-footer-new-tab" v-model="footer_new_tab">
@@ -332,7 +331,7 @@ if ( '1' === $lpterms ) {
 									}
 									?>
 									<c-col class="col-sm-8">
-										<v-select id="wplegalpages-footer-pages" class="form-group" :options="page_options" multiple v-model="footer_legal_pages"  >
+										<v-select id="wplegalpages-footer-pages" :reduce="label => label.code" class="form-group" :options="page_options" multiple v-model="footer_pages" @input="onFooterPagesSelect">
 										</v-select>
 									</c-col>
 								</c-row>
@@ -508,8 +507,8 @@ if ( '1' === $lpterms ) {
 									}
 									?>
 									<c-col class="col-sm-8">
-										<draggable id="wplegalpages-footer-order-links" v-model="footer_legal_pages">
-											<p class="wplegalpages-draggable-item" v-for="footer_page in footer_legal_pages" :key="footer_page">{{footer_page}}<img src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/drag-icon.png'; ?>"/></p>
+										<draggable id="wplegalpages-footer-order-links" v-model="footer_pages_drag" @change="onDragPages">
+											<p class="wplegalpages-draggable-item" v-for="footer_page in footer_pages_drag" :key="footer_page.code">{{footer_page.label}}<img src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/drag-icon.png'; ?>"/></p>
 										</draggable>
 									</c-col>
 								</c-row>
