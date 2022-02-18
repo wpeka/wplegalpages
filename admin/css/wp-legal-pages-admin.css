@@ -614,7 +614,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
     color: #fff;
     margin-left: 70%;
     margin-top: 1%;
-    z-index: 99;
+    z-index: 1002;
 }
 div.ql-toolbar.ql-snow {
     display: none;

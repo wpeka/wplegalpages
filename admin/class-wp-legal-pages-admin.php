@@ -394,7 +394,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$options  = array();
 				if ( $lp_pages ) {
 					foreach ( $lp_pages as $lp_page ) {
-						array_push( $options, $lp_page->post_title );
+						$page_array = array(
+							'label' => $lp_page->post_title,
+							'code'  => $lp_page->ID,
+						);
+						array_push( $options, $page_array );
 					}
 				}
 				$lp_options               = get_option( 'lp_general' );
@@ -1178,8 +1182,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_die( -1 );
 			}
+			$footer_legal_pages = array();
+			if ( isset( $_POST['lp-footer-pages'] ) ) {
+				$footer_legal_pages = explode( ',', $_POST['lp-footer-pages'] );
+			}
 			$lp_footer_options = array(
-				'footer_legal_pages' => isset( $_POST['lp-footer-pages'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-footer-pages'] ) ) : '',
+				'footer_legal_pages' => $footer_legal_pages,
 				'show_footer'        => isset( $_POST['lp-is-footer'] ) && ( true === $_POST['lp-is-footer'] || 'true' === $_POST['lp-is-footer'] ) ? '1' : '0',
 				'footer_bg_color'    => isset( $_POST['lp-footer-link-bg-color'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-footer-link-bg-color'] ) ) : '#ffffff',
 				'footer_text_align'  => isset( $_POST['lp-footer-align'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-footer-align'] ) ) : 'center',

@@ -56,7 +56,9 @@ var gen = new Vue({
             show_banner_form: false,
             show_age_verification_form: false,
             show_popup_form: false,
-            footer_legal_pages: [],
+            footer_pages: [],
+            footer_pages_drag: [],
+            footer_legal_pages: obj.lp_footer_options.hasOwnProperty('footer_legal_pages') ? obj.lp_footer_options['footer_legal_pages'] : [],
             link_bg_color: obj.lp_footer_options.hasOwnProperty('footer_bg_color') ? obj.lp_footer_options['footer_bg_color']: '#ffffff',
             footer_font: obj.lp_footer_options.hasOwnProperty('footer_font') ? obj.lp_footer_options['footer_font'] : 'Open Sans',
             font_size_options: Array.from(obj.font_size_options),
@@ -123,7 +125,6 @@ var gen = new Vue({
             this.privacy =this.$refs.hasOwnProperty('privacy')? this.$refs.privacy.checked:null; 
             this.privacy_page = this.$refs.hasOwnProperty('privacy_page_mount') && this.$refs.privacy_page_mount.value ? this.$refs.privacy_page_mount.value : '';
             this.privacy_page = this.$refs.hasOwnProperty('privacy_page_mount') && this.$refs.privacy_page_mount.value ? this.$refs.privacy_page_mount.value : '';
-            this.footer_legal_pages = this.$refs.footer_legal_pages_mount.value ? this.$refs.footer_legal_pages_mount.value.split(',') : [];
             this.footer_font = this.$refs.footer_font_family_mount.value ? this.$refs.footer_font_family_mount.value : 'Open Sans';
             this.footer_font_size = this.$refs.footer_font_size_mount.value ? this.$refs.footer_font_size_mount.value : '16';
             this.footer_text_align = this.$refs.footer_text_align_mount.value ? this.$refs.footer_text_align_mount.value : 'center';
@@ -141,6 +142,12 @@ var gen = new Vue({
             let navLinks = j('.nav-link').map(function () {
                 return this.getAttribute('href');
             });
+            for(let i=0; i<this.page_options.length; i++) {
+                if( this.footer_legal_pages.includes(this.page_options[i].code.toString()) ) {
+                    this.footer_pages.push(this.page_options[i]);
+                    this.footer_pages_drag.push(this.page_options[i]);
+                }
+            }
             for (let i = 0; i < navLinks.length; i++) {
                 let re = new RegExp(navLinks[i]);
                 if (window.location.href.match(re)) {
@@ -182,6 +189,29 @@ var gen = new Vue({
         onSwitchFooter() {
             this.is_footer = !this.is_footer;
             this.$refs.switch_footer = this.is_footer ? '1' : '0';
+        },
+        onFooterPagesSelect(value){
+            let temp_array = [];
+            this.footer_pages_drag = [];
+            for(let i=0; i<value.length; i++) {
+                temp_array[i] = value[i];
+                for(let j=0;j<this.page_options.length;j++) {
+                    if( this.page_options[j].code === value[i]) {
+                        this.footer_pages_drag[i] = this.page_options[j];
+                        break;
+                    } 
+                }
+            }
+            this.footer_legal_pages = temp_array;
+        },
+        onDragPages() {
+            let footer_pages_length = this.footer_pages_drag.length;
+            let temp_array = [];
+            for(let i=0; i<footer_pages_length; i++) {
+                temp_array[i] = this.footer_pages_drag[i].code;
+            }
+            this.footer_legal_pages = temp_array;
+            this.footer_pages = temp_array;
         },
         onFooterFont(val) {
             this.footer_font = val.family;
