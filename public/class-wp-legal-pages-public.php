@@ -148,6 +148,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$footer_new_tab     = '1' === $lp_footer_options['footer_new_tab'] ? 'target="_blank"' : '';
 			$footer_pages       = $lp_footer_options['footer_legal_pages'];
 			$font_family_url    = 'http://fonts.googleapis.com/css?family=' . $footer_font_id;
+			if ( empty( $footer_pages ) || empty( $footer_pages[0] ) ) {
+				return;
+			}
 			wp_enqueue_style( $this->plugin_name . '-public' );
 			wp_add_inline_style( $this->plugin_name . '-public', '@import url(' . $font_family_url . ');' );
 			$page_count = count( $footer_pages );
