@@ -810,6 +810,50 @@ div.ql-toolbar.ql-snow {
 	border-style: solid;
 	border-color: black transparent transparent transparent;
   }
+  .wplegal-form-bottom-tooltip{
+	position: relative;
+	display: inline-block;
+	
+  }
+  .wplegal-form-bottom-tooltip .wplegal-form-bottom-tooltiptext{
+	visibility: hidden;
+	color: #ffffff;
+	text-align: center;
+	padding: 5px 0px;
+	border-radius: 2px;
+	font-size: 0.75rem;
+	width: 180px;
+	margin-left: -90px;
+	opacity: 0;
+	transition: opacity 1s;
+	position: absolute;
+	z-index: 1;
+	background: black;
+	z-index: 1;
+	top: 115%;
+	left: 50%;
+	margin-left: -60px;
+  }
+
+   /* Show the tooltip text when you mouse over the tooltip container */
+   .wplegal-form-bottom-tooltip:hover .wplegal-form-bottom-tooltiptext {
+	visibility: visible;
+	opacity: 0.7;
+	z-index: 999999;
+  }
+
+  .wplegal-form-bottom-tooltip .wplegal-form-bottom-tooltiptext::after {
+	content: " ";
+	position: absolute;
+	margin-left: -35px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent transparent black transparent;
+	bottom: 100%;
+	left: 50%;
+	
+  }
+
   .wplegalpages-help-text {
 	color: #768192;
 	font-size: 80%;
