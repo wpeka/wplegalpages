@@ -796,7 +796,7 @@ div.ql-toolbar.ql-snow {
   /* Show the tooltip text when you mouse over the tooltip container */
   .wplegal-form-tooltip:hover .wplegal-form-tooltiptext {
 	visibility: visible;
-	opacity: 0.7;
+	opacity: 0.9;
 	z-index: 999999;
   }
 
@@ -838,7 +838,7 @@ div.ql-toolbar.ql-snow {
    /* Show the tooltip text when you mouse over the tooltip container */
    .wplegal-form-bottom-tooltip:hover .wplegal-form-bottom-tooltiptext {
 	visibility: visible;
-	opacity: 0.7;
+	opacity: 0.9;
 	z-index: 999999;
   }
 
