@@ -361,7 +361,10 @@ var gen = new Vue({
 		saveFooterData() {
             jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
             var show_footer = this.is_footer;
-            var pages = JSON.parse(JSON.stringify(this.footer_legal_pages)).join(',');
+            var pages = '';
+            if( this.footer_legal_pages !== '' ) {
+                pages = JSON.parse(JSON.stringify(this.footer_legal_pages)).join(',');
+            }
             var link_bg_color = j('#wplegalpages-lp-form-bg-color').val();
             var footer_font_family = this.footer_font;
             var footer_font_family_id = this.footer_font.split(' ').join('+');
