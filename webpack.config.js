@@ -29,7 +29,11 @@
              {
                  test: /\.css$/,
                  use: ['style-loader', 'css-loader']
-             }
+             },
+             {
+                test: /\.(gif|svg|jpg|png)$/,
+                use: ['file-loader']
+            }
          ]
      }
  }
