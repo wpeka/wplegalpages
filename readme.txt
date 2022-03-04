@@ -186,10 +186,13 @@ We’re continuously improving. Contact us on our website to have your wishlist 
 Refer the [help and documentation](https://docs.wpeka.com/wp-legal-pages/?utm_source=referral&utm_medium=orgpage&utm_campaign=legalpages) to know more about How to Install WPLegalPages.
 
 == Screenshots ==
-1. general settings page.png
-2. legal templates.png
-3. adding legal page as popup.png
-4. affiliate disclosure.png
+1. Create Legal Page
+2. Manage Legal Pages
+3. Configure Settings
+4. Advanced Settings
+5. Shortcodes Tab
+6. Enable Compliances tab
+7. Affiliate Disclosure
 
 == Frequently Asked Questions ==
 
