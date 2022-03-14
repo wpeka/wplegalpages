@@ -1364,5 +1364,33 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 			return $to_dos;
 		}
+
+
+		/**
+		 * Callback for wp_trash_post hook
+		 *
+		 * @since 2.8.1
+		 *
+		 * @param int $post_id ID of the post trashed.
+		 */
+		public function wplegalpages_trash_page( $post_id ) {
+			if ( 'yes' === get_post_meta( $post_id, 'is_legal', true ) ) {
+				$footer_options = get_option( 'lp_footer_options' );
+				$footer_pages   = $footer_options['footer_legal_pages'];
+				if ( ! empty( $footer_pages ) && in_array( $post_id, $footer_pages, true ) ) {
+					$length               = count( $footer_pages );
+					$updated_footer_pages = array();
+					$j                    = 0;
+					for ( $i = 0; $i < $length; $i++ ) {
+						if ( $footer_pages[ $i ] !== $post_id ) {
+							$updated_footer_pages[ $j ] = $footer_pages[ $i ];
+							$j++;
+						}
+					}
+					$footer_options['footer_legal_pages'] = $updated_footer_pages;
+					update_option( 'lp_footer_options', $footer_options );
+				}
+			}
+		}
 	}
 }
