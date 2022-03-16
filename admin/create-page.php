@@ -57,7 +57,10 @@ $lp_pro_active = get_option( '_lp_pro_active' );
 				'post_status'  => 'publish',
 				'post_author'  => 1,
 			);
-			$pid           = wp_insert_post( $post_args );
+			if ( strpos( $post_args['post_title'], '&#8211;' ) !== false ) {
+				$post_args['post_title'] = str_replace( '&#8211;', '-', $post_args['post_title'] );
+			}
+			$pid = wp_insert_post( $post_args );
 			update_post_meta( $pid, 'is_legal', 'yes' );
 			$url = get_permalink( $pid );
 			?>
