@@ -1,4 +1,5 @@
 === Privacy Policy Generator, Terms & Conditions Generator WordPress Plugin : WPLegalPages ===
+integration jira bitbucket
 Contributors: WPEka Club
 Donate link: https://club.wpeka.com/product/wplegalpages
 License: GPLv2 or later
