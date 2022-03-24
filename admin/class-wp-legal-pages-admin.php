@@ -394,8 +394,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$options  = array();
 				if ( $lp_pages ) {
 					foreach ( $lp_pages as $lp_page ) {
-						if ( strpos( $lp_page->post_title, '&#8211;' ) !== false ) {
-							$lp_page->post_title = str_replace( '&#8211;', '-', $lp_page->post_title );
+
+						if ( html_entity_decode( $lp_page->post_title ) !== $lp_page->post_title ) {
+							$lp_page->post_title = html_entity_decode( $lp_page->post_title );
 							wp_update_post( $lp_page );
 						}
 						$page_array = array(
