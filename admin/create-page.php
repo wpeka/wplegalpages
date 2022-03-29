@@ -51,13 +51,14 @@ $lp_pro_active = get_option( '_lp_pro_active' );
 			$content       = isset( $_POST['lp-content'] ) ? wp_kses_post( wp_unslash( $_POST['lp-content'] ) ) : '';
 			$template_lang = isset( $_POST['template_language'] ) ? sanitize_text_field( wp_unslash( $_POST['template_language'] ) ) : '';
 			$post_args     = array(
-				'post_title'   => apply_filters( 'the_title', $page_title ),
+				'post_title'   => html_entity_decode( apply_filters( 'the_title', $page_title ) ),
 				'post_content' => $content,
 				'post_type'    => 'page',
 				'post_status'  => 'publish',
 				'post_author'  => 1,
 			);
-			$pid           = wp_insert_post( $post_args );
+			
+			$pid = wp_insert_post( $post_args );
 			update_post_meta( $pid, 'is_legal', 'yes' );
 			$url = get_permalink( $pid );
 			?>

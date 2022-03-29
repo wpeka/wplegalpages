@@ -394,6 +394,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$options  = array();
 				if ( $lp_pages ) {
 					foreach ( $lp_pages as $lp_page ) {
+
+						if ( html_entity_decode( $lp_page->post_title ) !== $lp_page->post_title ) {
+							$lp_page->post_title = html_entity_decode( $lp_page->post_title );
+							wp_update_post( $lp_page );
+						}
 						$page_array = array(
 							'label' => $lp_page->post_title,
 							'code'  => $lp_page->ID,
