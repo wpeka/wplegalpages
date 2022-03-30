@@ -13,3 +13,4 @@ admin/js/tooltip.min.js
 coverage/
 *.lock
 yarn.lock
+*.dump
