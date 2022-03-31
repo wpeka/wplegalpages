@@ -2,6 +2,8 @@
 
 * [ ] Does your code follow the [WordPress' coding standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/)?
 * [ ] Have you checked to ensure there aren't other open [Pull Requests](../../pulls) for the same update/change?
+* [ ] My pull request has a descriptive title (not a vague title like `Update index.md`)
+* [ ] I have tested these changes either locally on my machine, or GitPod.
 
 <!-- Mark completed items with an [x] -->
 
