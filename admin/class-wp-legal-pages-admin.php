@@ -544,7 +544,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'multilingual_text' => __( 'Multilingual support', 'wplegalpages' ),
 						'multilingual_desc' => __( 'Supports multi-language translations for English, French, Spanish, German, Italian, Portuguese.', 'wplegalpages' ),
 						'button_text'       => __( 'Upgrade Now', 'wplegalpages' ),
-						'url'               => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=getting-started&utm_campaign=upgrade',
+						'url'               => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=upgrade-now-button',
 					),
 					'configure'           => array(
 						'text'        => __( 'WPLegalPages generates personalized legal pages for your website. To do this it needs to know a few details about your website. Please take a couple of minutes to set up your business details before you can generate a policy page for this website.', 'wplegalpages' ),
@@ -569,7 +569,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							sprintf(
 								/* translators: %s: Terms of use link, %s Text */
 								'<a href="%s" target="_blank">%s</a>',
-								esc_url( 'https://club.wpeka.com/product/wplegalpages/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=25-policy-pages#wplegalpages-policy-templates' ),
+								esc_url( 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=25-policy-pages#wplegalpages-policy-templates' ),
 								__( '25+ policy pages', 'wplegalpages' )
 							)
 						),
@@ -581,7 +581,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							sprintf(
 								/* translators: %s: Terms of use link */
 								'<a href="%s" target="_blank">%s</a>',
-								esc_url( 'https://wplegalpages.com/product-terms-of-use/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=terms-of-use' ),
+								esc_url( 'https://wplegalpages.com/product-terms-of-use/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=terms-of-use' ),
 								__( 'terms of use', 'wplegalpages' )
 							)
 						),
