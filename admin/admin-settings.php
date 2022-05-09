@@ -92,7 +92,7 @@ if ( '1' === $lpterms ) {
 			?>
 			<div style="">
 				<div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
-					<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin-banner&utm_campaign=wplegalpages-settings&utm_content=upgrade-to-pro" target="_blank">
+					<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=settings-page&utm_content=upgrade-banner" target="_blank">
 						<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/upgrade-to-pro-version.png'; ?>">
 					</a>
 				</div>

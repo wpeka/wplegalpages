@@ -75,7 +75,7 @@ endif;
 						sprintf(
 							/* translators: %s: Product feature link */
 							'<a href="%s" target="_blank">25+ policy pages</a>',
-							esc_url( 'https://club.wpeka.com/product/wplegalpages/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=25-policy-pages#wplegalpages-policy-templates' )
+							esc_url( 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=25-policy-pages#wplegalpages-policy-templates' )
 						)
 					);
 					?>
@@ -84,13 +84,13 @@ endif;
 			<h4 class="myLabel-head"><?php esc_attr_e( 'Help & Support', 'wplegalpages' ); ?></h4>
 			<div>
 				<ul>
-					<li><a href="https://docs.wpeka.com/wp-legal-pages/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=documentation" target="_blank"><?php esc_attr_e( 'Documentation &raquo;', 'wplegalpages' ); ?></a></li>
-					<li><a href="https://docs.wpeka.com/wp-legal-pages/faq/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=faq" target="_blank"><?php esc_attr_e( 'FAQs &raquo;', 'wplegalpages' ); ?></a></li>
+					<li><a href="https://docs.wpeka.com/wp-legal-pages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=help-center" target="_blank"><?php esc_attr_e( 'Documentation &raquo;', 'wplegalpages' ); ?></a></li>
+					<li><a href="https://docs.wpeka.com/wp-legal-pages/faq?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=faq" target="_blank"><?php esc_attr_e( 'FAQs &raquo;', 'wplegalpages' ); ?></a></li>
 					<?php if ( '1' === $lp_pro_installed ) : ?>
-						<li><a href="https://club.wpeka.com/my-account/orders/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=support" target="_blank"><?php esc_attr_e( 'Support &raquo;', 'wplegalpages' ); ?></a></li>
+						<li><a href="https://club.wpeka.com/my-account/orders/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=support" target="_blank"><?php esc_attr_e( 'Support &raquo;', 'wplegalpages' ); ?></a></li>
 					<?php else : ?>
-						<li><a href="https://wordpress.org/support/plugin/wplegalpages/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=forums" target="_blank"><?php esc_attr_e( 'Forums &raquo;', 'wplegalpages' ); ?></a></li>
-						<li><a href="https://club.wpeka.com/product/wplegalpages/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=upgrade-to-wplegalpages-pro" target="_blank"><?php esc_attr_e( 'Upgrade to WPLegalPages Pro &raquo;', 'wplegalpages' ); ?></a></li>
+						<li><a href="https://wordpress.org/support/plugin/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=forums" target="_blank"><?php esc_attr_e( 'Forums &raquo;', 'wplegalpages' ); ?></a></li>
+						<li><a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=upgrade-now-button" target="_blank"><?php esc_attr_e( 'Upgrade to WPLegalPages Pro &raquo;', 'wplegalpages' ); ?></a></li>
 					<?php endif; ?>
 				</ul>
 			</div>
