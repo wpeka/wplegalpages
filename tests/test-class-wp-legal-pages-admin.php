@@ -39,12 +39,21 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 	public static $lp_ids;
 
 	/**
+	 * Created legal page.
+	 *
+	 * @access public
+	 * @var    string $lp_id legalpage ids.
+	 */
+	public static $lp_id;
+
+	/**
 	 * Set up function.
 	 *
 	 * @param WP_UnitTest_Factory $factory helper for unit test functionality.
 	 */
 	public static function wpSetUpBeforeClass( WP_UnitTest_Factory $factory ) {
 		self::$lp_ids             = $factory->post->create_many( 2, array( 'post_type' => 'page' ) );
+		self::$lp_id              = $factory->post->create( array( 'post_type' => 'page' ) );
 		self::$wplegalpages_admin = new WP_Legal_Pages_Admin( 'wp-legal-pages', '2.7.0' );
 	}
 
@@ -304,6 +313,20 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		$this->assertTrue( $result );
 		$option_value = get_option( 'wplegalpages_disable_settings_warning' );
 		$this->assertEquals( $option_value, '1' );
+	}
+
+	/**
+	 * Test for wplegalpages_trash_page function
+	 */
+	public function test_wplegalpages_trash_page() {
+		update_post_meta( self::$lp_id, 'is_legal', 'yes' );
+		$pages                                = array( self::$lp_id );
+		$footer_options                       = get_option( 'lp_footer_options' );
+		$footer_options['footer_legal_pages'] = $pages;
+		update_option( 'lp_footer_options', $footer_options );
+		self::$wplegalpages_admin->wplegalpages_trash_page( self::$lp_id );
+		$options = get_option( 'lp_footer_options' );
+		$this->assertEmpty( $options['footer_legal_pages'] );
 	}
 }
 
