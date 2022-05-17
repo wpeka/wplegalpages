@@ -104,11 +104,6 @@ if ( '1' === $lpterms ) {
 		</div>
 		<c-form id="lp-save-settings-form" spellcheck="false" class="wplegalpages-settings-form">
 			<input type="hidden" name="settings_form_nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings-form-nonce' ) ); ?>"/>
-			<div class="wplegalpages-settings-top">
-				<div class="wplegalpages-save-button">
-					<c-button color="info" @click="saveGeneralSettings"><span>Save Changes</span></c-button>
-				</div>
-			</div>
 			<div class="wplegalpages-settings-content">
 				<div id="wplegalpages-save-settings-alert">Settings saved</div>	
 				<c-tabs variant="pills" ref="active_tab" class="wplegalpages-settings-nav">
