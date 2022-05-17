@@ -87,7 +87,7 @@ a:hover {
 }
 .wplegal-wizard-container {
 	margin: 0 auto;
-	width: 750px;
+	width: 90%;
 }
 .wplegal-wizard-steps {
 	-webkit-box-align: center;
@@ -96,13 +96,16 @@ a:hover {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
-	margin-top: 45px;
+	margin-top: 10px;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 35px;
 }
 .wplegal-wizard-step-line {
 	background: #d6e2ed;
 	height: 3px;
 	margin: 0 2px;
-	width: 100%;
+	width: 20%;
 }
 .wplegal-wizard-step-line.wplegal-wizard-line-active {
 	background: #5cc0a5;
@@ -112,18 +115,24 @@ a:hover {
 	border-radius: 50%;
 	-ms-flex-negative: 0;
 	flex-shrink: 0;
-	height: 16px;
-	width: 16px;
+	height: 25px;
+	width: 25px;
+	font-size: 10px;
+	font-weight: 600;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .wplegal-wizard-step.wplegal-wizard-step-active,
 .wplegal-wizard-step.wplegal-wizard-step-completed {
 	background-color: #5cc0a5;
 	border-color: #5cc0a5;
 	position: relative;
+	color: #fff;
 }
 .wplegal-wizard-step.wplegal-wizard-step-completed:after {
 	color: #fff;
-	content: "\f147";
+	/* content: "\f147"; */
 	display: block;
 	font-family: Dashicons;
 	line-height: 1;
@@ -644,9 +653,9 @@ input[type="search"] {
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label > span.wplegal-create-button-wrapper {
 	font-size: 16px;
 	font-weight: 600;
-	background: rgba(238, 243, 255,0.5);
+	/* background: rgba(238, 243, 255,0.5);
 	position: absolute;
-	box-shadow: 0px 0px 4px 0px rgba(204, 204, 204, 0.30);
+	box-shadow: 0px 0px 4px 0px rgba(204, 204, 204, 0.30); */
 	bottom: 0;
 	border-radius: 4px;
 	text-transform: uppercase;
@@ -666,15 +675,18 @@ input[type="search"] {
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label span.wplegal-create-button {
 	margin: 0;
 	display: none;
-	color: #ffffff;
+	color: #39f;
 	text-decoration: none;
 	padding: 10px 20px;
-	background:#2862b1;
+	/* background:#2862b1; */
 	border-radius: 4px;
+	background: none;
+	border: 2px solid #39f;
 	box-shadow: 0px 0px 4px 0px rgba(204, 204, 204, 0.30);
 }
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label span.wplegal-create-button:hover {
-    background-color: #18488a;
+    background-color: #39f;
+	color: #fff;
 	cursor: pointer;
 }
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label:hover > span.wplegal-create-button-wrapper {

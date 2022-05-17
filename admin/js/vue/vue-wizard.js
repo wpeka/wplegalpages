@@ -78,7 +78,10 @@ Vue.component('TheWizardTimeline', {
                     },[]));
                 }
                 html.push(createElement('div', {
-                    class: this.stepClass(index)
+                    class: this.stepClass(index), 
+                    domProps: {
+                        textContent: index+1,
+                    }
                 },[]));
             });
             return html;
@@ -86,10 +89,8 @@ Vue.component('TheWizardTimeline', {
     },
     render(createElement) {
         return createElement('div',{
-            staticClass: 'wplegal-wizard-container'
-        },[createElement('div',{
             staticClass: 'wplegal-wizard-steps'
-        },this.renderElements(createElement))])
+        },this.renderElements(createElement))
     }
 });
 
@@ -1362,10 +1363,10 @@ var app = new Vue({
     render(createElement) {
         return createElement('div',{
             staticClass:'wplegal-admin-page wizard'
-        },[createElement('the-wizard-header'),createElement('the-wizard-timeline'),createElement('div',{
+        },[createElement('the-wizard-header'),createElement('div',{
             staticClass:'wplegal-wizard-container'
         },[createElement('div',{
             staticClass:'wplegal-wizard-content'
-        },[createElement('router-view')])])])
+        },[createElement('the-wizard-timeline'),createElement('router-view')])])])
     }
 });
