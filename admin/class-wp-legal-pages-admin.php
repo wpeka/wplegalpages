@@ -544,7 +544,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'multilingual_text' => __( 'Multilingual support', 'wplegalpages' ),
 						'multilingual_desc' => __( 'Supports multi-language translations for English, French, Spanish, German, Italian, Portuguese.', 'wplegalpages' ),
 						'button_text'       => __( 'Upgrade Now', 'wplegalpages' ),
-						'url'               => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=getting-started&utm_campaign=upgrade',
+						'url'               => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=upgrade-now-button',
 					),
 					'configure'           => array(
 						'text'        => __( 'WPLegalPages generates personalized legal pages for your website. To do this it needs to know a few details about your website. Please take a couple of minutes to set up your business details before you can generate a policy page for this website.', 'wplegalpages' ),
@@ -569,7 +569,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							sprintf(
 								/* translators: %s: Terms of use link, %s Text */
 								'<a href="%s" target="_blank">%s</a>',
-								esc_url( 'https://club.wpeka.com/product/wplegalpages/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=25-policy-pages#wplegalpages-policy-templates' ),
+								esc_url( 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=25-policy-pages#wplegalpages-policy-templates' ),
 								__( '25+ policy pages', 'wplegalpages' )
 							)
 						),
@@ -581,7 +581,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							sprintf(
 								/* translators: %s: Terms of use link */
 								'<a href="%s" target="_blank">%s</a>',
-								esc_url( 'https://wplegalpages.com/product-terms-of-use/?utm_source=wplegalpages&utm_medium=getting-started&utm_campaign=link&utm_content=terms-of-use' ),
+								esc_url( 'https://wplegalpages.com/product-terms-of-use/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=terms-of-use' ),
 								__( 'terms of use', 'wplegalpages' )
 							)
 						),
@@ -591,7 +591,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'title'       => __( 'Help Center', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
 							'description' => __( 'Read the documentation to find answers to your questions.', 'wplegalpages' ),
-							'link'        => 'https://docs.wpeka.com/wp-legal-pages/',
+							'link'        => 'https://docs.wpeka.com/wp-legal-pages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_term=help-center',
 							'link_title'  => 'Learn more >>',
 						),
 						'video_guides' => array(
@@ -606,7 +606,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'title'       => __( 'FAQ with answers', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
 							'description' => __( 'Find answers to some of the most commonly asked questions.', 'wplegalpages' ),
-							'link'        => 'https://docs.wpeka.com/wp-legal-pages/faq',
+							'link'        => 'https://docs.wpeka.com/wp-legal-pages/faq?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_term=faq',
 							'link_title'  => 'Find out >>',
 
 						),
@@ -630,7 +630,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		public static function wplegalpages_mascot_enqueue() {
 			$is_pro = get_option( '_lp_pro_active' );
 			if ( $is_pro ) {
-				$support_url = 'https://club.wpeka.com/my-account/orders/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=support';
+				$support_url = 'https://club.wpeka.com/my-account/orders/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=help-mascot&utm_content=support';
 			} else {
 				$support_url = 'https://wordpress.org/support/plugin/wplegalpages/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=forums';
 			}
@@ -642,11 +642,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'support_text'       => __( 'Support', 'wplegalpages' ),
 						'support_url'        => $support_url,
 						'documentation_text' => __( 'Documentation', 'wplegalpages' ),
-						'documentation_url'  => 'https://docs.wpeka.com/wp-legal-pages/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=documentation',
+						'documentation_url'  => 'https://docs.wpeka.com/wp-legal-pages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=help-masco&utm_content=documentation',
 						'faq_text'           => __( 'FAQ', 'wplegalpages' ),
-						'faq_url'            => 'https://docs.wpeka.com/wp-legal-pages/faq/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=faq',
+						'faq_url'            => 'https://docs.wpeka.com/wp-legal-pages/faq/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=help-mascot&utm_content=faq',
 						'upgrade_text'       => __( 'Upgrade to Pro &raquo;', 'wplegalpages' ),
-						'upgrade_url'        => 'https://club.wpeka.com/product/wplegalpages/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=upgrade-to-pro',
+						'upgrade_url'        => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=help-mascot&utm_content=upgrade-to-pro',
 					),
 					'is_pro'           => $is_pro,
 					'quick_links_text' => __( 'See Quick Links', 'wplegalpages' ),
