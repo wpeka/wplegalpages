@@ -33,42 +33,92 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 		public $legal_pages = array();
 
 		/**
+		 *
+		 * Pro Legal Pages Array.
+		 *
+		 * @var array $pro_legalpages legalpages
+		 */
+		public $pro_legalpages = array();
+
+		/**
 		 * Initialize the class and set its properties.
 		 *
 		 * @since    1.0.0
 		 */
 		public function __construct() {
-			$this->legal_pages = array(
-				'standard_privacy_policy' => array(
-					'title'   => __( 'Standard Privacy Policy', 'wplegalpages' ),
-					'desc'    => __( 'If you collect any personal data from user.', 'wplegalpages' ),
-					'btn_txt' => __( 'Create', 'wplegalpages' ),
-					'lang'    => array( 'English' ),
-					'enabled' => true,
-				),
-				'terms_of_use_free'       => array(
-					'title'   => __( 'Terms of Use', 'wplegalpages' ),
-					'desc'    => __( 'If you want to protect your business.', 'wplegalpages' ),
-					'btn_txt' => __( 'Create', 'wplegalpages' ),
-					'lang'    => array( 'English', 'French', 'German' ),
-					'enabled' => true,
-				),
-				'dmca'                    => array(
-					'title'   => __( 'DMCA', 'wplegalpages' ),
-					'desc'    => __( 'To limit your liability to copyright infringement claims', 'wplegalpages' ),
-					'btn_txt' => __( 'Create', 'wplegalpages' ),
-					'lang'    => array( 'English' ),
-					'enabled' => true,
-				),
-				'ccpa_free'               => array(
-					'title'   => __( 'CCPA - California Consumer Privacy Act', 'wplegalpages' ),
-					'desc'    => __( 'If you are collecting personal data and have California based users.', 'wplegalpages' ),
-					'btn_txt' => __( 'Create', 'wplegalpages' ),
-					'lang'    => array( 'English' ),
-					'enabled' => true,
+			$this->legal_pages    = array(
+				'Available Templates' => array(
+					'standard_privacy_policy' => array(
+						'title'   => __( 'Standard Privacy Policy', 'wplegalpages' ),
+						'desc'    => __( 'If you collect any personal data from user.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'lang'    => array( 'English' ),
+						'enabled' => true,
+					),
+					'terms_of_use_free'       => array(
+						'title'   => __( 'Terms of Use', 'wplegalpages' ),
+						'desc'    => __( 'If you want to protect your business.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'lang'    => array( 'English', 'French', 'German' ),
+						'enabled' => true,
+					),
+					'dmca'                    => array(
+						'title'   => __( 'DMCA', 'wplegalpages' ),
+						'desc'    => __( 'To limit your liability to copyright infringement claims.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'lang'    => array( 'English' ),
+						'enabled' => true,
+					),
+					'ccpa_free'               => array(
+						'title'   => __( 'CCPA - California Consumer Privacy Act', 'wplegalpages' ),
+						'desc'    => __( 'If you are collecting personal data and have California based users.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'lang'    => array( 'English' ),
+						'enabled' => true,
+					),
 				),
 			);
-			$this->legal_pages = apply_filters( 'wplegalpages_wizard_templates', $this->legal_pages );
+			$this->legal_pages    = apply_filters( 'wplegalpages_wizard_templates', $this->legal_pages );
+			$this->pro_legalpages = array(
+				'Popular' => array(
+					'privacy_policy'            => array(
+						'title'   => __( 'Professional Privacy Policy', 'wplegalpages' ),
+						'desc'    => __( 'If you collect any personal data from users (GDPR and CCPA compliant).', 'wplegalpages' ),
+						'btn_txt' => __( 'Go Pro', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'terms_of_use'              => array(
+						'title'   => __( 'Terms and Conditions', 'wplegalpages' ),
+						'desc'    => __( 'If you want to protect your business.', 'wplegalpages' ),
+						'btn_txt' => __( 'Go Pro', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'returns_refunds_policy'    => array(
+						'title'   => __( 'Returns & Refunds Policy', 'wplegalpages' ),
+						'desc'    => __( 'If you want to protect your e-Commerce business.', 'wplegalpages' ),
+						'btn_txt' => __( 'Go Pro', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'impressum'                 => array(
+						'title'   => __( 'Impressum', 'wplegalpages' ),
+						'desc'    => __( 'If you want to issue a statement of ownership and authorship of your content.', 'wplegalpages' ),
+						'btn_txt' => __( 'Go Pro', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'california_privacy_policy' => array(
+						'title'   => __( 'CCPA', 'wplegalpages' ),
+						'desc'    => __( 'If you have California based users and want to give them clarity on disclosure of personal information.', 'wplegalpages' ),
+						'btn_txt' => __( 'Go Pro', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'custom_legal'              => array(
+						'title'   => __( 'Create Custom Legal Page', 'wplegalpages' ),
+						'desc'    => __( 'Add your own text to create a custom legal policy.', 'wplegalpages' ),
+						'btn_txt' => __( 'Go Pro', 'wplegalpages' ),
+						'enabled' => false,
+					),
+				),
+			);
 		}
 
 		/**
@@ -79,6 +129,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 		 */
 		public function get_legal_pages() {
 			return $this->legal_pages;
+		}
+
+		/**
+		 *
+		 * Get Pro Legal Pages
+		 *
+		 * @return array $pro_legalpages legal pages.
+		 */
+		public function get_pro_legal_pages() {
+			return $this->pro_legalpages;
 		}
 
 	}

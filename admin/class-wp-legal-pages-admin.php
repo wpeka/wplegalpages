@@ -1452,6 +1452,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_enqueue_style( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'wizard/libraries/select2/select2.css', array(), $this->version, '' );
 			wp_enqueue_style( $this->plugin_name . '-vue-style', plugin_dir_url( __FILE__ ) . 'css/vue/vue-wizard.css', array(), $this->version, '' );
 			wp_enqueue_style( $this->plugin_name . '-vue-toast-style', plugin_dir_url( __FILE__ ) . 'css/vue/vue-toast.css', array(), $this->version, '' );
+			wp_enqueue_style( $this->plugin_name . '-vue-nav-tabs-style', plugin_dir_url( __FILE__ ) . 'css/vue/vue-nav-tabs.css', array(), $this->version, '' );
 			wp_register_script( $this->plugin_name . '-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue.js', array(), $this->version, false );
 			wp_register_script( $this->plugin_name . '-vue-router', plugin_dir_url( __FILE__ ) . 'js/vue/vue-router.js', array(), $this->version, false );
 			wp_register_script( $this->plugin_name . '-vue-toast', plugin_dir_url( __FILE__ ) . 'js/vue/vue-toast.js', array(), $this->version, false );
@@ -1459,6 +1460,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_register_script( $this->plugin_name . '-vue-script', plugin_dir_url( __FILE__ ) . 'js/vue/vue-wizard.js', array( 'jquery' ), $this->version, false );
 			wp_register_script( $this->plugin_name . '-tinymce-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue-tinymce.min.js', array( 'jquery' ), $this->version, false );
 			wp_register_script( $this->plugin_name . '-tinymce', plugin_dir_url( __FILE__ ) . 'js/vue/tinymce/tinymce.min.js', array( 'jquery' ), $this->version, false );
+			wp_register_script( $this->plugin_name . '-vue-nav-tabs', plugin_dir_url( __FILE__ ) . 'js/vue/vue-nav-tabs.js', array( 'jquery' ), $this->version, false );
 
 			wp_localize_script(
 				$this->plugin_name . '-vue-script',
@@ -1469,6 +1471,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'image_url'          => WPL_LITE_PLUGIN_URL . 'admin/js/vue/wizard_images/',
 					'ajax_url'           => admin_url( 'admin-ajax.php' ),
 					'ajax_nonce'         => wp_create_nonce( 'admin-ajax-nonce' ),
+					'pro_active'         => get_option( '_lp_pro_active' ),
+					'available_tab'      => __( 'Available Templates', 'wplegalpages' ),
+					'pro_tab'            => __( 'Pro Templates', 'wplegalpages' ),
+					'promotion_text'     => __( 'Can\'t find what you are looking for ?', 'wplegalpages' ),
+					'promotion_button'   => __( 'Go Pro', 'wplegalpages' ),
+					'promotion_link'     => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=wizard&utm_content=go-pro-button',
 					'welcome'            => array(
 						'create'     => __( 'Create', 'wplegalpages' ),
 						'edit'       => __( 'Edit', 'wplegalpages' ),
@@ -1529,6 +1537,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			<?php wp_print_scripts( $this->plugin_name . '-tinymce' ); ?>
 			<?php wp_print_scripts( $this->plugin_name . '-tinymce-vue' ); ?>
 			<?php wp_print_scripts( $this->plugin_name . '-vue' ); ?>
+			<?php wp_print_scripts( $this->plugin_name . '-vue-nav-tabs' ); ?>
 			<?php wp_print_scripts( $this->plugin_name . '-vue-router' ); ?>
 			<?php wp_print_scripts( $this->plugin_name . '-vue-toast' ); ?>
 			<?php wp_print_scripts( $this->plugin_name . '-vue-script' ); ?>
@@ -2226,48 +2235,72 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wizard/class-wp-legal-pages-wizard-dashboard.php';
 			$lp       = new WP_Legal_Pages_Wizard_Dashboard();
 			$lp_pages = $lp->get_legal_pages();
-			foreach ( $lp_pages as $key => $lpage ) {
-				$pid = '';
-				switch ( $key ) {
-					case 'privacy_policy':
-						$pid = get_option( 'wplegal_privacy_policy_page' );
-						break;
-					case 'terms_of_use_free':
-						$pid = get_option( 'wplegal_terms_of_use_page' );
-						break;
-					case 'standard_privacy_policy':
-						$pid = get_option( 'wplegal_standard_privacy_policy_page' );
-						break;
-					case 'ccpa_free':
-						$pid = get_option( 'wplegal_ccpa_free_page' );
-						break;
-					case 'terms_of_use':
-						$pid = get_option( 'wplegal_terms_of_use_page' );
-						break;
-					case 'california_privacy_policy':
-						$pid = get_option( 'wplegal_california_privacy_policy_page' );
-						break;
-					case 'returns_refunds_policy':
-						$pid = get_option( 'wplegal_returns_refunds_policy_page' );
-						break;
-					case 'impressum':
-						$pid = get_option( 'wplegal_impressum_page' );
-						break;
-					case 'custom_legal':
-						$pid = get_option( 'wplegal_custom_legal_page' );
-						break;
+			foreach ( $lp_pages as $lp_type_key => $lp_type ) {
+				$data = array();
+				foreach ( $lp_type as $key => $lpage ) {
+					$pid = '';
+					switch ( $key ) {
+						case 'privacy_policy':
+							$pid = get_option( 'wplegal_privacy_policy_page' );
+							break;
+						case 'terms_of_use_free':
+							$pid = get_option( 'wplegal_terms_of_use_page' );
+							break;
+						case 'standard_privacy_policy':
+							$pid = get_option( 'wplegal_standard_privacy_policy_page' );
+							break;
+						case 'ccpa_free':
+							$pid = get_option( 'wplegal_ccpa_free_page' );
+							break;
+						case 'terms_of_use':
+							$pid = get_option( 'wplegal_terms_of_use_page' );
+							break;
+						case 'california_privacy_policy':
+							$pid = get_option( 'wplegal_california_privacy_policy_page' );
+							break;
+						case 'returns_refunds_policy':
+							$pid = get_option( 'wplegal_returns_refunds_policy_page' );
+							break;
+						case 'impressum':
+							$pid = get_option( 'wplegal_impressum_page' );
+							break;
+						case 'custom_legal':
+							$pid = get_option( 'wplegal_custom_legal_page' );
+							break;
+					}
+					$field  = array(
+						'name'        => 'policy_template',
+						'label'       => $lpage['title'],
+						'value'       => $key,
+						'type'        => 'radio',
+						'description' => $lpage['desc'],
+						'pid'         => $pid,
+					);
+					$data[] = $field;
 				}
-				$field  = array(
-					'name'        => 'policy_template',
-					'label'       => $lpage['title'],
-					'value'       => $key,
-					'type'        => 'radio',
-					'description' => $lpage['desc'],
-					'pid'         => $pid,
-				);
-				$data[] = $field;
+				$return_data[ $lp_type_key ] = $data;
 			}
-			return $data;
+			if ( '1' !== get_option( '_lp_pro_active' ) ) {
+				$lp_pro_pages = $lp->get_pro_legal_pages();
+				foreach ( $lp_pro_pages as $lp_type_key => $lp_type ) {
+					$data = array();
+					foreach ( $lp_type as $key => $lpage ) {
+						$field  = array(
+							'name'        => 'policy_template',
+							'label'       => $lpage['title'],
+							'value'       => $key,
+							'type'        => 'radio',
+							'description' => $lpage['desc'],
+						);
+						$data[] = $field;
+					}
+					$pro_return_data[ $lp_type_key ] = $data;
+				}
+			}
+			if ( empty( $pro_return_data ) ) {
+				$pro_return_data = array();
+			}
+			return array( $return_data, $pro_return_data );
 		}
 
 		/**

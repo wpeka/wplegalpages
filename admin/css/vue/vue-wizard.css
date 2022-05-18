@@ -604,53 +604,62 @@ input[type="search"] {
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-form-row.wplegal-form-buttons {
     display: none;
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio {
-	display: inline-flex;
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-header {
+	margin: 15px 0;
+	font-size: 15px;
+}
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-header .wplegal-hide-content {
+	display: none;
+}
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	flex-wrap:wrap;
 	justify-content:flex-start;
-	gap:12.5px;
+	grid-column-gap: 1rem;
+	grid-row-gap: 1.5rem;
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label {
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label {
 	display: flex;
 	text-indent: 0;
 	flex-direction: column;
 	padding: 28px;
 	margin: 0;
-	width: 49%;
+	width: 95%;
 	height: auto;
 	min-height: 100px;
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
-	-webkit-box-shadow: 0px 0px 4px 0px rgba(204, 204, 204, 0.30);;
-	-moz-box-shadow: 0px 0px 4px 0px rgba(204, 204, 204, 0.30);;
-	box-shadow:0px 0px 4px 0px rgba(204, 204, 204, 0.30);
+	-webkit-box-shadow: 0px 0px 4px 0px rgba(83, 81, 81, 0.30);
+	-moz-box-shadow: 0px 0px 4px 0px rgba(83, 81, 81, 0.30);
+	box-shadow:0px 0px 4px 0px rgba(83, 81, 81, 0.30);
 	text-align: center;
 	position: relative;
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label > img {
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label > img {
 	width: 60px;
 	height: 60px;
 	margin: 0 auto 10px;
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label:hover {
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label:hover {
 	box-shadow: 0px 0px 4px 0px rgba(238, 243, 255, 0.8)
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label > span.wplegal-styled-radio {
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label > span.wplegal-styled-radio {
 	opacity: 0;
 	position: absolute;
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label > span {
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label > span {
 	margin:0 0 10px;
 	font-size: 18px;
 	font-weight: 600;
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label > p.wplegal-description {
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label > p.wplegal-description {
 	margin: 0;
 	font-size: 14px;
 	text-indent:0;
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label > span.wplegal-create-button-wrapper {
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label > span.wplegal-create-button-wrapper {
 	font-size: 16px;
 	font-weight: 600;
 	/* background: rgba(238, 243, 255,0.5);
@@ -672,7 +681,7 @@ input[type="search"] {
 	-o-transition: height 0.2s linear;
 	transition: height 0.2s linear;
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label span.wplegal-create-button {
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label span.wplegal-create-button {
 	margin: 0;
 	display: none;
 	color: #39f;
@@ -684,12 +693,12 @@ input[type="search"] {
 	border: 2px solid #39f;
 	box-shadow: 0px 0px 4px 0px rgba(204, 204, 204, 0.30);
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label span.wplegal-create-button:hover {
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label span.wplegal-create-button:hover {
     background-color: #39f;
 	color: #fff;
 	cursor: pointer;
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label:hover > span.wplegal-create-button-wrapper {
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label:hover > span.wplegal-create-button-wrapper {
 	height: 100%;
 	-webkit-transition: height 0.2s linear;
 	-moz-transition: height 0.2s linear;
@@ -697,7 +706,7 @@ input[type="search"] {
 	-o-transition: height 0.2s linear;
 	transition: height 0.2s linear;
 }
-.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio > label:hover span.wplegal-create-button {
+.wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label:hover span.wplegal-create-button {
 	display: block;
 }
 p > label {
@@ -1305,6 +1314,23 @@ button[data-v-09b2f69e] {
 .wplegal-wizard-content .wplegal-form-row.wplegal-section.wplegal-collapsible.wplegal-collapsible-show > fieldset {
 	display: block;
 }
+.wplegal-wizard-content .wplegal-form-row .vue-tabs .nav-tabs {
+	border-bottom: none;
+	color: #393f4a;
+	font-weight: 600;
+}
+.wplegal-wizard-content .wplegal-form-row .vue-tabs .nav-tabs > li.active > a {
+	border: none;
+	border-bottom: 2px solid #39f;
+}
+.wplegal-wizard-content .wplegal-form-row .vue-tabs .nav-tabs > li > a:hover {
+	border: none;
+	background: none;
+}
+.wplegal-wizard-content .wplegal-form-row .vue-tabs .nav-tabs > li.active > a:hover {
+	border: none;
+	border-bottom: 2px solid #39f;
+}
 .wplegal-wizard-content .wplegal-info {
 	position: relative;
 	cursor: help;
@@ -1446,4 +1472,7 @@ button[data-v-09b2f69e] {
 .wplegal-form-shortcode .dashicons-editor-help{
 	font-size: 20px;
 	margin-left: 10px;
+}
+.wplegal-wizard-promotion {
+	display: flex;
 }

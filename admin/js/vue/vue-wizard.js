@@ -219,7 +219,8 @@ Vue.component('GettingStartedWizardForm',{
     data: function() {
         return {
             formElements: [],
-            loading: 1
+            loading: 1,
+            formProElements: [],
         }
     },
     methods: {
@@ -250,10 +251,91 @@ Vue.component('GettingStartedWizardForm',{
         updateSettings: function(value) {
             this.$root.page = value;
         },
-        createFormRows:function(createElement) {
-            var self = this;
+        createFormTypeLabel(createElement){
+            var self = this;	
+            var html = [];		
+            var static_classes = 'wplegal-template-type-name';
+            if( '1' !== wizard_obj.pro_active ) {
+                static_classes += ' wplegal-hide-content';
+            }
+            for( let key in this.formElements ) {	
+                var el = createElement('div', {	
+                    class: 'wplegal-template-type-row'	
+                },	
+                [	
+                    createElement('div',{
+                        staticClass: 'wplegal-template-type-header'
+                    },[createElement('h4',{	
+                        staticClass: static_classes,
+                        domProps: {	
+                            textContent: key	
+                        }	
+                    })]),	
+                    createElement('div', {	
+                        staticClass: 'wplegal-template-type-labels-row'},	
+                        self.createFormRows(createElement, this.formElements[key])	
+                    )	
+                ],	
+                );	
+                html.push(el);	
+            }	
+            return html;	
+        },
+        createProTemplateLabels(createElement) {
+            var self = this;	
             var html = [];
-            this.formElements.forEach((value, index) => {
+            for( let key in this.formProElements ) {	
+                var el = createElement('div', {	
+                    class: 'wplegal-template-type-row'	
+                },	
+                [	
+                    createElement('div',{
+                        staticClass: 'wplegal-template-type-header'
+                    },[createElement('h4',{	
+                        staticClass: 'wplegal-template-type-name',	
+                        domProps: {	
+                            textContent: key	
+                        }	
+                    })]),	
+                    createElement('div', {	
+                        staticClass: 'wplegal-template-type-labels-row'},	
+                        self.createProTemplateRows(createElement, this.formProElements[key])	
+                    )	
+                ],	
+                );	
+                html.push(el);	
+            }	
+            return html;
+        },
+        createProTemplateRows: function(createElement, formProElements) {
+            var self = this;	
+            var html = [];	
+            formProElements.forEach((value, index) => {
+                var el = createElement('label',{
+                    class:'wplegal-pro-label-class',
+                },[createElement('img',{
+                    domProps:{
+                        src: wizard_obj.image_url + value.value+'.png'
+                    }
+                }),createElement('span',{
+                    staticClass: 'wplegal-input-title',
+                    domProps: {
+                        textContent: value.label
+                    }
+                }),createElement('p',{
+                    staticClass: "wplegal-description",
+                    domProps: {
+                        textContent: value.description
+                    }
+                })]);
+               html.push(el);
+            });
+            return html;
+        },
+        createFormRows:function(createElement, formLabelElements) {
+            var self = this;	
+            var html = [];	
+            formLabelElements.forEach((value, index) => {
                 var buttonText = value.pid ? wizard_obj.welcome.edit : wizard_obj.welcome.create;
                 var el = createElement('label',{
                     class:self.labelClass(value.value)
@@ -312,7 +394,8 @@ Vue.component('GettingStartedWizardForm',{
         this.$parent.hasError = !1;
         $.get(wizard_obj.ajax_url,{'action':'step_settings','nonce':wizard_obj.ajax_nonce,'step':'getting_started','page':this.$root.page}).then((response => {
             if(response.success) {
-                this.formElements = response.data;
+                this.formElements = response.data[0];
+                this.formProElements = response.data[1];
             } else {
                 Vue.$toast.open( toastOptions );
             }
@@ -347,9 +430,7 @@ Vue.component('GettingStartedWizardForm',{
            domProps: {
                textContent: this.$parent.input_subtitle
            }
-       })]), createElement('fieldset',{},[createElement('div',{
-           staticClass:'wplegal-settings-input-radio'
-       },[self.createFormRows(createElement)])])]),createElement('Separator') ,createElement('div',{
+       })]), createElement('WizardForms')]),createElement('Separator') ,createElement('div',{
            staticClass:'wplegal-form-row wplegal-form-buttons'
        },[createElement('button',{
            staticClass: "wplegal-wizard-button wplegal-wizard-button-next wplegal-wizard-button-large",
@@ -363,6 +444,61 @@ Vue.component('GettingStartedWizardForm',{
        })])]);
    }
 });
+
+Vue.component('WizardPromotional', {
+    render(createElement) {
+        return createElement('div',{
+            staticClass: 'wplegal-wizard-promotion'
+        },[
+            createElement('span',{
+                staticClass: 'wplegal-wizard-promotion-text',
+                domProps: {
+                    textContent: wizard_obj.promotion_text
+                }
+            }), createElement('a', {
+                staticClass: 'wplegal-wizard-promotion-link',
+                attrs: {
+                    href: wizard_obj.promotion_link,
+                    target: '_blank'
+                },
+            },[
+                createElement('span', {
+                    staticClass: 'wplegal-wizard-promotion-button',
+                    domProps: {
+                        textContent: wizard_obj.promotion_button
+                    }
+                })
+            ])
+        ])
+    }
+})
+
+Vue.component('WizardForms', {
+    render(createElement) {
+        var self = this;
+        if( '1' !== wizard_obj.pro_active ){
+            var tab_1 = createElement('v-tab', {
+                props: {
+                    title: wizard_obj.available_tab
+                },
+            }, [createElement('fieldset',{},[createElement('div',{
+                staticClass:'wplegal-settings-input-radio'
+            },[self.$parent.createFormTypeLabel(createElement)])]), createElement('WizardPromotional')]);
+            var tab_2 = createElement('v-tab', {
+                props: {
+                    title: wizard_obj.pro_tab
+                },
+            }, [createElement('div',{},[createElement('div',{
+                staticClass:'wplegal-settings-input-radio'
+            },[self.$parent.createProTemplateLabels(createElement)])])]);
+            return createElement('vue-tabs',{},[tab_1, tab_2])
+        } else {
+            return createElement('fieldset',{},[createElement('div',{
+                staticClass:'wplegal-settings-input-radio'
+            },[self.$parent.createFormTypeLabel(createElement)])])
+        }
+    }
+})
 
 Vue.component('PageSettingsWizardForm',{
     data: function() {
