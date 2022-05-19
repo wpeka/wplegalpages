@@ -298,7 +298,7 @@ Vue.component('GettingStartedWizardForm',{
                         }	
                     })]),	
                     createElement('div', {	
-                        staticClass: 'wplegal-template-type-labels-row'},	
+                        staticClass: 'wplegal-template-type-labels-row wplegal-template-type-labels-pro-row'},	
                         self.createProTemplateRows(createElement, this.formProElements[key])	
                     )	
                 ],	
@@ -479,14 +479,25 @@ Vue.component('WizardForms', {
         if( '1' !== wizard_obj.pro_active ){
             var tab_1 = createElement('v-tab', {
                 props: {
-                    title: wizard_obj.available_tab
+                    title: createElement('span',{
+                        id: 'wplegal-available-tab-title',
+                        staticClass: 'wplegalpages-wizard-template-text',
+                        domProps: {
+                            textContent: wizard_obj.available_tab
+                        }
+                    })
                 },
             }, [createElement('fieldset',{},[createElement('div',{
                 staticClass:'wplegal-settings-input-radio'
             },[self.$parent.createFormTypeLabel(createElement)])]), createElement('WizardPromotional')]);
             var tab_2 = createElement('v-tab', {
                 props: {
-                    title: wizard_obj.pro_tab
+                    title: createElement('span', {
+                        id: 'wplegalpage-pro-tab-title',
+                        domProps: {
+                            innerHTML: '<span class="wplegalpages-wizard-pro-text">PRO <span class="wplegalpages-wizard-template-text">' + wizard_obj.pro_tab +'</span></span>'
+                        }
+                    },)
                 },
             }, [createElement('div',{},[createElement('div',{
                 staticClass:'wplegal-settings-input-radio'
@@ -506,6 +517,7 @@ Vue.component('PageSettingsWizardForm',{
             formElements: [],
             loading: 1,
             template: '',
+            skip_section_templates: ['ccpa_free', 'dmca']
         }
     },
     methods: {
@@ -519,7 +531,7 @@ Vue.component('PageSettingsWizardForm',{
             });
             $.post(wizard_obj.ajax_url,{'action':'page_settings_save','data':data,'nonce':wizard_obj.ajax_nonce,'page':this.$root.page}).then((response => {
                 if(response.success) {
-                    if( this.template === 'dmca' || this.template === 'ccpa_free' ) {
+                    if( this.skip_section_templates.indexOf(this.template) >= 0 ) {
                         this.$router.push('page_preview');
                         this.$root.route.name = 'page_preview';
                     } else {

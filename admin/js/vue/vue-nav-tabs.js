@@ -251,7 +251,7 @@ var VueTabs = {
                             role: 'tab' },
 
                         'class': ['tab', { active: active }, { disabled: tab.disabled }],
-                        key: title }, {
+                        key: title.data.id }, {
                         on: {
                             'click': function click($event) {
                                 for (var _len = arguments.length, attrs = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -343,7 +343,7 @@ var VTab = {
     name: 'v-tab',
     props: {
         title: {
-            type: String,
+            type: Object,
             default: ''
         },
         icon: {

@@ -1473,8 +1473,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'ajax_nonce'         => wp_create_nonce( 'admin-ajax-nonce' ),
 					'pro_active'         => get_option( '_lp_pro_active' ),
 					'available_tab'      => __( 'Available Templates', 'wplegalpages' ),
-					'pro_tab'            => __( 'Pro Templates', 'wplegalpages' ),
-					'promotion_text'     => __( 'Can\'t find what you are looking for ?', 'wplegalpages' ),
+					'pro_tab'            => __( 'Templates', 'wplegalpages' ),
+					'promotion_text'     => __( 'Can\'t find what you are looking for?', 'wplegalpages' ),
 					'promotion_button'   => __( 'Go Pro', 'wplegalpages' ),
 					'promotion_link'     => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=wizard&utm_content=go-pro-button',
 					'welcome'            => array(
