@@ -24,6 +24,9 @@ if ( ! defined( 'WPL_LITE_PLUGIN_URL' ) ) {
 if ( ! defined( 'WPL_LITE_PLUGIN_BASENAME' ) ) {
 	define( 'WPL_LITE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 }
+if ( ! defined( 'WPLEGAL_API_URL' ) ) {
+	define( 'WPLEGAL_API_URL', 'https://api.wpeka.com/wp-json/wplegal/v2/' );
+}
 
 if ( ! function_exists( 'wplp_fs' ) ) {
 	/**
