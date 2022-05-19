@@ -888,7 +888,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					}
 					$options      = array();
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
-
+					if ( ! shortcode_exists( 'wpl_cookie_details' ) ) {
+						$preview_text = str_replace( '[wpl_cookie_details]', '', stripslashes( $preview_text ) );
+					} else {
+						$preview_text = do_shortcode( $preview_text );
+					}
 					break;
 
 				case 'dmca':
