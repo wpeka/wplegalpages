@@ -80,6 +80,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_register_style( $this->plugin_name . '-admin', plugin_dir_url( __FILE__ ) . 'css/wp-legal-pages-admin' . WPLPP_SUFFIX . '.css', array(), $this->version, 'all' );
 			wp_register_style( $this->plugin_name . '-bootstrap', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
 			wp_register_style( $this->plugin_name . '-vue-style', plugin_dir_url( __FILE__ ) . 'css/vue/vue-getting-started' . WPLPP_SUFFIX . '.css', array(), $this->version, 'all' );
+			wp_register_style( $this->plugin_name . '-wizard', plugin_dir_url( __FILE__ ) . 'css/wp-legal-wizard-admin' . WPLPP_SUFFIX . '.css', array(), $this->version, 'all' );
+			wp_register_style( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'wizard/libraries/select2/select2.css', array(), $this->version, 'all' );
 		}
 
 		/**
@@ -104,6 +106,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_register_script( $this->plugin_name . '-vue-js', plugin_dir_url( __FILE__ ) . 'js/vue/vue-getting-started.js', array( 'jquery' ), $this->version, true );
 			wp_register_script( $this->plugin_name . '-main', plugin_dir_url( __FILE__ ) . 'js/vue/wplegalpages-admin-main.js', array( 'jquery' ), $this->version, false );
 			wp_register_script( $this->plugin_name . '-vue-mascot', plugin_dir_url( __FILE__ ) . 'js/vue/vue-mascot.js', array( 'jquery' ), $this->version, true );
+			wp_register_script( $this->plugin_name . '-wizard-js', plugin_dir_url( __FILE__ ) . 'js/wplegalpages-admin-wizard' . WPLPP_SUFFIX . '.js', array( 'jquery' ), $this->version, true );
+			wp_register_script( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'wizard/libraries/select2/select2.js', array( 'jquery' ), $this->version, false );
 		}
 
 		/**
@@ -127,6 +131,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( '1' === $terms ) {
 				add_submenu_page( 'legal-pages', __( 'Settings', 'wplegalpages' ), __( 'Settings', 'wplegalpages' ), 'manage_options', 'legal-pages', array( $this, 'admin_setting' ) );
 				add_submenu_page( 'legal-pages', __( 'All Legal Pages', 'wplegalpages' ), __( 'All Legal Pages', 'wplegalpages' ), 'manage_options', 'lp-show-pages', array( $this, 'show_pages' ) );
+				add_submenu_page(
+					'legal-pages',
+					esc_attr__( 'Wizard', 'wplegalpages' ),
+					esc_attr__( 'Wizard', 'wplegalpages' ),
+					'manage_options',
+					'index.php?page=wplegal-wizard'
+				);
+				add_dashboard_page( '', '', 'manage_options', 'wplegal-wizard', '' );
 				add_submenu_page( 'legal-pages', __( 'Create Legal Page', 'wplegalpages' ), __( 'Create Legal Page', 'wplegalpages' ), 'manage_options', 'lp-create-page', array( $this, 'create_page' ) );
 				if ( version_compare( $this->version, '2.7.0', '<' ) ) {
 					add_submenu_page( 'legal-pages', __( 'Cookie Bar', 'wplegalpages' ), __( 'Cookie Bar', 'wplegalpages' ), 'manage_options', 'lp-eu-cookies', array( $this, 'update_eu_cookies' ) );
@@ -1396,6 +1408,1416 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					update_option( 'lp_footer_options', $footer_options );
 				}
 			}
+		}
+
+		/**
+		 * Setup wizard.
+		 */
+		public function setup_legal_wizard() {
+			// The below phpcs ignore comment is added after referring woocommerce plugin.
+			if ( empty( $_GET['page'] ) || 'wplegal-wizard' !== $_GET['page'] ) { // phpcs:ignore CSRF ok, input var ok.
+				return;
+			}
+
+			// Don't load the interface if doing an ajax call.
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				return;
+			}
+
+			set_current_screen();
+
+			// Remove an action in the Gutenberg plugin ( not core Gutenberg ) which throws an error.
+			remove_action( 'admin_print_styles', 'gutenberg_block_editor_admin_print_styles' );
+
+			$this->load_wplegal_wizard();
+		}
+
+		/**
+		 * Load wizard.
+		 */
+		public function load_wplegal_wizard() {
+			$this->wplegal_wizard_enqueue_scripts();
+
+			$this->wplegal_wizard_header();
+			$this->wplegal_wizard_content();
+			$this->wplegal_wizard_footer();
+
+			exit;
+		}
+
+		/**
+		 * Enqueue wizard scripts.
+		 */
+		public function wplegal_wizard_enqueue_scripts() {
+			wp_enqueue_style( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'wizard/libraries/select2/select2.css', array(), $this->version, '' );
+			wp_enqueue_style( $this->plugin_name . '-vue-style', plugin_dir_url( __FILE__ ) . 'css/vue/vue-wizard.css', array(), $this->version, '' );
+			wp_enqueue_style( $this->plugin_name . '-vue-toast-style', plugin_dir_url( __FILE__ ) . 'css/vue/vue-toast.css', array(), $this->version, '' );
+			wp_enqueue_style( $this->plugin_name . '-vue-nav-tabs-style', plugin_dir_url( __FILE__ ) . 'css/vue/vue-nav-tabs.css', array(), $this->version, '' );
+			wp_register_script( $this->plugin_name . '-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue.js', array(), $this->version, false );
+			wp_register_script( $this->plugin_name . '-vue-router', plugin_dir_url( __FILE__ ) . 'js/vue/vue-router.js', array(), $this->version, false );
+			wp_register_script( $this->plugin_name . '-vue-toast', plugin_dir_url( __FILE__ ) . 'js/vue/vue-toast.js', array(), $this->version, false );
+			wp_register_script( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'wizard/libraries/select2/select2.js', array( 'jquery' ), $this->version, true );
+			wp_register_script( $this->plugin_name . '-vue-script', plugin_dir_url( __FILE__ ) . 'js/vue/vue-wizard.js', array( 'jquery' ), $this->version, false );
+			wp_register_script( $this->plugin_name . '-tinymce-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue-tinymce.min.js', array( 'jquery' ), $this->version, false );
+			wp_register_script( $this->plugin_name . '-tinymce', plugin_dir_url( __FILE__ ) . 'js/vue/tinymce/tinymce.min.js', array( 'jquery' ), $this->version, false );
+			wp_register_script( $this->plugin_name . '-vue-nav-tabs', plugin_dir_url( __FILE__ ) . 'js/vue/vue-nav-tabs.js', array( 'jquery' ), $this->version, false );
+
+			wp_localize_script(
+				$this->plugin_name . '-vue-script',
+				'wizard_obj',
+				array(
+					'return_button_text' => __( 'Exit Wizard', 'wplegalpages' ),
+					'return_url'         => admin_url(),
+					'image_url'          => WPL_LITE_PLUGIN_URL . 'admin/js/vue/wizard_images/',
+					'ajax_url'           => admin_url( 'admin-ajax.php' ),
+					'ajax_nonce'         => wp_create_nonce( 'admin-ajax-nonce' ),
+					'pro_active'         => get_option( '_lp_pro_active' ),
+					'available_tab'      => __( 'Available Templates', 'wplegalpages' ),
+					'pro_tab'            => __( 'Templates', 'wplegalpages' ),
+					'promotion_text'     => __( 'Can\'t find what you are looking for?', 'wplegalpages' ),
+					'promotion_button'   => __( 'Go Pro', 'wplegalpages' ),
+					'promotion_link'     => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=wizard&utm_content=go-pro-button',
+					'welcome'            => array(
+						'create'     => __( 'Create', 'wplegalpages' ),
+						'edit'       => __( 'Edit', 'wplegalpages' ),
+						'next'       => __( 'Next', 'wplegalpages' ),
+						'prev'       => __( 'Prev', 'wplegalpages' ),
+						'title'      => __( 'Welcome to WPLegalPages Wizard!', 'wplegalpages' ),
+						'subtitle'   => __( 'Lets get started by selecting the policy template', 'wplegalpages' ),
+						'inputtitle' => __( 'Select the policy template to get started.', 'wplegalpages' ),
+					),
+					'settings'           => array(
+						'next'     => __( 'Next', 'wplegalpages' ),
+						'prev'     => __( 'Prev', 'wplegalpages' ),
+						'title'    => __( 'Recommended Settings', 'wplegalpages' ),
+						'subtitle' => __( 'WPLegalPages recommends the following settings based on your policy template', 'wplegalpages' ),
+					),
+					'sections'           => array(
+						'next'     => __( 'Next', 'wplegalpages' ),
+						'prev'     => __( 'Prev', 'wplegalpages' ),
+						'title'    => __( 'Data Sections', 'wplegalpages' ),
+						'subtitle' => __( 'Choose the appropriate sections for your policy template', 'wplegalpages' ),
+					),
+					'preview'            => array(
+						'next'     => __( 'Publish', 'wplegalpages' ),
+						'prev'     => __( 'Prev', 'wplegalpages' ),
+						'title'    => __( 'Policy Template Preview', 'wplegalpages' ),
+						'subtitle' => __( 'Review your policy template and publish', 'wplegalpages' ),
+					),
+				)
+			);
+			wp_print_styles( $this->plugin_name . '-select2' );
+		}
+
+		/**
+		 * Wizard header.
+		 */
+		public function wplegal_wizard_header() {
+			?>
+		<!DOCTYPE html>
+		<html <?php language_attributes(); ?>>
+		<head>
+			<meta name="viewport" content="width=device-width"/>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+			<title><?php esc_html_e( 'WPLegalPages &rsaquo; Wizard', 'wplegalpages' ); ?></title>
+			<?php do_action( 'admin_print_styles' ); ?>
+			<?php do_action( 'admin_print_scripts' ); ?>
+			<?php do_action( 'admin_head' ); ?>
+		</head>
+		<body class="wplegal-wizard">
+			<?php
+		}
+
+		/**
+		 * Wizard footer.
+		 */
+		public function wplegal_wizard_footer() {
+			?>
+			<?php wp_print_scripts( $this->plugin_name . '-select2' ); ?>
+			<?php wp_print_scripts( $this->plugin_name . '-tinymce' ); ?>
+			<?php wp_print_scripts( $this->plugin_name . '-tinymce-vue' ); ?>
+			<?php wp_print_scripts( $this->plugin_name . '-vue' ); ?>
+			<?php wp_print_scripts( $this->plugin_name . '-vue-nav-tabs' ); ?>
+			<?php wp_print_scripts( $this->plugin_name . '-vue-router' ); ?>
+			<?php wp_print_scripts( $this->plugin_name . '-vue-toast' ); ?>
+			<?php wp_print_scripts( $this->plugin_name . '-vue-script' ); ?>
+		</body>
+		</html>
+			<?php
+		}
+		/**
+		 * Wizard content.
+		 */
+		public function wplegal_wizard_content() {
+			?>
+		<div id="wplegalwizardapp"></div>
+			<?php
+
+		}
+
+		/**
+		 * Save page section clauses.
+		 *
+		 * @param array $field Field.
+		 * @param array $data Data options.
+		 * @return array
+		 */
+		public function wplegalpages_page_sections_clauses_save( $field, $data = array() ) {
+			switch ( $field->type ) {
+				case 'section':
+					if ( isset( $field->sub_fields ) && ! empty( $field->sub_fields ) ) {
+						foreach ( $field->sub_fields as $sub_key => $sub_field ) {
+							$data = $this->wplegalpages_page_sections_clauses_save( $sub_field, $data );
+						}
+					}
+					break;
+				case 'select2':
+					if ( isset( $field->value ) && ! empty( $field->value ) ) {
+						$data[ $field->id ] = $field->value;
+					}
+					break;
+				case 'input':
+					if ( isset( $field->value ) && ! empty( $field->value ) ) {
+						$data[ $field->id ] = $field->value;
+					}
+					break;
+				case 'textarea':
+					if ( isset( $field->value ) && ! empty( $field->value ) ) {
+						$data[ $field->id ] = $field->value;
+					}
+					break;
+				case 'checkbox':
+					if ( $field->checked ) {
+						$data[ $field->id ] = true;
+						if ( isset( $field->sub_fields ) && ! empty( $field->sub_fields ) ) {
+							foreach ( $field->sub_fields as $sub_key => $sub_field ) {
+								$data = $this->wplegalpages_page_sections_clauses_save( $sub_field, $data );
+							}
+						}
+					}
+					break;
+				case 'radio':
+					if ( $field->checked ) {
+						$data[ $field->id ] = true;
+						if ( isset( $field->sub_fields ) && ! empty( $field->sub_fields ) ) {
+							foreach ( $field->sub_fields as $sub_key => $sub_field ) {
+								$data = $this->wplegalpages_page_sections_clauses_save( $sub_field, $data );
+							}
+						}
+					}
+					break;
+				case 'wpeditor':
+					if ( isset( $field->value ) && ! empty( $field->value ) ) {
+						$data[ $field->id ] = $field->value;
+					}
+					break;
+			}
+			return $data;
+		}
+
+		/**
+		 * Save page section settings.
+		 *
+		 * @param array $field Field.
+		 * @param array $post_data Post Data.
+		 * @return mixed
+		 */
+		public function wplegalpages_page_sections_settings_save( $field, $post_data = '' ) {
+			switch ( $field->type ) {
+				case 'section':
+					if ( isset( $field->sub_fields ) && ! empty( $field->sub_fields ) ) {
+						foreach ( $field->sub_fields as $sub_field ) {
+							$this->wplegalpages_page_sections_settings_save( $sub_field, $post_data );
+						}
+					}
+					return $field;
+				case 'select2':
+					if ( isset( $post_data[ $field->name ] ) ) {
+						$field->value = $post_data[ $field->name ];
+						$sub_fields   = $field->sub_fields;
+						foreach ( $post_data[ $field->name ] as $value ) {
+							$sub_fields->$value->checked = true;
+						}
+						$field->sub_fields = $sub_fields;
+					}
+
+					break;
+				case 'input':
+					if ( isset( $post_data[ $field->name ] ) ) {
+						$field->value = $post_data[ $field->name ];
+					}
+					return $field;
+				case 'textarea':
+					if ( isset( $post_data[ $field->name ] ) ) {
+						$field->value = $post_data[ $field->name ];
+					}
+					return $field;
+				case 'checkbox':
+					if ( isset( $post_data[ $field->name ] ) ) {
+						$field->checked = true;
+						if ( isset( $field->sub_fields ) && ! empty( $field->sub_fields ) ) {
+							foreach ( $field->sub_fields as $sub_field ) {
+								$this->wplegalpages_page_sections_settings_save( $sub_field, $post_data );
+							}
+						}
+					} else {
+						$field->checked = false;
+					}
+					return $field;
+				case 'radio':
+					if ( isset( $post_data[ $field->name ] ) && $post_data[ $field->name ] === $field->value ) {
+						$field->checked = true;
+						if ( isset( $field->sub_fields ) && ! empty( $field->sub_fields ) ) {
+							foreach ( $field->sub_fields as $sub_field ) {
+								$this->wplegalpages_page_sections_settings_save( $sub_field, $post_data );
+							}
+						}
+					} else {
+						$field->checked = false;
+					}
+					return $field;
+				case 'wpeditor':
+					if ( isset( $post_data[ $field->name ] ) ) {
+						$field->value = $post_data[ $field->name ];
+					}
+					return $field;
+			}
+		}
+
+		/**
+		 * Create policy page and return post id.
+		 *
+		 * @param string $title Page title.
+		 * @param string $content Page content.
+		 * @return int|void|WP_Error
+		 */
+		public function wplegalpages_get_pid_by_insert_page( $title = '', $content = '' ) {
+			$post_args = array(
+				'post_title'   => apply_filters( 'the_title', $title ),
+				'post_content' => $content,
+				'post_type'    => 'page',
+				'post_status'  => 'draft',
+				'post_author'  => get_current_user_id(),
+			);
+			$pid       = wp_insert_post( $post_args );
+			if ( ! is_wp_error( $pid ) ) {
+				return $pid;
+			} else {
+				return;
+			}
+		}
+
+		/**
+		 * Save page sections.
+		 */
+		public function wplegalpages_page_sections_save() {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die( -1 );
+			}
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wizard/class-wp-legal-pages-wizard-page.php';
+			$lp     = new WP_Legal_Pages_Wizard_Page();
+			$result = array(
+				'success' => false,
+			);
+			if ( isset( $_POST['action'] ) ) {
+				$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+				if ( wp_verify_nonce( $nonce, 'admin-ajax-nonce' ) ) {
+					$page      = isset( $_POST['page'] ) ? sanitize_text_field( wp_unslash( $_POST['page'] ) ) : 'privacy_policy';
+					$pid       = $this->wplegalpages_get_pid_by_page( $page );
+					$post_data = isset( $_POST['data'] ) ? map_deep( wp_unslash( $_POST['data'] ), 'sanitize_text_field' ) : '';
+					switch ( $page ) {
+						case 'terms_of_use':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages__get_pid_by_insert_page( 'Terms and Conditions' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$clauses       = $this->wplegalpages_get_remote_data( 'get_clauses' );
+								$terms_options = array();
+								foreach ( $clauses as $key => $clause ) {
+									if ( empty( $clause->fields ) ) {
+										$clause->fields        = $this->wplegalpages_get_remote_data( 'get_clause_settings?clause=' . $key );
+										$terms_options[ $key ] = $clause;
+									}
+								}
+								update_post_meta( $pid, 'legal_page_clauses', $terms_options );
+								update_option( 'wplegal_terms_of_use_page', $pid );
+							} else {
+								$terms_clauses = get_post_meta( $pid, 'legal_page_clauses', true );
+								$terms_options = $terms_clauses;
+							}
+							$data = array();
+							foreach ( $terms_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_clauses', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_clauses_options', $data );
+							break;
+						case 'terms_of_use_free':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Terms of Use' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$terms_of_use_free_options = $this->wplegalpages_get_remote_data( 'get_terms_of_use' );
+								update_post_meta( $pid, 'legal_page_terms_of_use_settings', $terms_of_use_free_options );
+								update_option( 'wplegal_terms_of_use_free_page', $pid );
+							} else {
+								$terms_of_use_free_settings = get_post_meta( $pid, 'legal_page_terms_of_use_settings', true );
+								$terms_of_use_free_options  = $terms_of_use_free_settings;
+							}
+							$data = array();
+							foreach ( $terms_of_use_free_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_terms_of_use_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_terms_of_use_options', $data );
+							break;
+						case 'standard_privacy_policy':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Standard Privacy Policy' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$standard_privacy_policy_options = $this->wplegalpages_get_remote_data( 'get_standard_privacy_policy' );
+								update_post_meta( $pid, 'legal_page_standard_privacy_policy_settings', $standard_privacy_policy_options );
+								update_option( 'wplegal_standard_privacy_policy_page', $pid );
+							} else {
+								$standard_privacy_policy_settings = get_post_meta( $pid, 'legal_page_standard_privacy_policy_settings', true );
+								$standard_privacy_policy_options  = $standard_privacy_policy_settings;
+							}
+							$data = array();
+							foreach ( $standard_privacy_policy_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_standard_privacy_policy_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_standard_privacy_policy_options', $data );
+							break;
+						case 'california_privacy_policy':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Privacy Notice For California Residents' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$ccpa_options = $this->wplegalpages_get_remote_data( 'get_ccpa_settings' );
+								update_post_meta( $pid, 'legal_page_ccpa_settings', $ccpa_options );
+								update_option( 'wplegal_california_privacy_policy_page', $pid );
+							} else {
+								$ccpa_settings = get_post_meta( $pid, 'legal_page_ccpa_settings', true );
+								$ccpa_options  = $ccpa_settings;
+							}
+							$data = array();
+							foreach ( $ccpa_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										if ( isset( $_POST['data'][ $field_key ] ) ) {
+											$field->checked = true;
+										} else {
+											$field->checked = false;
+										}
+										$settings_data[ $field_key ] = $field;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							$options = array();
+							foreach ( $data as $key => $option ) {
+								if ( isset( $option->checked ) && true === $option->checked ) {
+									$options[ $key ] = true;
+									$fields          = $option->fields;
+									foreach ( $fields as $field_key => $field ) {
+										if ( isset( $field->checked ) && true === $field->checked ) {
+											$options[ $field_key ] = true;
+										} else {
+											$options[ $field_key ] = false;
+										}
+									}
+								} else {
+									$options[ $key ] = false;
+								}
+							}
+							update_post_meta( $pid, 'legal_page_ccpa_settings', $data );
+							update_post_meta( $pid, 'legal_page_ccpa_options', $options );
+							break;
+						case 'returns_refunds_policy':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Returns and Refunds Policy' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$returns_refunds_options = $this->wplegalpages_get_remote_data( 'get_returns_refunds_settings' );
+								update_post_meta( $pid, 'legal_page_returns_refunds_settings', $returns_refunds_options );
+								update_option( 'wplegal_returns_refunds_policy_page', $pid );
+							} else {
+								$returns_refunds_settings = get_post_meta( $pid, 'legal_page_returns_refunds_settings', true );
+								$returns_refunds_options  = $returns_refunds_settings;
+							}
+							$data = array();
+							foreach ( $returns_refunds_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_returns_refunds_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_returns_refunds_options', $data );
+							break;
+						case 'impressum':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Impressum' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$impressum_options = $this->wplegalpages_get_remote_data( 'get_impressum_settings' );
+								update_post_meta( $pid, 'legal_page_impressum_settings', $impressum_options );
+								update_option( 'wplegal_impressum_page', $pid );
+							} else {
+								$impressum_settings = get_post_meta( $pid, 'legal_page_impressum_settings', true );
+								$impressum_options  = $impressum_settings;
+							}
+							$data = array();
+							foreach ( $impressum_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_impressum_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_impressum_options', $data );
+							break;
+						case 'privacy_policy':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Privacy Policy' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$privacy_options = $this->wplegalpages_get_remote_data( 'get_privacy_settings' );
+								$privacy_options = self::wplegalpages_add_gdpr_options_to_remote_data( $privacy_options );
+								update_post_meta( $pid, 'legal_page_privacy_settings', $privacy_options );
+								update_option( 'wplegal_privacy_policy_page', $pid );
+							} else {
+								$privacy_settings = get_post_meta( $pid, 'legal_page_privacy_settings', true );
+								$privacy_options  = $privacy_settings;
+								$privacy_options  = self::wplegalpages_add_gdpr_options_to_remote_data( $privacy_options );
+							}
+							$data = array();
+							foreach ( $privacy_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_privacy_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_privacy_options', $data );
+							break;
+						case 'custom_legal':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Custom Legal Page' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$custom_legal_options = $lp->get_custom_legal_page_fields();
+								update_post_meta( $pid, 'legal_page_custom_legal_settings', $custom_legal_options );
+								update_option( 'wplegal_custom_legal_page', $pid );
+							} else {
+								$custom_legal_settings = get_post_meta( $pid, 'legal_page_custom_legal_settings', true );
+								$custom_legal_options  = $custom_legal_settings;
+							}
+							$data = array();
+							foreach ( $custom_legal_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_custom_legal_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_custom_legal_options', $data );
+							break;
+					}
+					$result['success'] = true;
+
+				}
+			}
+			return wp_send_json( $result );
+		}
+
+		/**
+		 * Save page settings.
+		 */
+		public function wplegalpages_page_settings_save() {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die( -1 );
+			}
+			$result = array(
+				'success' => false,
+			);
+			if ( isset( $_POST['action'] ) ) {
+				$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+				if ( wp_verify_nonce( $nonce, 'admin-ajax-nonce' ) ) {
+					$lp_general  = get_option( 'lp_general', array() );
+					$domain_name = isset( $lp_general['domain'] ) ? $lp_general['domain'] : '';
+					$business    = isset( $lp_general['business'] ) ? $lp_general['business'] : '';
+					$phone       = isset( $lp_general['phone'] ) ? $lp_general['phone'] : '';
+					$street      = isset( $lp_general['street'] ) ? $lp_general['street'] : '';
+					$city_state  = isset( $lp_general['cityState'] ) ? $lp_general['cityState'] : '';
+					$country     = isset( $lp_general['country'] ) ? $lp_general['country'] : '';
+					$email       = isset( $lp_general['email'] ) ? $lp_general['email'] : '';
+					if ( isset( $_POST['data'] ) && ! empty( $_POST['data'] ) ) {
+						$general                         = array();
+						$general['domain']               = isset( $_POST['data']['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-domain-name'] ) ) : $domain_name;
+						$general['business']             = isset( $_POST['data']['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-business-name'] ) ) : $business;
+						$general['phone']                = isset( $_POST['data']['lp-phone'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-phone'] ) ) : $phone;
+						$general['email']                = isset( $_POST['data']['lp-email'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-email'] ) ) : $email;
+						$general['street']               = isset( $_POST['data']['lp-street'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-street'] ) ) : $street;
+						$general['cityState']            = isset( $_POST['data']['lp-city-state'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-city-state'] ) ) : $city_state;
+						$general['country']              = isset( $_POST['data']['lp-country'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-country'] ) ) : $country;
+						$general['language']             = isset( $_POST['data']['lp-lang'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-lang'] ) ) : determine_locale();
+						$general['address']              = isset( $lp_general['address'] ) ? $lp_general['address'] : '';
+						$general['niche']                = isset( $lp_general['niche'] ) ? $lp_general['niche'] : '';
+						$general['generate']             = isset( $lp_general['generate'] ) ? $lp_general['generate'] : '0';
+						$general['privacy']              = isset( $lp_general['privacy'] ) ? $lp_general['privacy'] : '0';
+						$general['privacy_page']         = isset( $lp_general['privacy_page'] ) ? $lp_general['privacy_page'] : '';
+						$general['facebook-url']         = isset( $lp_general['facebook-url'] ) ? $lp_general['facebook-url'] : '';
+						$general['twitter-url']          = isset( $lp_general['twitter-url'] ) ? $lp_general['twitter-url'] : '';
+						$general['google-url']           = isset( $lp_general['google-url'] ) ? $lp_general['google-url'] : '';
+						$general['linkedin-url']         = isset( $lp_general['linkedin-url'] ) ? $lp_general['linkedin-url'] : '';
+						$general['leave-url']            = isset( $lp_general['leave-url'] ) ? $lp_general['leave-url'] : '';
+						$general['date']                 = isset( $lp_general['date'] ) ? $lp_general['date'] : '';
+						$general['recipient-party']      = isset( $lp_general['recipient-party'] ) ? $lp_general['recipient-party'] : '';
+						$general['disclosing-party']     = isset( $lp_general['disclosing-party'] ) ? $lp_general['disclosing-party'] : '';
+						$general['affiliate-disclosure'] = isset( $lp_general['affiliate-disclosure'] ) ? $lp_general['affiliate-disclosure'] : '0';
+						$general['days']                 = isset( $lp_general['days'] ) ? $lp_general['days'] : '';
+						$general['refund_period']        = isset( $lp_general['refund_period'] ) ? $lp_general['refund_period'] : '';
+						$general['return_period']        = isset( $lp_general['return_period'] ) ? $lp_general['return_period'] : '';
+						$general['duration']             = isset( $lp_general['duration'] ) ? $lp_general['duration'] : '';
+						$general['search']               = isset( $lp_general['search'] ) ? $lp_general['search'] : '0';
+						$general['is_adult']             = isset( $lp_general['is_adult'] ) ? $lp_general['is_adult'] : '0';
+						$general['is_footer']            = isset( $lp_general['is_footer'] ) ? $lp_general['is_footer'] : '0';
+						$general['is_banner']            = isset( $lp_general['is_banner'] ) ? $lp_general['is_banner'] : '0';
+						update_option( 'lp_general', $general );
+						$result['success'] = true;
+					}
+				}
+			}
+			return wp_send_json( $result );
+		}
+
+		/**
+		 * Get wizard steps.
+		 */
+		public function wplegalpages_step_settings() {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die( -1 );
+			}
+			$result = array(
+				'success' => false,
+				'data'    => array(),
+			);
+			if ( isset( $_GET['action'] ) ) {
+				$step  = isset( $_GET['step'] ) ? sanitize_text_field( wp_unslash( $_GET['step'] ) ) : '';
+				$page  = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : 'privacy_policy';
+				$nonce = isset( $_GET['nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['nonce'] ) ) : '';
+				if ( wp_verify_nonce( $nonce, 'admin-ajax-nonce' ) ) {
+					$data = array();
+					switch ( $step ) {
+						case 'getting_started':
+							$data = $this->wplegalpages_get_page_templates();
+							break;
+						case 'page_settings':
+							$data = $this->wplegalpages_get_page_settings( $page );
+							break;
+						case 'page_sections':
+							$data = $this->wplegalpages_get_page_sections( $page );
+							break;
+						case 'page_preview':
+							$data = $this->wplegalpages_get_page_preview( $page );
+							break;
+					}
+					if ( isset( $data ) && ! empty( $data ) ) {
+						$result['success'] = true;
+						$result['data']    = $data;
+						$result['page']    = $page;
+					}
+				}
+			}
+			return wp_send_json( $result );
+		}
+
+		/**
+		 * Returns wizard getting started page templates.
+		 *
+		 * @return array
+		 */
+		public function wplegalpages_get_page_templates() {
+			$data = array();
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wizard/class-wp-legal-pages-wizard-dashboard.php';
+			$lp       = new WP_Legal_Pages_Wizard_Dashboard();
+			$lp_pages = $lp->get_legal_pages();
+			foreach ( $lp_pages as $lp_type_key => $lp_type ) {
+				$data = array();
+				foreach ( $lp_type as $key => $lpage ) {
+					$pid = '';
+					switch ( $key ) {
+						case 'privacy_policy':
+							$pid = get_option( 'wplegal_privacy_policy_page' );
+							break;
+						case 'terms_of_use_free':
+							$pid = get_option( 'wplegal_terms_of_use_page' );
+							break;
+						case 'standard_privacy_policy':
+							$pid = get_option( 'wplegal_standard_privacy_policy_page' );
+							break;
+						case 'ccpa_free':
+							$pid = get_option( 'wplegal_ccpa_free_page' );
+							break;
+						case 'terms_of_use':
+							$pid = get_option( 'wplegal_terms_of_use_page' );
+							break;
+						case 'california_privacy_policy':
+							$pid = get_option( 'wplegal_california_privacy_policy_page' );
+							break;
+						case 'returns_refunds_policy':
+							$pid = get_option( 'wplegal_returns_refunds_policy_page' );
+							break;
+						case 'impressum':
+							$pid = get_option( 'wplegal_impressum_page' );
+							break;
+						case 'custom_legal':
+							$pid = get_option( 'wplegal_custom_legal_page' );
+							break;
+					}
+					$field  = array(
+						'name'        => 'policy_template',
+						'label'       => $lpage['title'],
+						'value'       => $key,
+						'type'        => 'radio',
+						'description' => $lpage['desc'],
+						'pid'         => $pid,
+					);
+					$data[] = $field;
+				}
+				$return_data[ $lp_type_key ] = $data;
+			}
+			if ( '1' !== get_option( '_lp_pro_active' ) ) {
+				$lp_pro_pages = $lp->get_pro_legal_pages();
+				foreach ( $lp_pro_pages as $lp_type_key => $lp_type ) {
+					$data = array();
+					foreach ( $lp_type as $key => $lpage ) {
+						$field  = array(
+							'name'        => 'policy_template',
+							'label'       => $lpage['title'],
+							'value'       => $key,
+							'type'        => 'radio',
+							'description' => $lpage['desc'],
+						);
+						$data[] = $field;
+					}
+					$pro_return_data[ $lp_type_key ] = $data;
+				}
+			}
+			if ( empty( $pro_return_data ) ) {
+				$pro_return_data = array();
+			}
+			return array( $return_data, $pro_return_data );
+		}
+
+		/**
+		 * Returns wizard page settings.
+		 *
+		 * @param string $page Page.
+		 * @return array
+		 */
+		public function wplegalpages_get_page_settings( $page ) {
+			$data = array();
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wizard/class-wp-legal-pages-wizard-page.php';
+			$lp            = new WP_Legal_Pages_Wizard_Page();
+			$lp_general    = get_option( 'lp_general' );
+			$selected_lang = 'en_US';
+			if ( $lp_general && isset( $lp_general['language'] ) ) {
+				$selected_lang = $lp_general['language'];
+			}
+			require_once ABSPATH . 'wp-admin/includes/translation-install.php';
+
+			$languages    = $lp->get_available_languages();
+			$translations = wp_get_available_translations();
+
+			$options   = array();
+			$options[] = array(
+				'value'    => 'en_US',
+				'label'    => 'English (United States)',
+				'selected' => 'en_US' === $selected_lang ? true : false,
+			);
+			foreach ( $languages as $locale ) {
+				if ( isset( $translations[ $locale ] ) ) {
+					$translation = $translations[ $locale ];
+					$options[]   = array(
+						'value'    => $translation['language'],
+						'label'    => $translation['native_name'],
+						'selected' => $translation['language'] === $selected_lang ? true : false,
+					);
+
+				}
+			}
+
+			if ( 'custom_legal' !== $page ) {
+				$data[] = array(
+					'name'    => 'lp-lang',
+					'label'   => __( 'Select Language', 'wplegalpages' ),
+					'type'    => 'select',
+					'options' => $options,
+				);
+			}
+
+			$lp_settings = $lp->get_setting_fields_by_page( $page );
+			if ( 'custom_legal' === $page ) {
+				foreach ( $lp_settings as $key => $setting ) {
+					$field  = array(
+						'name'      => $key,
+						'label'     => $setting['title'],
+						'value'     => $setting['value'],
+						'type'      => 'text',
+						'required'  => $setting['required'],
+						'shortcode' => $setting['shortcode'],
+					);
+					$data[] = $field;
+
+				}
+			} else {
+				foreach ( $lp_settings as $key => $setting ) {
+					$field  = array(
+						'name'     => $key,
+						'label'    => $setting['title'],
+						'value'    => $setting['value'],
+						'type'     => 'text',
+						'required' => $setting['required'],
+					);
+					$data[] = $field;
+				}
+			}
+
+			return $data;
+		}
+
+		/**
+		 * Returns wizard page sections.
+		 *
+		 * @param string $page Page.
+		 * @return array
+		 */
+		public function wplegalpages_get_page_sections( $page ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wizard/class-wp-legal-pages-wizard-page.php';
+			$lp          = new WP_Legal_Pages_Wizard_Page();
+			$lp_sections = (array) $lp->get_section_fields_by_page( $page );
+
+			if ( 'privacy_policy' === $page ) {
+				$lp_sections = self::wplegalpages_add_gdpr_options_to_remote_data( $lp_sections );
+			}
+			foreach ( $lp_sections as $key => $lp_section ) {
+				if ( 'terms_of_use' === $page ) {
+					if ( empty( $lp_section->fields ) ) {
+						$lp_section->fields = $this->wplegalpages_get_remote_data( 'get_clause_settings?clause=' . $key );
+					}
+				}
+				$lp_section->type    = 'heading';
+				$lp_sections[ $key ] = $lp_section;
+			}
+			if ( 'terms_of_use' === $page ) {
+				$pid = get_option( 'wplegal_terms_of_use_page' );
+				update_post_meta( $pid, 'legal_page_clauses', $lp_sections );
+			}
+
+			$lp_section_fields = array();
+			foreach ( $lp_sections as $key => $section ) {
+				if ( ! empty( $section->fields ) ) {
+					$fields         = $section->fields;
+					$section_fields = array();
+					foreach ( $fields as $section_key => $field ) {
+						$section_fields[ $section_key ] = $field;
+					}
+					$section->fields = $fields;
+				}
+				$lp_section_fields[ $key ] = $section;
+			}
+			return $lp_section_fields;
+		}
+
+		/**
+		 * Returns wizard page preview.
+		 *
+		 * @param string $page Page.
+		 * @return string
+		 */
+		public function wplegalpages_get_page_preview( $page ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wizard/class-wp-legal-pages-wizard-page.php';
+			$lp            = new WP_Legal_Pages_Wizard_Page();
+			$lp_general    = get_option( 'lp_general' );
+			$selected_lang = 'en_US';
+			if ( $lp_general && isset( $lp_general['language'] ) ) {
+				$selected_lang = $lp_general['language'];
+			}
+			$preview_text = $lp->get_preview_by_page( $page, $selected_lang );
+			return $preview_text;
+		}
+
+		/**
+		 * Save page preview.
+		 */
+		public function wplegalpages_page_preview_save() {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die( -1 );
+			}
+			$result = array(
+				'success' => false,
+				'url'     => '',
+			);
+			if ( isset( $_POST['action'] ) ) {
+				$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+				if ( wp_verify_nonce( $nonce, 'admin-ajax-nonce' ) ) {
+					$page = isset( $_POST['page'] ) ? sanitize_text_field( wp_unslash( $_POST['page'] ) ) : 'privacy_policy';
+					switch ( $page ) {
+						case 'privacy_policy':
+							$pid = get_option( 'wplegal_privacy_policy_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'terms_of_use':
+							$pid = get_option( 'wplegal_terms_of_use_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'impressum':
+							$pid = get_option( 'wplegal_impressum_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'terms_of_use_free':
+							$pid = get_option( 'wplegal_terms_of_use_free_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'standard_privacy_policy':
+							$pid = get_option( 'wplegal_standard_privacy_policy_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'ccpa_free':
+							$pid = get_option( 'wplegal_ccpa_free_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'dmca':
+							$pid = get_option( 'wplegal_dmca_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'california_privacy_policy':
+							$pid = get_option( 'wplegal_california_privacy_policy_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'returns_refunds_policy':
+							$pid = get_option( 'wplegal_returns_refunds_policy_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'custom_legal':
+							$pid = get_option( 'wplegal_custom_legal_page' );
+							$url = get_edit_post_link( $pid );
+							delete_option( 'wplegal_custom_legal_page' );
+							break;
+					}
+					$url               = str_replace( '&amp;', '&', $url );
+					$result['success'] = true;
+					$result['url']     = $url;
+				}
+			}
+			return wp_send_json( $result );
+		}
+
+		/**
+		 * Fetch data from remote.
+		 *
+		 * @param string $data Data to be fetched.
+		 * @return array|mixed
+		 */
+		public function wplegalpages_get_remote_data( $data = '' ) {
+			$content         = array();
+			$response        = wp_remote_get( WPLEGAL_API_URL . $data );
+			$response_status = wp_remote_retrieve_response_code( $response );
+			if ( 200 === $response_status ) {
+				$content = json_decode( wp_remote_retrieve_body( $response ) );
+			}
+			return $content;
+		}
+
+		/**
+		 * Return post id for the policy page.
+		 *
+		 * @param string $page Page.
+		 * @return mixed|void
+		 */
+		public function wplegalpages_get_pid_by_page( $page ) {
+			switch ( $page ) {
+				case 'terms_of_use':
+					$pid = get_option( 'wplegal_terms_of_use_page' );
+					break;
+				case 'california_privacy_policy':
+					$pid = get_option( 'wplegal_california_privacy_policy_page' );
+					break;
+				case 'privacy_policy':
+					$pid = get_option( 'wplegal_privacy_policy_page' );
+					break;
+				case 'returns_refunds_policy':
+					$pid = get_option( 'wplegal_returns_refunds_policy_page' );
+					break;
+				case 'impressum':
+					$pid = get_option( 'wplegal_impressum_page' );
+					break;
+				case 'custom_legal':
+					$pid = get_option( 'wplegal_custom_legal_page' );
+					break;
+				case 'terms_of_use_free':
+					$pid = get_option( 'wplegal_terms_of_use_free_page' );
+					break;
+				case 'standard_privacy_policy':
+					$pid = get_option( 'wplegal_standard_privacy_policy_page' );
+					break;
+				case 'ccpa_free':
+					$pid = get_option( 'wplegal_ccpa_free_page' );
+					break;
+				case 'dmca':
+					$pid = get_option( 'wplegal_dmca_page' );
+					break;
+			}
+			return $pid;
+		}
+
+		/**
+		 * Adds gdpr scanned services to remote data from api.
+		 *
+		 * @param  object $lp_sections data.
+		 * @return object
+		 */
+		public static function wplegalpages_add_gdpr_options_to_remote_data( $lp_sections ) {
+
+			if ( ! file_exists( WP_PLUGIN_DIR . '/wpl-cookie-consent' ) ) {
+
+				$gdpr_services = array(
+					'id'          => 'gdpr_third_party_services',
+					'title'       => '<strong>To scan website for third-party services, install and activate plugin <a href="https://club.wpeka.com/product/wp-gdpr-cookie-consent/" target="_blank">GDPR Cookie Consent Pro</a>.</strong>',
+					'description' => '',
+					'type'        => 'section',
+					'position'    => 1,
+					'parent'      => 'allow_third_party_yes',
+					'collapsible' => '',
+					'sub_fields'  => '',
+
+				);
+
+				$lp_sections = self::wplegalpages_set_gdpr_options_order( $lp_sections, $gdpr_services );
+				return $lp_sections;
+
+			}
+
+			if ( ! is_plugin_active( 'wpl-cookie-consent/wpl-cookie-consent.php' ) ) {
+
+				$gdpr_services = array(
+					'id'          => 'gdpr_third_party_services',
+					'title'       => '<strong><a href="' . admin_url() . 'plugins.php" target="_blank">Activate</a> plugin GDPR Cookie Consent Pro, to scan for third-party services on your website.</strong>',
+					'description' => '',
+					'type'        => 'section',
+					'position'    => 1,
+					'parent'      => 'allow_third_party_yes',
+					'collapsible' => '',
+					'sub_fields'  => '',
+
+				);
+
+				$lp_sections = self::wplegalpages_set_gdpr_options_order( $lp_sections, $gdpr_services );
+				return $lp_sections;
+			}
+
+			global $wpdb;
+			$scan_table = $wpdb->prefix . 'wpl_cookie_scan';
+			$sql        = "SELECT * FROM `$scan_table` ORDER BY id_wpl_cookie_scan DESC LIMIT 1";
+			$last_scan  = $wpdb->get_row( $sql, ARRAY_A ); //phpcs:ignore
+
+			if ( $last_scan ) {
+				$last_scan = gmdate( 'F j, Y g:i a T', $last_scan['created_at'] );
+
+				$gdpr_services = array();
+				$cookies_table = $wpdb->prefix . 'wpl_cookie_scan_cookies';
+
+				$args = array(
+					'post_type'   => 'gdprpolicies',
+					'post_status' => 'publish',
+				);
+
+				$gdpr_services = new WP_Query( $args );
+				if ( $gdpr_services->have_posts() ) {
+						$gdpr_services_fields  = array();
+						$gdpr_service_position = 1;
+					while ( $gdpr_services->have_posts() ) {
+						$gdpr_services->the_post();
+
+						$service_name          = str_replace( ' ', '_', get_the_title() );
+						$service_name_prefixed = get_the_ID() . 'gdpr_scanned_' . $service_name;
+						$gdpr_sub_fields       = self::wplegalpages_get_to_path( $lp_sections, array( 'general_information', 'fields', 'allow_third_party', 'sub_fields', 'allow_third_party_yes', 'sub_fields', 'gdpr_third_party_services', 'sub_fields' ) );
+
+						if ( ! isset( $gdpr_sub_fields->$service_name_prefixed ) ) {
+
+								$gdpr_services_fields[ $service_name_prefixed ] = (object) array(
+									'id'          => $service_name_prefixed,
+									'title'       => get_the_title(),
+									'description' => '',
+									'type'        => 'checkbox',
+									'position'    => $gdpr_service_position,
+									'name'        => $service_name_prefixed,
+									'value'       => 1,
+									'checked'     => true,
+									'sub_fields'  => '',
+								);
+						} else {
+							$gdpr_services_fields[ $service_name_prefixed ] = (object) array(
+								'id'          => $service_name_prefixed,
+								'title'       => get_the_title(),
+								'description' => '',
+								'type'        => 'checkbox',
+								'position'    => $gdpr_service_position,
+								'name'        => $service_name_prefixed,
+								'value'       => 1,
+								'checked'     => $gdpr_sub_fields->$service_name_prefixed->checked,
+								'sub_fields'  => '',
+							);
+						}
+
+								$gdpr_service_position++;
+
+					}
+					wp_reset_postdata();
+
+					$gdpr_services = array(
+						'id'          => 'gdpr_third_party_services',
+						'title'       => '<strong>Last scan:</strong> ' . $last_scan . '<br>Third-party services detected:',
+						'description' => '',
+						'type'        => 'section',
+						'position'    => 1,
+						'parent'      => 'allow_third_party_yes',
+						'collapsible' => '',
+						'sub_fields'  => (object) $gdpr_services_fields,
+
+					);
+
+							$lp_sections = self::wplegalpages_set_gdpr_options_order( $lp_sections, $gdpr_services );
+							return $lp_sections;
+
+				} else {
+					$gdpr_services = array(
+						'id'          => 'gdpr_third_party_services',
+						'title'       => '<strong>Last scan:</strong> ' . $last_scan . '<br>No third-party services detected.',
+						'description' => '',
+						'type'        => 'section',
+						'position'    => 1,
+						'parent'      => 'allow_third_party_yes',
+						'collapsible' => '',
+						'sub_fields'  => '',
+
+					);
+					$lp_sections = self::wplegalpages_set_gdpr_options_order( $lp_sections, $gdpr_services );
+					return $lp_sections;
+
+				}
+			} else {
+
+				$gdpr_services = array(
+					'id'          => 'gdpr_third_party_services',
+					'title'       => '<strong><a href="' . admin_url() . 'admin.php?page=gdpr-cookie-consent#gdpr-cookie-consent-cookie-list" target="_blank">Scan now</a> to automatically detect third-party services on your website.</strong>',
+					'description' => '',
+					'type'        => 'section',
+					'position'    => 1,
+					'parent'      => 'allow_third_party_yes',
+					'collapsible' => '',
+					'sub_fields'  => '',
+
+				);
+				$lp_sections = self::wplegalpages_set_gdpr_options_order( $lp_sections, $gdpr_services );
+				return $lp_sections;
+
+			}
+		}
+
+		/**
+		 * Set order of allowed third party services.
+		 *
+		 * @param  object $lp_sections data.
+		 * @param  object $gdpr_services data.
+		 * @return object
+		 */
+		public static function wplegalpages_set_gdpr_options_order( $lp_sections, $gdpr_services ) {
+			$lp_sections                                = (array) $lp_sections;
+			$lp_sections['general_information']->fields = (object) $lp_sections['general_information']->fields;
+
+			$stored_third_party_services                                        = self::wplegalpages_get_to_path( $lp_sections, array( 'general_information', 'fields', 'allow_third_party', 'sub_fields', 'allow_third_party_yes', 'sub_fields', 'third_party_services' ) );
+			$allowed_third_party_yes_sub_fields                                 = (object) array();
+			$allowed_third_party_yes_sub_fields->gdpr_third_party_services      = (object) $gdpr_services;
+			$allowed_third_party_yes_sub_fields->third_party_services           = $stored_third_party_services;
+			$allowed_third_party_yes_sub_fields->third_party_services->position = 2;
+
+			$lp_sections['general_information']->fields->allow_third_party->sub_fields->allow_third_party_yes->sub_fields = $allowed_third_party_yes_sub_fields;
+			return $lp_sections;
+		}
+
+		/**
+		 * Adds description to selected gdpr scanned policies and send as options to api.
+		 *
+		 * @param  object $options options to be sent to api.
+		 * @return object
+		 */
+		public static function wplegalpages_add_gdpr_policy_description( $options ) {
+			foreach ( $options as $key => $value ) {
+
+				if ( strpos( $key, 'gdpr_scanned_' ) !== false ) {
+
+					$service_id   = substr( $key, 0, strpos( $key, 'gdpr_scanned_' ) );
+					$purpose      = get_post_field( 'post_content', $service_id );
+					$links        = get_post_meta( $service_id, '_gdpr_policies_links_editor', true );
+					$links        = explode( "\n", $links );
+					$privacy_link = '';
+					$opt_out_link = '';
+					foreach ( $links as $link ) {
+
+						if ( $link ) {
+							$dom = new DomDocument();
+							$dom->loadHTML( $link );
+							$output = array();
+							foreach ( $dom->getElementsByTagName( 'a' ) as $item ) {
+
+								if ( strpos( $link, 'privacy' ) !== false ) {
+									if ( ! $privacy_link ) {
+										$privacy_link = $item->getAttribute( 'href' );
+									}
+								}
+								if ( strpos( $link, 'Opt Out' ) !== false ) {
+									if ( ! $opt_out_link ) {
+										$opt_out_link = $item->getAttribute( 'href' );
+									}
+								}
+							}
+						}
+					}
+
+					$service_description  = $purpose . '<br>';
+					$service_description .= $privacy_link ? '<a href=' . $privacy_link . ' target="_blank">Privacy Policy</a>' : '';
+					$service_description .= $privacy_link && $opt_out_link ? ' - ' : '';
+					$service_description .= $opt_out_link ? '<a href=' . $opt_out_link . ' target="_blank">Opt Out</a>' : '';
+					$options[ 'gs_' . str_replace( $service_id . 'gdpr_scanned_', '', $key ) . '_description' ] = $service_description;
+
+				}
+			}
+			return $options;
+		}
+
+		/**
+		 * Get to the path of required directory from the stored or remote data.
+		 *
+		 * @param  object $directory data.
+		 * @param  array  $path values of sub directories.
+		 * @return object
+		 */
+		public static function wplegalpages_get_to_path( $directory, $path ) {
+			$current_dir = $directory;
+			foreach ( $path as $path ) {
+
+				if ( is_array( $current_dir ) ) {
+					if ( isset( $current_dir[ $path ] ) ) {
+						$current_dir = $current_dir[ $path ];
+					} else {
+						return false;
+					}
+				} elseif ( is_object( $current_dir ) ) {
+					if ( isset( $current_dir->$path ) ) {
+						$current_dir = $current_dir->$path;
+
+					} else {
+						return false;
+					}
+				}
+			}
+
+			return $current_dir;
 		}
 	}
 }
