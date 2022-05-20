@@ -94,6 +94,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'ccpa_free':
 					$pid = get_option( 'wplegal_ccpa_free_page' );
 					break;
+				case 'coppa':
+					$pid = get_option( 'wplegal_coppa_policy_page' );
+					break;
+				case 'terms_forced':
+					$pid = get_option( 'wplegal_terms_forced_policy_page' );
+					break;
 				case 'dmca':
 					$pid = get_option( 'wplegal_dmca_page' );
 					break;
@@ -181,6 +187,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
 						$page_preview .= __( 'CCPA - California Consumer Privacy Act', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'coppa':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'COPPA - Children’s Online Privacy Policy', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'terms_forced':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Terms(forced agreement)', 'wplegalpages' );
 						$page_preview .= '</h1>';
 					}
 					break;
@@ -359,6 +379,69 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+						),
+					);
+					break;
+				case 'coppa':
+					$fields = array(
+						'lp-business-name' => array(
+							'title'    => __( 'Business Name', 'wplegalpages' ),
+							'value'    => $business_name,
+							'required' => true,
+						),
+						'lp-phone'         => array(
+							'title'    => __( 'Phone', 'wplegalpages' ),
+							'value'    => $phone,
+							'required' => true,
+						),
+						'lp-email'         => array(
+							'title'    => __( 'Email', 'wplegalpages' ),
+							'value'    => $email,
+							'required' => true,
+						),
+						'lp-street'        => array(
+							'title'    => __( 'Street', 'wplegalpages' ),
+							'value'    => $street,
+							'required' => false,
+						),
+						'lp-city-state'    => array(
+							'title'    => __( 'City, State, Zip code', 'wplegalpages' ),
+							'value'    => $city_state,
+							'required' => false,
+						),
+						'lp-country'       => array(
+							'title'    => __( 'Country', 'wplegalpages' ),
+							'value'    => $country,
+							'required' => false,
+						),
+					);
+					break;
+				case 'terms_forced':
+					$fields = array(
+						'lp-domain-name' => array(
+							'title'    => __( 'Domain Name', 'wplegalpages' ),
+							'value'    => $domain_name,
+							'required' => true,
+						),
+						'lp-email'       => array(
+							'title'    => __( 'Email', 'wplegalpages' ),
+							'value'    => $email,
+							'required' => true,
+						),
+						'lp-street'      => array(
+							'title'    => __( 'Street', 'wplegalpages' ),
+							'value'    => $street,
+							'required' => false,
+						),
+						'lp-city-state'  => array(
+							'title'    => __( 'City, State, Zip code', 'wplegalpages' ),
+							'value'    => $city_state,
+							'required' => false,
+						),
+						'lp-country'     => array(
+							'title'    => __( 'Country', 'wplegalpages' ),
+							'value'    => $country,
+							'required' => false,
 						),
 					);
 					break;
@@ -893,6 +976,26 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					} else {
 						$preview_text = do_shortcode( $preview_text );
 					}
+					break;
+				case 'coppa':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'COPPA - Children’s Online Privacy Policy' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_coppa_policy_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+					break;
+				case 'terms_forced':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Terms(forced agreement)' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_terms_forced_policy_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
 					break;
 
 				case 'dmca':

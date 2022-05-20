@@ -517,7 +517,7 @@ Vue.component('PageSettingsWizardForm',{
             formElements: [],
             loading: 1,
             template: '',
-            skip_section_templates: ['ccpa_free', 'dmca']
+            skip_section_templates: ['ccpa_free', 'dmca', 'coppa', 'terms_forced']
         }
     },
     methods: {
@@ -1315,7 +1315,7 @@ Vue.component('PagePreviewWizardForm',{
             previewText: '',
             loading: 1,
             template: '',
-            skip_section_templates: ['ccpa_free', 'dmca']
+            skip_section_templates: ['ccpa_free', 'dmca', 'coppa', 'terms_forced']
         }
     },
     methods: {

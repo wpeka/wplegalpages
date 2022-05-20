@@ -111,6 +111,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'btn_txt' => __( 'Go Pro', 'wplegalpages' ),
 						'enabled' => false,
 					),
+					'coppa_grey'                     => array(
+						'title'   => __( 'COPPA', 'wplegalpages' ),
+						'desc'    => __( 'If you are collecting personal information on your website from children below 13 years in age.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'terms_forced_grey'              => array(
+						'title'   => __( 'Terms(forced agreement)', 'wplegalpages' ),
+						'desc'    => __( 'Use when you don\'t want your users to proceed without agreeing to website terms', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
 					'custom_legal_grey'              => array(
 						'title'   => __( 'Create Custom Legal Page', 'wplegalpages' ),
 						'desc'    => __( 'Add your own text to create a custom legal policy.', 'wplegalpages' ),
