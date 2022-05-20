@@ -106,6 +106,15 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'gdpr_privacy_policy':
 					$pid = get_option( 'wplegal_gdpr_privacy_policy_page' );
 					break;
+				case 'cookies_policy':
+					$pid = get_option( 'wplegal_cookies_policy_page' );
+					break;
+				case 'linking_policy':
+					$pid = get_option( 'wplegal_linking_policy_page' );
+					break;
+				case 'external_link_policy':
+					$pid = get_option( 'wplegal_external_link_policy_page' );
+					break;
 				case 'dmca':
 					$pid = get_option( 'wplegal_dmca_page' );
 					break;
@@ -221,6 +230,27 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
 						$page_preview .= __( 'GDPR Privacy Policy', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'cookies_policy':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Cookies Policy', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'linking_policy':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Linking Policy', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'external_link_policy':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'External Links Policy', 'wplegalpages' );
 						$page_preview .= '</h1>';
 					}
 					break;
@@ -483,6 +513,48 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						'lp-email'         => array(
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
+							'required' => true,
+						),
+					);
+					break;
+				case 'cookies_policy':
+					$fields = array(
+						'lp-domain-name'   => array(
+							'title'    => __( 'Domain Name', 'wplegalpages' ),
+							'value'    => $domain_name,
+							'required' => true,
+						),
+						'lp-business-name' => array(
+							'title'    => __( 'Business Name', 'wplegalpages' ),
+							'value'    => $business_name,
+							'required' => true,
+						),
+					);
+					break;
+				case 'linking_policy':
+					$fields = array(
+						'lp-domain-name'   => array(
+							'title'    => __( 'Domain Name', 'wplegalpages' ),
+							'value'    => $domain_name,
+							'required' => true,
+						),
+						'lp-email'         => array(
+							'title'    => __( 'Email', 'wplegalpages' ),
+							'value'    => $email,
+							'required' => true,
+						),
+						'lp-phone'         => array(
+							'title'    => __( 'Phone', 'wplegalpages' ),
+							'value'    => $phone,
+							'required' => true,
+						),
+					);
+					break;
+				case 'external_link_policy':
+					$fields = array(
+						'lp-domain-name'   => array(
+							'title'    => __( 'Domain Name', 'wplegalpages' ),
+							'value'    => $domain_name,
 							'required' => true,
 						),
 					);
@@ -1062,6 +1134,39 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						update_post_meta( $pid, 'is_legal', 'yes' );
 						update_post_meta( $pid, 'legal_page_type', $page );
 						update_option( 'wplegal_gdpr_privacy_policy_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+					break;
+
+				case 'cookies_policy':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Cookies Policy' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_cookies_policy_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+					break;
+
+				case 'linking_policy':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Linking Policy' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_linking_policy_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+					break;
+
+				case 'external_link_policy':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'External Links Policy' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_external_link_policy_page', $pid );
 					}
 					$options      = array();
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );

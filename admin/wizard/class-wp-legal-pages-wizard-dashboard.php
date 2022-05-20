@@ -131,15 +131,33 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 					),
 				),
 				'Policies' => array(
-					'gdpr_cookie_policy_grey'  => array(
+					'gdpr_cookie_policy_grey'   => array(
 						'title'   => __( 'GDPR Cookie Policy', 'wplegalpages' ),
 						'desc'    => __( 'Use when you have visitors from the EU & are using cookies on your website.', 'wplegalpages' ),
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
-					'gdpr_privacy_policy_grey' => array(
+					'gdpr_privacy_policy_grey'  => array(
 						'title'   => __( 'GDPR Privacy Policy', 'wplegalpages' ),
 						'desc'    => __( 'Use when your website collects personal information and has visitors from the EU.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'cookies_policy_grey'       => array(
+						'title'   => __( 'Cookies Policy', 'wplegalpages' ),
+						'desc'    => __( 'To inform users about the cookies active on your website that track user data.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'linking_policy_grey'       => array(
+						'title'   => __( 'Linking Policy', 'wplegalpages' ),
+						'desc'    => __( 'Use this policy to inform the users about the terms and conditions for linking to your website and disclaimers for external linking.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'external_link_policy_grey' => array(
+						'title'   => __( 'External Links Policy', 'wplegalpages' ),
+						'desc'    => __( 'If your website links to other external websites, you can use this to ensure that the external links are in compliance with the applicable laws.', 'wplegalpages' ),
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
