@@ -56,8 +56,8 @@
 	margin: 0px;
 }
 a#lp_eu_link{
-  border-bottom: 1px dotted;
-  text-decoration: none;
+	border-bottom: 1px dotted;
+	text-decoration: none;
 }
 @media only screen and (max-width: 360px) {
 	#lp_eu_table td {
