@@ -603,7 +603,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'title'       => __( 'Help Center', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
 							'description' => __( 'Read the documentation to find answers to your questions.', 'wplegalpages' ),
-							'link'        => 'https://docs.wpeka.com/wp-legal-pages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_term=help-center',
+							'link'        => 'https://docs.wpeka.com/wp-legal-pages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=help-center',
 							'link_title'  => 'Learn more >>',
 						),
 						'video_guides' => array(
@@ -618,7 +618,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'title'       => __( 'FAQ with answers', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
 							'description' => __( 'Find answers to some of the most commonly asked questions.', 'wplegalpages' ),
-							'link'        => 'https://docs.wpeka.com/wp-legal-pages/faq?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_term=faq',
+							'link'        => 'https://docs.wpeka.com/wp-legal-pages/faq?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=faq',
 							'link_title'  => 'Find out >>',
 
 						),
