@@ -2291,7 +2291,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$pid = get_option( 'wplegal_privacy_policy_page' );
 							break;
 						case 'terms_of_use_free':
-							$pid = get_option( 'wplegal_terms_of_use_page' );
+							$pid = get_option( 'wplegal_terms_of_use_free_page' );
 							break;
 						case 'fb_policy':
 							$pid = get_option( 'wplegal_fb_policy_page' );
