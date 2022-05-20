@@ -167,6 +167,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
+					'fb_policy_grey'            => array(
+						'title'   => __( 'Facebook Policy', 'wplegalpages' ),
+						'desc'    => __( 'If you are collecting any personal data from your page through a call to action (such as email addresses for your mailing list).', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
 				),
 			);
 		}

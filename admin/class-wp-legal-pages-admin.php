@@ -1827,6 +1827,53 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							}
 							update_post_meta( $pid, 'legal_page_terms_of_use_options', $data );
 							break;
+						case 'fb_policy':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Facebook Policy' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$fb_policy_options = $this->wplegalpages_get_remote_data( 'get_fb_policy' );
+								update_post_meta( $pid, 'legal_page_fb_policy_settings', $fb_policy_options );
+								update_option( 'wplegal_fb_policy_page', $pid );
+							} else {
+								$fb_policy_settings = get_post_meta( $pid, 'legal_page_fb_policy_settings', true );
+								$fb_policy_options  = $fb_policy_settings;
+							}
+							$data = array();
+							foreach ( $fb_policy_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_fb_policy_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_fb_policy_options', $data );
+							break;
 						case 'standard_privacy_policy':
 							if ( empty( $pid ) ) {
 								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Standard Privacy Policy' );
@@ -2246,6 +2293,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						case 'terms_of_use_free':
 							$pid = get_option( 'wplegal_terms_of_use_page' );
 							break;
+						case 'fb_policy':
+							$pid = get_option( 'wplegal_fb_policy_page' );
+							break;
 						case 'standard_privacy_policy':
 							$pid = get_option( 'wplegal_standard_privacy_policy_page' );
 							break;
@@ -2497,6 +2547,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$pid = get_option( 'wplegal_terms_of_use_free_page' );
 							$url = get_edit_post_link( $pid );
 							break;
+						case 'fb_policy':
+							$pid = get_option( 'wplegal_fb_policy_page' );
+							$url = get_edit_post_link( $pid );
+							break;
 						case 'standard_privacy_policy':
 							$pid = get_option( 'wplegal_standard_privacy_policy_page' );
 							$url = get_edit_post_link( $pid );
@@ -2607,6 +2661,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					break;
 				case 'terms_of_use_free':
 					$pid = get_option( 'wplegal_terms_of_use_free_page' );
+					break;
+				case 'fb_policy':
+					$pid = get_option( 'wplegal_fb_policy_page' );
 					break;
 				case 'standard_privacy_policy':
 					$pid = get_option( 'wplegal_standard_privacy_policy_page' );

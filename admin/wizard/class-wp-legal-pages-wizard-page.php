@@ -88,6 +88,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'terms_of_use_free':
 					$pid = get_option( 'wplegal_terms_of_use_free_page' );
 					break;
+				case 'fb_policy':
+					$pid = get_option( 'wplegal_fb_policy_page' );
+					break;
 				case 'standard_privacy_policy':
 					$pid = get_option( 'wplegal_standard_privacy_policy_page' );
 					break;
@@ -191,6 +194,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
 						$page_preview .= __( 'Terms of Use', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'fb_policy':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Facebook Policy', 'wplegalpages' );
 						$page_preview .= '</h1>';
 					}
 					break;
@@ -390,6 +400,15 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						'lp-email'         => array(
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
+							'required' => true,
+						),
+					);
+					break;
+				case 'fb_policy':
+					$fields = array(
+						'lp-business-name' => array(
+							'title'    => __( 'Business Name', 'wplegalpages' ),
+							'value'    => $business_name,
 							'required' => true,
 						),
 					);
@@ -789,6 +808,24 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						}
 					}
 					break;
+				case 'fb_policy':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Facebook Policy' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						$fields = $this->get_remote_data( 'get_fb_policy' );
+						update_post_meta( $pid, 'legal_page_fb_policy_settings', $fields );
+						update_option( 'wplegal_fb_policy_page', $pid );
+					} else {
+						$fb_policy_options = get_post_meta( $pid, 'legal_page_fb_policy_settings', true );
+						if ( ! $fb_policy_options || empty( $fb_policy_options ) ) {
+							$fields = $this->get_remote_data( 'get_fb_policy' );
+							update_post_meta( $pid, 'legal_page_fb_policy_settings', $fields );
+						} else {
+							$fields = $fb_policy_options;
+						}
+					}
+					break;
 				case 'standard_privacy_policy':
 					if ( empty( $pid ) ) {
 						$pid = $this->get_pid_by_insert_page( $page, 'Privacy Policy' );
@@ -1062,6 +1099,41 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
 
 					break;
+
+				case 'fb_policy':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Facebook Policy' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						$fb_policy_settings = $this->get_remote_data( 'get_fb_policy' );
+						$fb_policy_options  = array();
+						foreach ( $fb_policy_settings as $key => $option ) {
+							if ( isset( $option->checked ) && true === $option->checked ) {
+								$fb_policy_options[ $key ] = true;
+								$fields                    = $option->fields;
+								foreach ( $fields as $field_key => $field ) {
+									if ( isset( $field->checked ) && true === $field->checked ) {
+										$fb_policy_options[ $field_key ] = true;
+									} else {
+										$fb_policy_options[ $field_key ] = false;
+									}
+								}
+							} else {
+								$fb_policy_options[ $key ] = false;
+							}
+						}
+						update_post_meta( $pid, 'legal_page_fb_policy_settings', $fb_policy_settings );
+						update_post_meta( $pid, 'legal_page_fb_policy_options', $fb_policy_options );
+						update_option( 'wplegal_fb_policy_page', $pid );
+					} else {
+						$fb_policy_settings = get_post_meta( $pid, 'legal_page_fb_policy_options', true );
+						$fb_policy_options  = $fb_policy_settings;
+					}
+					$options      = $fb_policy_options;
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
 				case 'standard_privacy_policy':
 					if ( empty( $pid ) ) {
 						$pid = $this->get_pid_by_insert_page( $page, 'Privacy Policy' );
