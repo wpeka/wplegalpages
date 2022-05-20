@@ -2,7 +2,7 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
-.clear{
+ .clear{
 	clear:both;
 }
 #lp_generalid{
@@ -88,7 +88,7 @@ a{
 	height:30px;
 	font-size:14px;
 	color:#666;
-}
+} 
 #lp_admin_generalid p{
 	font-size:16px;
 }
@@ -368,7 +368,7 @@ div.wplegal-choose-template select.wplegal-template-language {
 }
 
 #wplegal_accordian{
-	list-style-type: none !important;
+	list-style-type: none !important; 
 }
 
 #wplegal_accordian::before {
@@ -387,9 +387,9 @@ div.wplegal-choose-template select.wplegal-template-language {
 .wplegal-tooltip {
 	position: relative;
 	display: inline-block;
-}
-/* Tooltip text */
-.wplegal-tooltip .wplegal-tooltiptext {
+  }
+  /* Tooltip text */
+  .wplegal-tooltip .wplegal-tooltiptext {
 	visibility: hidden;
 	width: 135px;
 	background-color: black;
@@ -397,33 +397,33 @@ div.wplegal-choose-template select.wplegal-template-language {
 	text-align: center;
 	padding: 5px 5px;
 	border-radius: 6px;
-
+   
 	/* Position the tooltip text */
 	position: absolute;
 	z-index: 1001;
 	top: 25px;
 	left: -110px;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.wplegal-tooltip:hover .wplegal-tooltiptext {
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .wplegal-tooltip:hover .wplegal-tooltiptext {
 	visibility: visible;
-}
-.wplegal-tooltip .dashicons-info {
-	margin-top:2.5px;
-	font-size: 15px;
-}
+  }
+  .wplegal-tooltip .dashicons-info {
+	  margin-top:2.5px;
+	  font-size: 15px;
+  }
 
-.wplegal-tooltip .wplegal-tooltiptext::after {
+  .wplegal-tooltip .wplegal-tooltiptext::after {
 	content: " ";
 	position: absolute;
-	bottom: 100%;
+	bottom: 100%;  
 	left: 89%;
 	margin-left: -5px;
 	border-width: 5px;
 	border-style: solid;
 	border-color: transparent transparent black transparent;
-}
+  }
 
 /* Settings Page CSS */
 body.toplevel_page_wplegalpages-settings-page div.notice {
@@ -598,7 +598,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 }
 .wplegalpages-additonal-features-tab {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr;   
 	grid-auto-rows: minmax(max-content, 1fr);
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
@@ -769,9 +769,9 @@ div.ql-toolbar.ql-snow {
 .wplegal-form-tooltip {
 	position: relative;
 	display: inline-block;
-}
-/* Tooltip text */
-.wplegal-form-tooltip .wplegal-form-tooltiptext {
+  }
+  /* Tooltip text */
+  .wplegal-form-tooltip .wplegal-form-tooltiptext {
 	visibility: hidden;
 	
 	color: #ffffff;
@@ -779,29 +779,29 @@ div.ql-toolbar.ql-snow {
 	padding: 5px 5px;
 	border-radius: 2px;
 	font-size: 0.75rem;
-
+	
 	width: 180px;
 	bottom: 100%;
 	left: 50%;
 	margin-left: -90px;
-
+  
 	opacity: 0;
 	transition: opacity 1s;
-
+  
 	position: absolute;
 	z-index: 1;
-
+  
 	background: black;
   }
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.wplegal-form-tooltip:hover .wplegal-form-tooltiptext {
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .wplegal-form-tooltip:hover .wplegal-form-tooltiptext {
 	visibility: visible;
 	opacity: 0.9;
 	z-index: 999999;
-}
+  }
 
-.wplegal-form-tooltip .wplegal-form-tooltiptext::after {
+  .wplegal-form-tooltip .wplegal-form-tooltiptext::after {
 	content: " ";
 	position: absolute;
 	top: 100%;
@@ -810,13 +810,13 @@ div.ql-toolbar.ql-snow {
 	border-width: 5px;
 	border-style: solid;
 	border-color: black transparent transparent transparent;
-}
-.wplegal-form-bottom-tooltip{
+  }
+  .wplegal-form-bottom-tooltip{
 	position: relative;
 	display: inline-block;
-
-}
-.wplegal-form-bottom-tooltip .wplegal-form-bottom-tooltiptext{
+	
+  }
+  .wplegal-form-bottom-tooltip .wplegal-form-bottom-tooltiptext{
 	visibility: hidden;
 	color: #ffffff;
 	text-align: center;
@@ -834,16 +834,16 @@ div.ql-toolbar.ql-snow {
 	top: 115%;
 	left: 50%;
 	margin-left: -60px;
-}
+  }
 
-/* Show the tooltip text when you mouse over the tooltip container */
-.wplegal-form-bottom-tooltip:hover .wplegal-form-bottom-tooltiptext {
+   /* Show the tooltip text when you mouse over the tooltip container */
+   .wplegal-form-bottom-tooltip:hover .wplegal-form-bottom-tooltiptext {
 	visibility: visible;
 	opacity: 0.9;
 	z-index: 999999;
-}
+  }
 
-.wplegal-form-bottom-tooltip .wplegal-form-bottom-tooltiptext::after {
+  .wplegal-form-bottom-tooltip .wplegal-form-bottom-tooltiptext::after {
 	content: " ";
 	position: absolute;
 	margin-left: -35px;
@@ -852,10 +852,10 @@ div.ql-toolbar.ql-snow {
 	border-color: transparent transparent black transparent;
 	bottom: 100%;
 	left: 50%;
+	
+  }
 
-}
-
-.wplegalpages-help-text {
+  .wplegalpages-help-text {
 	color: #768192;
 	font-size: 80%;
 	font-weight: 400;
