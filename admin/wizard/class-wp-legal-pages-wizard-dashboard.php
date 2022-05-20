@@ -80,7 +80,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 			);
 			$this->legal_pages    = apply_filters( 'wplegalpages_wizard_templates', $this->legal_pages );
 			$this->pro_legalpages = array(
-				'Popular' => array(
+				'Popular'  => array(
 					'privacy_policy_grey'            => array(
 						'title'   => __( 'Professional Privacy Policy', 'wplegalpages' ),
 						'desc'    => __( 'If you collect any personal data from users (GDPR and CCPA compliant).', 'wplegalpages' ),
@@ -127,6 +127,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'title'   => __( 'Create Custom Legal Page', 'wplegalpages' ),
 						'desc'    => __( 'Add your own text to create a custom legal policy.', 'wplegalpages' ),
 						'btn_txt' => __( 'Go Pro', 'wplegalpages' ),
+						'enabled' => false,
+					),
+				),
+				'Policies' => array(
+					'gdpr_cookie_policy_grey'  => array(
+						'title'   => __( 'GDPR Cookie Policy', 'wplegalpages' ),
+						'desc'    => __( 'Use when you have visitors from the EU & are using cookies on your website.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'gdpr_privacy_policy_grey' => array(
+						'title'   => __( 'GDPR Privacy Policy', 'wplegalpages' ),
+						'desc'    => __( 'Use when your website collects personal information and has visitors from the EU.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
 				),

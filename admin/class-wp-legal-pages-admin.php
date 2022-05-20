@@ -2264,6 +2264,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						case 'terms_forced':
 							$pid = get_option( 'wplegal_terms_forced_policy_page' );
 							break;
+						case 'gdpr_cookie_policy':
+							$pid = get_option( 'wplegal_gdpr_cookie_policy_page' );
+							break;
+						case 'gdpr_privacy_policy':
+							$pid = get_option( 'wplegal_gdpr_privacy_policy_page' );
+							break;
 						case 'returns_refunds_policy':
 							$pid = get_option( 'wplegal_returns_refunds_policy_page' );
 							break;
@@ -2503,6 +2509,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$pid = get_option( 'wplegal_terms_forced_policy_page' );
 							$url = get_edit_post_link( $pid );
 							break;
+						case 'gdpr_cookie_policy':
+							$pid = get_option( 'wplegal_gdpr_cookie_policy_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'gdpr_privacy_policy':
+							$pid = get_option( 'wplegal_gdpr_privacy_policy_page' );
+							$url = get_edit_post_link( $pid );
+							break;
 						case 'returns_refunds_policy':
 							$pid = get_option( 'wplegal_returns_refunds_policy_page' );
 							$url = get_edit_post_link( $pid );
@@ -2577,6 +2591,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					break;
 				case 'terms_forced':
 					$pid = get_option( 'wplegal_terms_forced_policy_page' );
+					break;
+				case 'gdpr_cookie_policy':
+					$pid = get_option( 'wplegal_gdpr_cookie_policy_page' );
+					break;
+				case 'gdpr_privacy_policy':
+					$pid = get_option( 'wplegal_gdpr_privacy_policy_page' );
 					break;
 				case 'dmca':
 					$pid = get_option( 'wplegal_dmca_page' );
