@@ -149,6 +149,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
+					'blog_comments_policy_grey' => array(
+						'title'   => __( 'Blog Comments Policy', 'wplegalpages' ),
+						'desc'    => __( 'Use when you have comments enabled on your blog.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
 					'linking_policy_grey'       => array(
 						'title'   => __( 'Linking Policy', 'wplegalpages' ),
 						'desc'    => __( 'Use this policy to inform the users about the terms and conditions for linking to your website and disclaimers for external linking.', 'wplegalpages' ),

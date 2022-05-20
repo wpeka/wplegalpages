@@ -2273,6 +2273,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						case 'cookies_policy':
 							$pid = get_option( 'wplegal_cookies_policy_page' );
 							break;
+						case 'blog_comments_policy':
+							$pid = get_option( 'wplegal_blog_comments_policy_page' );
+							break;
 						case 'linking_policy':
 							$pid = get_option( 'wplegal_linking_policy_page' );
 							break;
@@ -2530,6 +2533,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$pid = get_option( 'wplegal_cookies_policy_page' );
 							$url = get_edit_post_link( $pid );
 							break;
+						case 'blog_comments_policy':
+							$pid = get_option( 'wplegal_blog_comments_policy_page' );
+							$url = get_edit_post_link( $pid );
+							break;
 						case 'external_link_policy':
 							$pid = get_option( 'wplegal_external_link_policy_page' );
 							$url = get_edit_post_link( $pid );
@@ -2621,6 +2628,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					break;
 				case 'cookies_policy':
 					$pid = get_option( 'wplegal_cookies_policy_page' );
+					break;
+				case 'blog_comments_policy':
+					$pid = get_option( 'wplegal_blog_comments_policy_page' );
 					break;
 				case 'linking_policy':
 					$pid = get_option( 'wplegal_linking_policy_page' );
