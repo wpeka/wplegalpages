@@ -464,6 +464,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+	margin-top: 48px;
 }
 #wplegalpages-settings-app .wplegalpages-settings-container .wplegalpages-settings-content .wplegalpages-settings-nav > div:nth-child(1) {
     background-color: white;
