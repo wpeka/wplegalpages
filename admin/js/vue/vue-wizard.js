@@ -1315,6 +1315,7 @@ Vue.component('PagePreviewWizardForm',{
             previewText: '',
             loading: 1,
             template: '',
+            skip_section_templates: ['ccpa_free', 'dmca']
         }
     },
     methods: {
@@ -1330,7 +1331,7 @@ Vue.component('PagePreviewWizardForm',{
             }));
         },
         handlePrev: function() {
-            if( this.template === 'ccpa_free' || this.template === 'dmca' ) {
+            if( this.skip_section_templates.indexOf(this.template) >= 0 ) {
                 this.$router.push('page_settings');
                 this.$root.route.name = 'page_settings';
             } else {
@@ -1346,7 +1347,7 @@ Vue.component('PagePreviewWizardForm',{
                 this.template = response.page;
                 this.previewText = response.data;
             }  else {
-                if( this.template === 'ccpa_free' || this.template === 'dmca' ) {
+                if( this.skip_section_templates.indexOf(this.template) >= 0 ) {
                     this.$router.push('page_settings');
                     this.$root.route.name = 'page_settings';
                 } else{
