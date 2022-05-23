@@ -948,3 +948,6 @@ div.ql-toolbar.ql-snow {
     border: 1px solid #d8dbe0;
     padding: 1rem;
 }
+div.wplegalpages-addon-promotion img, div.wplegalpages-pro-promotion img {
+	margin-bottom: 32px;
+}
