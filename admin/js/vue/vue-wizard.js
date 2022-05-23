@@ -517,7 +517,7 @@ Vue.component('PageSettingsWizardForm',{
             formElements: [],
             loading: 1,
             template: '',
-            skip_section_templates: ['ccpa_free', 'dmca', 'coppa', 'terms_forced', 'gdpr_cookie_policy', 'gdpr_privacy_policy', 'cookies_policy', 'linking_policy', 'external_link_policy', 'blog_comments_policy', 'affiliate_disclosure', 'amazon_affiliate_disclosure' ,'testimonials_disclosure', 'confidentiality_disclosure']
+            skip_section_templates: ['ccpa_free', 'dmca', 'coppa', 'terms_forced', 'gdpr_cookie_policy', 'gdpr_privacy_policy', 'cookies_policy', 'linking_policy', 'external_link_policy', 'blog_comments_policy', 'affiliate_disclosure', 'amazon_affiliate_disclosure' ,'testimonials_disclosure', 'confidentiality_disclosure', 'general_disclaimer', 'earnings_disclaimer', 'medical_disclaimer', 'newsletters']
         }
     },
     methods: {
@@ -1315,7 +1315,7 @@ Vue.component('PagePreviewWizardForm',{
             previewText: '',
             loading: 1,
             template: '',
-            skip_section_templates: ['ccpa_free', 'dmca', 'coppa', 'terms_forced', 'gdpr_cookie_policy', 'gdpr_privacy_policy', 'cookies_policy', 'linking_policy', 'external_link_policy', 'blog_comments_policy', 'affiliate_disclosure', 'amazon_affiliate_disclosure' ,'testimonials_disclosure', 'confidentiality_disclosure']
+            skip_section_templates: ['ccpa_free', 'dmca', 'coppa', 'terms_forced', 'gdpr_cookie_policy', 'gdpr_privacy_policy', 'cookies_policy', 'linking_policy', 'external_link_policy', 'blog_comments_policy', 'affiliate_disclosure', 'amazon_affiliate_disclosure' ,'testimonials_disclosure', 'confidentiality_disclosure', 'general_disclaimer', 'earnings_disclaimer', 'medical_disclaimer', 'newsletters']
         }
     },
     methods: {

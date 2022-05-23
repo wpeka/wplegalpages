@@ -2062,6 +2062,194 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							}
 							update_post_meta( $pid, 'legal_page_confidentiality_disclosure_options', $data );
 							break;
+						case 'general_disclaimer':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'General Disclaimer' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$general_disclaimer_options = $this->wplegalpages_get_remote_data( 'get_general_disclaimer' );
+								update_post_meta( $pid, 'legal_page_general_disclaimer_settings', $general_disclaimere_options );
+								update_option( 'wplegal_general_disclaimer_page', $pid );
+							} else {
+								$general_disclaimer_settings = get_post_meta( $pid, 'legal_page_general_disclaimer_settings', true );
+								$general_disclaimer_options  = $general_disclaimer_settings;
+							}
+							$data = array();
+							foreach ( $general_disclaimer_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_general_disclaimer_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_general_disclaimer_options', $data );
+							break;
+						case 'earnings_disclaimer':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Earnings Disclaimer' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$earnings_disclaimer_options = $this->wplegalpages_get_remote_data( 'get_earnings_disclaimer' );
+								update_post_meta( $pid, 'legal_page_earnings_disclaimer_settings', $earnings_disclaimer_options );
+								update_option( 'wplegal_earnings_disclaimer_page', $pid );
+							} else {
+								$earnings_disclaimer_settings = get_post_meta( $pid, 'legal_page_earnings_disclaimer_settings', true );
+								$earnings_disclaimer_options  = $earnings_disclaimer_settings;
+							}
+							$data = array();
+							foreach ( $earnings_disclaimer_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_earnings_disclaimer_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_earnings_disclaimer_options', $data );
+							break;
+						case 'medical_disclaimer':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Medical Disclaimer' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$medical_disclaimer_options = $this->wplegalpages_get_remote_data( 'get_medical_disclaimer' );
+								update_post_meta( $pid, 'legal_page_medical_disclaimer_settings', $medical_disclaimer_options );
+								update_option( 'wplegal_medical_disclaimer_page', $pid );
+							} else {
+								$medical_disclaimer_settings = get_post_meta( $pid, 'legal_page_medical_disclaimer_settings', true );
+								$medical_disclaimer_options  = $medical_disclaimer_settings;
+							}
+							$data = array();
+							foreach ( $medical_disclaimer_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_medical_disclaimer_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_medical_disclaimer_options', $data );
+							break;
+						case 'newsletters':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Newsletter: Subscription & Disclaimer' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$newsletters_options = $this->wplegalpages_get_remote_data( 'get_newsletters' );
+								update_post_meta( $pid, 'legal_page_newsletters_settings', $newsletters_options );
+								update_option( 'wplegal_newsletters_page', $pid );
+							} else {
+								$newsletters_settings = get_post_meta( $pid, 'legal_page_newsletters_settings', true );
+								$newsletters_options  = $newsletters_settings;
+							}
+							$data = array();
+							foreach ( $newsletters_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_newsletters_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_newsletters_options', $data );
+							break;
 						case 'standard_privacy_policy':
 							if ( empty( $pid ) ) {
 								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Standard Privacy Policy' );
@@ -2772,6 +2960,22 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'confidentiality_disclosure':
 							$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'general_disclaimer':
+							$pid = get_option( 'wplegal_general_disclaimer_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'medical_disclaimer':
+							$pid = get_option( 'wplegal_medical_disclaimer_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'earnings_disclaimer':
+							$pid = get_option( 'wplegal_earnings_disclaimer_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'newsletters':
+							$pid = get_option( 'wplegal_newsletters_page' );
 							$url = get_edit_post_link( $pid );
 							break;
 						case 'standard_privacy_policy':

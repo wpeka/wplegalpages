@@ -103,6 +103,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'confidentiality_disclosure':
 					$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
 					break;
+				case 'earnings_disclaimer':
+					$pid = get_option( 'wplegal_earnings_disclaimer_page' );
+					break;
+				case 'medical_disclaimer':
+					$pid = get_option( 'wplegal_medical_disclaimer_page' );
+					break;
+				case 'newsletters':
+					$pid = get_option( 'wplegal_newsletters_page' );
+					break;
+				case 'general_disclaimer':
+					$pid = get_option( 'wplegal_general_disclaimer_page' );
+					break;
 				case 'standard_privacy_policy':
 					$pid = get_option( 'wplegal_standard_privacy_policy_page' );
 					break;
@@ -241,6 +253,34 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
 						$page_preview .= __( 'Confidentiality Disclosure', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'general_disclaimer':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'General Disclaimer', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'earnings_disclaimer':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Earnings Disclaimer', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'medical_disclaimer':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Medical Disclaimer', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'newsletters':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Newsletter: Subscription & Disclaimer', 'wplegalpages' );
 						$page_preview .= '</h1>';
 					}
 					break;
@@ -534,6 +574,42 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Country', 'wplegalpages' ),
 							'value'    => $country,
 							'required' => false,
+						),
+					);
+					break;
+				case 'general_disclaimer':
+					$fields = array(
+						'lp-domain-name' => array(
+							'title'    => __( 'Domain Name', 'wplegalpages' ),
+							'value'    => $domain_name,
+							'required' => true,
+						),
+					);
+					break;
+				case 'earnings_disclaimer':
+					$fields = array(
+						'lp-domain-name' => array(
+							'title'    => __( 'Domain Name', 'wplegalpages' ),
+							'value'    => $domain_name,
+							'required' => true,
+						),
+					);
+					break;
+				case 'medical_disclaimer':
+					$fields = array(
+						'lp-domain-name' => array(
+							'title'    => __( 'Domain Name', 'wplegalpages' ),
+							'value'    => $domain_name,
+							'required' => true,
+						),
+					);
+					break;
+				case 'newsletters':
+					$fields = array(
+						'lp-business-name' => array(
+							'title'    => __( 'Business Name', 'wplegalpages' ),
+							'value'    => $business_name,
+							'required' => true,
 						),
 					);
 					break;
@@ -1374,7 +1450,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 									if ( isset( $field->checked ) && true === $field->checked ) {
 										$confidentiality_disclosure_options[ $field_key ] = true;
 									} else {
-										$confidentiality_disclosureoptions[ $field_key ] = false;
+										$confidentiality_disclosure_options[ $field_key ] = false;
 									}
 								}
 							} else {
@@ -1389,6 +1465,142 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						$confidentiality_disclosure_options  = $confidentiality_disclosure_settings;
 					}
 					$options      = $confidentiality_disclosure_options;
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'general_disclaimer':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'General Disclaimer' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						$general_disclaimer_settings = $this->get_remote_data( 'get_general_disclaimer' );
+						$general_disclaimer_options  = array();
+						foreach ( $general_disclaimer_settings as $key => $option ) {
+							if ( isset( $option->checked ) && true === $option->checked ) {
+								$general_disclaimer_options[ $key ] = true;
+								$fields                             = $option->fields;
+								foreach ( $fields as $field_key => $field ) {
+									if ( isset( $field->checked ) && true === $field->checked ) {
+										$general_disclaimer_options[ $field_key ] = true;
+									} else {
+										$general_disclaimer_options[ $field_key ] = false;
+									}
+								}
+							} else {
+								$general_disclaimer_options[ $key ] = false;
+							}
+						}
+						update_post_meta( $pid, 'legal_page_general_disclaimer_settings', $general_disclaimer_settings );
+						update_post_meta( $pid, 'legal_page_general_disclaimer_options', $general_disclaimer_options );
+						update_option( 'wplegal_general_disclaimer_page', $pid );
+					} else {
+						$general_disclaimer_settings = get_post_meta( $pid, 'legal_page_general_disclaimeroptions', true );
+						$general_disclaimer_options  = $general_disclaimer_settings;
+					}
+					$options      = $general_disclaimer_options;
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'earnings_disclaimer':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Earnings Disclaimer' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						$earnings_disclaimer_settings = $this->get_remote_data( 'get_earnings_disclaimer' );
+						$earnings_disclaimer_options  = array();
+						foreach ( $earnings_disclaimer_settings as $key => $option ) {
+							if ( isset( $option->checked ) && true === $option->checked ) {
+								$earnings_disclaimer_options[ $key ] = true;
+								$fields                              = $option->fields;
+								foreach ( $fields as $field_key => $field ) {
+									if ( isset( $field->checked ) && true === $field->checked ) {
+										$earnings_disclaimer_options[ $field_key ] = true;
+									} else {
+										$earnings_disclaimer_options[ $field_key ] = false;
+									}
+								}
+							} else {
+								$earnings_disclaimer_options[ $key ] = false;
+							}
+						}
+						update_post_meta( $pid, 'legal_page_earnings_disclaimer_settings', $earnings_disclaimer_settings );
+						update_post_meta( $pid, 'legal_page_earnings_disclaimer_options', $earnings_disclaimer_options );
+						update_option( 'wplegal_earnings_disclaimer_page', $pid );
+					} else {
+						$earnings_disclaimer_settings = get_post_meta( $pid, 'legal_page_earnings_disclaimer_options', true );
+						$earnings_disclaimer_options  = $earnings_disclaimer_settings;
+					}
+					$options      = $earnings_disclaimer_options;
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'medical_disclaimer':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Medical Disclaimer' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						$medical_disclaimer_settings = $this->get_remote_data( 'get_medical_disclaimer' );
+						$medical_disclaimer_options  = array();
+						foreach ( $medical_disclaimer_settings as $key => $option ) {
+							if ( isset( $option->checked ) && true === $option->checked ) {
+								$medical_disclaimer_options[ $key ] = true;
+								$fields                             = $option->fields;
+								foreach ( $fields as $field_key => $field ) {
+									if ( isset( $field->checked ) && true === $field->checked ) {
+										$medical_disclaimer_options[ $field_key ] = true;
+									} else {
+										$medical_disclaimer_options[ $field_key ] = false;
+									}
+								}
+							} else {
+								$medical_disclaimer_options[ $key ] = false;
+							}
+						}
+						update_post_meta( $pid, 'legal_page_medical_disclaimer_settings', $medical_disclaimer_settings );
+						update_post_meta( $pid, 'legal_page_medical_disclaimer_options', $medical_disclaimer_options );
+						update_option( 'wplegal_medical_disclaimer_page', $pid );
+					} else {
+						$medical_disclaimer_settings = get_post_meta( $pid, 'legal_page_medical_disclaimer_options', true );
+						$medical_disclaimer_options  = $medical_disclaimer_settings;
+					}
+					$options      = $medical_disclaimer_options;
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'newsletters':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Newsletter: Subscription & Disclaimer' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						$newsletters_settings = $this->get_remote_data( 'get_newsletters' );
+						$newsletters_options  = array();
+						foreach ( $newsletters_settings as $key => $option ) {
+							if ( isset( $option->checked ) && true === $option->checked ) {
+								$newsletters_options[ $key ] = true;
+								$fields                      = $option->fields;
+								foreach ( $fields as $field_key => $field ) {
+									if ( isset( $field->checked ) && true === $field->checked ) {
+										$newsletters_options[ $field_key ] = true;
+									} else {
+										$newsletters_options[ $field_key ] = false;
+									}
+								}
+							} else {
+								$newsletters_options[ $key ] = false;
+							}
+						}
+						update_post_meta( $pid, 'legal_page_newsletters_settings', $newsletters_settings );
+						update_post_meta( $pid, 'legal_page_newsletters_options', $newsletters_options );
+						update_option( 'wplegal_newsletters_page', $pid );
+					} else {
+						$newsletters_settings = get_post_meta( $pid, 'legal_page_newsletters_options', true );
+						$newsletters_options  = $general_newsletters_settings;
+					}
+					$options      = $newsletters_options;
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
 
 					break;
