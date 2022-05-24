@@ -91,6 +91,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'fb_policy':
 					$pid = get_option( 'wplegal_fb_policy_page' );
 					break;
+				case 'affiliate_agreement':
+					$pid = get_option( 'wplegal_affiliate_agreement_page' );
+					break;
 				case 'affiliate_disclosure':
 					$pid = get_option( 'wplegal_affiliate_disclosure_page' );
 					break;
@@ -108,6 +111,15 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					break;
 				case 'medical_disclaimer':
 					$pid = get_option( 'wplegal_medical_disclaimer_page' );
+					break;
+				case 'antispam':
+					$pid = get_option( 'wplegal_antispam_page' );
+					break;
+				case 'ftc_statement':
+					$pid = get_option( 'wplegal_ftc_statement_page' );
+					break;
+				case 'double_dart':
+					$pid = get_option( 'wplegal_double_dart_page' );
 					break;
 				case 'newsletters':
 					$pid = get_option( 'wplegal_newsletters_page' );
@@ -228,6 +240,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						$page_preview .= '</h1>';
 					}
 					break;
+				case 'affiliate_agreement':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Affiliate Agreement', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
 				case 'affiliate_disclosure':
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
@@ -274,6 +293,27 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
 						$page_preview .= __( 'Medical Disclaimer', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'antispam':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Antispam', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'double_dart':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Double Dart Cookies', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'ftc_statement':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'FTC Statement', 'wplegalpages' );
 						$page_preview .= '</h1>';
 					}
 					break;
@@ -501,6 +541,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						),
 					);
 					break;
+				case 'affiliate_agreement':
+					$fields = array();
+					break;
 				case 'affiliate_disclosure':
 					$fields = array(
 						'lp-domain-name' => array(
@@ -603,6 +646,32 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'required' => true,
 						),
 					);
+					break;
+				case 'antispam':
+					$fields = array(
+						'lp-domain-name'   => array(
+							'title'    => __( 'Domain Name', 'wplegalpages' ),
+							'value'    => $domain_name,
+							'required' => true,
+						),
+						'lp-business-name' => array(
+							'title'    => __( 'Business Name', 'wplegalpages' ),
+							'value'    => $business_name,
+							'required' => true,
+						),
+					);
+					break;
+				case 'ftc_statement':
+					$fields = array(
+						'lp-domain-name' => array(
+							'title'    => __( 'Domain Name', 'wplegalpages' ),
+							'value'    => $domain_name,
+							'required' => true,
+						),
+					);
+					break;
+				case 'double_dart':
+					$fields = array();
 					break;
 				case 'newsletters':
 					$fields = array(
@@ -1026,6 +1095,24 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						}
 					}
 					break;
+				case 'affiliate_agreement':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Affiliate Agreement' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						$fields = $this->get_remote_data( 'get_affiliate_agreement' );
+						update_post_meta( $pid, 'legal_page_affiliate_agreement_settings', $fields );
+						update_option( 'wplegal_affiliate_agreement_page', $pid );
+					} else {
+						$affiliate_agreement_options = get_post_meta( $pid, 'legal_page_affiliate_agreement_settings', true );
+						if ( ! $affiliate_agreement_options || empty( $affiliate_agreement_options ) ) {
+							$fields = $this->get_remote_data( 'get_affiliate_agreement' );
+							update_post_meta( $pid, 'legal_page_affiliate_agreement_settings', $fields );
+						} else {
+							$fields = $affiliate_agreement_options;
+						}
+					}
+					break;
 				case 'standard_privacy_policy':
 					if ( empty( $pid ) ) {
 						$pid = $this->get_pid_by_insert_page( $page, 'Privacy Policy' );
@@ -1334,273 +1421,36 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 
 					break;
 
-				case 'affiliate_disclosure':
+				case 'affiliate_agreement':
 					if ( empty( $pid ) ) {
-						$pid = $this->get_pid_by_insert_page( $page, 'Affiliate Disclosure' );
+						$pid = $this->get_pid_by_insert_page( $page, 'Affiliate Agreement' );
 						update_post_meta( $pid, 'is_legal', 'yes' );
 						update_post_meta( $pid, 'legal_page_type', $page );
-						$affiliate_disclosure_settings = $this->get_remote_data( 'get_affiliate_disclosure' );
-						$affiliate_disclosure_options  = array();
-						foreach ( $affiliate_disclosure_settings as $key => $option ) {
+						$affiliate_agreement_settings = $this->get_remote_data( 'get_affiliate_agreement' );
+						$affiliate_agreement_options  = array();
+						foreach ( $affiliate_agreement_settings as $key => $option ) {
 							if ( isset( $option->checked ) && true === $option->checked ) {
-								$affiliate_disclosure_options[ $key ] = true;
-								$fields                               = $option->fields;
-								foreach ( $fields as $field_key => $field ) {
-									if ( isset( $field->checked ) && true === $field->checked ) {
-										$affiliate_disclosure_options[ $field_key ] = true;
-									} else {
-										$affiliate_disclosureoptions[ $field_key ] = false;
-									}
-								}
-							} else {
-								$affiliate_disclosure_options[ $key ] = false;
-							}
-						}
-						update_post_meta( $pid, 'legal_page_affiliate_disclosure_settings', $affiliate_disclosure_settings );
-						update_post_meta( $pid, 'legal_page_affiliate_disclosure_options', $affiliate_disclosure_options );
-						update_option( 'wplegal_affiliate_disclosure_page', $pid );
-					} else {
-						$affiliate_disclosure_settings = get_post_meta( $pid, 'legal_page_affiliate_disclosure_options', true );
-						$affiliate_disclosure_options  = $affiliate_disclosure_settings;
-					}
-					$options      = $affiliate_disclosure_options;
-					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
-
-					break;
-
-				case 'amazon_affiliate_disclosure':
-					if ( empty( $pid ) ) {
-						$pid = $this->get_pid_by_insert_page( $page, 'Amazon Affiliate Disclosure' );
-						update_post_meta( $pid, 'is_legal', 'yes' );
-						update_post_meta( $pid, 'legal_page_type', $page );
-						$amazon_affiliate_disclosure_settings = $this->get_remote_data( 'get_amazon_affiliate_disclosure' );
-						$amazon_affiliate_disclosure_options  = array();
-						foreach ( $amazon_affiliate_disclosure_settings as $key => $option ) {
-							if ( isset( $option->checked ) && true === $option->checked ) {
-								$amazon_affiliate_disclosure_options[ $key ] = true;
-								$fields                                      = $option->fields;
-								foreach ( $fields as $field_key => $field ) {
-									if ( isset( $field->checked ) && true === $field->checked ) {
-										$amazon_affiliate_disclosure_options[ $field_key ] = true;
-									} else {
-										$amazon_affiliate_disclosureoptions[ $field_key ] = false;
-									}
-								}
-							} else {
-								$amazon_affiliate_disclosure_options[ $key ] = false;
-							}
-						}
-						update_post_meta( $pid, 'legal_page_amazon_affiliate_disclosure_settings', $amazon_affiliate_disclosure_settings );
-						update_post_meta( $pid, 'legal_page_amazon_affiliate_disclosure_options', $amazon_affiliate_disclosure_options );
-						update_option( 'wplegal_amazon_affiliate_disclosure_page', $pid );
-					} else {
-						$amazon_affiliate_disclosure_settings = get_post_meta( $pid, 'legal_page_amazon_affiliate_disclosure_options', true );
-						$amazon_affiliate_disclosure_options  = $amazon_affiliate_disclosure_settings;
-					}
-					$options      = $amazon_affiliate_disclosure_options;
-					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
-
-					break;
-				case 'testimonials_disclosure':
-					if ( empty( $pid ) ) {
-						$pid = $this->get_pid_by_insert_page( $page, 'Testimonial Disclosure' );
-						update_post_meta( $pid, 'is_legal', 'yes' );
-						update_post_meta( $pid, 'legal_page_type', $page );
-						$testimonials_disclosure_settings = $this->get_remote_data( 'get_testimonials_disclosure' );
-						$testimonials_disclosure_options  = array();
-						foreach ( $testimonials_disclosure_settings as $key => $option ) {
-							if ( isset( $option->checked ) && true === $option->checked ) {
-								$testimonials_disclosure_options[ $key ] = true;
-								$fields                                  = $option->fields;
-								foreach ( $fields as $field_key => $field ) {
-									if ( isset( $field->checked ) && true === $field->checked ) {
-										$testimonials_disclosure_options[ $field_key ] = true;
-									} else {
-										$testimonials_disclosure_options[ $field_key ] = false;
-									}
-								}
-							} else {
-								$testimonials_disclosure_options[ $key ] = false;
-							}
-						}
-						update_post_meta( $pid, 'legal_page_testimonials_disclosure_settings', $testimonials_disclosure_settings );
-						update_post_meta( $pid, 'legal_page_testimonials_disclosure_options', $testimonials_disclosure_options );
-						update_option( 'wplegal_testimonials_disclosure_page', $pid );
-					} else {
-						$testimonials_disclosure_settings = get_post_meta( $pid, 'legal_page_testimonials_disclosure_options', true );
-						$testimonials_disclosure_options  = $testimonials_disclosure_settings;
-					}
-					$options      = $testimonials_disclosure_options;
-					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
-
-					break;
-
-				case 'confidentiality_disclosure':
-					if ( empty( $pid ) ) {
-						$pid = $this->get_pid_by_insert_page( $page, 'Confidentiality Disclosure' );
-						update_post_meta( $pid, 'is_legal', 'yes' );
-						update_post_meta( $pid, 'legal_page_type', $page );
-						$confidentiality_disclosure_settings = $this->get_remote_data( 'get_confidentiality_disclosure' );
-						$confidentiality_disclosure_options  = array();
-						foreach ( $confidentiality_disclosure_settings as $key => $option ) {
-							if ( isset( $option->checked ) && true === $option->checked ) {
-								$confidentiality_disclosure_options[ $key ] = true;
-								$fields                                     = $option->fields;
-								foreach ( $fields as $field_key => $field ) {
-									if ( isset( $field->checked ) && true === $field->checked ) {
-										$confidentiality_disclosure_options[ $field_key ] = true;
-									} else {
-										$confidentiality_disclosure_options[ $field_key ] = false;
-									}
-								}
-							} else {
-								$confidentiality_disclosure_options[ $key ] = false;
-							}
-						}
-						update_post_meta( $pid, 'legal_page_confidentiality_disclosure_settings', $confidentiality_disclosure_settings );
-						update_post_meta( $pid, 'legal_page_confidentiality_disclosure_options', $confidentiality_disclosure_options );
-						update_option( 'wplegal_confidentiality_disclosure_page', $pid );
-					} else {
-						$confidentiality_disclosure_settings = get_post_meta( $pid, 'legal_page_confidentiality_disclosure_options', true );
-						$confidentiality_disclosure_options  = $confidentiality_disclosure_settings;
-					}
-					$options      = $confidentiality_disclosure_options;
-					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
-
-					break;
-
-				case 'general_disclaimer':
-					if ( empty( $pid ) ) {
-						$pid = $this->get_pid_by_insert_page( $page, 'General Disclaimer' );
-						update_post_meta( $pid, 'is_legal', 'yes' );
-						update_post_meta( $pid, 'legal_page_type', $page );
-						$general_disclaimer_settings = $this->get_remote_data( 'get_general_disclaimer' );
-						$general_disclaimer_options  = array();
-						foreach ( $general_disclaimer_settings as $key => $option ) {
-							if ( isset( $option->checked ) && true === $option->checked ) {
-								$general_disclaimer_options[ $key ] = true;
-								$fields                             = $option->fields;
-								foreach ( $fields as $field_key => $field ) {
-									if ( isset( $field->checked ) && true === $field->checked ) {
-										$general_disclaimer_options[ $field_key ] = true;
-									} else {
-										$general_disclaimer_options[ $field_key ] = false;
-									}
-								}
-							} else {
-								$general_disclaimer_options[ $key ] = false;
-							}
-						}
-						update_post_meta( $pid, 'legal_page_general_disclaimer_settings', $general_disclaimer_settings );
-						update_post_meta( $pid, 'legal_page_general_disclaimer_options', $general_disclaimer_options );
-						update_option( 'wplegal_general_disclaimer_page', $pid );
-					} else {
-						$general_disclaimer_settings = get_post_meta( $pid, 'legal_page_general_disclaimeroptions', true );
-						$general_disclaimer_options  = $general_disclaimer_settings;
-					}
-					$options      = $general_disclaimer_options;
-					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
-
-					break;
-
-				case 'earnings_disclaimer':
-					if ( empty( $pid ) ) {
-						$pid = $this->get_pid_by_insert_page( $page, 'Earnings Disclaimer' );
-						update_post_meta( $pid, 'is_legal', 'yes' );
-						update_post_meta( $pid, 'legal_page_type', $page );
-						$earnings_disclaimer_settings = $this->get_remote_data( 'get_earnings_disclaimer' );
-						$earnings_disclaimer_options  = array();
-						foreach ( $earnings_disclaimer_settings as $key => $option ) {
-							if ( isset( $option->checked ) && true === $option->checked ) {
-								$earnings_disclaimer_options[ $key ] = true;
+								$affiliate_agreement_options[ $key ] = true;
 								$fields                              = $option->fields;
 								foreach ( $fields as $field_key => $field ) {
 									if ( isset( $field->checked ) && true === $field->checked ) {
-										$earnings_disclaimer_options[ $field_key ] = true;
+										$affiliate_agreement_options[ $field_key ] = true;
 									} else {
-										$earnings_disclaimer_options[ $field_key ] = false;
+										$affiliate_agreement_options[ $field_key ] = false;
 									}
 								}
 							} else {
-								$earnings_disclaimer_options[ $key ] = false;
+								$affiliate_agreement_options[ $key ] = false;
 							}
 						}
-						update_post_meta( $pid, 'legal_page_earnings_disclaimer_settings', $earnings_disclaimer_settings );
-						update_post_meta( $pid, 'legal_page_earnings_disclaimer_options', $earnings_disclaimer_options );
-						update_option( 'wplegal_earnings_disclaimer_page', $pid );
+						update_post_meta( $pid, 'legal_page_affiliate_agreement_settings', $affiliate_agreement_settings );
+						update_post_meta( $pid, 'legal_page_affiliate_agreement_options', $affiliate_agreement_options );
+						update_option( 'wplegal_fb_policy_page', $pid );
 					} else {
-						$earnings_disclaimer_settings = get_post_meta( $pid, 'legal_page_earnings_disclaimer_options', true );
-						$earnings_disclaimer_options  = $earnings_disclaimer_settings;
+						$affiliate_agreement_settings = get_post_meta( $pid, 'legal_page_affiliate_agreement_options', true );
+						$affiliate_agreement_options  = $affiliate_agreement_settings;
 					}
-					$options      = $earnings_disclaimer_options;
-					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
-
-					break;
-
-				case 'medical_disclaimer':
-					if ( empty( $pid ) ) {
-						$pid = $this->get_pid_by_insert_page( $page, 'Medical Disclaimer' );
-						update_post_meta( $pid, 'is_legal', 'yes' );
-						update_post_meta( $pid, 'legal_page_type', $page );
-						$medical_disclaimer_settings = $this->get_remote_data( 'get_medical_disclaimer' );
-						$medical_disclaimer_options  = array();
-						foreach ( $medical_disclaimer_settings as $key => $option ) {
-							if ( isset( $option->checked ) && true === $option->checked ) {
-								$medical_disclaimer_options[ $key ] = true;
-								$fields                             = $option->fields;
-								foreach ( $fields as $field_key => $field ) {
-									if ( isset( $field->checked ) && true === $field->checked ) {
-										$medical_disclaimer_options[ $field_key ] = true;
-									} else {
-										$medical_disclaimer_options[ $field_key ] = false;
-									}
-								}
-							} else {
-								$medical_disclaimer_options[ $key ] = false;
-							}
-						}
-						update_post_meta( $pid, 'legal_page_medical_disclaimer_settings', $medical_disclaimer_settings );
-						update_post_meta( $pid, 'legal_page_medical_disclaimer_options', $medical_disclaimer_options );
-						update_option( 'wplegal_medical_disclaimer_page', $pid );
-					} else {
-						$medical_disclaimer_settings = get_post_meta( $pid, 'legal_page_medical_disclaimer_options', true );
-						$medical_disclaimer_options  = $medical_disclaimer_settings;
-					}
-					$options      = $medical_disclaimer_options;
-					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
-
-					break;
-
-				case 'newsletters':
-					if ( empty( $pid ) ) {
-						$pid = $this->get_pid_by_insert_page( $page, 'Newsletter: Subscription & Disclaimer' );
-						update_post_meta( $pid, 'is_legal', 'yes' );
-						update_post_meta( $pid, 'legal_page_type', $page );
-						$newsletters_settings = $this->get_remote_data( 'get_newsletters' );
-						$newsletters_options  = array();
-						foreach ( $newsletters_settings as $key => $option ) {
-							if ( isset( $option->checked ) && true === $option->checked ) {
-								$newsletters_options[ $key ] = true;
-								$fields                      = $option->fields;
-								foreach ( $fields as $field_key => $field ) {
-									if ( isset( $field->checked ) && true === $field->checked ) {
-										$newsletters_options[ $field_key ] = true;
-									} else {
-										$newsletters_options[ $field_key ] = false;
-									}
-								}
-							} else {
-								$newsletters_options[ $key ] = false;
-							}
-						}
-						update_post_meta( $pid, 'legal_page_newsletters_settings', $newsletters_settings );
-						update_post_meta( $pid, 'legal_page_newsletters_options', $newsletters_options );
-						update_option( 'wplegal_newsletters_page', $pid );
-					} else {
-						$newsletters_settings = get_post_meta( $pid, 'legal_page_newsletters_options', true );
-						$newsletters_options  = $general_newsletters_settings;
-					}
-					$options      = $newsletters_options;
+					$options      = $affiliate_agreement_options;
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
 
 					break;
@@ -1751,6 +1601,137 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						update_post_meta( $pid, 'is_legal', 'yes' );
 						update_post_meta( $pid, 'legal_page_type', $page );
 						update_option( 'wplegal_dmca_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'affiliate_disclosure':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Affiliate Disclosure' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_affiliate_disclosure_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'amazon_affiliate_disclosure':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Amazon Affiliate Disclosure' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_amazon_affiliate_disclosure_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'testimonials_disclosure':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Testimonials Disclosure' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_testimonials_disclosure_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'general_disclaimer':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'General Disclaimer' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_general_disclaimer_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'earnings_disclaimer':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Earnings Disclaimer' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_earnings_disclaimer_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'medical_disclaimer':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Medical Disclaimer' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_medical_disclaimer_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'antispam':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Antispam' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_antispam_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+					break;
+
+				case 'ftc_statement':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'FTC Statement' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_ftc_statement_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'double_dart':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Double Dart Cookie' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_double_dart_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'newsletters':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Newsletter: Subscription & Disclaimer' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_newsletters_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'confidentiality_disclosure':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Confidentiality Disclosure' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_confidentiality_disclosure_page', $pid );
 					}
 					$options      = array();
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
