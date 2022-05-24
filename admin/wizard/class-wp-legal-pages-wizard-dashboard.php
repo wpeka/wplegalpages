@@ -219,9 +219,35 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
-					'newsletter_grey'          => array(
+					'newsletters_grey'         => array(
 						'title'   => __( 'Newsletter: Subscription & Disclaimer', 'wplegalpages' ),
 						'desc'    => __( 'If you are using an email newsletter service and collect personal information like email id from your subscribers.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+				),
+				'Other'       => array(
+					'affiliate_agreement_grey' => array(
+						'title'   => __( 'Affiliate Agreement', 'wplegalpages' ),
+						'desc'    => __( 'For a legal contract between you and your affiliates who promote your products/services.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'antispam_grey'            => array(
+						'title'   => __( 'Antispam', 'wplegalpages' ),
+						'desc'    => __( 'If you are an individual/business that uses email for advertising or promoting something.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'ftc_statement_grey'       => array(
+						'title'   => __( 'FTC Statement', 'wplegalpages' ),
+						'desc'    => __( 'If you have a website and have affiliate partners, you should declare your website’s compliance with the Federal Trade Commission policies.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'double_dart_grey'         => array(
+						'title'   => __( 'Double Dart Cookies', 'wplegalpages' ),
+						'desc'    => __( 'To notify users if your website or blog is using any Double Click Dart Cookie.', 'wplegalpages' ),
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
