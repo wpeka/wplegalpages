@@ -80,7 +80,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 			);
 			$this->legal_pages    = apply_filters( 'wplegalpages_wizard_templates', $this->legal_pages );
 			$this->pro_legalpages = array(
-				'Popular' => array(
+				'Popular'     => array(
 					'privacy_policy_grey'            => array(
 						'title'   => __( 'Professional Privacy Policy', 'wplegalpages' ),
 						'desc'    => __( 'If you collect any personal data from users (GDPR and CCPA compliant).', 'wplegalpages' ),
@@ -111,10 +111,118 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'btn_txt' => __( 'Go Pro', 'wplegalpages' ),
 						'enabled' => false,
 					),
+					'coppa_grey'                     => array(
+						'title'   => __( 'COPPA', 'wplegalpages' ),
+						'desc'    => __( 'If you are collecting personal information on your website from children below 13 years in age.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'terms_forced_grey'              => array(
+						'title'   => __( 'Terms(forced agreement)', 'wplegalpages' ),
+						'desc'    => __( 'Use when you don\'t want your users to proceed without agreeing to website terms', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
 					'custom_legal_grey'              => array(
 						'title'   => __( 'Create Custom Legal Page', 'wplegalpages' ),
 						'desc'    => __( 'Add your own text to create a custom legal policy.', 'wplegalpages' ),
 						'btn_txt' => __( 'Go Pro', 'wplegalpages' ),
+						'enabled' => false,
+					),
+				),
+				'Policies'    => array(
+					'gdpr_cookie_policy_grey'   => array(
+						'title'   => __( 'GDPR Cookie Policy', 'wplegalpages' ),
+						'desc'    => __( 'Use when you have visitors from the EU & are using cookies on your website.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'gdpr_privacy_policy_grey'  => array(
+						'title'   => __( 'GDPR Privacy Policy', 'wplegalpages' ),
+						'desc'    => __( 'Use when your website collects personal information and has visitors from the EU.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'cookies_policy_grey'       => array(
+						'title'   => __( 'Cookies Policy', 'wplegalpages' ),
+						'desc'    => __( 'To inform users about the cookies active on your website that track user data.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'blog_comments_policy_grey' => array(
+						'title'   => __( 'Blog Comments Policy', 'wplegalpages' ),
+						'desc'    => __( 'Use when you have comments enabled on your blog.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'linking_policy_grey'       => array(
+						'title'   => __( 'Linking Policy', 'wplegalpages' ),
+						'desc'    => __( 'Use this policy to inform the users about the terms and conditions for linking to your website and disclaimers for external linking.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'external_link_policy_grey' => array(
+						'title'   => __( 'External Links Policy', 'wplegalpages' ),
+						'desc'    => __( 'If your website links to other external websites, you can use this to ensure that the external links are in compliance with the applicable laws.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'fb_policy_grey'            => array(
+						'title'   => __( 'Facebook Policy', 'wplegalpages' ),
+						'desc'    => __( 'If you are collecting any personal data from your page through a call to action (such as email addresses for your mailing list).', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+				),
+				'Disclosures' => array(
+					'affiliate_disclosure_grey'        => array(
+						'title'   => __( 'Affiliate Disclosure', 'wplegalpages' ),
+						'desc'    => __( 'To inform your audience about your affiliate relationships with brands, products, or companies that you publicly recommend.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'amazon_affiliate_disclosure_grey' => array(
+						'title'   => __( 'Amazon Affiliate Disclosure', 'wplegalpages' ),
+						'desc'    => __( 'To comply with Amazon’s affiliate program requirements (if you promote products listed on amazon).', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'testimonials_disclosure_grey'     => array(
+						'title'   => __( 'Testimonial Disclosure ', 'wplegalpages' ),
+						'desc'    => __( 'Use this if your website displays user reviews or endorsements.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'confidentiality_disclosure_grey'  => array(
+						'title'   => __( 'Confidentiality Disclosure ', 'wplegalpages' ),
+						'desc'    => __( 'To protect confidential and proprietary information displayed on your website.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+				),
+				'Disclaimers' => array(
+					'general_disclaimer_grey'  => array(
+						'title'   => __( 'General Disclaimer', 'wplegalpages' ),
+						'desc'    => __( 'To limit your legal liability and keep your users informed.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'earnings_disclaimer_grey' => array(
+						'title'   => __( 'Earnings Disclaimer', 'wplegalpages' ),
+						'desc'    => __( 'To limit your legal liability and keep your users informed.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'medical_disclaimer_grey'  => array(
+						'title'   => __( 'Medical Disclaimer', 'wplegalpages' ),
+						'desc'    => __( 'To imply that the information on your website is not intended to be a substitute for professional medical advice, diagnosis, or treatment.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'newsletter_grey'          => array(
+						'title'   => __( 'Newsletter: Subscription & Disclaimer', 'wplegalpages' ),
+						'desc'    => __( 'If you are using an email newsletter service and collect personal information like email id from your subscribers.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
 				),
