@@ -251,6 +251,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
+					'about_us_grey'            => array(
+						'title'   => __( 'About Us', 'wplegalpages' ),
+						'desc'    => __( 'To display your contact and mailing information.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
 				),
 			);
 		}

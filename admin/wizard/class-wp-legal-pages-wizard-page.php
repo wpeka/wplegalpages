@@ -121,6 +121,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'double_dart':
 					$pid = get_option( 'wplegal_double_dart_page' );
 					break;
+				case 'about_us':
+					$pid = get_option( 'wplegal_about_us_page' );
+					break;
 				case 'newsletters':
 					$pid = get_option( 'wplegal_newsletters_page' );
 					break;
@@ -310,6 +313,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						$page_preview .= '</h1>';
 					}
 					break;
+				case 'about_us':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'About Us', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
 				case 'ftc_statement':
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
@@ -466,12 +476,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 			$email         = ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : '';
 			$phone         = ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : '';
 			$address       = ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : '';
+
 			if ( '1' === $is_pro ) {
-				$date             = ! empty( $lp_general['date'] ) ? esc_attr( $lp_general['date'] ) : '';
-				$days             = ! empty( $lp_general['days'] ) ? esc_attr( $lp_general['days'] ) : '';
-				$duration         = ! empty( $lp_general['duration'] ) ? esc_attr( $lp_general['duration'] ) : '';
-				$disclosing_party = ! empty( $lp_general['disclosing-party'] ) ? esc_attr( $lp_general['disclosing-party'] ) : '';
-				$recipient_party  = ! empty( $lp_general['recipient-party'] ) ? esc_attr( $lp_general['recipient-party'] ) : '';
+				$date                    = ! empty( $lp_general['date'] ) ? esc_attr( $lp_general['date'] ) : '';
+				$days                    = ! empty( $lp_general['days'] ) ? esc_attr( $lp_general['days'] ) : '';
+				$duration                = ! empty( $lp_general['duration'] ) ? esc_attr( $lp_general['duration'] ) : '';
+				$disclosing_party        = ! empty( $lp_general['disclosing-party'] ) ? esc_attr( $lp_general['disclosing-party'] ) : '';
+				$recipient_party         = ! empty( $lp_general['recipient-party'] ) ? esc_attr( $lp_general['recipient-party'] ) : '';
+				$general['facebook-url'] = ! empty( $lp_general['facebook-url'] ) ? esc_attr( $lp_general['facebook-url'] ) : '';
+				$general['google-url']   = ! empty( $lp_general['google-url'] ) ? esc_attr( $lp_general['google-url'] ) : '';
+				$general['twitter-url']  = ! empty( $lp_general['twitter-url'] ) ? esc_attr( $lp_general['twitter-url'] ) : '';
+				$general['linkedin-url'] = ! empty( $lp_general['linkedin-url'] ) ? esc_attr( $lp_general['linkedin-url'] ) : '';
 			}
 			switch ( $page ) {
 				case 'terms_of_use':
@@ -678,6 +693,60 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						'lp-business-name' => array(
 							'title'    => __( 'Business Name', 'wplegalpages' ),
 							'value'    => $business_name,
+							'required' => true,
+						),
+					);
+					break;
+				case 'about_us':
+					$fields = array(
+						'lp-business-name' => array(
+							'title'    => __( 'Business Name', 'wplegalpages' ),
+							'value'    => $business_name,
+							'required' => true,
+						),
+						'lp-phone'         => array(
+							'title'    => __( 'Phone', 'wplegalpages' ),
+							'value'    => $phone,
+							'required' => true,
+						),
+						'lp-street'        => array(
+							'title'    => __( 'Street', 'wplegalpages' ),
+							'value'    => $street,
+							'required' => false,
+						),
+						'lp-city-state'    => array(
+							'title'    => __( 'City, State, Zip code', 'wplegalpages' ),
+							'value'    => $city_state,
+							'required' => false,
+						),
+						'lp-country'       => array(
+							'title'    => __( 'Country', 'wplegalpages' ),
+							'value'    => $country,
+							'required' => false,
+						),
+						'lp-email'         => array(
+							'title'    => __( 'Email', 'wplegalpages' ),
+							'value'    => $email,
+							'required' => true,
+						),
+						'lp-facebook-url'  => array(
+							'title'    => __( 'Facebook URL', 'wplegalpages' ),
+							'value'    => $email,
+							'required' => true,
+						),
+						'lp-google-url'    => array(
+							'title'    => __( 'Google URL', 'wplegalpages' ),
+							'value'    => $email,
+							'required' => true,
+						),
+						'lp-twitter-url'   => array(
+							'title'    => __( 'Twitter URL', 'wplegalpages' ),
+							'value'    => $email,
+							'required' => true,
+						),
+						'lp-linkedin-url'  => array(
+							'title'    => __( 'LinkedIn URL', 'wplegalpages' ),
+							'value'    => $email,
 							'required' => true,
 						),
 					);
@@ -1708,6 +1777,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						update_post_meta( $pid, 'is_legal', 'yes' );
 						update_post_meta( $pid, 'legal_page_type', $page );
 						update_option( 'wplegal_double_dart_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+
+				case 'about_us':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'About Us' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_about_us_page', $pid );
 					}
 					$options      = array();
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
