@@ -2240,15 +2240,15 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$country     = isset( $lp_general['country'] ) ? $lp_general['country'] : '';
 					$email       = isset( $lp_general['email'] ) ? $lp_general['email'] : '';
 					if ( '1' === $is_pro ) {
-						$date             = ! isset( $lp_general['date'] ) ? $lp_general['date'] : '';
-						$days             = ! isset( $lp_general['days'] ) ? $lp_general['days'] : '';
-						$duration         = ! isset( $lp_general['duration'] ) ? $lp_general['duration'] : '';
-						$disclosing_party = ! isset( $lp_general['disclosing-party'] ) ? $lp_general['disclosing-party'] : '';
-						$recipient_party  = ! isset( $lp_general['recipient-party'] ) ? $lp_general['recipient-party'] : '';
-						$facebook_url     = ! isset( $lp_general['facebook-url'] ) ? $lp_general['facebook-url'] : '';
-						$google_url       = ! isset( $lp_general['google-url'] ) ? $lp_general['google-url'] : '';
-						$twitter_url      = ! isset( $lp_general['twitter-url'] ) ? $lp_general['twitter-url'] : '';
-						$linkedin_url     = ! isset( $lp_general['linkedin-url'] ) ? $lp_general['linkedin-url'] : '';
+						$date             = isset( $lp_general['date'] ) ? $lp_general['date'] : '';
+						$days             = isset( $lp_general['days'] ) ? $lp_general['days'] : '';
+						$duration         = isset( $lp_general['duration'] ) ? $lp_general['duration'] : '';
+						$disclosing_party = isset( $lp_general['disclosing-party'] ) ? $lp_general['disclosing-party'] : '';
+						$recipient_party  = isset( $lp_general['recipient-party'] ) ? $lp_general['recipient-party'] : '';
+						$facebook_url     = isset( $lp_general['facebook-url'] ) ? $lp_general['facebook-url'] : '';
+						$google_url       = isset( $lp_general['google-url'] ) ? $lp_general['google-url'] : '';
+						$twitter_url      = isset( $lp_general['twitter-url'] ) ? $lp_general['twitter-url'] : '';
+						$linkedin_url     = isset( $lp_general['linkedin-url'] ) ? $lp_general['linkedin-url'] : '';
 					}
 					if ( isset( $_POST['data'] ) && ! empty( $_POST['data'] ) ) {
 						$general = array();
