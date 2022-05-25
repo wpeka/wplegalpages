@@ -2240,11 +2240,15 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$country     = isset( $lp_general['country'] ) ? $lp_general['country'] : '';
 					$email       = isset( $lp_general['email'] ) ? $lp_general['email'] : '';
 					if ( '1' === $is_pro ) {
-						$date             = ! isset( $lp_general['date'] ) ? $lp_general['date'] : '';
-						$days             = ! isset( $lp_general['days'] ) ? $lp_general['days'] : '';
-						$duration         = ! isset( $lp_general['duration'] ) ? $lp_general['duration'] : '';
-						$disclosing_party = ! isset( $lp_general['disclosing-party'] ) ? $lp_general['disclosing-party'] : '';
-						$recipient_party  = ! isset( $lp_general['recipient-party'] ) ? $lp_general['recipient-party'] : '';
+						$date             = isset( $lp_general['date'] ) ? $lp_general['date'] : '';
+						$days             = isset( $lp_general['days'] ) ? $lp_general['days'] : '';
+						$duration         = isset( $lp_general['duration'] ) ? $lp_general['duration'] : '';
+						$disclosing_party = isset( $lp_general['disclosing-party'] ) ? $lp_general['disclosing-party'] : '';
+						$recipient_party  = isset( $lp_general['recipient-party'] ) ? $lp_general['recipient-party'] : '';
+						$facebook_url     = isset( $lp_general['facebook-url'] ) ? $lp_general['facebook-url'] : '';
+						$google_url       = isset( $lp_general['google-url'] ) ? $lp_general['google-url'] : '';
+						$twitter_url      = isset( $lp_general['twitter-url'] ) ? $lp_general['twitter-url'] : '';
+						$linkedin_url     = isset( $lp_general['linkedin-url'] ) ? $lp_general['linkedin-url'] : '';
 					}
 					if ( isset( $_POST['data'] ) && ! empty( $_POST['data'] ) ) {
 						$general = array();
@@ -2254,6 +2258,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$general['duration']         = isset( $_POST['data']['lp-duration'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-duration'] ) ) : $duration;
 							$general['disclosing-party'] = isset( $_POST['data']['lp-disclosing-party'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-disclosing-party'] ) ) : $disclosing_party;
 							$general['recipient-party']  = isset( $_POST['data']['lp-recipient-party'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-recipient-party'] ) ) : $recipient_party;
+							$general['facebook-url']     = isset( $_POST['data']['lp-facebook-url'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-facebook-url'] ) ) : $facebook_url;
+							$general['google-url']       = isset( $_POST['data']['lp-google-url'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-google-url'] ) ) : $google_url;
+							$general['twitter-url']      = isset( $_POST['data']['lp-twitter-url'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-twitter-url'] ) ) : $twitter_url;
+							$general['linkedin-url']     = isset( $_POST['data']['lp-linkedin-url'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-linkedin-url'] ) ) : $linkedin_url;
 						}
 						$general['domain']               = isset( $_POST['data']['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-domain-name'] ) ) : $domain_name;
 						$general['business']             = isset( $_POST['data']['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-business-name'] ) ) : $business;
@@ -2268,10 +2276,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						$general['generate']             = isset( $lp_general['generate'] ) ? $lp_general['generate'] : '0';
 						$general['privacy']              = isset( $lp_general['privacy'] ) ? $lp_general['privacy'] : '0';
 						$general['privacy_page']         = isset( $lp_general['privacy_page'] ) ? $lp_general['privacy_page'] : '';
-						$general['facebook-url']         = isset( $lp_general['facebook-url'] ) ? $lp_general['facebook-url'] : '';
-						$general['twitter-url']          = isset( $lp_general['twitter-url'] ) ? $lp_general['twitter-url'] : '';
-						$general['google-url']           = isset( $lp_general['google-url'] ) ? $lp_general['google-url'] : '';
-						$general['linkedin-url']         = isset( $lp_general['linkedin-url'] ) ? $lp_general['linkedin-url'] : '';
 						$general['leave-url']            = isset( $lp_general['leave-url'] ) ? $lp_general['leave-url'] : '';
 						$general['affiliate-disclosure'] = isset( $lp_general['affiliate-disclosure'] ) ? $lp_general['affiliate-disclosure'] : '0';
 						$general['refund_period']        = isset( $lp_general['refund_period'] ) ? $lp_general['refund_period'] : '';
@@ -2658,6 +2662,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'double_dart':
 							$pid = get_option( 'wplegal_double_dart_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'about_us':
+							$pid = get_option( 'wplegal_about_us_page' );
 							$url = get_edit_post_link( $pid );
 							break;
 						case 'earnings_disclaimer':
