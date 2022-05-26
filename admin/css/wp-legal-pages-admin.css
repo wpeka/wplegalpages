@@ -949,9 +949,14 @@ div.ql-toolbar.ql-snow {
     border: 1px solid #d8dbe0;
     padding: 1rem;
 }
-.wplegalpages-app-container .wplegalpages-pro-promotion img {
+.wplegalpages-pro-promotion-settings-page img {
 	max-width: 100%;
 	height: auto;
-	margin-left: 20px;
 	margin-bottom: 15px;
+}
+.wplegalpages-pro-promotion-settings-page > a {
+	display: block;
+    margin: 1% auto;
+    text-align: center;
+    padding-right: 20px;
 }
