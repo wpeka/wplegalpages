@@ -133,13 +133,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				add_submenu_page( 'legal-pages', __( 'All Legal Pages', 'wplegalpages' ), __( 'All Legal Pages', 'wplegalpages' ), 'manage_options', 'lp-show-pages', array( $this, 'show_pages' ) );
 				add_submenu_page(
 					'legal-pages',
-					esc_attr__( 'Wizard', 'wplegalpages' ),
-					esc_attr__( 'Wizard', 'wplegalpages' ),
+					esc_attr__( 'Create Legal Page', 'wplegalpages' ),
+					esc_attr__( 'Create Legal Page', 'wplegalpages' ),
 					'manage_options',
 					'index.php?page=wplegal-wizard'
 				);
 				add_dashboard_page( '', '', 'manage_options', 'wplegal-wizard', '' );
-				add_submenu_page( 'legal-pages', __( 'Create Legal Page', 'wplegalpages' ), __( 'Create Legal Page', 'wplegalpages' ), 'manage_options', 'lp-create-page', array( $this, 'create_page' ) );
 				if ( version_compare( $this->version, '2.7.0', '<' ) ) {
 					add_submenu_page( 'legal-pages', __( 'Cookie Bar', 'wplegalpages' ), __( 'Cookie Bar', 'wplegalpages' ), 'manage_options', 'lp-eu-cookies', array( $this, 'update_eu_cookies' ) );
 				}
@@ -475,18 +474,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 		}
 
-
-		/**
-		 * This Callback function for Create Page menu for WPLegalpages.
-		 */
-		public function create_page() {
-			$activated = apply_filters( 'wplegal_check_license_status', true );
-			if ( $activated ) {
-				$this->enqueue_common_style_scripts();
-				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/create-page.php';
-				$this->wplegalpages_mascot_enqueue();
-			}
-		}
 
 		/**
 		 * This Callback function for Show Page menu for WPLegalpages.
