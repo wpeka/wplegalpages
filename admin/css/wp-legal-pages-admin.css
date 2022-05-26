@@ -351,6 +351,7 @@ div.wplegalpages-addon-promotion img,
 div.wplegalpages-pro-promotion img {
 	max-width: 100%;
 	height: auto;
+	margin-bottom: 15px;
 }
 div.wplegal-choose-template {
 	padding: 10px;
@@ -435,7 +436,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 #wplegalpages-settings-app.wplegalpages-app-container {
     background-color: #F3F6FF;
     margin-left: -20px;
-    padding: 32px 0;
+    padding-bottom: 32px;
     /*font-family: 'Lato', sans-serif;*/
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     font-size: 14px;
@@ -948,6 +949,9 @@ div.ql-toolbar.ql-snow {
     border: 1px solid #d8dbe0;
     padding: 1rem;
 }
-div.wplegalpages-addon-promotion img, div.wplegalpages-pro-promotion img {
-	margin-bottom: 32px;
+.wplegalpages-app-container .wplegalpages-pro-promotion img {
+	max-width: 100%;
+	height: auto;
+	margin-left: 20px;
+	margin-bottom: 15px;
 }
