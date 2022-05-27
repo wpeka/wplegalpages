@@ -106,7 +106,6 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		$submenu_array = wp_list_pluck( $submenu['legal-pages'], 2 );
 		$this->assertTrue( in_array( 'legal-pages', $submenu_array ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		$this->assertTrue( in_array( 'lp-show-pages', $submenu_array ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-		$this->assertTrue( in_array( 'lp-create-page', $submenu_array ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		$this->assertTrue( in_array( 'getting-started', $submenu_array ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 	}
 
