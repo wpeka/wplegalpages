@@ -443,6 +443,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
     line-height: 20px;
     min-height: 750px;
     color: #3c4b64;
+	padding-top: 32px;
 }
 #wplegalpages-settings-app.wplegalpages-app-container span,
 #wplegalpages-settings-app.wplegalpages-app-container button,
@@ -949,9 +950,15 @@ div.ql-toolbar.ql-snow {
     border: 1px solid #d8dbe0;
     padding: 1rem;
 }
-.wplegalpages-app-container .wplegalpages-pro-promotion img {
+.wplegalpages-pro-promotion-settings-page img {
 	max-width: 100%;
 	height: auto;
-	margin-left: 20px;
 	margin-bottom: 15px;
+}
+.wplegalpages-pro-promotion-settings-page > a {
+	display: block;
+    margin: 1% auto;
+    text-align: center;
+    padding-right: 20px;
+	margin-bottom: 0;
 }
