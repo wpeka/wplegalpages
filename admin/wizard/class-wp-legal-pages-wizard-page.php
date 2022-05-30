@@ -478,15 +478,15 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 			$address       = ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : '';
 
 			if ( '1' === $is_pro ) {
-				$date                    = ! empty( $lp_general['date'] ) ? esc_attr( $lp_general['date'] ) : '';
-				$days                    = ! empty( $lp_general['days'] ) ? esc_attr( $lp_general['days'] ) : '';
-				$duration                = ! empty( $lp_general['duration'] ) ? esc_attr( $lp_general['duration'] ) : '';
-				$disclosing_party        = ! empty( $lp_general['disclosing-party'] ) ? esc_attr( $lp_general['disclosing-party'] ) : '';
-				$recipient_party         = ! empty( $lp_general['recipient-party'] ) ? esc_attr( $lp_general['recipient-party'] ) : '';
-				$general['facebook-url'] = ! empty( $lp_general['facebook-url'] ) ? esc_attr( $lp_general['facebook-url'] ) : '';
-				$general['google-url']   = ! empty( $lp_general['google-url'] ) ? esc_attr( $lp_general['google-url'] ) : '';
-				$general['twitter-url']  = ! empty( $lp_general['twitter-url'] ) ? esc_attr( $lp_general['twitter-url'] ) : '';
-				$general['linkedin-url'] = ! empty( $lp_general['linkedin-url'] ) ? esc_attr( $lp_general['linkedin-url'] ) : '';
+				$date             = ! empty( $lp_general['date'] ) ? esc_attr( $lp_general['date'] ) : '';
+				$days             = ! empty( $lp_general['days'] ) ? esc_attr( $lp_general['days'] ) : '';
+				$duration         = ! empty( $lp_general['duration'] ) ? esc_attr( $lp_general['duration'] ) : '';
+				$disclosing_party = ! empty( $lp_general['disclosing-party'] ) ? esc_attr( $lp_general['disclosing-party'] ) : '';
+				$recipient_party  = ! empty( $lp_general['recipient-party'] ) ? esc_attr( $lp_general['recipient-party'] ) : '';
+				$facebook         = ! empty( $lp_general['facebook-url'] ) ? esc_attr( $lp_general['facebook-url'] ) : '';
+				$google           = ! empty( $lp_general['google-url'] ) ? esc_attr( $lp_general['google-url'] ) : '';
+				$twitter          = ! empty( $lp_general['twitter-url'] ) ? esc_attr( $lp_general['twitter-url'] ) : '';
+				$linkedin         = ! empty( $lp_general['linkedin-url'] ) ? esc_attr( $lp_general['linkedin-url'] ) : '';
 			}
 			switch ( $page ) {
 				case 'terms_of_use':
@@ -731,22 +731,22 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						),
 						'lp-facebook-url'  => array(
 							'title'    => __( 'Facebook URL', 'wplegalpages' ),
-							'value'    => $email,
+							'value'    => $facebook,
 							'required' => true,
 						),
 						'lp-google-url'    => array(
 							'title'    => __( 'Google URL', 'wplegalpages' ),
-							'value'    => $email,
+							'value'    => $google,
 							'required' => true,
 						),
 						'lp-twitter-url'   => array(
 							'title'    => __( 'Twitter URL', 'wplegalpages' ),
-							'value'    => $email,
+							'value'    => $twitter,
 							'required' => true,
 						),
 						'lp-linkedin-url'  => array(
 							'title'    => __( 'LinkedIn URL', 'wplegalpages' ),
-							'value'    => $email,
+							'value'    => $linkedin,
 							'required' => true,
 						),
 					);
