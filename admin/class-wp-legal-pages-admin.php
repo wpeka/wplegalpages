@@ -2356,6 +2356,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						case 'testimonials_disclosure':
 							$pid = get_option( 'wplegal_testimonials_disclosure_page' );
 							break;
+						case 'antispam':
+							$pid = get_option( 'wplegal_antispam_page' );
+							break;
+						case 'ftc_statement':
+							$pid = get_option( 'wplegal_ftc_statement_page' );
+							break;
+						case 'double_dart':
+							$pid = get_option( 'wplegal_double_dart_page' );
+							break;
+						case 'about_us':
+							$pid = get_option( 'wplegal_about_us_page' );
+							break;
 						case 'confidentiality_disclosure':
 							$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
 							break;
@@ -2803,6 +2815,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					break;
 				case 'testimonials_disclosure':
 					$pid = get_option( 'wplegal_testimonials_disclosure_page' );
+					break;
+				case 'antispam':
+					$pid = get_option( 'wplegal_antispam_page' );
+					break;
+				case 'ftc_statement':
+					$pid = get_option( 'wplegal_ftc_statement_page' );
+					break;
+				case 'double_dart':
+					$pid = get_option( 'wplegal_double_dart_page' );
+					break;
+				case 'about_us':
+					$pid = get_option( 'wplegal_about_us_page' );
 					break;
 				case 'confidentiality_disclosure':
 					$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
