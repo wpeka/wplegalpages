@@ -209,7 +209,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 					),
 					'earnings_disclaimer_grey' => array(
 						'title'   => __( 'Earnings Disclaimer', 'wplegalpages' ),
-						'desc'    => __( 'To limit your legal liability and keep your users informed.', 'wplegalpages' ),
+						'desc'    => __( 'To limit your legal liability if your website is promoting strategies and programs to help users make money.', 'wplegalpages' ),
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
