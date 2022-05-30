@@ -2351,10 +2351,25 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$pid = get_option( 'wplegal_affiliate_disclosure_page' );
 							break;
 						case 'amazon_affiliate_disclosure':
+							$pid = get_option( 'wplegal_amazon_affiliate_disclosure_page' );
+							break;
+						case 'testimonials_disclosure':
 							$pid = get_option( 'wplegal_testimonials_disclosure_page' );
 							break;
-						case 'testimonails_disclosure':
-							$pid = get_option( 'wplegal_amazon_affiliate_disclosure_page' );
+						case 'confidentiality_disclosure':
+							$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
+							break;
+						case 'general_disclaimer':
+							$pid = get_option( 'wplegal_general_disclaimer_page' );
+							break;
+						case 'earnings_disclaimer':
+							$pid = get_option( 'wplegal_earnings_disclaimer_page' );
+							break;
+						case 'medical_disclaimer':
+							$pid = get_option( 'wplegal_medical_disclaimer_page' );
+							break;
+						case 'newsletters':
+							$pid = get_option( 'wplegal_newsletters_page' );
 							break;
 						case 'standard_privacy_policy':
 							$pid = get_option( 'wplegal_standard_privacy_policy_page' );
@@ -2791,6 +2806,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					break;
 				case 'confidentiality_disclosure':
 					$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
+					break;
+				case 'general_disclaimer':
+					$pid = get_option( 'wplegal_general_disclaimer_page' );
+					break;
+				case 'earnings_disclaimer':
+					$pid = get_option( 'wplegal_earnings_disclaimer_page' );
+					break;
+				case 'medical_disclaimer':
+					$pid = get_option( 'wplegal_medical_disclaimer_page' );
+					break;
+				case 'newsletters':
+					$pid = get_option( 'wplegal_newsletters_page' );
 					break;
 				case 'standard_privacy_policy':
 					$pid = get_option( 'wplegal_standard_privacy_policy_page' );
