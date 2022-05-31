@@ -1380,7 +1380,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		public function wplegalpages_trash_page( $post_id ) {
 			if ( 'yes' === get_post_meta( $post_id, 'is_legal', true ) ) {
 				$footer_options = get_option( 'lp_footer_options' );
-				$footer_pages   = $footer_options['footer_legal_pages'];
+				if ( empty( $footer_options ) ) {
+					return;
+				}
+				$footer_pages = $footer_options['footer_legal_pages'];
 				if ( ! empty( $footer_pages ) && in_array( $post_id, $footer_pages, true ) ) {
 					$length               = count( $footer_pages );
 					$updated_footer_pages = array();
@@ -2344,6 +2347,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						case 'fb_policy':
 							$pid = get_option( 'wplegal_fb_policy_page' );
 							break;
+						case 'dmca':
+							$pid = get_option( 'wplegal_dmca_page' );
+							break;
 						case 'affiliate_agreement':
 							$pid = get_option( 'wplegal_affiliate_agreement_page' );
 							break;
@@ -3103,6 +3109,117 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				}
 			}
 			return $options;
+		}
+
+		/**
+		 * Delete entry from options when policy page is moved to trash
+		 *
+		 * @param int $post_id Post ID.
+		 */
+		public function wplegalpages_pro_trash_post( $post_id ) {
+			$legal_page_type = get_post_meta( $post_id, 'legal_page_type', true );
+			if ( $legal_page_type && ! empty( $legal_page_type ) ) {
+				switch ( $legal_page_type ) {
+					case 'terms_of_use':
+						delete_option( 'wplegal_terms_of_use_page' );
+						break;
+					case 'california_privacy_policy':
+						delete_option( 'wplegal_california_privacy_policy_page' );
+						break;
+					case 'privacy_policy':
+						delete_option( 'wplegal_privacy_policy_page' );
+						break;
+					case 'returns_refunds_policy':
+						delete_option( 'wplegal_returns_refunds_policy_page' );
+						break;
+					case 'impressum':
+						delete_option( 'wplegal_impressum_page' );
+						break;
+					case 'standard_privacy_policy':
+						delete_option( 'wplegal_standard_privacy_policy_page' );
+						break;
+					case 'terms_of_use_free':
+						delete_option( 'wplegal_terms_of_use_free_page' );
+						break;
+					case 'dmca':
+						delete_option( 'wplegal_dmca_page' );
+						break;
+					case 'ccpa_free':
+						delete_option( 'wplegal_ccpa_free_page' );
+						break;
+					case 'coppa':
+						delete_option( 'wplegal_coppa_policy_page' );
+						break;
+					case 'terms_forced':
+						delete_option( 'wplegal_terms_forced_policy_page' );
+						break;
+					case 'gdpr_cookie_policy':
+						delete_option( 'wplegal_gdpr_cookie_policy_page' );
+						break;
+					case 'gdpr_privacy_policy':
+						delete_option( 'wplegal_gdpr_privacy_policy_page' );
+						break;
+					case 'cookies_policy':
+						delete_option( 'wplegal_cookies_policy_page' );
+						break;
+					case 'blog_comments_policy':
+						delete_option( 'wplegal_blog_comments_policy_page' );
+						break;
+					case 'linking_policy':
+						delete_option( 'wplegal_linking_policy_page' );
+						break;
+					case 'external_link_policy':
+						delete_option( 'wplegal_external_link_policy_page' );
+						break;
+					case 'fb_policy':
+						delete_option( 'wplegal_fb_policy_page' );
+						break;
+					case 'affiliate_disclosure':
+						delete_option( 'wplegal_affiliate_disclosure_page' );
+						break;
+					case 'amazon_affiliate_disclosure':
+						delete_option( 'wplegal_amazon_affiliate_disclosure_page' );
+						break;
+					case 'testimonials_disclosure':
+						delete_option( 'wplegal_testimonials_disclosure_page' );
+						break;
+					case 'confidentiality_disclosure':
+						delete_option( 'wplegal_confidentiality_disclosure_page' );
+						break;
+					case 'general_disclaimer':
+						delete_option( 'wplegal_general_disclaimer_page' );
+						break;
+					case 'earnings_disclaimer':
+						delete_option( 'wplegal_earnings_disclaimer_page' );
+						break;
+					case 'medical_disclaimer':
+						delete_option( 'wplegal_medical_disclaimer_page' );
+						break;
+					case 'newsletters':
+						delete_option( 'wplegal_newsletters_page' );
+						break;
+					case 'affiliate_agreement':
+						delete_option( 'wplegal_affiliate_agreement_page' );
+						break;
+					case 'antispam':
+						delete_option( 'wplegal_antispam_page' );
+						break;
+					case 'ftc_statement':
+						delete_option( 'wplegal_ftc_statement_page' );
+						break;
+					case 'double_dart':
+						delete_option( 'wplegal_double_dart_page' );
+						break;
+					case 'about_us':
+						delete_option( 'wplegal_about_us_page' );
+						break;
+					case 'custom_legal':
+						if ( intval( get_option( 'wplegal_custom_legal_page' ) ) === intval( $post_id ) ) {
+							delete_option( 'wplegal_custom_legal_page' );
+						}
+						break;
+				}
+			}
 		}
 
 		/**

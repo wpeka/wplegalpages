@@ -216,6 +216,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$this->loader->add_action( 'wp_ajax_page_settings_save', $plugin_admin, 'wplegalpages_page_settings_save' );
 			$this->loader->add_action( 'wp_ajax_page_sections_save', $plugin_admin, 'wplegalpages_page_sections_save' );
 			$this->loader->add_action( 'wp_ajax_page_preview_save', $plugin_admin, 'wplegalpages_page_preview_save' );
+			$this->loader->add_action( 'wp_trash_post', $plugin_admin, 'wplegalpages_pro_trash_post' );
 		}
 
 		/**
