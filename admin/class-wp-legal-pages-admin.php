@@ -2239,6 +2239,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						$google_url       = isset( $lp_general['google-url'] ) ? $lp_general['google-url'] : '';
 						$twitter_url      = isset( $lp_general['twitter-url'] ) ? $lp_general['twitter-url'] : '';
 						$linkedin_url     = isset( $lp_general['linkedin-url'] ) ? $lp_general['linkedin-url'] : '';
+						$address          = isset( $lp_general['address'] ) ? $lp_general['address'] : '';
 					}
 					if ( isset( $_POST['data'] ) && ! empty( $_POST['data'] ) ) {
 						$general = array();
@@ -2261,7 +2262,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						$general['cityState']            = isset( $_POST['data']['lp-city-state'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-city-state'] ) ) : $city_state;
 						$general['country']              = isset( $_POST['data']['lp-country'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-country'] ) ) : $country;
 						$general['language']             = isset( $_POST['data']['lp-lang'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-lang'] ) ) : determine_locale();
-						$general['address']              = isset( $lp_general['address'] ) ? $lp_general['address'] : '';
+						$general['address']              = isset( $_POST['data']['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-address'] ) ) : $address;
 						$general['niche']                = isset( $lp_general['niche'] ) ? $lp_general['niche'] : '';
 						$general['generate']             = isset( $lp_general['generate'] ) ? $lp_general['generate'] : '0';
 						$general['privacy']              = isset( $lp_general['privacy'] ) ? $lp_general['privacy'] : '0';
@@ -2373,6 +2374,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'about_us':
 							$pid = get_option( 'wplegal_about_us_page' );
+							break;
+						case 'cpra':
+							$pid = get_option( 'wplegal_cpra_page' );
 							break;
 						case 'confidentiality_disclosure':
 							$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
@@ -2688,6 +2692,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$pid = get_option( 'wplegal_about_us_page' );
 							$url = get_edit_post_link( $pid );
 							break;
+						case 'cpra':
+							$pid = get_option( 'wplegal_cpra_page' );
+							$url = get_edit_post_link( $pid );
+							break;
 						case 'earnings_disclaimer':
 							$pid = get_option( 'wplegal_earnings_disclaimer_page' );
 							$url = get_edit_post_link( $pid );
@@ -2833,6 +2841,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					break;
 				case 'about_us':
 					$pid = get_option( 'wplegal_about_us_page' );
+					break;
+				case 'cpra':
+					$pid = get_option( 'wplegal_cpra_page' );
 					break;
 				case 'confidentiality_disclosure':
 					$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
@@ -3212,6 +3223,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						break;
 					case 'about_us':
 						delete_option( 'wplegal_about_us_page' );
+						break;
+					case 'cpra':
+						delete_option( 'wplegal_cpra_page' );
 						break;
 					case 'custom_legal':
 						if ( intval( get_option( 'wplegal_custom_legal_page' ) ) === intval( $post_id ) ) {
