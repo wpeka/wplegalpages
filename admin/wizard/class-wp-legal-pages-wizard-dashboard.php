@@ -70,7 +70,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'enabled' => true,
 					),
 					'ccpa_free'               => array(
-						'title'   => __( 'CCPA - California Consumer Privacy Act', 'wplegalpages' ),
+						'title'   => __( 'Standard CCPA', 'wplegalpages' ),
 						'desc'    => __( 'If you are collecting personal data and have California based users.', 'wplegalpages' ),
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'lang'    => array( 'English' ),
@@ -106,7 +106,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'enabled' => false,
 					),
 					'california_privacy_policy_grey' => array(
-						'title'   => __( 'CCPA', 'wplegalpages' ),
+						'title'   => __( 'Professional CCPA', 'wplegalpages' ),
 						'desc'    => __( 'If you have California based users and want to give them clarity on disclosure of personal information.', 'wplegalpages' ),
 						'btn_txt' => __( 'Go Pro', 'wplegalpages' ),
 						'enabled' => false,
@@ -248,6 +248,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 					'double_dart_grey'         => array(
 						'title'   => __( 'Double Dart Cookies', 'wplegalpages' ),
 						'desc'    => __( 'To notify users if your website or blog is using any Double Click Dart Cookie.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+					'cpra_grey'                => array(
+						'title'   => __( 'CPRA - California Privacy Rights Act', 'wplegalpages' ),
+						'desc'    => __( 'If you have users from California and want to give them clarity on the disclosure of personal information..', 'wplegalpages' ),
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),

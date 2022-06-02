@@ -124,6 +124,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'about_us':
 					$pid = get_option( 'wplegal_about_us_page' );
 					break;
+				case 'cpra':
+					$pid = get_option( 'wplegal_cpra_page' );
+					break;
 				case 'newsletters':
 					$pid = get_option( 'wplegal_newsletters_page' );
 					break;
@@ -317,6 +320,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
 						$page_preview .= __( 'About Us', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'cpra':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'CPRA - California Privacy Rights Act', 'wplegalpages' );
 						$page_preview .= '</h1>';
 					}
 					break;
@@ -747,6 +757,25 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						'lp-linkedin-url'  => array(
 							'title'    => __( 'LinkedIn URL', 'wplegalpages' ),
 							'value'    => $linkedin,
+							'required' => true,
+						),
+					);
+					break;
+				case 'cpra':
+					$fields = array(
+						'lp-business-name' => array(
+							'title'    => __( 'Business Name', 'wplegalpages' ),
+							'value'    => $business_name,
+							'required' => true,
+						),
+						'lp-email'         => array(
+							'title'    => __( 'Email', 'wplegalpages' ),
+							'value'    => $email,
+							'required' => true,
+						),
+						'lp-address'       => array(
+							'title'    => __( 'Address', 'wplegalpages' ),
+							'value'    => $address,
 							'required' => true,
 						),
 					);
@@ -1793,6 +1822,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					$options      = array();
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
 
+					break;
+
+				case 'cpra':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'CPRA - California Privacy Rights Act' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_cpra_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
 					break;
 
 				case 'newsletters':
