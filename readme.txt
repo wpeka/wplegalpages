@@ -6,8 +6,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD, CalOPPA, datenschutz, impressum, coppa, terms and conditions, terms of service, disclosure, disclaimer, disclosure statement, affiliate, affiliate links, amazon, woo commerce, woo, antispam, confidentiality, refund, refund policy, returns, earnings, ftc, medical disclaimer, adsense, analytics, google ads, law, legal, cookie consent, cookie notice, cookie, comments, testimonial, webshop, ttdsg
 Requires at least: 5.0
 Requires PHP: 7.0
-Tested up to: 5.9.2
-Stable tag: 2.8.1
+Tested up to: 6.0
+Stable tag: 2.9.0
 
 Easiest way to generate legal pages (Privacy, Terms, Disclaimers & more) on your website. Ideal for blogs, ecommerce and marketing websites.
 
@@ -232,6 +232,16 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 WPLegalPages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 == Changelog ==
+
+= 2.9.0 =
+* Feature: Added Wizard.
+* Update: UI Improvement for settings Page.
+* Update: Updated UTM paramaters for links.
+* Update: Added Standard Privacy Policy Template.
+* Update: Added Standard CCPA Template.
+* Update: Added Terms of Use Template.
+* Update: Added shortcode for published pages in 'All Legal Pages'.
+
 = 2.8.1 =
 * Fix: Show legal pages in footer.
 * Fix: Template names displayed in editor.
