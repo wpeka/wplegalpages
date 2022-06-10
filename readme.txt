@@ -234,12 +234,12 @@ WPLegalPages provides you pre-approved templates. You may want to customize it a
 == Changelog ==
 
 = 2.9.0 =
-* Feature: Added Wizard.
+* Feature: Added Wizard to create a Legal Pages.
 * Update: UI Improvement for settings Page.
 * Update: Updated UTM paramaters for links.
-* Update: Added Standard Privacy Policy Template.
-* Update: Added Standard CCPA Template.
-* Update: Added Terms of Use Template.
+* Feature: Added Standard Privacy Policy Template.
+* Feature: Added Standard CCPA Template.
+* Feature: Added Terms of Use Template.
 * Update: Added shortcode for published pages in 'All Legal Pages'.
 
 = 2.8.1 =
