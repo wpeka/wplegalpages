@@ -62,6 +62,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 
 			$this->plugin_name = $plugin_name;
 			$this->version     = $version;
+			add_shortcode( 'wplegalpage', array( $this, 'wplegalpages_page_shortcode' ) );
 
 		}
 
@@ -123,6 +124,31 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 				}
 			}
 			return $content;
+		}
+
+		/**
+		 * Shortcode callback function for All Legal Pages shortcode.
+		 *
+		 * @param Array $atts shortcode attributes.
+		 */
+		public function wplegalpages_page_shortcode( $atts ) {
+			global $wpdb;
+			$atts         = shortcode_atts(
+				array(
+					'pid' => 0,
+				),
+				$atts
+			);
+			$pid          = $atts['pid'];
+			$post_tbl     = $wpdb->prefix . 'posts';
+			$postmeta_tbl = $wpdb->prefix . 'postmeta';
+			$page         = $wpdb->get_row( $wpdb->prepare( 'SELECT ptbl.* FROM ' . $post_tbl . ' as ptbl , ' . $postmeta_tbl . ' as pmtbl WHERE ptbl.ID = pmtbl.post_id and ptbl.ID = %d and ptbl.post_status = %s AND pmtbl.meta_key = %s', array( $pid, 'publish', 'is_legal' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( isset( $page->post_content ) ) {
+				$content = $page->post_content;
+			}
+			if ( is_single() || is_page() ) {
+				return html_entity_decode( $content );
+			}
 		}
 
 		/**
