@@ -553,7 +553,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'create'              => array(
 						'text'        => __( 'Generate a personalized legal policy page your website.', 'wplegalpages' ),
 						'button_text' => __( 'Create Page', 'wplegalpages' ),
-						'url'         => menu_page_url( 'lp-create-page', false ),
+						'url'         => menu_page_url( 'wplegal-wizard', false ),
 					),
 					'wizard'              => array(
 						'text'        => __( 'Use our newly created wizard to create legal pages for your website.', 'wplegalpages' ),
