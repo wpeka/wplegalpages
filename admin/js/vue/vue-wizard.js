@@ -255,7 +255,7 @@ Vue.component('GettingStartedWizardForm',{
             var self = this;	
             var html = [];		
             var static_classes = 'wplegal-template-type-name';
-            if( '1' !== wizard_obj.pro_active ) {
+            if( 'Activated' !== wizard_obj.pro_active ) {
                 static_classes += ' wplegal-hide-content';
             }
             for( let key in this.formElements ) {	
@@ -476,7 +476,7 @@ Vue.component('WizardPromotional', {
 Vue.component('WizardForms', {
     render(createElement) {
         var self = this;
-        if( '1' !== wizard_obj.pro_active ){
+        if( 'Activated' !== wizard_obj.pro_active ){
             var tab_1 = createElement('v-tab', {
                 props: {
                     title: createElement('span',{

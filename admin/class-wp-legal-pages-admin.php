@@ -1461,7 +1461,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'image_url'          => WPL_LITE_PLUGIN_URL . 'admin/js/vue/wizard_images/',
 					'ajax_url'           => admin_url( 'admin-ajax.php' ),
 					'ajax_nonce'         => wp_create_nonce( 'admin-ajax-nonce' ),
-					'pro_active'         => get_option( '_lp_pro_active' ),
+					'pro_active'         => get_option( 'wc_am_client_wplegalpages_pro_activated' ),
 					'available_tab'      => __( 'Available Templates', 'wplegalpages' ),
 					'pro_tab'            => __( 'Templates', 'wplegalpages' ),
 					'promotion_text'     => __( 'Can\'t find what you are looking for?', 'wplegalpages' ),
@@ -2451,7 +2451,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				}
 				$return_data[ $lp_type_key ] = $data;
 			}
-			if ( '1' !== get_option( '_lp_pro_active' ) ) {
+			if ( 'Activated' !== get_option( 'wc_am_client_wplegalpages_pro_activated' ) ) {
 				$lp_pro_pages = $lp->get_pro_legal_pages();
 				foreach ( $lp_pro_pages as $lp_type_key => $lp_type ) {
 					$data = array();

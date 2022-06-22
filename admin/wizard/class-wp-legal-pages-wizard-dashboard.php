@@ -46,7 +46,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 		 * @since    1.0.0
 		 */
 		public function __construct() {
-			$this->legal_pages    = array(
+			$this->legal_pages = array(
 				'Available Templates' => array(
 					'standard_privacy_policy' => array(
 						'title'   => __( 'Standard Privacy Policy', 'wplegalpages' ),
@@ -78,7 +78,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 					),
 				),
 			);
-			$this->legal_pages    = apply_filters( 'wplegalpages_wizard_templates', $this->legal_pages );
+			if ( 'Activated' === get_option( 'wc_am_client_wplegalpages_pro_activated' ) ) {
+				$this->legal_pages = apply_filters( 'wplegalpages_wizard_templates', $this->legal_pages );
+			}
 			$this->pro_legalpages = array(
 				'Popular'     => array(
 					'privacy_policy_grey'            => array(
