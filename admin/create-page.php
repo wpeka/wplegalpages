@@ -23,8 +23,8 @@ $lp_pro_active = get_option( '_lp_pro_active' );
 		?>
 	<div style="">
 		<div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
-			<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin-banner&utm_campaign=wplegalpages-createlegal&utm_content=upgrade-to-pro" target="_blank">
-				<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/upgrade-to-pro-version.png'; ?>">
+			<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=create-legal-pages&utm_content=upgrade-banner" target="_blank">
+				<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/wplegalpages-banner.png'; ?>">
 			</a>
 		</div>
 	</div>
@@ -57,7 +57,7 @@ $lp_pro_active = get_option( '_lp_pro_active' );
 				'post_status'  => 'publish',
 				'post_author'  => 1,
 			);
-			
+
 			$pid = wp_insert_post( $post_args );
 			update_post_meta( $pid, 'is_legal', 'yes' );
 			$url = get_permalink( $pid );
@@ -331,7 +331,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 	</div>
 		<?php if ( '1' !== $lp_pro_active ) : ?>
 		<div id="lp_generalid_right">
-			<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_campaign=wplegalpages&utm_content=upgrade-to-pro-for-all-templates" style="text-decoration:none;padding-left:20px;" target="_blank">
+			<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=create-legal-pages&utm_content=upgrade-to-pro-for-all-templates" style="text-decoration:none;padding-left:20px;" target="_blank">
 			<?php esc_attr_e( 'Upgrade to Pro for All templates', 'wplegalpages' ); ?>
 			</a>
 		</div>

@@ -83,32 +83,25 @@ if ( false === $lp_banner_options || empty( $lp_banner_options ) ) {
 	update_option( 'lp_banner_options', $lp_banner_options );
 }
 if ( '1' === $lpterms ) {
+	if ( '1' !== $lp_pro_active ) :
+		?>
+		<div style="">
+			<div style="line-height: 2.4em;" class='wplegalpages-pro-promotion-settings-page'>
+				<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=settings-page&utm_content=upgrade-banner" target="_blank">
+					<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/wplegalpages-banner.png'; ?>">
+				</a>
+			</div>
+		</div>
+		<div style="clear:both;"></div>
+		<?php
+	endif;
 	?>
 <div class="wplegalpages-app-container" id="wplegalpages-settings-app">
 	<c-container class="wplegalpages-settings-container">
 		<div class="wplegalpages-marketing-banner">
-		<?php
-		if ( '1' !== $lp_pro_active ) :
-			?>
-			<div style="">
-				<div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
-					<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin-banner&utm_campaign=wplegalpages-settings&utm_content=upgrade-to-pro" target="_blank">
-						<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/upgrade-to-pro-version.png'; ?>">
-					</a>
 				</div>
-			</div>
-			<div style="clear:both;"></div>
-			<?php
-		endif;
-		?>
-		</div>
 		<c-form id="lp-save-settings-form" spellcheck="false" class="wplegalpages-settings-form">
 			<input type="hidden" name="settings_form_nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings-form-nonce' ) ); ?>"/>
-			<div class="wplegalpages-settings-top">
-				<div class="wplegalpages-save-button">
-					<c-button color="info" @click="saveGeneralSettings"><span>Save Changes</span></c-button>
-				</div>
-			</div>
 			<div class="wplegalpages-settings-content">
 				<div id="wplegalpages-save-settings-alert">Settings saved</div>	
 				<c-tabs variant="pills" ref="active_tab" class="wplegalpages-settings-nav">

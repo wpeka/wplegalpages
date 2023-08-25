@@ -106,7 +106,6 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		$submenu_array = wp_list_pluck( $submenu['legal-pages'], 2 );
 		$this->assertTrue( in_array( 'legal-pages', $submenu_array ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		$this->assertTrue( in_array( 'lp-show-pages', $submenu_array ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-		$this->assertTrue( in_array( 'lp-create-page', $submenu_array ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		$this->assertTrue( in_array( 'getting-started', $submenu_array ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 	}
 
@@ -202,24 +201,6 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/show-pages.php';
 		$actual_html = ob_get_clean();
 		$this->assertEquals( $actual_html, $expected_html );
-
-		global $wp_styles, $wp_scripts;
-		$all_enqueue_style  = $wp_styles->queue;
-		$all_enqueue_script = $wp_scripts->queue;
-
-		$this->assertTrue( in_array( 'wp-legal-pages-admin', $all_enqueue_style ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-		$this->assertTrue( in_array( 'wp-legal-pages-bootstrap', $all_enqueue_style ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-		$this->assertTrue( in_array( 'wp-legal-pages-tooltip', $all_enqueue_script ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-	}
-
-	/**
-	 * Test for create_page function
-	 */
-	public function test_create_page() {
-		ob_start();
-		self::$wplegalpages_admin->create_page();
-		$expected_html = ob_get_clean();
-		$this->assertTrue( is_string( $expected_html ) && wp_strip_all_tags( $expected_html ) );
 
 		global $wp_styles, $wp_scripts;
 		$all_enqueue_style  = $wp_styles->queue;

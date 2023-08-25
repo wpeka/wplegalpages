@@ -20,8 +20,8 @@ if ( '1' !== $lp_pro_active ) :
 	?>
 <div style="">
 	<div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
-		<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin-banner&utm_campaign=wplegalpages-alllegalpages&utm_content=upgrade-to-pro" target="_blank">
-			<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/upgrade-to-pro-version.png'; ?>">
+		<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=all-legal-pages&utm_content=upgrade-banner" target="_blank">
+			<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/wplegalpages-banner.png'; ?>">
 		</a>
 	</div>
 </div>
@@ -57,6 +57,7 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 			<th width="5%"><?php esc_attr_e( 'S.No.', 'wplegalpages' ); ?></th>
 			<th width="30%"><?php esc_attr_e( 'Page Title', 'wplegalpages' ); ?></th>
 			<th width="10%"><?php esc_attr_e( 'Page ID', 'wplegalpages' ); ?></th>
+			<th width="20%"><?php esc_attr_e( 'Shortcode', 'wplegalpages' ); ?></th>
 			<th width="10%"><?php esc_attr_e( 'Author', 'wplegalpages' ); ?></th>
 			<th width="10%"><?php esc_attr_e( 'Date', 'wplegalpages' ); ?></th>
 			<th width="10%"><?php esc_attr_e( 'Action', 'wplegalpages' ); ?></th>
@@ -84,6 +85,7 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 				<td><?php echo esc_attr( $count ); ?></td>
 				<td><?php echo esc_attr( $res->post_title ); ?></td>
 				<td><?php echo esc_attr( $res->ID ); ?></td>
+				<td><?php echo '[wplegalpage pid=' . esc_attr( $res->ID ) . ']'; ?></td>
 				<td><?php echo esc_attr( ucfirst( $author[0]->user_login ) ); ?></td>
 				<td><?php echo esc_attr( gmdate( 'Y/m/d', strtotime( $res->post_date ) ) ); ?></td>
 				<td>
@@ -106,6 +108,7 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 			<th width="5%"><?php esc_attr_e( 'S.No.', 'wplegalpages' ); ?></th>
 			<th width="30%"><?php esc_attr_e( 'Page Title', 'wplegalpages' ); ?></th>
 			<th width="10%"><?php esc_attr_e( 'Page ID', 'wplegalpages' ); ?></th>
+			<th width="20%"><?php esc_attr_e( 'Shortcode', 'wplegalpages' ); ?></th>
 			<th width="10%"><?php esc_attr_e( 'Author', 'wplegalpages' ); ?></th>
 			<th width="10%"><?php esc_attr_e( 'Date', 'wplegalpages' ); ?></th>
 			<th width="10%"><?php esc_attr_e( 'Action', 'wplegalpages' ); ?></th>
