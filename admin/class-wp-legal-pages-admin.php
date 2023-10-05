@@ -102,7 +102,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			 * class.
 			 */
 			wp_register_script( $this->plugin_name . '-tooltip', plugin_dir_url( __FILE__ ) . 'js/tooltip' . WPLPP_SUFFIX . '.js', array(), $this->version, true );
-			wp_register_script( $this->plugin_name . '-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue.js', array(), $this->version, true );
+			wp_register_script( $this->plugin_name . '-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue.min.js', array(), $this->version, true );
 			wp_register_script( $this->plugin_name . '-vue-js', plugin_dir_url( __FILE__ ) . 'js/vue/vue-getting-started.js', array( 'jquery' ), $this->version, true );
 			wp_register_script( $this->plugin_name . '-main', plugin_dir_url( __FILE__ ) . 'js/vue/wplegalpages-admin-main.js', array( 'jquery' ), $this->version, false );
 			wp_register_script( $this->plugin_name . '-vue-mascot', plugin_dir_url( __FILE__ ) . 'js/vue/vue-mascot.js', array( 'jquery' ), $this->version, true );
@@ -1443,7 +1443,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_enqueue_style( $this->plugin_name . '-vue-style', plugin_dir_url( __FILE__ ) . 'css/vue/vue-wizard.css', array(), $this->version, '' );
 			wp_enqueue_style( $this->plugin_name . '-vue-toast-style', plugin_dir_url( __FILE__ ) . 'css/vue/vue-toast.css', array(), $this->version, '' );
 			wp_enqueue_style( $this->plugin_name . '-vue-nav-tabs-style', plugin_dir_url( __FILE__ ) . 'css/vue/vue-nav-tabs.css', array(), $this->version, '' );
-			wp_register_script( $this->plugin_name . '-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue.js', array(), $this->version, false );
+			wp_register_script( $this->plugin_name . '-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue.min.js', array(), $this->version, false );
 			wp_register_script( $this->plugin_name . '-vue-router', plugin_dir_url( __FILE__ ) . 'js/vue/vue-router.js', array(), $this->version, false );
 			wp_register_script( $this->plugin_name . '-vue-toast', plugin_dir_url( __FILE__ ) . 'js/vue/vue-toast.js', array(), $this->version, false );
 			wp_register_script( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'wizard/libraries/select2/select2.js', array( 'jquery' ), $this->version, true );
