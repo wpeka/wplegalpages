@@ -146,8 +146,15 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			if ( isset( $page->post_content ) ) {
 				$content = $page->post_content;
 			}
+		
 			if ( is_single() || is_page() ) {
-				return html_entity_decode( $content );
+				// Check if the current user has the "unfiltered_html" capability
+				if ( current_user_can( 'unfiltered_html' ) ) {
+					// If the user has the capability, decode the content
+					$content = html_entity_decode( $content );
+				}
+				
+				return $content;
 			}
 		}
 
