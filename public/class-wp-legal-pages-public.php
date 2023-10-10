@@ -149,7 +149,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 		
 			if ( is_single() || is_page() ) {
 				// Check if the current user has the "unfiltered_html" capability
-				if ( current_user_can( 'unfiltered_html' ) ) {
+				if ( author_can($pid, 'unfiltered_html' ) ) {
 					// If the user has the capability, decode the content
 					$content = html_entity_decode( $content );
 				}
