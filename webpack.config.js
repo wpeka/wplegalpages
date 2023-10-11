@@ -18,7 +18,7 @@
          path: path.resolve(__dirname, 'admin/js/vue'),
          filename: 'wplegalpages-admin-[name].js'
      },
-     mode: 'development',
+     mode: 'production',
      resolve: {
          alias: {
              'vue$': 'vue/dist/vue.esm.js'
