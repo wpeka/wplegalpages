@@ -774,7 +774,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'end_user_license':
 					$fields = array(
 						'lp-business-name' => array(
-							'title'    => __( 'Website/Application/Software NAME', 'wplegalpages' ),
+							'title'    => __( 'Website/Application/Software Name', 'wplegalpages' ),
 							'value'    => $business_name,
 							'required' => true,
 						),
