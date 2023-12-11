@@ -2103,6 +2103,55 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							}
 							update_post_meta( $pid, 'legal_page_impressum_options', $data );
 							break;
+						case 'end_user_license':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'End User License Agreement' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$end_user_license_options = $this->wplegalpages_get_remote_data( 'get_end_user_license_settings' );
+								update_post_meta( $pid, 'legal_page_end_user_license_settings', $end_user_license_options );
+								update_option( 'wplegal_end_user_license_page', $pid );
+							} else {
+								$end_user_license_settings = get_post_meta( $pid, 'legal_page_end_user_license_settings', true );
+								$end_user_license_options  = $end_user_license_settings;
+							}
+
+							$data = array();
+							foreach ( $end_user_license_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_end_user_license_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+
+							update_post_meta( $pid, 'legal_page_end_user_license_options', $data );
+							break;
 						case 'privacy_policy':
 							if ( empty( $pid ) ) {
 								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Privacy Policy' );
@@ -2377,6 +2426,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'cpra':
 							$pid = get_option( 'wplegal_cpra_page' );
+							break;
+						case 'end_user_license':
+							$pid = get_option( 'wplegal_end_user_license_page' );
 							break;
 						case 'confidentiality_disclosure':
 							$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
@@ -2696,6 +2748,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$pid = get_option( 'wplegal_cpra_page' );
 							$url = get_edit_post_link( $pid );
 							break;
+						case 'end_user_license':
+							$pid = get_option( 'wplegal_end_user_license_page' );
+							$url = get_edit_post_link( $pid );
+							break;
 						case 'earnings_disclaimer':
 							$pid = get_option( 'wplegal_earnings_disclaimer_page' );
 							$url = get_edit_post_link( $pid );
@@ -2844,6 +2900,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					break;
 				case 'cpra':
 					$pid = get_option( 'wplegal_cpra_page' );
+					break;
+				case 'end_user_license':
+					$pid = get_option( 'wplegal_end_user_license_page' );
 					break;
 				case 'confidentiality_disclosure':
 					$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
@@ -3226,6 +3285,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						break;
 					case 'cpra':
 						delete_option( 'wplegal_cpra_page' );
+						break;
+					case 'end_user_license':
+						delete_option( 'wplegal_end_user_license_page' );
 						break;
 					case 'custom_legal':
 						if ( intval( get_option( 'wplegal_custom_legal_page' ) ) === intval( $post_id ) ) {

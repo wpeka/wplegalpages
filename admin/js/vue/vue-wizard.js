@@ -78,7 +78,7 @@ Vue.component('TheWizardTimeline', {
                     },[]));
                 }
                 html.push(createElement('div', {
-                    class: this.stepClass(index), 
+                    class: this.stepClass(index),
                     domProps: {
                         textContent: index+1,
                     }
@@ -252,64 +252,64 @@ Vue.component('GettingStartedWizardForm',{
             this.$root.page = value;
         },
         createFormTypeLabel(createElement){
-            var self = this;	
-            var html = [];		
+            var self = this;
+            var html = [];
             var static_classes = 'wplegal-template-type-name';
             if( 'Activated' !== wizard_obj.pro_active ) {
                 static_classes += ' wplegal-hide-content';
             }
-            for( let key in this.formElements ) {	
-                var el = createElement('div', {	
-                    class: 'wplegal-template-type-row'	
-                },	
-                [	
+            for( let key in this.formElements ) {
+                var el = createElement('div', {
+                    class: 'wplegal-template-type-row'
+                },
+                [
                     createElement('div',{
                         staticClass: 'wplegal-template-type-header'
-                    },[createElement('h4',{	
+                    },[createElement('h4',{
                         staticClass: static_classes,
-                        domProps: {	
-                            textContent: key	
-                        }	
-                    })]),	
-                    createElement('div', {	
-                        staticClass: 'wplegal-template-type-labels-row'},	
-                        self.createFormRows(createElement, this.formElements[key])	
-                    )	
-                ],	
-                );	
-                html.push(el);	
-            }	
-            return html;	
+                        domProps: {
+                            textContent: key
+                        }
+                    })]),
+                    createElement('div', {
+                        staticClass: 'wplegal-template-type-labels-row'},
+                        self.createFormRows(createElement, this.formElements[key])
+                    )
+                ],
+                );
+                html.push(el);
+            }
+            return html;
         },
         createProTemplateLabels(createElement) {
-            var self = this;	
+            var self = this;
             var html = [];
-            for( let key in this.formProElements ) {	
-                var el = createElement('div', {	
-                    class: 'wplegal-template-type-row'	
-                },	
-                [	
+            for( let key in this.formProElements ) {
+                var el = createElement('div', {
+                    class: 'wplegal-template-type-row'
+                },
+                [
                     createElement('div',{
                         staticClass: 'wplegal-template-type-header'
-                    },[createElement('h4',{	
-                        staticClass: 'wplegal-template-type-name',	
-                        domProps: {	
-                            textContent: key	
-                        }	
-                    })]),	
-                    createElement('div', {	
-                        staticClass: 'wplegal-template-type-labels-row wplegal-template-type-labels-pro-row'},	
-                        self.createProTemplateRows(createElement, this.formProElements[key])	
-                    )	
-                ],	
-                );	
-                html.push(el);	
-            }	
+                    },[createElement('h4',{
+                        staticClass: 'wplegal-template-type-name',
+                        domProps: {
+                            textContent: key
+                        }
+                    })]),
+                    createElement('div', {
+                        staticClass: 'wplegal-template-type-labels-row wplegal-template-type-labels-pro-row'},
+                        self.createProTemplateRows(createElement, this.formProElements[key])
+                    )
+                ],
+                );
+                html.push(el);
+            }
             return html;
         },
         createProTemplateRows: function(createElement, formProElements) {
-            var self = this;	
-            var html = [];	
+            var self = this;
+            var html = [];
             formProElements.forEach((value, index) => {
                 var el = createElement('label',{
                     class:'wplegal-pro-label-class',
@@ -333,8 +333,8 @@ Vue.component('GettingStartedWizardForm',{
             return html;
         },
         createFormRows:function(createElement, formLabelElements) {
-            var self = this;	
-            var html = [];	
+            var self = this;
+            var html = [];
             formLabelElements.forEach((value, index) => {
                 var buttonText = value.pid ? wizard_obj.welcome.edit : wizard_obj.welcome.create;
                 var el = createElement('label',{
@@ -619,7 +619,7 @@ Vue.component('PageSettingsWizardForm',{
                         attrs: {
                             content: 'Use this placeholder in your Legal Policy description.'
                         }
-                    }) 
+                    })
                 ])])]),createElement('div',{
                         staticClass:'settings-input-text-input'
                     },[createElement('input',{
@@ -1119,7 +1119,7 @@ Vue.component('PageSectionsWizardForm',{
                         var e = (createElement('tinymce',{
                             staticClass:'settings-input-textarea',
                             attrs: {
-                                init : { 
+                                init : {
                                     menubar:false,
                                     height:400,
                                     plugins: ["paste"],
@@ -1247,6 +1247,11 @@ Vue.component('PageSectionsWizardForm',{
     created: function(){
         this.$parent.hasError = !1;
         $.get(wizard_obj.ajax_url,{'action':'step_settings','nonce':wizard_obj.ajax_nonce,'step':'page_sections','page':this.$root.page}).then((response => {
+			$(document).ready(function() {
+				if ($('#no_of_days_information').length) {
+					$('#no_of_days_information').prop('required', true);
+				}
+			});
             if(response.success) {
                 this.formElements = response.data;
                 for(var key in this.formElements) {
@@ -1449,7 +1454,7 @@ const StepPageSettings = {
 };
 
 const StepPageSections = {
- 
+
     data:function(){
         if ( 'custom_legal' === this.$root.page ) {
             wizard_obj.sections.subtitle = 'Enter the details for your policy template';
