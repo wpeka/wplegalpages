@@ -590,7 +590,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'title'       => __( 'Help Center', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
 							'description' => __( 'Read the documentation to find answers to your questions.', 'wplegalpages' ),
-							'link'        => 'https://docs.wpeka.com/wp-legal-pages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=help-center',
+							'link'        => 'https://club.wpeka.com/docs/wp-legal-pages/',
 							'link_title'  => 'Learn more >>',
 						),
 						'video_guides' => array(
@@ -605,7 +605,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'title'       => __( 'FAQ with answers', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
 							'description' => __( 'Find answers to some of the most commonly asked questions.', 'wplegalpages' ),
-							'link'        => 'https://docs.wpeka.com/wp-legal-pages/faq?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=faq',
+							'link'        => 'https://club.wpeka.com/docs/wp-legal-pages/',
 							'link_title'  => 'Find out >>',
 
 						),
@@ -641,9 +641,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'support_text'       => __( 'Support', 'wplegalpages' ),
 						'support_url'        => $support_url,
 						'documentation_text' => __( 'Documentation', 'wplegalpages' ),
-						'documentation_url'  => 'https://docs.wpeka.com/wp-legal-pages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=help-masco&utm_content=documentation',
+						'documentation_url'  => 'https://club.wpeka.com/docs/wp-legal-pages/',
 						'faq_text'           => __( 'FAQ', 'wplegalpages' ),
-						'faq_url'            => 'https://docs.wpeka.com/wp-legal-pages/faq/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=help-mascot&utm_content=faq',
+						'faq_url'            => 'https://club.wpeka.com/docs/wp-legal-pages/',
 						'upgrade_text'       => __( 'Upgrade to Pro &raquo;', 'wplegalpages' ),
 						'upgrade_url'        => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=help-mascot&utm_content=upgrade-to-pro',
 					),
@@ -2103,6 +2103,55 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							}
 							update_post_meta( $pid, 'legal_page_impressum_options', $data );
 							break;
+						case 'end_user_license':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'End User License Agreement' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$end_user_license_options = $this->wplegalpages_get_remote_data( 'get_end_user_license_settings' );
+								update_post_meta( $pid, 'legal_page_end_user_license_settings', $end_user_license_options );
+								update_option( 'wplegal_end_user_license_page', $pid );
+							} else {
+								$end_user_license_settings = get_post_meta( $pid, 'legal_page_end_user_license_settings', true );
+								$end_user_license_options  = $end_user_license_settings;
+							}
+
+							$data = array();
+							foreach ( $end_user_license_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_end_user_license_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+
+							update_post_meta( $pid, 'legal_page_end_user_license_options', $data );
+							break;
 						case 'privacy_policy':
 							if ( empty( $pid ) ) {
 								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Privacy Policy' );
@@ -2377,6 +2426,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'cpra':
 							$pid = get_option( 'wplegal_cpra_page' );
+							break;
+						case 'end_user_license':
+							$pid = get_option( 'wplegal_end_user_license_page' );
 							break;
 						case 'confidentiality_disclosure':
 							$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
@@ -2696,6 +2748,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$pid = get_option( 'wplegal_cpra_page' );
 							$url = get_edit_post_link( $pid );
 							break;
+						case 'end_user_license':
+							$pid = get_option( 'wplegal_end_user_license_page' );
+							$url = get_edit_post_link( $pid );
+							break;
 						case 'earnings_disclaimer':
 							$pid = get_option( 'wplegal_earnings_disclaimer_page' );
 							$url = get_edit_post_link( $pid );
@@ -2844,6 +2900,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					break;
 				case 'cpra':
 					$pid = get_option( 'wplegal_cpra_page' );
+					break;
+				case 'end_user_license':
+					$pid = get_option( 'wplegal_end_user_license_page' );
 					break;
 				case 'confidentiality_disclosure':
 					$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
@@ -3226,6 +3285,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						break;
 					case 'cpra':
 						delete_option( 'wplegal_cpra_page' );
+						break;
+					case 'end_user_license':
+						delete_option( 'wplegal_end_user_license_page' );
 						break;
 					case 'custom_legal':
 						if ( intval( get_option( 'wplegal_custom_legal_page' ) ) === intval( $post_id ) ) {
