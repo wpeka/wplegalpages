@@ -29,7 +29,7 @@ $lp_accept_terms  = get_option( 'lp_accept_terms' );
 						wp_nonce_field( 'lp-accept-terms' );
 					}
 					?>
-					<input 
+					<input
 					<?php
 					if ( '1' === $lp_accept_terms ) :
 						echo 'checked ';
@@ -48,7 +48,7 @@ endif;
 				<?php endif; ?>
 			</div>
 		</div>
-		<div class="lp_accept_terms_other_content" 
+		<div class="lp_accept_terms_other_content"
 		<?php
 		if ( '1' !== $lp_accept_terms ) :
 			echo 'style="display:none;"';
@@ -84,8 +84,8 @@ endif;
 			<h4 class="myLabel-head"><?php esc_attr_e( 'Help & Support', 'wplegalpages' ); ?></h4>
 			<div>
 				<ul>
-					<li><a href="https://docs.wpeka.com/wp-legal-pages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=help-center" target="_blank"><?php esc_attr_e( 'Documentation &raquo;', 'wplegalpages' ); ?></a></li>
-					<li><a href="https://docs.wpeka.com/wp-legal-pages/faq?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=faq" target="_blank"><?php esc_attr_e( 'FAQs &raquo;', 'wplegalpages' ); ?></a></li>
+					<li><a href="https://club.wpeka.com/docs/wp-legal-pages/" target="_blank"><?php esc_attr_e( 'Documentation &raquo;', 'wplegalpages' ); ?></a></li>
+					<li><a href="https://club.wpeka.com/docs/wp-legal-pages/" target="_blank"><?php esc_attr_e( 'FAQs &raquo;', 'wplegalpages' ); ?></a></li>
 					<?php if ( '1' === $lp_pro_installed ) : ?>
 						<li><a href="https://club.wpeka.com/my-account/orders/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=support" target="_blank"><?php esc_attr_e( 'Support &raquo;', 'wplegalpages' ); ?></a></li>
 					<?php else : ?>
