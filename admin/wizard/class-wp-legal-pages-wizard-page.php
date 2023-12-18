@@ -2116,10 +2116,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						$end_user_license_options  = $end_user_license_settings;
 					}
 					$options      = $end_user_license_options;
-					error_log('END USER PREVIEW');
-					error_log(print_r($options,true));
-					error_log(print_r($lp_general,true));
-					error_log($lp_general['language']);
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
 					break;
 				case 'custom_legal':
