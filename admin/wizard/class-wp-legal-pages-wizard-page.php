@@ -1384,7 +1384,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						$end_user_license_options = get_post_meta( $pid, 'legal_page_end_user_license_settings', true );
 						if ( ! $end_user_license_options || empty( $end_user_license_options ) ) {
 							$fields = $this->get_remote_data( 'get_end_user_license_settings' );
-							update_post_meta( $pid, 'legal_page_impressum_settings', $fields );
+							update_post_meta( $pid, 'legal_page_end_user_license_settings', $fields );
 						} else {
 							$fields = $end_user_license_options;
 						}
@@ -2116,6 +2116,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						$end_user_license_options  = $end_user_license_settings;
 					}
 					$options      = $end_user_license_options;
+					error_log('END USER PREVIEW');
+					error_log(print_r($options,true));
+					error_log(print_r($lp_general,true));
+					error_log($lp_general['language']);
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
 					break;
 				case 'custom_legal':
