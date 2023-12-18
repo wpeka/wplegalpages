@@ -2553,6 +2553,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'selected' => 'en_US' === $selected_lang ? true : false,
 			);
 			foreach ( $languages as $locale ) {
+				// condition to restict language dropdown to en lang for end user license agreement
+				if ( 'end_user_license' === $page ) {//remove this condition after adding translations
+					break;
+				}
 				if ( isset( $translations[ $locale ] ) ) {
 					$translation = $translations[ $locale ];
 					$options[]   = array(

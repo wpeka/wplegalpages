@@ -1384,7 +1384,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						$end_user_license_options = get_post_meta( $pid, 'legal_page_end_user_license_settings', true );
 						if ( ! $end_user_license_options || empty( $end_user_license_options ) ) {
 							$fields = $this->get_remote_data( 'get_end_user_license_settings' );
-							update_post_meta( $pid, 'legal_page_impressum_settings', $fields );
+							update_post_meta( $pid, 'legal_page_end_user_license_settings', $fields );
 						} else {
 							$fields = $end_user_license_options;
 						}

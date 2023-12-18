@@ -58,9 +58,9 @@ if ( ! function_exists( 'wplp_fs' ) ) {
 	}
 
 	// Init Analytics.
-	wplp_fs();
+	// wplp_fs();
 	// SDK initiated.
-	do_action( 'wplp_fs_loaded' );
+	// do_action( 'wplp_fs_loaded' );
 }
 
 if ( ! defined( 'WPLPP_SUFFIX' ) ) {
