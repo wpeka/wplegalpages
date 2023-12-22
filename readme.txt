@@ -6,8 +6,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD, CalOPPA, datenschutz, impressum, coppa, terms and conditions, terms of service, disclosure, disclaimer, disclosure statement, affiliate, affiliate links, amazon, woo commerce, woo, antispam, confidentiality, refund, refund policy, returns, earnings, ftc, medical disclaimer, adsense, analytics, google ads, law, legal, cookie consent, cookie notice, cookie, comments, testimonial, webshop, ttdsg
 Requires at least: 5.0
 Requires PHP: 7.0
-Tested up to: 6.1
-Stable tag: 2.9.3
+Tested up to: 6.4
+Stable tag: 2.9.5
 
 Easiest way to generate legal pages (Privacy, Terms, Disclaimers & more) on your website. Ideal for blogs, ecommerce and marketing websites.
 
@@ -146,7 +146,7 @@ Generates a standard External Links policy page. Covers the links to or from ext
 = Anti Spam Policy =
 Generate a standard anti-spam policy. Required for businesses, applications or websites who allow users to send emails in bulk.
 
-WPML Compatible - [Learn more](https://docs.wpeka.com/wp-legal-pages/faq#how-to-translate-wplegalpages-plugin-using-wpml?utm_source=wporg&utm_medium=wp-legal-pages&utm_campaign=link&utm_content=wpml-compatible-faq)
+WPML Compatible - [Learn more](https://club.wpeka.com/docs/wp-legal-pages/)
 
 Endorsements: If you need to disclose about your affiliate links on your website. This feature enables you to include disclaimer at the end of your posts which has affiliate links. You can also use the Affiliate Disclosure Block to add the disclaimer easily anywhere in your content on page or posts.
 
@@ -156,7 +156,7 @@ Learn more about [WPLegalPages Pro](http://bit.ly/32n3Qrq).
 
 Check out our specially curated playlist on YouTube for tutorial videos [WPLegalPages tutorial videos](https://youtube.com/playlist?list=PLb2uZyVYHgAXGnKHTr2EouG8ZWba60URR).
 
-Browse through our [Help documentations and FAQs](https://docs.wpeka.com/wp-legal-pages/?utm_source=referral&utm_medium=orgpage&utm_campaign=legalpages).
+Browse through our [Help documentations and FAQs](https://club.wpeka.com/docs/wp-legal-pages/).
 
 == SUGGESTIONS ==
 We’re continuously improving. Contact us on our website to have your wishlist added to the plugin.
@@ -183,7 +183,7 @@ We’re continuously improving. Contact us on our website to have your wishlist 
 4. WPLegalPages menu will appear on the left hand side.
 5. Click on the ‘WPLegalPages’ admin menu to get started.
 
-Refer the [help and documentation](https://docs.wpeka.com/wp-legal-pages/?utm_source=referral&utm_medium=orgpage&utm_campaign=legalpages) to know more about How to Install WPLegalPages.
+Refer the [help and documentation](https://club.wpeka.com/docs/wp-legal-pages/) to know more about How to Install WPLegalPages.
 
 == Screenshots ==
 1. Create Legal Page
@@ -232,9 +232,16 @@ GDPR, FTC and other privacy regulators along with ad networks require you to hav
 WPLegalPages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 == Changelog ==
+
+= 2.9.5 =
+* Fix: Minor Bug Fixes.
+
+= 2.9.4 =
+* Update: Wordpress 6.4 compatibility.
+
 = 2.9.3 =
-*Fix: Fixed vulnerability and minor bugs.
-*Update: Added clause for Google Adsense.
+* Fix: Fixed vulnerability and minor bugs.
+* Update: Added clause for Google Adsense.
 
 = 2.9.2 =
 * Update: Wordpress 6.3 compatibility.

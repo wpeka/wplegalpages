@@ -265,6 +265,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
+					'end_user_license_grey'            => array(
+						'title'   => __( 'End User License Agreement', 'wplegalpages' ),
+						'desc'    => __( 'If you use software or online services, a EULA sets usage guidelines and legal boundaries.', 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
 				),
 			);
 		}

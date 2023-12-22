@@ -103,7 +103,7 @@ if ( '1' === $lpterms ) {
 		<c-form id="lp-save-settings-form" spellcheck="false" class="wplegalpages-settings-form">
 			<input type="hidden" name="settings_form_nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings-form-nonce' ) ); ?>"/>
 			<div class="wplegalpages-settings-content">
-				<div id="wplegalpages-save-settings-alert">Settings saved</div>	
+				<div id="wplegalpages-save-settings-alert">Settings saved</div>
 				<c-tabs variant="pills" ref="active_tab" class="wplegalpages-settings-nav">
 					<c-tab title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" href="#general">
 					<?php do_action( 'wp_legalpages_notice' ); ?>
@@ -299,7 +299,7 @@ if ( '1' === $lpterms ) {
 									<?php
 									if ( ! $lp_show_improved_ui ) {
 										?>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Enabled', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Add Privacy Policy links to the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>							
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Enabled', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Add Privacy Policy links to the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<?php
 									} else {
 										?>
@@ -315,7 +315,7 @@ if ( '1' === $lpterms ) {
 									<?php
 									if ( ! $lp_show_improved_ui ) {
 										?>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Legal Pages', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the Legal Pages you want to add to the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>						
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Legal Pages', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the Legal Pages you want to add to the footer.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<?php
 									} else {
 										?>
@@ -525,7 +525,7 @@ if ( '1' === $lpterms ) {
 					<input type="hidden" ref="banner_font_family" v-model="banner_font" name="lp-banner-font-family">
 					<input type="hidden" ref="banner_font_family_mount" value="<?php echo esc_html( stripslashes( $lp_banner_options['banner_font'] ) ); ?>">
 					<input type="hidden" ref="banner_font_size" v-model="banner_font_size" name="lp-banner-font-size">
-					<input type="hidden" ref="banner_font_size_mount" value="<?php echo esc_html( stripslashes( isset( $lp_banner_options['banner_font_size'] ) ? $lp_banner_options['banner_font_size'] : '20px' ) ); ?>">				
+					<input type="hidden" ref="banner_font_size_mount" value="<?php echo esc_html( stripslashes( isset( $lp_banner_options['banner_font_size'] ) ? $lp_banner_options['banner_font_size'] : '20px' ) ); ?>">
 						<v-modal :append-to="appendField" :based-on="show_banner_form" title="Announcement Banner for Legal Pages" @close="showBannerForm">
 							<c-card>
 								<c-card-body>
@@ -590,7 +590,7 @@ if ( '1' === $lpterms ) {
 									}
 									?>
 									<c-col class="col-sm-8">
-											<v-select class="form-group" id="wplegalpages-bar-expiry" :options="banner_number_of_days" v-model="bar_num_of_days">	
+											<v-select class="form-group" id="wplegalpages-bar-expiry" :options="banner_number_of_days" v-model="bar_num_of_days">
 										</c-col>
 									</c-row>
 									<c-row>
@@ -611,7 +611,7 @@ if ( '1' === $lpterms ) {
 									<c-row>
 										<c-col class="col-sm-4"></c-col>
 										<c-col class="col-sm-8">
-											<p class="wplegalpages-custom-css-selector">Insert Shortcodes: 
+											<p class="wplegalpages-custom-css-selector">Insert Shortcodes:
 											<span class="wplegalpages-custom-css-links" @click="addBannerPageCode">title</span>
 											<span class="wplegalpages-custom-css-links" @click="addBannerPageLinkTitle">link</span>
 											<span class="wplegalpages-custom-css-links" @click="addBannerPageHref">href</span>
@@ -713,7 +713,7 @@ if ( '1' === $lpterms ) {
 									}
 									?>
 									<c-col class="col-sm-8">
-											<v-select class="form-group" id="wplegalpages-banner-font-size" :options="banner_font_size_option" v-model="banner_font_size">	
+											<v-select class="form-group" id="wplegalpages-banner-font-size" :options="banner_font_size_option" v-model="banner_font_size">
 										</c-col>
 									</c-row>
 									<c-row>
@@ -1230,7 +1230,7 @@ if ( '1' === $lpterms ) {
 									<c-row class="wplegalpages-shortcode-tab-description">
 										<span>
 											<?php echo esc_html( 'The shortcodes below can be used in place of the mentioned fields in the privacy policy.  For any further information refer the ' ); ?>
-											<a href="https://docs.wpeka.com/wp-legal-pages/setting-up-wplegalpages/general_settings" target="_blank"><?php echo esc_html( 'product documentation' ); ?></a>
+											<a href="https://club.wpeka.com/docs/wp-legal-pages/" target="_blank"><?php echo esc_html( 'product documentation' ); ?></a>
 										</span>
 									</c-row>
 								<div class="wplegalpages-shortcode-table">
@@ -1281,7 +1281,7 @@ WPLegalPages.com is not a law firm, is not comprised of a law firm, and its empl
 Accordingly, we disclaim any and all liability and make no warranties, including disclaimer of warranty for implied purpose, merchantability, or fitness for a particular purpose.  We provide these documents on an as is basis, and offer no express or implied warranties.  The use of our plugin and its related documents is not intended to create any representation or approval of the legality of your site and you may not represent it as such.  We will have no responsibility or liability for any claim of loss, injury, or damages related to your use or reliance on these documents, or any third parties use or reliance on these documents.  They are to be used at your own risk.  Your only remedy for any loss or dissatisfaction with WPLegalPages is to discontinue your use of the service and remove any documents you may have downloaded.
 
 To the degree that we have had a licensed attorney review these documents it is for our own internal purposes and you may not rely on this as legal advice.  Since the law is different in every state, you should have these documents reviewed by an attorney in your jurisdiction.  As stated below, we disclaim any and all liability and warranties, including damages or loss that may result from your use or misuse of the documents.  Unless prohibited or limited by law, our damages in any matter are limited to the amount you paid for the WPLegalPages plugin.</textarea><br/><br/>
-	Please Tick this checkbox to accept our Terms and Policy <input type="checkbox" name="lp_accept_terms" value="1" 
+	Please Tick this checkbox to accept our Terms and Policy <input type="checkbox" name="lp_accept_terms" value="1"
 	<?php
 	if ( '1' === $lpterms ) {
 		echo 'checked';}
