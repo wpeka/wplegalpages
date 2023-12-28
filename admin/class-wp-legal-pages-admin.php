@@ -2115,7 +2115,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 								$end_user_license_settings = get_post_meta( $pid, 'legal_page_end_user_license_settings', true );
 								$end_user_license_options  = $end_user_license_settings;
 							}
-
+						
+                            
 							$data = array();
 							foreach ( $end_user_license_options as $key => $option ) {
 								if ( isset( $_POST['data'][ $key ] ) ) {
@@ -2411,6 +2412,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'testimonials_disclosure':
 							$pid = get_option( 'wplegal_testimonials_disclosure_page' );
+							break;
+						case 'advertising_disclosure':
+							$pid = get_option( 'wplegal_advertising_disclosure_page' );
 							break;
 						case 'antispam':
 							$pid = get_option( 'wplegal_antispam_page' );
@@ -2720,6 +2724,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$pid = get_option( 'wplegal_testimonials_disclosure_page' );
 							$url = get_edit_post_link( $pid );
 							break;
+						case 'advertising_disclosure':
+							$pid = get_option( 'wplegal_advertising_disclosure_page' );
+							$url = get_edit_post_link( $pid );
+							error_log(''. $pid .''. $url );
+							break;
 						case 'confidentiality_disclosure':
 							$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
 							$url = get_edit_post_link( $pid );
@@ -2889,6 +2898,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					break;
 				case 'testimonials_disclosure':
 					$pid = get_option( 'wplegal_testimonials_disclosure_page' );
+					break;
+				case 'advertising_disclosure':
+					$pid = get_option( 'wplegal_advertising_disclosure_page' );
 					break;
 				case 'antispam':
 					$pid = get_option( 'wplegal_antispam_page' );
@@ -3256,6 +3268,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						break;
 					case 'testimonials_disclosure':
 						delete_option( 'wplegal_testimonials_disclosure_page' );
+						break;
+					case 'advertising_disclosure':
+						delete_option( 'wplegal_advertising_disclosure_page' );
 						break;
 					case 'confidentiality_disclosure':
 						delete_option( 'wplegal_confidentiality_disclosure_page' );
