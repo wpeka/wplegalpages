@@ -130,6 +130,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'end_user_license':
 					$pid = get_option( 'wplegal_end_user_license_page' );
 					break;
+				case 'digital_goods_refund_policy':
+					$pid = get_option( 'wplegal_digital_goods_refund_policy_page' );
+					break;
 				case 'newsletters':
 					$pid = get_option( 'wplegal_newsletters_page' );
 					break;
@@ -340,6 +343,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						$page_preview .= '</h1>';
 					}
 					break;
+				case 'digital_goods_refund_policy':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Digital Goods Refund Policy', 'wplegalpages' );
+						$page_preview .= '</h1>';
+						}
+						break;
 				case 'ftc_statement':
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
@@ -790,6 +800,25 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						),
 					);
 					break;
+				case 'digital_goods_refund_policy':
+						$fields = array(
+							'lp-business-name' => array(
+								'title'    => __( 'Website/Application/Software Name', 'wplegalpages' ),
+								'value'    => $business_name,
+								'required' => true,
+							),
+							'lp-phone'         => array(
+								'title'    => __( 'Phone', 'wplegalpages' ),
+								'value'    => $phone,
+								'required' => true,
+							),
+							'lp-email'         => array(
+								'title'    => __( 'Email', 'wplegalpages' ),
+								'value'    => $email,
+								'required' => true,
+							),
+						);
+						break;
 				case 'cpra':
 					$fields = array(
 						'lp-business-name' => array(
@@ -1390,6 +1419,24 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						}
 					}
 					break;
+				case 'digital_goods_refund_policy':
+						if ( empty( $pid ) ) {
+							$pid = $this->get_pid_by_insert_page( $page, 'Digital Goods Refund Policy' );
+							update_post_meta( $pid, 'is_legal', 'yes' );
+							update_post_meta( $pid, 'legal_page_type', $page );
+							$fields = $this->get_remote_data( 'get_digital_goods_refund_policy_settings' );
+							update_post_meta( $pid, 'legal_page_digital_goods_refund_policy_settings', $fields );
+							update_option( 'wplegal_digital_goods_refund_policy_page', $pid );
+						} else {
+							$digital_goods_refund_policy_options = get_post_meta( $pid, 'legal_page_digital_goods_refund_policy_settings', true );
+							if ( ! $digital_goods_refund_policy_options || empty( $digital_goods_refund_policy_options ) ) {
+								$fields = $this->get_remote_data( 'get_digital_goods_refund_policy_settings' );
+								update_post_meta( $pid, 'legal_page_digital_goods_refund_policy_settings', $fields );
+							} else {
+								$fields = $digital_goods_refund_policy_options;
+							}
+						}
+						break;
 			}
 			return $fields;
 		}
@@ -2118,6 +2165,49 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					$options      = $end_user_license_options;
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
 					break;
+				case 'digital_goods_refund_policy':
+
+						if ( empty( $pid ) ) {
+							$pid = $this->get_pid_by_insert_page( $page, 'Digital Goods Refund Policy' );
+							update_post_meta( $pid, 'is_legal', 'yes' );
+							update_post_meta( $pid, 'legal_page_type', $page );
+							$digital_goods_refund_policy_settings = $this->get_remote_data( 'get_digital_goods_refund_policy_settings' );
+							$digital_goods_refund_policy_options  = array();
+							foreach ( $digital_goods_refund_policy_settings as $key => $option ) {
+								if ( isset( $option->checked ) && true === $option->checked ) {
+									$digital_goods_refund_policy_options[ $key ] = true;
+									$fields                    = $option->fields;
+									foreach ( $fields as $field_key => $field ) {
+										if ( isset( $field->checked ) && true === $field->checked ) {
+											$digital_goods_refund_policy_options[ $field_key ] = true;
+											if ( isset( $field->sub_fields ) && ! empty( $field->sub_fields ) ) {
+												foreach ( $field->sub_fields as $key => $sub_field ) {
+													if ( isset( $field->checked ) && true === $field->checked ) {
+														$digital_goods_refund_policy_options[ $key ] = true;
+													} else {
+														$digital_goods_refund_policy_options[ $key ] = false;
+													}
+												}
+											}
+										} else {
+											$digital_goods_refund_policy_options[ $field_key ] = false;
+										}
+									}
+								} else {
+									$digital_goods_refund_policy_options[ $key ] = false;
+								}
+							}
+	
+							update_post_meta( $pid, 'legal_page_digital_goods_refund_policy_settings', $digital_goods_refund_policy_settings );
+							update_post_meta( $pid, 'legal_page_digital_goods_refund_policy_options', $digital_goods_refund_policy_options );
+							update_option( 'wplegal_digital_goods_refund_policy_page', $pid );
+						} else {
+							$digital_goods_refund_policy_settings = get_post_meta( $pid, 'legal_page_digital_goods_refund_policy_options', true );
+							$digital_goods_refund_policy_options  = $digital_goods_refund_policy_settings;
+						}
+						$options      = $digital_goods_refund_policy_options;
+						$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+						break;
 				case 'custom_legal':
 					if ( empty( $pid ) ) {
 						$pid = $this->get_pid_by_insert_page( $page, 'Custom Legal Page' );
