@@ -2727,7 +2727,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						case 'advertising_disclosure':
 							$pid = get_option( 'wplegal_advertising_disclosure_page' );
 							$url = get_edit_post_link( $pid );
-							error_log(''. $pid .''. $url );
 							break;
 						case 'confidentiality_disclosure':
 							$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
