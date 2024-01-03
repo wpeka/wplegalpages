@@ -195,6 +195,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
+					'advertising_disclosure_grey'     => array(
+						'title'   => __( 'Advertising Disclosure ', 'wplegalpages' ),
+						'desc'    => __( "If you promote products or services on your website an 'Advertising Disclosure' page ensures transparency and compliance.", 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
 					'confidentiality_disclosure_grey'  => array(
 						'title'   => __( 'Confidentiality Disclosure ', 'wplegalpages' ),
 						'desc'    => __( 'To protect confidential and proprietary information displayed on your website.', 'wplegalpages' ),
