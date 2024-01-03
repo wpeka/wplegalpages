@@ -103,6 +103,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'testimonials_disclosure':
 					$pid = get_option( 'wplegal_testimonials_disclosure_page' );
 					break;
+					
+				case 'advertising_disclosure':
+					$pid = get_option( 'wplegal_advertising_disclosure_page' );
+					break;	
 				case 'confidentiality_disclosure':
 					$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
 					break;
@@ -277,6 +281,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						$page_preview .= '</h1>';
 					}
 					break;
+					
+				case 'advertising_disclosure':
+						if ( ! empty( $preview_text ) ) {
+							$page_preview .= '<h1>';
+							$page_preview .= __( 'Advertising Disclosure', 'wplegalpages' );
+							$page_preview .= '</h1>';
+						}
+						break;
 				case 'confidentiality_disclosure':
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
@@ -616,6 +628,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						),
 					);
 					break;
+				case 'advertising_disclosure':
+						$fields = array(
+							'lp-domain-name' => array(
+								'title'    => __( 'Domain Name', 'wplegalpages' ),
+								'value'    => $domain_name,
+								'required' => true,
+							),
+							'lp-email'       => array(
+								'title'    => __( 'Email', 'wplegalpages' ),
+								'value'    => $email,
+								'required' => true,
+							),
+						);
+						break;
 				case 'confidentiality_disclosure':
 					$fields = array(
 						'lp-date'             => array(
@@ -1782,6 +1808,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						update_post_meta( $pid, 'is_legal', 'yes' );
 						update_post_meta( $pid, 'legal_page_type', $page );
 						update_option( 'wplegal_testimonials_disclosure_page', $pid );
+					}
+					$options      = array();
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+
+					break;
+			
+				case 'advertising_disclosure':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Advertising Disclosure' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						update_option( 'wplegal_advertising_disclosure_page', $pid );
 					}
 					$options      = array();
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
