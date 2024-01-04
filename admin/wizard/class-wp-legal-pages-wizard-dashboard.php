@@ -277,7 +277,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Dashboard' ) ) {
 						'btn_txt' => __( 'Create', 'wplegalpages' ),
 						'enabled' => false,
 					),
-				),
+					'digital_goods_refund_policy_grey'     => array(
+						'title'   => __( 'Digital Goods Refund Policy', 'wplegalpages' ),
+						'desc'    => __( "If selling digital goods, having a 'Digital Goods Refund Policy' provides clarity, outlining fair and transparent guidelines.", 'wplegalpages' ),
+						'btn_txt' => __( 'Create', 'wplegalpages' ),
+						'enabled' => false,
+					),
+				), 
 			);
 		}
 
