@@ -1,5 +1,5 @@
 $ = jQuery.noConflict();
-
+var localised_data = obj;
 Vue.component('HeaderSection', {
     render(createElement) {
         return createElement('header', {
@@ -187,12 +187,12 @@ Vue.component('TermsSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p', {
             domProps: {
-                innerHTML: obj.terms.text
+                innerHTML: localised_data.terms.text
             }
         }),
         createElement('p', {
             domProps: {
-                textContent: obj.terms.subtext
+                textContent: localised_data.terms.subtext
             }
         }),
         createElement('form', {
@@ -226,7 +226,7 @@ Vue.component('TermsSection', {
             }
         }),createElement('span',{
             domProps: {
-                innerHTML: obj.terms.input_text
+                innerHTML: localised_data.terms.input_text
             }
         })]),
         this.$parent.disabled ? [] : createElement('button',{
@@ -236,7 +236,7 @@ Vue.component('TermsSection', {
                 name: 'accept_terms'
             },
             domProps: {
-                textContent: obj.terms.button_text
+                textContent: localised_data.terms.button_text
             }
         })])])]);
     }
@@ -501,17 +501,17 @@ Vue.component('WizardSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p',{
             domProps: {
-                textContent: obj.wizard.text
+                textContent: localised_data.wizard.text
             }
         }), createElement('p',{
             domProps: {
-                textContent: obj.wizard.subtext
+                textContent: localised_data.wizard.subtext
             }
         }), createElement('a', {
             staticClass: 'wplegal-button',
             domProps: {
-                textContent: obj.wizard.button_text,
-                href:obj.wizard.url
+                textContent: localised_data.wizard.button_text,
+                href:localised_data.wizard.url
             }
         })])]);
     }

@@ -102,8 +102,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			 * class.
 			 */
 			wp_register_script( $this->plugin_name . '-tooltip', plugin_dir_url( __FILE__ ) . 'js/tooltip' . WPLPP_SUFFIX . '.js', array(), $this->version, true );
-			wp_register_script( $this->plugin_name . '-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue.min.js', array(), $this->version, true );
 			wp_register_script( $this->plugin_name . '-vue-js', plugin_dir_url( __FILE__ ) . 'js/vue/vue-getting-started.js', array( 'jquery' ), $this->version, true );
+			wp_register_script( $this->plugin_name . '-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue.min.js', array(), $this->version, true );
 			wp_register_script( $this->plugin_name . '-main', plugin_dir_url( __FILE__ ) . 'js/vue/wplegalpages-admin-main.js', array( 'jquery' ), $this->version, false );
 			wp_register_script( $this->plugin_name . '-vue-mascot', plugin_dir_url( __FILE__ ) . 'js/vue/vue-mascot.js', array( 'jquery' ), $this->version, true );
 			wp_register_script( $this->plugin_name . '-wizard-js', plugin_dir_url( __FILE__ ) . 'js/wplegalpages-admin-wizard' . WPLPP_SUFFIX . '.js', array( 'jquery' ), $this->version, true );
@@ -124,12 +124,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		public function admin_menu() {
 			$terms = get_option( 'lp_accept_terms' );
 			if ( '1' === $terms ) {
-				add_menu_page( __( 'WPLegalPages', 'wplegalpages' ), __( 'WPLegalPages', 'wplegalpages' ), 'manage_options', 'legal-pages', array( $this, 'admin_setting' ), 'dashicons-media-default', 66 );
+				// Note - fix the icon image size
+				add_menu_page( __( 'WPLegalPages', 'wplegalpages' ), __( 'WPLegalPages', 'wplegalpages' ), 'manage_options', 'legal-pages', array( $this, 'wp_legalpages_new_admin_screen' ), WPL_LITE_PLUGIN_URL.'admin/images/wplegal_pages_main_menu_icon.png', 66 );
 			} else {
 				add_menu_page( __( 'WPLegalPages', 'wplegalpages' ), __( 'WPLegalPages', 'wplegalpages' ), 'manage_options', 'getting-started', array( $this, 'vue_getting_started' ), 'dashicons-media-default', 66 );
 			}
 			if ( '1' === $terms ) {
-				add_submenu_page( 'legal-pages', __( 'Settings', 'wplegalpages' ), __( 'Settings', 'wplegalpages' ), 'manage_options', 'legal-pages', array( $this, 'admin_setting' ) );
+				// add_submenu_page( 'legal-pages', __( 'Settings', 'wplegalpages' ), __( 'Settings', 'wplegalpages' ), 'manage_options', 'legal-pages', array( $this, 'admin_setting' ) );
 				add_submenu_page( 'legal-pages', __( 'All Legal Pages', 'wplegalpages' ), __( 'All Legal Pages', 'wplegalpages' ), 'manage_options', 'lp-show-pages', array( $this, 'show_pages' ) );
 				add_submenu_page(
 					'legal-pages',
@@ -379,6 +380,43 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		/**
+		 * Callback function for Dashboard page.
+		 *
+		 * @since 2.10.0
+		 */
+		public function wp_legalpages_new_admin_screen() {
+
+			$pro_is_activated = get_option( '_lp_pro_active' );
+			$data_reqs_on = true;
+			///
+			$this->enqueue_common_style_scripts();
+			$this->wplegalpages_mascot_enqueue();
+
+			wp_enqueue_script(
+				'wp-legalpages-admin-revamp',
+				WPL_LITE_PLUGIN_URL . 'admin/js/wp-legalpages-admin-revamp.js',
+				array( 'jquery' ),
+				true
+			);
+			wp_localize_script(
+				'wp-legalpages-admin-revamp',
+				'gdpr_localize_data',
+				array(
+					'ajaxurl'        		=> admin_url( 'admin-ajax.php' ),
+					'gdprurl'         		=> WPL_LITE_PLUGIN_URL,
+					'siteurl'        		=> site_url(),
+					'admin_url'				=> admin_url(),
+					'is_pro_activated'		=> $pro_is_activated,
+					'is_data_req_on'		=> $data_reqs_on,
+				)
+			);
+
+			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wp-legal-pages-main-screen.php';
+
+
+		}
+
+		/**
 		 * This Callback function for Admin Setting menu for WPLegalpages.
 		 */
 		public function admin_setting() {
@@ -507,7 +545,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			} else {
 				$support_url = 'https://wordpress.org/support/plugin/wplegalpages/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=forums';
 			}
-
+			wp_enqueue_style( $this->plugin_name . '-vue-style' );
+			wp_enqueue_script( $this->plugin_name . '-vue' );
+			wp_enqueue_script( $this->plugin_name . '-vue-js' );
 			wp_localize_script(
 				$this->plugin_name . '-vue-js',
 				'obj',
@@ -613,9 +653,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					),
 				)
 			);
-			wp_enqueue_style( $this->plugin_name . '-vue-style' );
-			wp_enqueue_script( $this->plugin_name . '-vue' );
-			wp_enqueue_script( $this->plugin_name . '-vue-js' );
+
 			?>
 			<div id="gettingstartedapp"></div>
 			<div id="wplegal-mascot-app"></div>
@@ -2116,8 +2154,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 								$end_user_license_settings = get_post_meta( $pid, 'legal_page_end_user_license_settings', true );
 								$end_user_license_options  = $end_user_license_settings;
 							}
-						
-                            
+
+
 							$data = array();
 							foreach ( $end_user_license_options as $key => $option ) {
 								if ( isset( $_POST['data'][ $key ] ) ) {
@@ -2154,7 +2192,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 							update_post_meta( $pid, 'legal_page_end_user_license_options', $data );
 							break;
-							
+
 						case 'digital_goods_refund_policy':
 							if ( empty( $pid ) ) {
 								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Digital Goods Refund Policy' );
@@ -2611,7 +2649,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'selected' => 'en_US' === $selected_lang ? true : false,
 			);
 			foreach ( $languages as $locale ) {
-				
+
 				if ( isset( $translations[ $locale ] ) ) {
 					$translation = $translations[ $locale ];
 					$options[]   = array(
@@ -3406,5 +3444,92 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 			return $current_dir;
 		}
+
+		/**
+		 * Create Popup Delete Process.
+		 *
+		 * @since 2.3.5
+		 */
+
+		public function create_popup_delete_process() {
+
+			global $wpdb;
+			$lp_obj = new Wplegalpages_Pro();
+
+			if ( isset( $_REQUEST['mode'] ) && 'delete' === $_REQUEST['mode'] && current_user_can( 'manage_options' ) ) {
+				if ( isset( $_REQUEST['nonce'] ) ) {
+					wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'lp-submit-create-popups' );
+				}
+				$lpid = isset( $_REQUEST['lpid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) : '';
+				$wpdb->delete( $lp_obj->popuptable, array( 'id' => $lpid ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				wp_redirect( admin_url( 'admin.php?page=legal-pages#create_popup' ) );
+			}
+		}
+
+		public function create_popup_edit_process () {
+
+
+				global $wpdb;
+				$lp_obj = new Wplegalpages_Pro();
+
+				if ( isset( $_GET['page'] ) && ( $_GET['page'] == 'legal-pages' )) {
+					$flag = false;
+
+
+					// update_option( 'wplegalpalges_flag_key', $flag );
+
+					if ( isset( $_REQUEST['mode'] ) && 'edit' === $_REQUEST['mode'] && isset( $_REQUEST['lpid'] ) ) {
+
+						$lpid = isset( $_REQUEST['lpid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) : 0;
+						$row  = $wpdb->get_row( $wpdb->prepare( 'SELECT * from ' . $lp_obj->popuptable . ' where id=%d', $lpid ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+
+						// Output JavaScript to update the input field value
+						if ( $row ) {
+
+							// The option key
+							$option_key = 'wplegalpalges_create_popup';
+
+							$serialized_object = serialize( $row );
+							// The new option value
+							$option_value = $serialized_object;
+
+							// Check if the option key already exists
+							$existing_value = get_option( $option_key );
+
+							if ( false === $existing_value ) {
+								// Option key doesn't exist, so add it
+								add_option( $option_key, $option_value );
+							} else {
+								// Option key exists, so update its value
+								update_option( $option_key, $option_value );
+							}
+
+							//flag key
+
+							$option_key_flag = 'wplegalpalges_flag_key';
+							$flag = true;
+							// Check if the option key already exists
+							$existing_value_flag = get_option( $option_key_flag );
+
+							if ( false === $existing_value_flag ) {
+								// Option key doesn't exist, so add it
+								add_option( $option_key_flag, $flag );
+							} else {
+
+								// Option key exists, so update its value
+								update_option( $option_key_flag, $flag );
+							}
+
+						}
+
+						wp_redirect( admin_url( 'admin.php?page=legal-pages#create_popup' ) );
+
+					}
+				}
+
+		}
+
+
+
 	}
 }

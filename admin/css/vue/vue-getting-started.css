@@ -11,6 +11,7 @@ body {
 	font-weight: normal;
 	width: 750px;
 	margin: 50px auto;
+	margin-top: -21px;
 }
 .wplegal-container p {
 	color: inherit;
@@ -417,4 +418,8 @@ body {
 }
 .wplegal-container .wplegal-button:hover {
 	background-color: #18488a;
+}
+/* Revamp Style  */
+.wp-legalpages-admin-tabs-content .wp-legalpages-admin-tabs-inner-content .wplegal-container .wplegal-logo{
+	margin-top: 30px;
 }
