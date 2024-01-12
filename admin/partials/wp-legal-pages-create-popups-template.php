@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 	?>
 
 	<head>
@@ -22,8 +21,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	global $wpdb;
 	$lp_obj = new Wplegalpages_Pro();
 
+	// fetch the popup details
 	$serialized_object = get_option( 'wplegalpalges_create_popup' );
 	$unserialized_object = unserialize( $serialized_object );
+	// $current_mode = isset( $_REQUEST['mode'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['mode'] ) ) : '';
+
+	// if ( get_option('wplegalpalges_flag_key') ) {
+	// 	$current_mode = 'edit';
+	// }
 
 
 	wp_enqueue_style( 'bootstrap-min' );
@@ -45,22 +50,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 			}
 			if ( ! empty( $_POST ) && isset( $_POST['lp-submit'] ) ) :
 				check_admin_referer( 'lp-submit-create-popups' );
-				$current_mode = isset( $_REQUEST['mode'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['mode'] ) ) : '';
 				$lpid         = isset( $_REQUEST['lpid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) : '';
 				$lp_name      = isset( $_POST['lp-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-name'] ) ) : '';
 				$lp_title     = isset( $_POST['lp-title'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-title'] ) ) : '';
 				$content      = isset( $_POST['lp-content'] ) ? wp_kses_post( wp_unslash( $_POST['lp-content'] ) ) : '';
-
-
 				$update_id = $unserialized_object->id;
 
 				$content      = stripslashes_deep( $content );
-
-				$current_mode = isset( $_REQUEST['mode'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['mode'] ) ) : '';
-
-				if ( get_option('wplegalpalges_flag_key') ) {
-					$current_mode = 'edit';
-				}
 
 				if ( get_option('wplegalpalges_flag_key') ) {
 					$update = $wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
@@ -72,7 +68,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						array( 'id' => $update_id ),
 						array( '%s', '%s' )
 					);
-
+					// set the flag key to false once popup is updated
 					$option_key = 'wplegalpalges_flag_key';
 					$option_value = false;
 					update_option( $option_key, $option_value );
@@ -307,15 +303,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 													wp_nonce_field( 'lp-submit-create-popups' );
 												}
 												?>
-												<input type="submit" class="btn btn-primary mybtn" onclick="sp_content_save();" name="lp-submit" value="
-												<?php
-												if ( 'edit' === $current_mode ) {
-													esc_attr_e( 'Update', 'wplegalpages' );
-												} else {
-													esc_attr_e( 'Save', 'wplegalpages' );
-												}
-												?>
-												" /> </p>
+												<input type="submit" class="btn btn-primary mybtn" onclick="sp_content_save();" name="lp-submit" value="<?php esc_attr_e( 'Save', 'wplegalpages' );?>"/> </p>
 										</form>
 									</div>
 									<div class="clear"></div>

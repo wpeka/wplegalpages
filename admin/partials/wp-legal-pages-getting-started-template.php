@@ -19,11 +19,9 @@ $baseurl = '';
 if ( isset( $_SERVER['PHP_SELF'] ) ) {
 	$baseurl = esc_url_raw( wp_unslash( $_SERVER['PHP_SELF'] ) );
 }
-$terms = get_option( 'lp_accept_terms' );
 
 if ( class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
-	if ( '1' === $terms ) {
-		WP_Legal_Pages_Admin::vue_getting_started();
-	}
+	WP_Legal_Pages_Admin::vue_getting_started();
+
 }

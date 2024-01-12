@@ -12,10 +12,8 @@
  */
 
 $pro_is_activated = get_option( '_lp_pro_active' );
-//remove it later
-$pro_is_activated = false;
-$is_data_req_on = true;
-
+$popup = get_option( 'lp_popup_enabled' );
+$lp_pro_key_activated    = get_option( 'wc_am_client_wplegalpages_pro_activated' );
 
 ?>
 
@@ -37,11 +35,11 @@ $is_data_req_on = true;
 				<div class="wp-legalpages-admin-help">
 						<div class="wp-legalpages-admin-help-icon">
 							<!-- //image  -->
-							<a href="https://club.wpeka.com/docs/wp-cookie-consent/" target="_blank">
+							<a href="https://club.wpeka.com/docs/wp-legal-pages/" target="_blank">
 								<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/wp_cookie_help.png'; ?>" alt="WP Cookie Consent Help">
 							</a>
 						</div>
-						<div class="wp-legalpages-admin-help-text"><a href="https://club.wpeka.com/docs/wp-cookie-consent/" target="_blank">
+						<div class="wp-legalpages-admin-help-text"><a href="https://club.wpeka.com/docs/wp-legal-pages/" target="_blank">
 							Help Guide</a>
 						</div>
 					</div>
@@ -49,11 +47,11 @@ $is_data_req_on = true;
 						<!-- //support  -->
 						<div class="wp-legalpages-admin-support-icon">
 							<!-- //image  -->
-							<a href="https://club.wpeka.com/my-account/?utm_source=plugin&utm_medium=gdpr&utm_campaign=dashboard&utm_content=support" target="_blank">
+							<a href="https://club.wpeka.com/my-account/" target="_blank">
 							<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/wp_cookie_support.png'; ?>" alt="WP Cookie Consent Support">
 							</a>
 						</div>
-						<div class="wp-legalpages-admin-support-text"><a href="https://club.wpeka.com/my-account/?utm_source=plugin&utm_medium=gdpr&utm_campaign=dashboard&utm_content=support" target="_blank">
+						<div class="wp-legalpages-admin-support-text"><a href="https://club.wpeka.com/my-account/" target="_blank">
 							Support</a>
 						</div>
 					</div>
@@ -66,13 +64,12 @@ $is_data_req_on = true;
 
 		?>
 			<div class="wp-legalpages-admin-promotional-banner">
-				<a href="https://club.wpeka.com/product/wp-wp-legalpages/?utm_source=plugin&utm_medium=sub_menu&utm_campaign=upgrade-to-pro" target="_blank">
+				<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=banner&utm_campaign=upgrade-to-pro" target="_blank">
 				<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/wp_legalpages_upgrade_to_pro.png'; ?>" alt="WP Cookie Consent Promotional Banner"></a>
 			</div>
 		<?php
 
 		};
-
 
 		?>
 		<!-- tabs -->
@@ -90,33 +87,27 @@ $is_data_req_on = true;
 				<div class="wp-legalpages-admin-tab wp-legalpages-admin-settings-tab" data-tab="settings">
 					<p class="wp-legalpages-admin-tab-name">Settings</p>
 				</div>
-				<?php
-
-					if ( $pro_is_activated ) {
-
-						?>
-							<!-- consent log tab  -->
-							<!-- <div class="wp-legalpages-admin-tab wp-legalpages-admin-consent-logs-tab" data-tab="consent_logs">
-								<p class="wp-legalpages-admin-tab-name">Consent&nbsp;Logs</p>
-							</div> -->
-							<!-- integration tab  -->
-							<!-- <div class="wp-legalpages-admin-tab wp-legalpages-admin-integrations-data-tab" data-tab="integrations">
-							<p class="wp-legalpages-admin-tab-name">Integrations</p>
-							</div> -->
-						<?php
-
-					};
-
-
-				?>
 				<!-- All Legal Pages data tab  -->
 				<div class="wp-legalpages-admin-tab wp-legalpages-admin-all_legalpages-tab" data-tab="all_legal_pages">
 				<p class="wp-legalpages-admin-tab-name">All Legal Pages</p>
 				</div>
-				<!-- tab for legal page promotion  -->
-				<div class="wp-legalpages-admin-tab wp-legalpages-admin-create-popups-tab" data-tab="create_popup">
-					<p class="wp-legalpages-admin-tab-name">Create&nbsp;Popups</p>
-				</div>
+				<!-- tab for create popup  -->
+				<?php
+				// first check if popup is activated
+				if ( $popup ) {
+					// do not show tab if pro isn't activated
+					if ( $lp_pro_key_activated == 'Activated' ) {
+					?>
+						<div class="wp-legalpages-admin-tab wp-legalpages-admin-create-popups-tab" data-tab="create_popup">
+						<p class="wp-legalpages-admin-tab-name">Create&nbsp;Popups</p>
+						</div>
+
+					<?php
+					}
+				}
+
+				?>
+
 			</div>
 		</div>
 
@@ -127,7 +118,6 @@ $is_data_req_on = true;
 				<!-- Getting Started content  -->
 				<div class="wp-legalpages-admin-getting-started-content wp-legalpages-admin-tab-content" id="getting_started">
 
-
 				<?php require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-getting-started-template.php'; ?>
 
 				</div>
@@ -135,7 +125,7 @@ $is_data_req_on = true;
 				<div class="wp-legalpages-admin-create-cookie-content wp-legalpages-admin-tab-content" id="create_legal_page">
 
 				</div>
-				<!-- cookie settings content -->
+				<!-- settings content -->
 				<div class="wp-legalpages-admin-cookie-settings-content wp-legalpages-admin-tab-content" id="settings">
 
 				<?php require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-settings-template.php'; ?>
@@ -150,12 +140,23 @@ $is_data_req_on = true;
 				<!-- create popup  -->
 				<div class="wp-legalpages-admin-legal-pages-content wp-legalpages-admin-tab-content" id="create_popup">
 
-				<?php require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-create-popups-template.php'; ?>
+				<?php
+
+					// do not show tab if pro key isn't activated
+					if ( $lp_pro_key_activated == 'Activated' ) {
+					?>
+
+					<?php require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-create-popups-template.php'; ?>
+
+					<?php
+					}
+
+
+				?>
 
 				</div>
 			</div>
 		</div>
-
 
 	</div>
 </div>

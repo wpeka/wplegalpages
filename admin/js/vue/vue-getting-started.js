@@ -250,13 +250,13 @@ Vue.component('SettingsSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p',{
             domProps: {
-                textContent: obj.configure.text
+                textContent: localised_data.configure.text
             }
         }), createElement('a', {
-            staticClass: 'wplegal-button',
+            staticClass: 'wplegal-button test-class',
             domProps: {
-                textContent: obj.configure.button_text,
-                href:obj.configure.url
+                textContent: localised_data.configure.button_text,
+                href:localised_data.configure.url
             }
         })])]);
     }
@@ -270,13 +270,13 @@ Vue.component('PagesSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p',{
             domProps: {
-                textContent: obj.create.text
+                textContent: localised_data.create.text
             }
         }), createElement('a', {
             staticClass: 'wplegal-button',
             domProps: {
-                textContent: obj.create.button_text,
-                href:obj.create.url
+                textContent: localised_data.create.button_text,
+                href:localised_data.create.url
             }
         })])]);
     }

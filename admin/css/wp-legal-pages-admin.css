@@ -36,8 +36,9 @@
 	height:30px;
 	color:#000;
 	cursor:pointer;
-	font-size:20px;
-	padding:3px 4px;
+	font-size:19px;
+	padding:0;
+	background-color: #286090;
 }
 #lp_generalid_right li{
 	list-style:square;
@@ -510,8 +511,16 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
     outline: 1px solid transparent;
 }
 #wplegalpages-settings-app .wplegalpages-settings-container .wplegalpages-settings-content .wplegalpages-settings-nav > div:nth-child(2) .tab-content {
-    width: 850px;
+    width: 1050px;
 }
+/* Media query for MacBook Air */
+@media only screen and (max-device-width: 1440px) and (min-device-width: 1280px) {
+	/* Assuming MacBook Air screen size falls within these dimensions */
+	#wplegalpages-settings-app .wplegalpages-settings-container .wplegalpages-settings-content .wplegalpages-settings-nav > div:nth-child(2) .tab-content {
+		width: 1000px;
+	}
+}
+
 #wplegalpages-settings-app .wplegalpages-settings-container .wplegalpages-settings-content .wplegalpages-settings-nav .tab-content .card {
     padding: 0;
     margin: 0;
@@ -1018,7 +1027,7 @@ body.toplevel_page_legal-pages #wpcontent{
 	font-weight: 600;
 	line-height: normal;
 	text-transform: capitalize;
-	margin: auto 0;
+	margin: 8px 0;
 }
 .wp-legalpages-admin-help-and-support .wp-legalpages-admin-help-text a,.wp-legalpages-admin-help-and-support .wp-legalpages-admin-support-text a{
 	text-decoration: none;
@@ -1128,7 +1137,7 @@ body.toplevel_page_legal-pages #wpcontent{
 	padding-top: 20px;
 }
 .wp-legalpages-admin-tab.pro-is-activated{
-	min-width: 183px;
+	min-width: 225px;
 }
 .wp-legalpages-admin-tab.active-tab{
 	border-bottom-color: #0059B3;
@@ -1195,4 +1204,17 @@ body.toplevel_page_legal-pages #wpcontent{
 .wp-legalpages-admin-tabs-content .wp-legalpages-admin-tabs-inner-content .wp-legalpages-admin-tab-content .wrap{
 	margin: 0;
 	padding: 30px;
+}
+#create_popup{
+	padding: 30px;
+	min-height: 1300px;
+}
+#create_popup .wrap .widefat.table-striped a{
+	color: #23527c;
+}
+#getting_started a{
+	color: #23527c;
+}
+.wplegalpages-pro-promotion-settings-page,.wplegalpages-pro-promotion{
+	display: none;
 }
