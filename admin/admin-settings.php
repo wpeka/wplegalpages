@@ -105,7 +105,7 @@ if ( '1' === $lpterms ) {
 			<div class="wplegalpages-settings-content">
 				<div id="wplegalpages-save-settings-alert">Settings saved</div>
 				<c-tabs variant="pills" ref="active_tab" class="wplegalpages-settings-nav">
-					<c-tab title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" href="#general">
+					<c-tab title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" href="#settings#general">
 					<?php do_action( 'wp_legalpages_notice' ); ?>
 						<c-card>
 							<c-card-body>
@@ -247,7 +247,7 @@ if ( '1' === $lpterms ) {
 						do_action( 'wp_legalpages_after_data_tab' );
 					} else {
 						?>
-					<c-tab title="<?php esc_attr_e( 'Advanced', 'wplegalpages' ); ?>" href="#advanced">
+					<c-tab title="<?php esc_attr_e( 'Advanced', 'wplegalpages' ); ?>" href="#settings#advanced">
 						<?php do_action( 'wp_legalpages_notice' ); ?>
 						<c-card>
 							<c-card-body>
@@ -282,7 +282,7 @@ if ( '1' === $lpterms ) {
 						<?php
 					}
 					?>
-					<c-tab title="<?php esc_attr_e( 'Compliances', 'wplegalpages' ); ?>" href="#compliances">
+					<c-tab title="<?php esc_attr_e( 'Compliances', 'wplegalpages' ); ?>" href="#settings#compliances">
 					<input type="hidden" name="lp-is-footer" v-model="is_footer">
 					<input type="hidden" v-model="footer_legal_pages" name="footer_legal_pages">
 					<input type="hidden" ref="footer_font_family" v-model="footer_font" name="lp-footer-font-family">
@@ -1211,7 +1211,8 @@ if ( '1' === $lpterms ) {
 					<?php
 					if ( $lp_show_improved_ui ) {
 						?>
-					<c-tab title="<?php esc_attr_e( 'Shortcodes', 'wplegalpages' ); ?>" href="#shortcodes">
+					<!-- hide shortcode tab in settings since revamp   -->
+					<c-tab style="display:none" title="<?php esc_attr_e( 'Shortcodes', 'wplegalpages' ); ?>" href="#settings#shortcodes">
 						<c-card>
 							<c-card-body>
 								<?php
