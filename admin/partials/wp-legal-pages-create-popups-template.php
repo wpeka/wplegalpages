@@ -48,7 +48,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				$lp_name      = isset( $_POST['lp-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-name'] ) ) : '';
 				$lp_title     = isset( $_POST['lp-title'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-title'] ) ) : '';
 				$content      = isset( $_POST['lp-content'] ) ? wp_kses_post( wp_unslash( $_POST['lp-content'] ) ) : '';
-				$update_id = $unserialized_object->id;
+				$update_id = is_object( $unserialized_object ) && isset( $unserialized_object->id ) ? $unserialized_object->id : 0;
 
 				$content      = stripslashes_deep( $content );
 
