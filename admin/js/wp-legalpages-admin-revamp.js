@@ -6,16 +6,21 @@ jQuery(document).ready(function () {
     // localised variable
     const isProActivated = wplp_localize_data.is_pro_activated;
     const adminUrl = wplp_localize_data.admin_url;
+	const lpTerms  = wplp_localize_data.lp_terms;
 
     if (isProActivated) {
         jQuery('.wp-legalpages-admin-tabs-section').addClass('pro-is-activated');
         jQuery('.wp-legalpages-admin-tab').addClass('pro-is-activated');
     }
-	// if (!isProActivated) {
-    //     jQuery('.wp-legalpages-admin-create-popups-tab').hide();
-    // }else{
-	// 	jQuery('.wp-legalpages-admin-create-popups-tab').show();
-	// }
+
+	if ( lpTerms != '1') {
+		jQuery('.wp-legalpages-admin-tab .wp-legalpages-admin-tab-name').addClass('lp-terms-not-acpt');
+		jQuery('.wplegal-help-card').addClass('lp-terms-not-acpt');
+		jQuery('.wplegal-container .wplegal-container-features .wplegal-features-section .wplegal-section-content .wplegal-feature').addClass('lp-terms-not-acpt');
+		jQuery('.wp-legalpages-admin-help-and-support .wp-legalpages-admin-help-text').addClass('lp-terms-not-acpt');
+		jQuery('.wp-legalpages-admin-help-and-support .wp-legalpages-admin-support-text').addClass('lp-terms-not-acpt');
+	}
+
 
     // Hide all tab contents initially except the first one
     jQuery('.wp-legalpages-admin-tab-content').not(':first').hide();
@@ -73,20 +78,5 @@ jQuery(document).ready(function () {
     if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'manual'
     }
-
-	jQuery('.test-class').on('click', function(e) {
-
-		// var linkUrl = jQuery('.wplegal-section-content p a').attr('href');
-		// window.location.assign(linkUrl);
-		// location.reload();
-		alert('OKOK');
-
-	});
-
-
-
-
-
-
 
 });

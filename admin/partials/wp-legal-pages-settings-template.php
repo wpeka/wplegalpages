@@ -19,7 +19,10 @@ $baseurl = '';
 if ( isset( $_SERVER['PHP_SELF'] ) ) {
 	$baseurl = esc_url_raw( wp_unslash( $_SERVER['PHP_SELF'] ) );
 }
+$lpterms = get_option( 'lp_accept_terms' );
 
 if ( class_exists( 'WP_Legal_Pages_Admin' ) ) {
-	WP_Legal_Pages_Admin::admin_setting();
+	if ( '1' === $lpterms ) {
+		WP_Legal_Pages_Admin::admin_setting();
+	}
 }

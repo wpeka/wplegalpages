@@ -185,6 +185,10 @@ body {
 	/*-moz-box-shadow: 0px 0px 4px 0px rgba(204, 204, 204, 0.30);*/
 	/*box-shadow: 0px 0px 4px 0px rgba(204, 204, 204, 0.30);*/
 }
+.wplegal-container .wplegal-container-features .wplegal-features-section .wplegal-section-content .wplegal-feature.lp-terms-not-acpt{
+	gap: 0%;
+}
+
 .wplegal-container .wplegal-container-features .wplegal-features-section .wplegal-section-content .wplegal-feature img {
 	width: 45px;
 	height: 45px;
@@ -375,6 +379,9 @@ body {
     background-color: #FFFFFF;
     border-radius: 9px;
     box-shadow: 0 3px 12px rgb(0 0 0 / 15%);
+}
+.wplegal-help-card.lp-terms-not-acpt{
+	width: unset;
 }
 .wplegal-help-card-icon{
 	width:180px;

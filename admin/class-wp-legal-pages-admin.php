@@ -376,6 +376,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 			$pro_is_activated = get_option( '_lp_pro_active' );
 
+			$if_terms_are_accepted = get_option( 'lp_accept_terms' );
+
 			$this->enqueue_common_style_scripts();
 			$this->wplegalpages_mascot_enqueue();
 
@@ -394,6 +396,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'siteurl'        		=> site_url(),
 					'admin_url'				=> admin_url(),
 					'is_pro_activated'		=> $pro_is_activated,
+					'lp_terms'				=> $if_terms_are_accepted,
+
 				)
 			);
 
@@ -573,7 +577,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'configure'           => array(
 						'text'        => __( 'WPLegalPages generates personalized legal pages for your website. To do this it needs to know a few details about your website. Please take a couple of minutes to set up your business details before you can generate a policy page for this website.', 'wplegalpages' ),
 						'button_text' => __( 'Configure Details', 'wplegalpages' ),
-						'url'         => menu_page_url( 'legal-pages', false ),
+						'url'         => admin_url( 'admin.php?page=legal-pages#settings' ),
 					),
 					'create'              => array(
 						'text'        => __( 'Generate a personalized legal policy page your website.', 'wplegalpages' ),

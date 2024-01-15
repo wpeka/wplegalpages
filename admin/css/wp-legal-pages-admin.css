@@ -1027,7 +1027,10 @@ body.toplevel_page_legal-pages #wpcontent{
 	font-weight: 600;
 	line-height: normal;
 	text-transform: capitalize;
-	margin: 8px 0;
+	margin: 8px auto;
+}
+.wp-legalpages-admin-help-and-support .wp-legalpages-admin-help-text.lp-terms-not-acpt,.wp-legalpages-admin-help-and-support .wp-legalpages-admin-support-text.lp-terms-not-acpt{
+	margin: 5px auto;
 }
 .wp-legalpages-admin-help-and-support .wp-legalpages-admin-help-text a,.wp-legalpages-admin-help-and-support .wp-legalpages-admin-support-text a{
 	text-decoration: none;
@@ -1107,6 +1110,9 @@ body.toplevel_page_legal-pages #wpcontent{
 	font-style: normal;
 	font-weight: 600;
 	line-height: 20px;
+}
+.wp-legalpages-admin-tab .wp-legalpages-admin-tab-name.lp-terms-not-acpt{
+	padding: 0;
 }
 
 .wp-legalpages-admin-tab.active-tab{

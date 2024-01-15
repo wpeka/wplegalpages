@@ -14,6 +14,7 @@
 $pro_is_activated = get_option( '_lp_pro_active' );
 $popup = get_option( 'lp_popup_enabled' );
 $lp_pro_key_activated    = get_option( 'wc_am_client_wplegalpages_pro_activated' );
+$if_terms_are_accepted = get_option( 'lp_accept_terms' );
 
 ?>
 
@@ -79,18 +80,30 @@ $lp_pro_key_activated    = get_option( 'wc_am_client_wplegalpages_pro_activated'
 				<div class="wp-legalpages-admin-tab wp-legalpages-admin-getting-started-tab" data-tab="getting_started">
 					<p class="wp-legalpages-admin-tab-name">Getting&nbsp;Started</p>
 				</div>
-				<!-- Create Legal Pages tab  -->
-				<div class="wp-legalpages-admin-tab wp-legalpages-admin-create_legalpages-tab" data-tab="create_legal_page">
-					<p class="wp-legalpages-admin-tab-name">Create&nbsp;Legal&nbsp;Pages</p>
-				</div>
-				<!-- Settings tab  -->
-				<div class="wp-legalpages-admin-tab wp-legalpages-admin-settings-tab" data-tab="settings">
-					<p class="wp-legalpages-admin-tab-name">Settings</p>
-				</div>
-				<!-- All Legal Pages data tab  -->
-				<div class="wp-legalpages-admin-tab wp-legalpages-admin-all_legalpages-tab" data-tab="all_legal_pages">
-				<p class="wp-legalpages-admin-tab-name">All Legal Pages</p>
-				</div>
+
+				<?php
+				// if terms are accepted only then show rest of the tabs
+				if ( $if_terms_are_accepted ) {
+
+				?>
+
+					<!-- Create Legal Pages tab  -->
+					<div class="wp-legalpages-admin-tab wp-legalpages-admin-create_legalpages-tab" data-tab="create_legal_page">
+						<p class="wp-legalpages-admin-tab-name">Create&nbsp;Legal&nbsp;Pages</p>
+					</div>
+					<!-- Settings tab  -->
+					<div class="wp-legalpages-admin-tab wp-legalpages-admin-settings-tab" data-tab="settings">
+						<p class="wp-legalpages-admin-tab-name">Settings</p>
+					</div>
+					<!-- All Legal Pages data tab  -->
+					<div class="wp-legalpages-admin-tab wp-legalpages-admin-all_legalpages-tab" data-tab="all_legal_pages">
+					<p class="wp-legalpages-admin-tab-name">All Legal Pages</p>
+					</div>
+				<?php
+
+				};
+
+				?>
 				<!-- tab for create popup  -->
 				<?php
 				// first check if popup is activated
