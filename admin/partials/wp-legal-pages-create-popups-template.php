@@ -24,12 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	// fetch the popup details
 	$serialized_object = get_option( 'wplegalpalges_create_popup' );
 	$unserialized_object = unserialize( $serialized_object );
-	// $current_mode = isset( $_REQUEST['mode'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['mode'] ) ) : '';
-
-	// if ( get_option('wplegalpalges_flag_key') ) {
-	// 	$current_mode = 'edit';
-	// }
-
 
 	wp_enqueue_style( 'bootstrap-min' );
 	wp_enqueue_style( 'style' );
