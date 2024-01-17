@@ -1,5 +1,5 @@
 $ = jQuery.noConflict();
-
+var localised_data = obj;
 Vue.component('HeaderSection', {
     render(createElement) {
         return createElement('header', {
@@ -153,23 +153,23 @@ Vue.component('TermsSection', {
         },
         handleSubmit: function() {
             var data = {};
-            $('.wplegal-input-checkbox input[type="checkbox"]').each(function(){
+            jQuery('.wplegal-input-checkbox input[type="checkbox"]').each(function(){
                 if(this.checked) {
                     data[this.name] = this.value;
                 }
             });
-            $.post(obj.ajax_url,{'action':'save_accept_terms','data':data,'nonce':obj.ajax_nonce}).then((response => {
+            jQuery.post(localised_data.ajax_url,{'action':'save_accept_terms','data':data,'nonce':localised_data.ajax_nonce}).then((response => {
                 if(response.success) {
                     this.$parent.disabled = 1;
                     location.reload();
                 }
             }))
 
-        }
+        },
     },
     mounted: function(){
-        $('.notice').css('display', 'none');
-        $.get(obj.ajax_url,{'action':'get_accept_terms','nonce':obj.ajax_nonce}).then((response => {
+        jQuery('.notice').css('display', 'none');
+        jQuery.get(obj.ajax_url,{'action':'get_accept_terms','nonce':obj.ajax_nonce}).then((response => {
             if(response.success) {
                 if(response.data == '1') {
                     this.$parent.disabled = 1;
@@ -187,12 +187,12 @@ Vue.component('TermsSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p', {
             domProps: {
-                innerHTML: obj.terms.text
+                innerHTML: localised_data.terms.text
             }
         }),
         createElement('p', {
             domProps: {
-                textContent: obj.terms.subtext
+                textContent: localised_data.terms.subtext
             }
         }),
         createElement('form', {
@@ -226,7 +226,7 @@ Vue.component('TermsSection', {
             }
         }),createElement('span',{
             domProps: {
-                innerHTML: obj.terms.input_text
+                innerHTML: localised_data.terms.input_text
             }
         })]),
         this.$parent.disabled ? [] : createElement('button',{
@@ -236,7 +236,7 @@ Vue.component('TermsSection', {
                 name: 'accept_terms'
             },
             domProps: {
-                textContent: obj.terms.button_text
+                textContent: localised_data.terms.button_text
             }
         })])])]);
     }
@@ -250,14 +250,21 @@ Vue.component('SettingsSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p',{
             domProps: {
-                textContent: obj.configure.text
+                textContent: localised_data.configure.text
             }
         }), createElement('a', {
-            staticClass: 'wplegal-button',
+            staticClass: 'wplegal-button wplegal-configure-details-btn',
             domProps: {
-                textContent: obj.configure.button_text,
-                href:obj.configure.url
-            }
+                textContent: localised_data.configure.button_text,
+                href:localised_data.configure.url
+            },
+			on: {
+				click: function(e) {
+						var linkUrl = jQuery('.wplegal-configure-details-btn').attr('href');
+						window.location.assign(linkUrl);
+						location.reload();
+				}
+			}
         })])]);
     }
 });
@@ -270,13 +277,13 @@ Vue.component('PagesSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p',{
             domProps: {
-                textContent: obj.create.text
+                textContent: localised_data.create.text
             }
         }), createElement('a', {
             staticClass: 'wplegal-button',
             domProps: {
-                textContent: obj.create.button_text,
-                href:obj.create.url
+                textContent: localised_data.create.button_text,
+                href:localised_data.create.url
             }
         })])]);
     }
@@ -501,17 +508,17 @@ Vue.component('WizardSection', {
             staticClass: 'wplegal-section-content'
         }, [createElement('p',{
             domProps: {
-                textContent: obj.wizard.text
+                textContent: localised_data.wizard.text
             }
         }), createElement('p',{
             domProps: {
-                textContent: obj.wizard.subtext
+                textContent: localised_data.wizard.subtext
             }
         }), createElement('a', {
             staticClass: 'wplegal-button',
             domProps: {
-                textContent: obj.wizard.button_text,
-                href:obj.wizard.url
+                textContent: localised_data.wizard.button_text,
+                href:localised_data.wizard.url
             }
         })])]);
     }

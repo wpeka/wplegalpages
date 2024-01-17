@@ -101,7 +101,7 @@ var gen = new Vue({
             cookie_enable: this.is_cookie_bar === 'ON'? true : false,
             show_cookie_form:false,
             cookie_bar_title: obj.lp_eu_cookie_title ? obj.lp_eu_cookie_title :'A note to our visitors.',
-            cookie_message: obj.lp_eu_cookie_message ? obj.lp_eu_cookie_message : 'This website has updated its privacy policy in compliance with changes to European Union data protection law, for all members globally. We’ve also updated our Privacy Policy to give you more information about your rights and responsibilities with respect to your privacy and personal information. Please read this to review the updates about which cookies we use and what information we collect on our site. By continuing to use this site, you are agreeing to our updated privacy policy.', 
+            cookie_message: obj.lp_eu_cookie_message ? obj.lp_eu_cookie_message : 'This website has updated its privacy policy in compliance with changes to European Union data protection law, for all members globally. We’ve also updated our Privacy Policy to give you more information about your rights and responsibilities with respect to your privacy and personal information. Please read this to review the updates about which cookies we use and what information we collect on our site. By continuing to use this site, you are agreeing to our updated privacy policy.',
             cookie_button_text : obj.lp_eu_button_text ? obj.lp_eu_button_text : 'I agree',
             cookie_link_text : obj.lp_eu_link_text ? obj.lp_eu_link_text : '',
             cookie_link_url : obj.lp_eu_link_url ?  obj.lp_eu_link_url : '',
@@ -114,15 +114,16 @@ var gen = new Vue({
             cookie_link_color : obj.lp_eu_link_color ? obj.lp_eu_link_color : '#8f0410',
             cookie_text_size : obj.lp_eu_text_size ? obj.lp_eu_text_size : '10',
             cookie_text_size_options: Array.from(obj.cookie_text_size_options),
+			create_popup_clicked: false,
         }
     },
     methods: {
         setValues: function () {
-            this.generate =  this.$refs.hasOwnProperty('generate')? this.$refs.generate.checked : null; 
-            this.search =  this.$refs.hasOwnProperty('search')? this.$refs.search.checked : null; 
-            this.affiliate_disclosure =this.$refs.hasOwnProperty('affiliate_disclosure')? this.$refs.affiliate_disclosure.checked:null;  
-            this.is_adult = this.$refs.hasOwnProperty('is_adult')?this.$refs.is_adult.checked:null; 
-            this.privacy =this.$refs.hasOwnProperty('privacy')? this.$refs.privacy.checked:null; 
+            this.generate =  this.$refs.hasOwnProperty('generate')? this.$refs.generate.checked : null;
+            this.search =  this.$refs.hasOwnProperty('search')? this.$refs.search.checked : null;
+            this.affiliate_disclosure =this.$refs.hasOwnProperty('affiliate_disclosure')? this.$refs.affiliate_disclosure.checked:null;
+            this.is_adult = this.$refs.hasOwnProperty('is_adult')?this.$refs.is_adult.checked:null;
+            this.privacy =this.$refs.hasOwnProperty('privacy')? this.$refs.privacy.checked:null;
             this.privacy_page = this.$refs.hasOwnProperty('privacy_page_mount') && this.$refs.privacy_page_mount.value ? this.$refs.privacy_page_mount.value : '';
             this.privacy_page = this.$refs.hasOwnProperty('privacy_page_mount') && this.$refs.privacy_page_mount.value ? this.$refs.privacy_page_mount.value : '';
             this.footer_font = this.$refs.footer_font_family_mount.value ? this.$refs.footer_font_family_mount.value : 'Open Sans';
@@ -199,7 +200,7 @@ var gen = new Vue({
                     if( this.page_options[j].code === value[i]) {
                         this.footer_pages_drag[i] = this.page_options[j];
                         break;
-                    } 
+                    }
                 }
             }
             this.footer_legal_pages = temp_array;
@@ -328,6 +329,7 @@ var gen = new Vue({
             else {
                 jQuery('.wplegalpages-popup-submenu').css('display', 'none')
             }
+			this.create_popup_clicked = true;
         },
         onSwitchPopup(){
             this.is_popup = !this.is_popup;
@@ -339,6 +341,7 @@ var gen = new Vue({
             else {
                 jQuery('.wplegalpages-popup-submenu').css('display', 'none')
             }
+			this.create_popup_clicked = true;
         },
         onClickCookie(){
             this.cookie_enable = !this.cookie_enable;
@@ -396,7 +399,7 @@ var gen = new Vue({
                 },
                 success: function(data) {
 					j("#wplegalpages-save-settings-alert").fadeOut(2500);
-                }    
+                }
             })
 
 			this.showFooterForm();
@@ -415,7 +418,7 @@ var gen = new Vue({
             var bar_days = this.bar_num_of_days;
             var banner_css = j('#wplegalpages-lp-banner-custom-css').text();
             var banner_close_message = this.banner_close_message;
-            var banner_msg = j('#wplegalpages-lp-banner-message').text(); 
+            var banner_msg = j('#wplegalpages-lp-banner-message').text();
             var banner_multiple_msg = j('#wplegalpages-lp-banner-multiple-message').text();
             j.ajax({
                 type: 'POST',
@@ -506,7 +509,7 @@ var gen = new Vue({
                 'lp-cookie-button-text-color' : cookie_button_text_color,
                 'lp-cookie-link-color': cookie_link_color,
                 'lp-cookie-text-size' : cookie_text_size,
-                'lp-cookie-bar-nonce': j('#wplegalpages-cookie-bar-nonce').val(),   
+                'lp-cookie-bar-nonce': j('#wplegalpages-cookie-bar-nonce').val(),
             },
             success: function(data) {
                 j("#wplegalpages-save-settings-alert").fadeOut(2500);
@@ -533,15 +536,20 @@ var gen = new Vue({
             this.showPopupForm();
         },
         saveGeneralSettings() {
+			var that = this;
             jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
             var dataV = jQuery("#lp-save-settings-form").serialize();
             jQuery.ajax({
                 type: 'POST',
                 url: obj.ajaxurl,
-                data: dataV + '&action=lp_save_admin_settings', 
+                data: dataV + '&action=lp_save_admin_settings',
             }).done(function (data) {
                 j("#wplegalpages-save-settings-alert").fadeOut(2500);
-            }); 
+				if(that.create_popup_clicked){
+                    that.create_popup_clicked = false;
+                    location.reload();
+                }
+            });
         }
     },
     mounted() {
