@@ -109,7 +109,7 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 				// first check if popup is activated
 				if ( $popup ) {
 					// do not show tab if pro isn't activated
-					if ( $lp_pro_key_activated == 'Activated' ) {
+					if ( $lp_pro_key_activated == 'Activated' && $pro_is_activated ) {
 					?>
 						<div class="wp-legalpages-admin-tab wp-legalpages-admin-create-popups-tab" data-tab="create_popup">
 						<p class="wp-legalpages-admin-tab-name">Create&nbsp;Popups</p>
@@ -156,7 +156,7 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 				<?php
 
 					// do not show tab if pro key isn't activated
-					if ( $lp_pro_key_activated == 'Activated' ) {
+					if ( $lp_pro_key_activated == 'Activated' && $pro_is_activated ) {
 					?>
 
 					<?php require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-create-popups-template.php'; ?>
