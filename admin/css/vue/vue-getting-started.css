@@ -318,7 +318,7 @@ body {
 	-webkit-box-shadow: 0 0 10px 0 #ababab;
 	box-shadow: 0 0 10px 0 #ababab;
 	margin-bottom: 6px;
-	color: #fff;
+	color: #fff !important;
 	text-decoration: none;
 	text-align: center;
 	font-size: 18px;
