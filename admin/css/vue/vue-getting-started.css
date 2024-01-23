@@ -11,6 +11,7 @@ body {
 	font-weight: normal;
 	width: 750px;
 	margin: 50px auto;
+	margin-top: -21px;
 }
 .wplegal-container p {
 	color: inherit;
@@ -151,7 +152,7 @@ body {
 .wplegal-container .wplegal-container-features .wplegal-section-content .wplegal-button {
 	border: 1px solid;
 	border-radius: 4px;
-	color: #fff;
+	color: #fff !important;
 	cursor: pointer;
 	display: inline-block;
 	font-weight: 600;
@@ -177,13 +178,17 @@ body {
 .wplegal-container .wplegal-container-features .wplegal-features-section .wplegal-section-content .wplegal-feature {
 	width: 48%;
 	display: flex;
-	/*gap: 5%;*/
+	gap: 10%;
 	justify-content: flex-start;
 	flex-wrap: nowrap;
 	/*-webkit-box-shadow: 0px 0px 4px 0px rgba(204, 204, 204, 0.30);*/
 	/*-moz-box-shadow: 0px 0px 4px 0px rgba(204, 204, 204, 0.30);*/
 	/*box-shadow: 0px 0px 4px 0px rgba(204, 204, 204, 0.30);*/
 }
+.wplegal-container .wplegal-container-features .wplegal-features-section .wplegal-section-content .wplegal-feature.lp-terms-not-acpt{
+	gap: 0%;
+}
+
 .wplegal-container .wplegal-container-features .wplegal-features-section .wplegal-section-content .wplegal-feature img {
 	width: 45px;
 	height: 45px;
@@ -313,7 +318,7 @@ body {
 	-webkit-box-shadow: 0 0 10px 0 #ababab;
 	box-shadow: 0 0 10px 0 #ababab;
 	margin-bottom: 6px;
-	color: #fff;
+	color: #fff !important;
 	text-decoration: none;
 	text-align: center;
 	font-size: 18px;
@@ -369,11 +374,14 @@ body {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	width: 180px;
+	width: 200px;
 	padding: 10px 10px 30px 10px;
     background-color: #FFFFFF;
     border-radius: 9px;
     box-shadow: 0 3px 12px rgb(0 0 0 / 15%);
+}
+.wplegal-help-card.lp-terms-not-acpt{
+	width: unset;
 }
 .wplegal-help-card-icon{
 	width:180px;
@@ -403,7 +411,7 @@ body {
 .wplegal-container .wplegal-button {
 	border: 1px solid;
 	border-radius: 4px;
-	color: #fff;
+	color: #fff !important;
 	cursor: pointer;
 	display: inline-block;
 	font-weight: 600;
@@ -417,4 +425,8 @@ body {
 }
 .wplegal-container .wplegal-button:hover {
 	background-color: #18488a;
+}
+/* Revamp Style  */
+.wp-legalpages-admin-tabs-content .wp-legalpages-admin-tabs-inner-content .wplegal-container .wplegal-logo{
+	margin-top: 30px;
 }
