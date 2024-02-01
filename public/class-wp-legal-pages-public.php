@@ -63,7 +63,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$this->plugin_name = $plugin_name;
 			$this->version     = $version;
 			add_shortcode( 'wplegalpage', array( $this, 'wplegalpages_page_shortcode' ) );
-
 		}
 
 		/**
@@ -105,7 +104,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			 * between the defined hooks and the functions defined in this
 			 * class.
 			 */
-
 		}
 
 		/**
@@ -146,14 +144,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			if ( isset( $page->post_content ) ) {
 				$content = $page->post_content;
 			}
-		
+
 			if ( is_single() || is_page() ) {
 				// Check if the current user has the "unfiltered_html" capability
-				if ( author_can($pid, 'unfiltered_html' ) ) {
+				if ( author_can( $pid, 'unfiltered_html' ) ) {
 					// If the user has the capability, decode the content
 					$content = html_entity_decode( $content );
 				}
-				
+
 				return $content;
 			}
 		}
@@ -230,9 +228,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 		/** Show Announcement bar contents
 		 */
 		public function wplegal_announce_bar_content() {
-			$lp_banner_options     = get_option( 'lp_banner_options' );
+			$lp_banner_options = get_option( 'lp_banner_options' );
 			$banner_cookie_options = get_option( 'banner_cookie_options' );
-			$cookies_array         = array();
+			$cookies_array = array();
+
 			if ( ! $banner_cookie_options || count( $banner_cookie_options ) === 0 ) {
 				return;
 			}
@@ -246,6 +245,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 				wp_localize_script( $this->plugin_name . 'banner-cookie', 'cookies', $cookies_array );
 				wp_enqueue_script( $this->plugin_name . 'banner-cookie' );
 			}
+
+			$lp_banner_options = get_option( 'lp_banner_options' );
+
 			if ( '1' === $lp_banner_options['show_banner'] || true === $lp_banner_options['show_banner'] || 'true' === $lp_banner_options['show_banner'] ) {
 				foreach ( $_COOKIE as $key => $val ) {
 					if ( preg_match( '/wplegalpages-update-notice-\d+/', sanitize_key( $key ) ) ) {
@@ -255,7 +257,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 				}
 			}
 		}
-
 		/**
 		 * Function to display announcement banner content
 		 */
@@ -274,10 +275,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$banner_close_message    = $lp_banner_options['banner_close_message'];
 			$banner_message          = $lp_banner_options['banner_message'];
 			$banner_multiple_message = $lp_banner_options['banner_multiple_message'];
-			$date_format             = get_option( 'date_format' );
-			$font_family_url         = 'http://fonts.googleapis.com/css?family=' . $banner_font_id;
+			$date_format     = get_option( 'date_format' );
+			$font_family_url = 'http://fonts.googleapis.com/css?family=' . $banner_font_id;
 			wp_enqueue_style( $this->plugin_name . '-public' );
 			wp_add_inline_style( $this->plugin_name . '-public', '@import url(' . $font_family_url . ');' );
+			if( get_option( 'show_announcement_banner_for_legal_pages' ) ){
 			?>
 				<div class="wplegalpages_banner_content" 
 					style="background-color:red;z-index:1000; 
@@ -356,18 +358,29 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 				</div>
 				<script type="text/javascript">
 					jQuery(document).ready(function(){
-						jQuery(".wplegalpages_banner_content").find("a").addClass("wplegalpages_banner_link");
-						jQuery(".wplegalpages_banner_link").click(
-							function() {
-								var display_state = jQuery('.wplegalpages_banner_content').css('display');
-								if(display_state === 'block'){
-									jQuery('.wplegalpages_banner_content').css('display','none');
+					jQuery(".wplegalpages_banner_content").find("a").addClass("wplegalpages_banner_link");
+						jQuery(".wplegalpages_banner_link").click(function() {
+							jQuery.ajax({
+								type: 'post',
+								url: '/wp-admin/admin-ajax.php',
+								data: {
+									action: 'update_show_announcement_banner_for_legal_pages_notice',
+								},
+								success: function(response){
+									var display_state = jQuery('.wplegalpages_banner_content').css('display');
+									if(display_state === 'block') {
+										jQuery('.wplegalpages_banner_content').css('display', 'none');
+									}
+								},
+								error: function(error) {
+									console.log('Error:', error);
 								}
-							}
-						);					
+							});
+						});
 					});
 				</script>
 				<?php
+		}
 				echo '<style>
 				.wplegalpages_banner_link{
 					color: ' . esc_attr( $banner_link_color ) . ';' .
@@ -421,8 +434,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 				wp_enqueue_style( $this->plugin_name . '-public' );
 				wp_localize_script( $this->plugin_name . 'lp-eu-cookie', 'obj', $options );
 				wp_enqueue_script( $this->plugin_name . 'lp-eu-cookie' );
-				include_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/views/lp-eu-cookie.php';
+				include_once plugin_dir_path( __DIR__ ) . 'public/views/lp-eu-cookie.php';
 			}
+		}
+
+		public function update_show_announcement_banner_for_legal_pages_notice() {
+
+			update_option( 'show_announcement_banner_for_legal_pages', false );
+			wp_send_json_success( 
+				array(
+					'update_banner_display' => true,
+				)
+			);
 		}
 	}
 }
