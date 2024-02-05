@@ -178,7 +178,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$footer_custom_css  = $lp_footer_options['footer_custom_css'];
 			$footer_new_tab     = '1' === $lp_footer_options['footer_new_tab'] ? 'target="_blank"' : '';
 			$footer_pages       = $lp_footer_options['footer_legal_pages'];
-			$font_family_url    = 'http://fonts.googleapis.com/css?family=' . $footer_font_id;
+			$font_family_url    = 'https://fonts.googleapis.com/css?family=' . $footer_font_id;
 			if ( empty( $footer_pages ) || empty( $footer_pages[0] ) ) {
 				return;
 			}
@@ -276,7 +276,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$banner_message          = $lp_banner_options['banner_message'];
 			$banner_multiple_message = $lp_banner_options['banner_multiple_message'];
 			$date_format     = get_option( 'date_format' );
-			$font_family_url = 'http://fonts.googleapis.com/css?family=' . $banner_font_id;
+			$font_family_url = 'https://fonts.googleapis.com/css?family=' . $banner_font_id;
 			wp_enqueue_style( $this->plugin_name . '-public' );
 			wp_add_inline_style( $this->plugin_name . '-public', '@import url(' . $font_family_url . ');' );
 			if( get_option( 'show_announcement_banner_for_legal_pages' ) ){
