@@ -233,6 +233,9 @@ WPLegalPages provides you pre-approved templates. You may want to customize it a
 
 == Changelog ==
 
+= 2.10.1 =
+* Fix: Minor bug fixes and improvements.
+
 = 2.10.0 =
 * Feature: Revamped UI: Submenus are now organized into tabs for easier navigation to configurations.
 
