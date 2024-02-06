@@ -246,6 +246,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			}
 			$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 			$this->loader->add_action ('wp_ajax_update_show_announcement_banner_for_legal_pages_notice',  $plugin_public, 'update_show_announcement_banner_for_legal_pages_notice' );
+			$this->loader->add_action ('wp_ajax_nopriv_update_show_announcement_banner_for_legal_pages_notice',  $plugin_public, 'update_show_announcement_banner_for_legal_pages_notice' );
 		}
 
 		/**
