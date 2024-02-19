@@ -1121,10 +1121,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'required' => true,
 						),
 						'lp-address' => array(
-							'title' => __( 'Address', 'wplegalpages' ),
+							'title' => __( 'Post Address', 'wplegalpages' ),
 							'value' => $address,
 							'required' => true,
 						),
+						'lp-facebook-url' => array(
+							'title' => __( 'Facebook Url', 'wplegalpages' ),
+							'value' => $facebook,
+							'required' => true,
+						),
+						
 					);
 					break;
 				case 'returns_refunds_policy':
