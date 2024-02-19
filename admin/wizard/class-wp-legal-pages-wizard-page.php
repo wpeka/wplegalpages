@@ -225,6 +225,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				'post_content' => $preview_text,
 				'ID'           => $pid,
 			);
+			$lp_general    = get_option( 'lp_general' );
+			$business       = ! empty( $lp_general['business'] ) ? esc_attr( $lp_general['business'] ) : '';
 			wp_update_post( $post_args );
 			$page_preview = '<div class="page_preview">';
 			switch ( $page ) {
@@ -456,7 +458,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'privacy_policy':
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
-						$page_preview .= __( 'Privacy Policy', 'wplegalpages' );
+						$page_preview .= __( 'Privacy Policy of '.$business , 'wplegalpages' );
 						$page_preview .= '</h1>';
 					}
 					break;
@@ -1118,6 +1120,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'value'    => $email,
 							'required' => true,
 						),
+						'lp-address' => array(
+							'title' => __( 'Post Address', 'wplegalpages' ),
+							'value' => $address,
+							'required' => true,
+						),
+						'lp-facebook-url' => array(
+							'title' => __( 'Facebook Url', 'wplegalpages' ),
+							'value' => $facebook,
+							'required' => true,
+						),
+						
 					);
 					break;
 				case 'returns_refunds_policy':
