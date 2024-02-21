@@ -3099,7 +3099,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 				$gdpr_services = array(
 					'id'          => 'gdpr_third_party_services',
-					'title'       => '<strong><a href="' . admin_url() . 'admin.php?page=gdpr-cookie-consent#gdpr-cookie-consent-cookie-list" target="_blank">Scan now</a> to automatically detect third-party services on your website.</strong>',
+					'title'       => '<strong><a href="' . admin_url() . 'admin.php?page=gdpr-cookie-consent#cookie_settings#cookie_list" target="_blank">Scan now</a> to automatically detect third-party services on your website.</strong>',
 					'description' => '',
 					'type'        => 'section',
 					'position'    => 1,
