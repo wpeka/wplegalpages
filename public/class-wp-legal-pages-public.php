@@ -275,9 +275,15 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$banner_message          = $lp_banner_options['banner_message'];
 			$banner_multiple_message = $lp_banner_options['banner_multiple_message'];
 			$date_format             = get_option( 'date_format' );
+			$updateAt                = get_option('updateAt');
 			$font_family_url         = 'http://fonts.googleapis.com/css?family=' . $banner_font_id;
 			wp_enqueue_style( $this->plugin_name . '-public' );
 			wp_add_inline_style( $this->plugin_name . '-public', '@import url(' . $font_family_url . ');' );
+            ?>
+         
+			<?php
+			
+			if(!isset($_COOKIE['updateAt'])  || $_COOKIE['updateAt'] !== $updateAt){
 			?>
 				<div class="wplegalpages_banner_content" 
 					style="background-color:red;z-index:1000; 
@@ -355,6 +361,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 					<a style="cursor:pointer;"> <?php echo esc_attr( $banner_close_message ); ?> </a>
 				</div>
 				<script type="text/javascript">
+					
 					jQuery(document).ready(function(){
 						jQuery(".wplegalpages_banner_content").find("a").addClass("wplegalpages_banner_link");
 						jQuery(".wplegalpages_banner_link").click(
@@ -363,11 +370,25 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 								if(display_state === 'block'){
 									jQuery('.wplegalpages_banner_content').css('display','none');
 								}
+							    
+								function setCookie(cookieName, cookieValue, expirationDays) {
+        								var expires = "";
+        
+        							if (expirationDays) {
+           								 var date = new Date();
+            							date.setTime(date.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
+           								 expires = "; expires=" + date.toUTCString();
+       									 }
+
+        							document.cookie = cookieName + "=" + encodeURIComponent(cookieValue) + expires + "; path=/";
+    								}
+									setCookie("updateAt", <?php echo $updateAt ?> ,<?php echo $bar_num_of_days ?>);
 							}
 						);					
 					});
 				</script>
 				<?php
+			}
 				echo '<style>
 				.wplegalpages_banner_link{
 					color: ' . esc_attr( $banner_link_color ) . ';' .

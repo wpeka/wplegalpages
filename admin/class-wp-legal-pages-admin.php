@@ -1244,6 +1244,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @param int $post_id id of post updated.
 		 */
 		public function wplegalpages_post_updated( $post_id ) {
+			$currentTimestamp = time();
+			update_option( 'updateAt', $currentTimestamp);
 			if ( 'yes' === get_post_meta( $post_id, 'is_legal', true ) && 'publish' === get_post_status( $post_id ) ) {
 				$lp_banner_options = get_option( 'lp_banner_options' );
 				if ( $lp_banner_options ) {
