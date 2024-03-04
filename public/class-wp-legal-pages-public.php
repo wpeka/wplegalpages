@@ -358,7 +358,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 						}
 					}
 					?>
-					<a style="cursor:pointer;"> <?php echo esc_attr( $banner_close_message ); ?> </a>
+					<a style="cursor:pointer;" class="closeButton"> <?php echo esc_attr( $banner_close_message ); ?> </a>
 				</div>
 				<script type="text/javascript">
 					
@@ -370,7 +370,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 								if(display_state === 'block'){
 									jQuery('.wplegalpages_banner_content').css('display','none');
 								}
-							    
+							    }
+						);
+						jQuery(".closeButton").click(
+							function() {
 								function setCookie(cookieName, cookieValue, expirationDays) {
         								var expires = "";
         
@@ -384,7 +387,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
     								}
 									setCookie("updateAt", <?php echo $updateAt ?> ,<?php echo $bar_num_of_days ?>);
 							}
-						);					
+							
+						);
 					});
 				</script>
 				<?php
