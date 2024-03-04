@@ -276,7 +276,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$banner_multiple_message = $lp_banner_options['banner_multiple_message'];
 			$date_format             = get_option( 'date_format' );
 			$updateAt                = get_option('updateAt');
-			$isbannerClosed          = get_option('isbannerClosed');
 			$font_family_url         = 'http://fonts.googleapis.com/css?family=' . $banner_font_id;
 			wp_enqueue_style( $this->plugin_name . '-public' );
 			wp_add_inline_style( $this->plugin_name . '-public', '@import url(' . $font_family_url . ');' );
