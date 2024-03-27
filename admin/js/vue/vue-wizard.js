@@ -255,9 +255,7 @@ Vue.component('GettingStartedWizardForm',{
             var self = this;
             var html = [];
             var static_classes = 'wplegal-template-type-name';
-            if( 'Activated' !== wizard_obj.pro_active ) {
-                static_classes += ' wplegal-hide-content';
-            }
+
             for( let key in this.formElements ) {
                 var el = createElement('div', {
                     class: 'wplegal-template-type-row'
@@ -476,38 +474,9 @@ Vue.component('WizardPromotional', {
 Vue.component('WizardForms', {
     render(createElement) {
         var self = this;
-        if( 'Activated' !== wizard_obj.pro_active ){
-            var tab_1 = createElement('v-tab', {
-                props: {
-                    title: createElement('span',{
-                        id: 'wplegal-available-tab-title',
-                        staticClass: 'wplegalpages-wizard-template-text',
-                        domProps: {
-                            textContent: wizard_obj.available_tab
-                        }
-                    })
-                },
-            }, [createElement('fieldset',{},[createElement('div',{
-                staticClass:'wplegal-settings-input-radio'
-            },[self.$parent.createFormTypeLabel(createElement)])]), createElement('WizardPromotional')]);
-            var tab_2 = createElement('v-tab', {
-                props: {
-                    title: createElement('span', {
-                        id: 'wplegalpage-pro-tab-title',
-                        domProps: {
-                            innerHTML: '<span class="wplegalpages-wizard-pro-text">PRO <span class="wplegalpages-wizard-template-text">' + wizard_obj.pro_tab +'</span></span>'
-                        }
-                    },)
-                },
-            }, [createElement('div',{},[createElement('div',{
-                staticClass:'wplegal-settings-input-radio'
-            },[self.$parent.createProTemplateLabels(createElement)])])]);
-            return createElement('vue-tabs',{},[tab_1, tab_2])
-        } else {
-            return createElement('fieldset',{},[createElement('div',{
-                staticClass:'wplegal-settings-input-radio'
-            },[self.$parent.createFormTypeLabel(createElement)])])
-        }
+		return createElement('fieldset',{},[createElement('div',{
+			staticClass:'wplegal-settings-input-radio'
+		},[self.$parent.createFormTypeLabel(createElement)])])
     }
 })
 
