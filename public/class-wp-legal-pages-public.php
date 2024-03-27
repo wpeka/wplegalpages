@@ -63,9 +63,36 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$this->plugin_name = $plugin_name;
 			$this->version     = $version;
 			add_shortcode( 'wplegalpage', array( $this, 'wplegalpages_page_shortcode' ) );
-
+			$lp_pro_active    = get_option( '_lp_pro_active' );
+			if( !$lp_pro_active ){
+				// age verification feature.
+				$age_verify_popup_setting = get_option( '_lp_require_for' );
+				if ( 'site' !== $age_verify_popup_setting && isset( $lp_general['is_adult'] ) && '1' === $lp_general['is_adult'] && ! isset( $_COOKIE['is_user_adult'] ) ) {
+					add_action( 'wp_enqueue_scripts', array( $this, 'wplegalpages_pro_adult_scripts' ) );
+					add_action( 'wp_footer', array( $this, 'wplegalpages_pro_adult_popup' ) );
+				}
+				if ( 'site' === $age_verify_popup_setting ) {
+					add_action( 'wp_footer', array( $this, 'wplegalpages_pro_verify_overlay' ) );
+					add_action( 'the_content', array( $this, 'wplegalpages_pro_restrict_content' ) );
+					add_action( 'template_redirect', array( $this, 'wplegalpages_pro_verify' ) );
+					if ( $this->wplegalpages_pro_confirmation_required() ) {
+						add_action( 'register_form', 'wplegalpages_pro_register_form' );
+						add_action( 'register_post', 'wplegalpages_pro_register_check', 10, 3 );
+					}
+				}
+				// create popup feature.
+				add_shortcode( 'wp-legalpage', array( $this, 'wplegalpages_pro_shortcode' ) );
+				$popup_enabled = get_option( 'lp_popup_enabled' );
+				if ( ! empty( $popup_enabled ) || '1' === $popup_enabled || true === $popup_enabled || 'true' === $popup_enabled ) {
+					add_shortcode( 'wp-legalpopup', array( $this, 'wplegalpages_pro_popup_shortcode' ) );
+				}
+				$lp_general = get_option( 'lp_general' );
+				if ( isset( $lp_general['search'] ) && '1' !== $lp_general['search'] ) {
+					add_filter( 'posts_where', array( $this, 'wplegalpages_pro_exclude_search_pages' ) );
+				}
+			}
 		}
-
+		
 		/**
 		 * Register the stylesheets for the public-facing side of the site.
 		 *
@@ -85,6 +112,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			 * class.
 			 */
 			wp_register_style( $this->plugin_name . '-public', plugin_dir_url( __FILE__ ) . 'css/wp-legal-pages-public-css' . WPLPP_SUFFIX . '.css', array(), $this->version, 'all' );
+			wp_register_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wplegalpages-public' . WPLPP_SUFFIX . '.css', array(), $this->version, 'all' );
 		}
 
 		/**
@@ -105,9 +133,515 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			 * between the defined hooks and the functions defined in this
 			 * class.
 			 */
+			wp_register_script( $this->plugin_name . 'adult-content', plugin_dir_url( __FILE__ ) . 'js/wplegalpages-public-adult-content' . WPLPP_SUFFIX . '.js', array( 'jquery' ), $this->version, true );
+			wp_register_script( $this->plugin_name . 'popups', plugin_dir_url( __FILE__ ) . 'js/wplegalpages-public-popups' . WPLPP_SUFFIX . '.js', array( 'jquery' ), $this->version, true );
 
 		}
+		/**
+		 * Checks if confirmation required.
+		 *
+		 * @return bool
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_confirmation_required() {
+			if ( 1 === get_option( '_lp_membership', 1 ) ) {
+				$return = true;
+			} else {
+				$return = false;
+			}
+			return (bool) apply_filters( 'wplegalpages_pro_confirmation_required', $return );
+		}
 
+		/**
+		 * Enqueues Legal Pages Adult scripts.
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_adult_scripts() {
+			add_thickbox();
+		}
+
+		/**
+		 * Renders Legal Pages Adult popup.
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_adult_popup() {
+			wp_enqueue_script( 'wp-legal-pages-jquery-cookie' );
+			wp_enqueue_script( $this->plugin_name . 'adult-content' );
+			$lp_general = get_option( 'lp_general' );
+			?>
+			<a id="inline" style="display:none" href="#data">This shows content of element who has id="data"</a>
+
+			<div id="is_adult_thickbox" style="display:none">
+				<div id="data">
+					<p>This website contains content suitable for adults only . Please proceed only if you are above your country's legal age limit.</p>
+					<a href="#" id="enter_site" style="text-decoration:none;">Yes,I am above my country's legal age limit (Enter)</a>
+					<a href="<?php echo esc_url( $lp_general['leave-url'] ); ?>" style="text-decoration:none;" id="leave_site">Leave</a>
+				</div>
+			</div>
+			<?php
+		}
+
+		/**
+		 * Renders Legal Pages overlay popup.
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_verify_overlay() {
+			if ( ! $this->wplegalpages_pro_needs_verification() ) {
+				return;
+			}
+			$lp_obj = new WP_Legal_Pages();
+			wp_enqueue_style( $this->plugin_name );
+			$lp_obj->wplegalpages_pro_enqueue_editor();
+			static $get_desc_called = false;
+			if ( ! $get_desc_called ) {
+				$get_desc_called = true;
+				?>
+			<div id="lp-overlay-wrap">
+				<?php do_action( 'wplegalpages_pro_before_modal' ); ?>
+				<div id="lp-overlay">
+					<?php
+					do_action( 'wplegalpages_pro_before_form' );
+					if ( $this->wplegalpages_pro_get_the_desc() ) {
+						$this->wplegalpages_pro_get_the_desc();
+					}
+					do_action( 'wplegalpages_pro_after_form' );
+					?>
+				</div>
+				<?php do_action( 'wplegalpages_pro_after_modal' ); ?>
+			</div>
+				<?php
+			}
+		}
+
+		/**
+		 * Restrict content.
+		 *
+		 * @param string $content Content.
+		 *
+		 * @return string
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_restrict_content( $content ) {
+			if ( ! $this->wplegalpages_pro_only_content_restricted() ) {
+				return $content;
+			}
+			if ( is_singular() ) {
+				return $content;
+			}
+			if ( ! $this->wplegalpages_pro_content_is_restricted() ) {
+				return $content;
+			}
+			return sprintf(
+				apply_filters( 'wplegalpages_pro_restricted_content_message', __( 'You must be atleast {age} years of age to view this content.<br>{form}', 'wplegalpages' ) . ' <a href="%2s">' . __( 'Please verify your age', 'wplegalpages' ) . '</a>.' ),
+				esc_html( $this->wplegalpages_pro_get_minimum_age() ),
+				esc_url( get_permalink( get_the_ID() ) )
+			);
+		}
+
+		/**
+		 * Verifies user.
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_verify() {
+			if ( isset( $_POST['lp-nonce'] ) ) {
+				if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['lp-nonce'] ) ), 'verify-age' ) ) {
+					return;
+				}
+			} else {
+				return;
+			}
+
+			$redirect_url = remove_query_arg( array( 'wplegalpages', 'verify-error' ), wp_get_referer() );
+
+			$is_verified = false;
+
+			$error = 1;
+
+			$input_type = $this->wplegalpages_pro_get_input_type();
+
+			switch ( $input_type ) {
+				case 'checkbox':
+					if ( isset( $_POST['lp_verify_confirm'] ) && 1 === (int) $_POST['lp_verify_confirm'] ) {
+						$is_verified = true;
+					} else {
+						$error = 2;
+					}
+					break;
+				default:
+					$lp_verify_m = isset( $_POST['lp_verify_m'] ) ? sanitize_text_field( wp_unslash( $_POST['lp_verify_m'] ) ) : '';
+					$lp_verify_d = isset( $_POST['lp_verify_d'] ) ? sanitize_text_field( wp_unslash( $_POST['lp_verify_d'] ) ) : '';
+					$lp_verify_y = isset( $_POST['lp_verify_y'] ) ? sanitize_text_field( wp_unslash( $_POST['lp_verify_y'] ) ) : '';
+					if ( checkdate( (int) $lp_verify_m, (int) $lp_verify_d, (int) $lp_verify_y ) ) :
+						$age = $this->wplegalpages_pro_get_visitor_age( $lp_verify_y, $lp_verify_m, $lp_verify_d );
+						if ( $age >= $this->wplegalpages_pro_get_minimum_age() ) {
+							$is_verified = true;
+						} else {
+							$error = 3;
+						} else :
+							$error = 4;
+					endif;
+					break;
+			}
+
+			$is_verified = apply_filters( 'wplegalpages_pro_passed_verify', $is_verified );
+			if ( true === $is_verified ) :
+				do_action( 'wplegalpages_pro_was_verified' );
+				if ( isset( $_POST['wplegalpages_pro_verify_remember'] ) ) {
+					$cookie_duration = time() + ( $this->wplegapages_pro_get_cookie_duration() * 60 );
+				} else {
+					$cookie_duration = 0;
+				}
+				setcookie( 'wplegalpages', 1, $cookie_duration, COOKIEPATH, COOKIE_DOMAIN, false );
+				wp_safe_redirect( esc_url_raw( $redirect_url ) . '?wplegalpages=' . wp_create_nonce( 'wplegalpages' ) );
+				exit;
+			else :
+				do_action( 'wplegalpages_pro_was_not_verified' );
+				wp_safe_redirect(
+					esc_url_raw(
+						add_query_arg(
+							array(
+								'verify-error' => $error,
+								'nonce'        => wp_create_nonce( 'age_verify_nonce' ),
+							),
+							$redirect_url
+						)
+					)
+				);
+				exit;
+			endif;
+		}
+
+		/**
+		 * Verify user form.
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_register_form() {
+			$text = '<p class="wplegalpages"><label for="_lp_confirm_age"><input type="checkbox" name="_lp_confirm_age" id="_lp_confirm_age" value="1" /> ';
+
+			$text .= esc_html(
+				sprintf(
+					apply_filters(
+						'wplegalpages_pro_registration_text',
+						/* translators: 1: minimum age */
+								esc_attr__( 'I am at least %1$s years old', 'wplegalpages' ),
+						$this->wplegalpages_pro_get_minimum_age()
+					)
+				)
+			);
+
+			$text .= '</label></p><br />';
+			echo esc_attr( $text );
+		}
+		/**
+		 * Gets Legal Pages input types.
+		 *
+		 * @return mixed|void
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_get_input_type() {
+			return apply_filters( 'wplegalpages_pro_get_input_type', get_option( '_lp_input_type', 'dropdowns' ) );
+		}
+		/**
+		 * Checks whether verification is needed or not.
+		 *
+		 * @return bool
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_needs_verification() {
+			$return = true;
+			if ( $this->wplegalpages_pro_only_content_restricted() ) :
+				$return = false;
+				if ( is_singular() && $this->wplegalpages_pro_content_is_restricted() ) {
+					$return = true;
+				}
+			endif;
+			if ( isset( $_REQUEST['wplegalpages'] ) ) {
+				if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['wplegalpages'] ) ), 'wplegalpages' ) ) {
+					$return = false;
+				}
+			}
+
+			if ( 'guests' === get_option( '_lp_always_verify', 'guests' ) && is_user_logged_in() ) {
+				$return = false;
+			}
+
+			if ( isset( $_COOKIE['wplegalpages'] ) ) {
+				$return = false;
+			}
+			return (bool) apply_filters( 'wplegalpages_pro_needs_verification', $return );
+		}
+		/**
+		 * Returns restricted content.
+		 *
+		 * @return bool
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_only_content_restricted() {
+			$only_content_restricted = 'content' === get_option( '_lp_require_for' ) ? true : false;
+			$only_content_restricted = apply_filters( 'wplegalpages_pro_only_content_restricted', $only_content_restricted );
+			return (bool) $only_content_restricted;
+		}
+		/**
+		 * Gets the Age verification description.
+		 *
+		 * @return bool|mixed|void
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_get_the_desc() {
+			$desc  = apply_filters( 'wplegalpages_pro_description', get_option( '_lp_description', __( 'You must be atleast {age} years of age to visit this site.{form}', 'wplegalpages' ) ) );
+			$strre = str_replace( '{age}', $this->wplegalpages_pro_get_minimum_age(), $desc );
+			if ( ! empty( $desc ) ) {
+				$desc_string   = apply_filters( 'wplegalpages_pro_description', $strre );
+				$output_array  = explode( '{form}', $desc_string );
+				$i             = 0;
+				$output_length = count( $output_array );
+				if ( ! empty( $output_array ) ) {
+					if ( '' === $output_array[0] ) {
+						$i = 1;
+						$this->wplegalpages_pro_get_display_option();
+					}
+					for ( $i; $i < $output_length; $i++ ) {
+						echo esc_html( $output_array[ $i ] );
+						if ( $i < $output_length - 1 ) {
+							$this->wplegalpages_pro_get_display_option();
+						}
+					}
+				}
+			} else {
+				return false;
+			}
+		}
+		/**
+		 * Returns minimum age for user.
+		 *
+		 * @return int
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_get_minimum_age() {
+			$minimum_age = get_option( '_lp_minimum_age', 21 );
+			$minimum_age = apply_filters( 'lp_minimum_age', $minimum_age );
+			return (int) $minimum_age;
+		}
+		/**
+		 * Returns display options for verify form.
+		 *
+		 * @return mixed|string|void
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_get_display_option() {
+			if ( 'date' === get_option( '_lp_display_option', 'date' ) ) {
+				include_once plugin_dir_path( __DIR__ ) . 'public/templates/wplegalpages-age-verify-form.php';
+			} else {
+				include_once plugin_dir_path( __DIR__ ) . 'public/templates/wplegalpages-age-button.php';
+			}
+		}
+		/**
+		 * Get visitor age.
+		 *
+		 * @param int $year Year.
+		 * @param int $month Month.
+		 * @param int $day Day.
+		 *
+		 * @return int
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_get_visitor_age( $year, $month, $day ) {
+			$age        = 0;
+			$birthday   = new DateTime( $year . '-' . $month . '-' . $day );
+			$phpversion = phpversion();
+			if ( $phpversion >= '5.3' ) :
+				$current = new DateTime( current_time( 'mysql' ) );
+				$age     = $birthday->diff( $current );
+				$age     = $age->format( '%y' );
+			else :
+				list( $year, $month, $day ) = explode( '-', $birthday->format( 'Y-m-d' ) );
+				$year_diff                  = date_i18n( 'Y' ) - $year;
+				$month_diff                 = date_i18n( 'm' ) - $month;
+				$day_diff                   = date_i18n( 'd' ) - $day;
+				if ( $month_diff < 0 ) {
+					--$year_diff;
+				} elseif ( ( 0 === $month_diff ) && ( $day_diff < 0 ) ) {
+					--$year_diff;
+				}
+				$age = $year_diff;
+			endif;
+			return (int) $age;
+		}
+		/**
+		 * Get cookie duration.
+		 *
+		 * @return int|mixed|void
+		 *
+		 * @since 7.0
+		 */
+		public function wplegapages_pro_get_cookie_duration() {
+			$cookie_duration = get_option( '_lp_cookie_duration', 720 );
+			$cookie_duration = (int) apply_filters( 'lp_cookie_duration', $cookie_duration );
+			return $cookie_duration;
+		}
+		/**
+		 * Process WPLegalPages popup shortcode.
+		 *
+		 * @param Array $atts Shortcode attributes.
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_popup_shortcode( $atts ) {
+			global $wpdb;
+			wp_enqueue_style( $this->plugin_name );
+			$legalpages_pro = new WP_Legal_Pages();
+			$atts           = shortcode_atts(
+				array(
+					'pid' => 1,
+				),
+				$atts
+			);
+			$pid            = $atts['pid'];
+
+			$res   = $wpdb->get_row( $wpdb->prepare( 'SELECT * from ' . $legalpages_pro->popuptable . ' where id= %d', $pid ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$terms = '';
+			if ( isset( $res->content ) ) {
+				$terms = do_shortcode( $res->content );
+			}
+			$lp_find    = array( '[Domain]', '[Business Name]', '[Phone]', '[Street]', '[City, State, Zip code]', '[Country]', '[Email]', '[Address]', '[Niche]' );
+			$lp_general = get_option( 'lp_general' );
+			$terms      = str_replace( $lp_find, $lp_general, stripslashes( $terms ) );
+			$terms      = apply_filters( 'wplegalpages_shortcode_content', $terms );
+
+			$content = '<div>
+							' . $terms . '
+							<p><input type="checkbox" name="lp_accept" id="lp_accept" value="1" onclick="jQuery(\'.accept\').toggle();" /> I agree to the terms and conditions.</p>
+							<input type="submit" name="lp_submit" id="lp_submit" value="Accept" class="accept" style="display:none;"/>
+							<br/>
+						</div>';
+			if ( is_single() || is_page() ) {
+				add_thickbox();
+				?>
+				<div id="thick-box" style="display:none;" >
+					<p>
+						<div>
+						<?php
+						$allowed_html = wp_kses_allowed_html( 'post' );
+						echo wp_kses( $terms, $allowed_html );
+						?>
+						<p><input type="checkbox" name="lp_accept" id="lp_accept" value="1" onclick="jQuery('.accept').toggle();" /> I agree to the terms and conditions.</p>
+							<input type="submit" name="lp_submit" id="lp_submit" value="Accept" class="accept" style="display:none;"/>
+							<br/>
+						</div>
+					</p>
+				</div>
+				<?php
+				wp_enqueue_script( 'wp-legal-pages-jquery-cookie' );
+				wp_enqueue_script( $this->plugin_name . 'popups' );
+			}
+		}
+		/**
+		 * Excludes Legal Pages from search query.
+		 *
+		 * @param string $where Search query.
+		 *
+		 * @return string
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_exclude_search_pages( $where = '' ) {
+			global $wpdb;
+			$exclude = array();
+
+			if ( ! is_admin() && is_search() ) {
+				$post_tbl     = $wpdb->prefix . 'posts';
+				$postmeta_tbl = $wpdb->prefix . 'postmeta';
+				$pagesresult  = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $post_tbl . ' as ptbl, ' . $postmeta_tbl . ' as pmtbl WHERE ptbl.ID = pmtbl.post_id and ptbl.post_status=%s AND pmtbl.meta_key=%s', array( 'publish', 'is_legal' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				foreach ( $pagesresult as $pid ) {
+					array_push( $exclude, $pid->ID );
+				}
+				$exclude_count = count( $exclude );
+				for ( $x = 0;$x < $exclude_count;$x++ ) {
+					$where .= ' AND ID != ' . $exclude[ $x ];
+				}
+			}
+			return $where;
+		}
+		/**
+		 * Process WPLegalPages Shortcodes.
+		 *
+		 * @param Array $atts Shortcode attributes.
+		 *
+		 * @return string
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_shortcode( $atts ) {
+			global $wpdb;
+			$legalpages_pro = new WP_Legal_Pages();
+			$atts           = shortcode_atts(
+				array(
+					'tid' => 1,
+				),
+				$atts
+			);
+			$tid            = $atts['tid'];
+
+			$res = $wpdb->get_row( $wpdb->prepare( 'SELECT * from ' . $legalpages_pro->tablename . ' where id= %d', $tid ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( isset( $res->content ) ) {
+				$content = $res->content;
+			}
+			$lp_find    = array( '[Domain]', '[Business Name]', '[Phone]', '[Street]', '[City, State, Zip code]', '[Country]', '[Email]', '[Address]', '[Niche]' );
+			$lp_general = get_option( 'lp_general' );
+			$content    = str_replace( $lp_find, $lp_general, stripslashes( $content ) );
+			$content    = apply_filters( 'wplegalpages_shortcode_content', $content );
+
+			if ( is_single() || is_page() ) {
+				return html_entity_decode( $content );
+			}
+		}
+		/**
+		 * Disables comments for Legal Pages.
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_disable_comments() {
+			$post_id = get_the_ID();
+			$meta    = '';
+			if ( ! empty( $post_id ) ) {
+				$meta = get_post_meta( $post_id, 'is_legal', true );
+			}
+			$general = get_option( 'lp_general' );
+			if ( isset( $general['disable_comments'] ) && '1' === $general['disable_comments'] && 'yes' === $meta ) {
+				add_filter( 'comments_open', array( $this, 'wplegalpages_pro_disable_page_comments' ) );
+			}
+		}
+
+		/**
+		 * Disables comments for Legal Pages.
+		 *
+		 * @return bool
+		 *
+		 * @since 7.0
+		 */
+		public function wplegalpages_pro_disable_page_comments() {
+			$post = get_post_meta( get_the_ID(), 'is_legal' );
+
+			if ( 'yes' === $post[0] ) {
+				$open = false;
+			}
+
+			return $open;
+		}
 		/**
 		 * Show credits.
 		 *
