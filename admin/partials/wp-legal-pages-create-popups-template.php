@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<meta name="viewport" content="width=device-width" /> </head>
 	<?php
 	global $wpdb;
-	$lp_obj = new Wplegalpages_Pro();
+	$lp_obj = new WP_Legal_Pages();
 
 	// fetch the popup details
 	$serialized_object = get_option( 'wplegalpalges_create_popup' );
