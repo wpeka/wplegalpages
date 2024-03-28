@@ -64,10 +64,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$this->version     = $version;
 			add_shortcode( 'wplegalpage', array( $this, 'wplegalpages_page_shortcode' ) );
 			$lp_pro_active    = get_option( '_lp_pro_active' );
+			$lp_general = get_option( 'lp_general' );
 			if( !$lp_pro_active ){
 				// age verification feature.
 				$age_verify_popup_setting = get_option( '_lp_require_for' );
+				error_log("This is free ");
+				error_log(print_r($age_verify_popup_setting,true));
+				error_log(print_r($lp_general['is_adult'],true));
+				error_log(print_r($_COOKIE['is_user_adult'],true));
 				if ( 'site' !== $age_verify_popup_setting && isset( $lp_general['is_adult'] ) && '1' === $lp_general['is_adult'] && ! isset( $_COOKIE['is_user_adult'] ) ) {
+					// error_log("this is got called from free action hook condition");
 					add_action( 'wp_enqueue_scripts', array( $this, 'wplegalpages_pro_adult_scripts' ) );
 					add_action( 'wp_footer', array( $this, 'wplegalpages_pro_adult_popup' ) );
 				}
@@ -168,6 +174,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 		 * @since 7.0
 		 */
 		public function wplegalpages_pro_adult_popup() {
+			error_log("this is got called from free");
 			wp_enqueue_script( 'wp-legal-pages-jquery-cookie' );
 			wp_enqueue_script( $this->plugin_name . 'adult-content' );
 			$lp_general = get_option( 'lp_general' );

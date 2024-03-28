@@ -251,7 +251,97 @@ if ( '1' === $lpterms ) {
 						<?php do_action( 'wp_legalpages_notice' ); ?>
 						<c-card>
 							<c-card-body>
-							<?php do_action( 'wp_legalpages_after_data_tab' ); ?>
+							<c-row class="wplegal-support-text-row">
+									<c-col class="col-sm-10">
+										<label><?php esc_attr_e( 'Show Legal Pages in Search', 'wplegalpages' ); ?></label>
+										<span class="wplegalpages-help-text">
+											<?php esc_html_e( 'Allow search engines to display your legal pages in search results.', 'wplegalpages' ); ?>
+										</span>
+									</c-col>
+									<c-col class="col-sm-2">
+										<input type="hidden" name="lp-search" v-model="search">
+										<c-switch v-bind="labelIcon" ref="search"  id="inline-form-search" variant="3d" color="success" <?php checked( isset( $lp_general['search'] ) ? boolval( $lp_general['search'] ) : false ); ?> v-on:update:checked="onChangeSearch"></c-col>
+									</c-col>
+								</c-row>
+								<c-row class="wplegal-support-text-row">
+									<c-col class="col-sm-10">
+										<label><?php esc_attr_e( 'Affiliate Disclosure', 'wplegalpages' ); ?></label>
+										<span class="wplegalpages-help-text">
+											<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>
+										</span>
+									</c-col>
+									<c-col class="col-sm-2">
+										<input type="hidden" name="lp-affiliate-disclosure" v-model="affiliate_disclosure">
+										<c-switch v-bind="labelIcon" ref="affiliate_disclosure"  id="inline-form-affiliate" variant="3d" color="success" <?php checked( isset( $lp_general['affiliate-disclosure'] ) ? boolval( $lp_general['affiliate-disclosure'] ) : false ); ?> v-on:update:checked="onChangeAffiliate"></c-col>
+									</c-col>
+								</c-row>
+								<c-row class="wplegal-support-text-row">
+									<c-col class="col-sm-10">
+										<label><?php esc_attr_e( 'Adult Content Site', 'wplegalpages' ); ?></label>
+										<span class="wplegalpages-help-text">
+											<?php esc_html_e( 'If you enable this, a popup will display the first time a user visits your website. Each visitor will be forced to confirm that he/she is above his/her country legal age limit.', 'wplegalpages' ); ?>
+										</span>
+									</c-col>
+									<c-col class="col-sm-2">
+										<input type="hidden" name="lp-is_adult" v-model="is_adult">
+										<c-switch v-bind="labelIcon" ref="is_adult"  id="inline-form-is-adult" variant="3d" color="success" <?php checked( isset( $lp_general['is_adult'] ) ? boolval( $lp_general['is_adult'] ) : false ); ?> v-on:update:checked="onChangeIsAdult"></c-col>
+									</c-col>
+								</c-row>
+								<c-row v-show= "is_adult" id="exit_url_section" class="wplegal-support-text-row">
+									<c-col class="col-sm-8 wplegalpages-input-for-toggle-button">
+										<c-input class="wplegalpages-settings-input legal-page-leave-url input-with-support-text" placeholder="Exit URL on clicking the 'Leave' button" type="text" name="lp-leave-url" value="<?php echo ! empty( $lp_general['leave-url'] ) ? esc_attr( $lp_general['leave-url'] ) : ''; ?>" ></c-input>
+										<span class="wplegalpages-help-text">
+											<?php esc_html_e( 'If visitor clicks on "Leave" button then he/she redirects to this URL.', 'wplegalpages' ); ?>
+										</span>
+									</c-col>
+								</c-row>
+								<c-row class="wplegal-support-text-row">
+									<c-col class="col-sm-10">
+										<label><?php esc_attr_e( 'Forms Integration', 'wplegalpages' ); ?></label>
+										<span class="wplegalpages-help-text">
+											<?php esc_html_e( 'Display privacy policy links in contact forms. (Compatible with WPForms, Gravity Forms, and Contact Form 7)', 'wplegalpages' ); ?>
+										</span>
+									</c-col>
+									<c-col class="col-sm-2">
+										<input type="hidden" name="lp-privacy" v-model="privacy">
+										<c-switch v-bind="labelIcon" ref="privacy"  id="inline-form-privacy" variant="3d" color="success" <?php checked( isset( $lp_general['privacy'] ) ? boolval( $lp_general['privacy'] ) : false ); ?> v-on:update:checked="onChangePrivacy"></c-col>
+									</c-col>
+								</c-row>
+								<c-row v-show= "privacy" id="privacy_page_section" class="wplegal-support-text-row">
+									<c-col class="col-sm-8 wplegalpages-input-for-toggle-button">
+										<?php
+										$lp_pages = get_posts(
+											array(
+												'post_type'   => 'page',
+												'post_status' => 'publish',
+												'numberposts' => -1,
+												'orderby'     => 'title',
+												'order'       => 'ASC',
+												'meta_query'  => array( // phpcs:ignore slow query
+													array(
+														'key'     => 'is_legal',
+														'value'   => 'yes',
+														'compare' => '=',
+													),
+												),
+											)
+										);
+										$options  = array();
+										if ( $lp_pages ) {
+											foreach ( $lp_pages as $lp_page ) {
+												array_push( $options, $lp_page->post_title );
+											}
+										}
+										$options = wp_json_encode( $options );
+										?>
+										<input type="hidden" ref="privacy_page" v-model="privacy_page" name="lp-privacy-page">
+										<input type="hidden" ref="privacy_page_mount" value="<?php echo esc_html( stripslashes( isset( $lp_general['privacy_page'] ) ? $lp_general['privacy_page'] : '' ) ); ?>">
+										<v-select placeholder="Select Privacy Policy Page" id="wplegalpages-select-roles" class="form-group input-with-support-text" :options="page_options" v-model="privacy_page"></v-select>
+										<span class="wplegalpages-help-text">
+											<?php esc_html_e( 'The privacy policy disclaimer link in your forms will link to this page', 'wplegalpages' ); ?>
+										</span>
+									</c-col>
+								</c-row>
 								<c-row class="wplegal-support-text-row">
 									<c-col class="col-sm-10">
 										<label><?php esc_attr_e( 'Give Credit', 'wplegalpages' ); ?></label>
