@@ -162,6 +162,16 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			 */
 			require_once plugin_dir_path( __DIR__ ) . 'widgets/class-wp-widget-legal-pages.php';
 
+			/**
+			 * The class responsible for defining internationalization functionality
+			 * of the WP_Legal_Pages.
+			 */
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wp-legal-app-auth.php';
+			$this->library_auth = new WP_Legal_Pages_App_Auth();
+
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/settings/class-wp-legal-pages-api.php';
+			$this->respadons_api = new WP_Legal_Pages_Api();
+
 			$this->loader = new WP_Legal_Pages_Loader();
 		}
 
@@ -217,6 +227,8 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$this->loader->add_action( 'wp_trash_post', $plugin_admin, 'wplegalpages_pro_trash_post' );
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'create_popup_delete_process' );
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'create_popup_edit_process' );
+			//action to add admin notice for api connections
+			$this->loader->add_action( 'admin_notices', $plugin_admin, 'wplegal_api_admin_notices' );
 			// Hookes of age verification and create popup.
 			$this->loader->add_action( 'wplegalpages_save_settings', $plugin_admin, 'wplegalpages_pro_save_settings', 10, 2 );
 			$this->loader->add_action( 'wp_ajax_save_age_form', $plugin_admin, 'wplegalpages_pro_save_age_form' );

@@ -1355,6 +1355,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 */
 		public function wp_legalpages_new_admin_screen() {
 
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/settings/class-wp-legal-pages-settings.php';
+
+			// Instantiate a new object of the wplegal_Cookie_Consent_Settings class.
+			$this->settings = new WP_Legal_Pages_Settings();
+
+			// Call the is_connected() method from the instantiated object to check if the user is connected.
+			$is_user_connected = $this->settings->is_connected();
+
 			$pro_is_activated = get_option( '_lp_pro_active' );
 
 			$if_terms_are_accepted = get_option( 'lp_accept_terms' );
@@ -1372,12 +1380,15 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'wp-legalpages-admin-revamp',
 				'wplp_localize_data',
 				array(
-					'ajaxurl'          => admin_url( 'admin-ajax.php' ),
-					'wplpurl'          => WPL_LITE_PLUGIN_URL,
-					'siteurl'          => site_url(),
-					'admin_url'        => admin_url(),
-					'is_pro_activated' => $pro_is_activated,
-					'lp_terms'         => $if_terms_are_accepted,
+					'ajaxurl'        		=> admin_url( 'admin-ajax.php' ),
+					'wplpurl'         		=> WPL_LITE_PLUGIN_URL,
+					'siteurl'        		=> site_url(),
+					'admin_url'				=> admin_url(),
+					'is_pro_activated'		=> $pro_is_activated,
+					'lp_terms'				=> $if_terms_are_accepted,
+					'wplegal_app_url'		=> WPLEGAL_APP_URL,
+					'is_user_connected'		=> $is_user_connected,
+					'_ajax_nonce'           => wp_create_nonce( 'wp-legal-pages' ),
 
 				)
 			);
@@ -2708,6 +2719,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_register_script( $this->plugin_name . '-tinymce', plugin_dir_url( __FILE__ ) . 'js/vue/tinymce/tinymce.min.js', array( 'jquery' ), $this->version, false );
 			wp_register_script( $this->plugin_name . '-vue-nav-tabs', plugin_dir_url( __FILE__ ) . 'js/vue/vue-nav-tabs.js', array( 'jquery' ), $this->version, false );
 
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/settings/class-wp-legal-pages-settings.php';
+
+			// Instantiate a new object of the WP_Legal_Pages_Settings class.
+			$this->settings = new WP_Legal_Pages_Settings();
+
+			// Call the is_connected() method from the instantiated object to check if the user is connected.
+			$is_user_connected = $this->settings->is_connected();
+
 			wp_localize_script(
 				$this->plugin_name . '-vue-script',
 				'wizard_obj',
@@ -2722,6 +2741,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'pro_tab'            => __( 'Templates', 'wplegalpages' ),
 					'promotion_text'     => __( 'Can\'t find what you are looking for?', 'wplegalpages' ),
 					'promotion_button'   => __( 'Go Pro', 'wplegalpages' ),
+					'wplegal_app_url'	 => WPLEGAL_APP_URL,
+					'is_user_connected'	 => $is_user_connected,
+					'_ajax_nonce'       => wp_create_nonce( 'wp-legal-pages' ),
 					'promotion_link'     => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=wizard&utm_content=go-pro-button',
 					'welcome'            => array(
 						'create'     => __( 'Create', 'wplegalpages' ),
@@ -4744,5 +4766,35 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				}
 			}
 		}
+
+		/**
+		 * Displays admin notices related to WPLegalPages plugin.
+		 *
+		 * This function is responsible for displaying admin notices based on the
+		 * connection status of the user to the WPLegalPages plugin.
+		 *
+		 * @since 3.0.0
+		 */
+		public function wplegal_api_admin_notices() {
+
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/settings/class-wp-legal-pages-settings.php';
+
+			// Instantiate a new object of the wplegal_Cookie_Consent_Settings class.
+			$this->settings = new WP_Legal_Pages_Settings();
+
+			// Call the is_connected() method from the instantiated object to check if the user is connected.
+			$is_user_connected = $this->settings->is_connected();
+
+			if ( isset( $_GET['page'] ) && $_GET['page'] === 'legal-pages' && $is_user_connected ) {
+				// Display successfull connection notice.
+				echo '<div id="wplegal-wpcc-notice" class="notice notice-success is-dismissible wpcc-notice wplegal-hidden"><p>Successful Connection - You get access to 25+ legal policy templates and other advanced features like adding an age verification popup, affiliate disclosure, and more.</p></div>';
+			} elseif ( isset( $_GET['page'] ) && $_GET['page'] === 'legal-pages' && ! $is_user_connected ) {
+				// Display  disconnection notice.
+				echo '<div id="wplegal-disconnect-wpcc-notice" class="notice notice-warning is-dismissible wpcc-notice wplegal-hidden"><p>Your website has been disconnected from WP Legal Pages. Please <span class="wplegal-api-connect-existing">click here</span> to connect again and unlock advanced features.
+				</p></div>';
+			}
+
+		}
+
 	}
 }
