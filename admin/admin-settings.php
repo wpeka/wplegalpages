@@ -22,6 +22,18 @@ if ( isset( $_POST['lp_submit'] ) && 'Accept' === $_POST['lp_submit'] ) {
 	update_option( 'lp_accept_terms', isset( $_POST['lp_accept_terms'] ) ? sanitize_text_field( wp_unslash( $_POST['lp_accept_terms'] ) ) : '' );
 }
 
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/settings/class-wp-legal-pages-settings.php';
+
+// // Instantiate a new object of the wplegal_Cookie_Consent_Settings class.
+$this->settings = new WP_Legal_Pages_Settings();
+
+// // Call the is_connected() method from the instantiated object to check if the user is connected.
+$is_user_connected = $this->settings->is_connected();
+$api_user_email    = $this->settings->get_email();
+$api_user_site_key = $this->settings->get_website_key();
+$api_user_plan     = $this->settings->get_plan();
+
+
 wp_enqueue_script( 'jquery' );
 $lp_pro_active           = get_option( '_lp_pro_active' );
 $lpterms                 = get_option( 'lp_accept_terms' );
@@ -1304,6 +1316,38 @@ if ( '1' === $lpterms ) {
 							</c-card-body>
 						</c-card>
 					</c-tab>
+
+					<!-- disconnection tab  -->
+
+					<?php if ( $is_user_connected  ) : ?>
+						<c-tab title="<?php esc_attr_e( 'Connection', 'wplegalpages' ); ?>" href="#settings#connection">
+
+						<c-card class="wplegal-connection-tab-card">
+
+								<c-card-header><?php esc_html_e( 'Connection', 'wplegalpages' ); ?>
+								</c-card-header>
+								<c-card-body class="wplegal-connection-card-body" >
+									<div class="wplegal-connection-success-tick">
+									<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ) . 'images/check_ring.png'; ?>" alt="API Connection Success Mark">
+									</div>
+									<div class="wplegal-connect-information">
+
+										<h3><?php esc_html_e( 'Your website is connected to WP Legal Pages', 'wplegalpages' ); ?></h3>
+
+										<p class="gpdr-email-info"><span class="wplegal-info-title" ><?php esc_html_e( 'Email : ', 'wplegalpages' ); ?></span> <?php echo $api_user_email; ?>  </p>
+										<p><span class="wplegal-info-title" ><?php esc_html_e( 'Site Key : ', 'wplegalpages' ); ?></span> <?php echo $api_user_site_key; ?>  </p>
+										<p><span class="wplegal-info-title" ><?php esc_html_e( 'Plan : ', 'wplegalpages' ); ?></span> <?php echo $api_user_plan; ?>  </p>
+										<!-- API Disconnect Button  -->
+										<div class="wplegal-api-connection-disconnect-btn" ><?php esc_attr_e( 'Disconnect', 'wplegalpages' ); ?></div>
+
+									</div>
+								</c-card-body>
+							</c-card>
+
+						</c-tab>
+					<?php endif; ?>
+
+
 					<?php
 					if ( $lp_show_improved_ui ) {
 						?>

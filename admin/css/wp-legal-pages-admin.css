@@ -431,6 +431,16 @@ div.wplegal-choose-template select.wplegal-template-language {
 body.toplevel_page_wplegalpages-settings-page div.notice {
     display: none;
 }
+
+#wplegal-wpcc-notice{
+	display: block;
+}
+
+#wplegal-disconnect-wpcc-notice{
+	display: block;
+}
+
+
 body.toplevel_page_wplegalpages-settings-page #wpbody-content {
     padding-bottom: 0;
 }
@@ -1223,4 +1233,129 @@ body.toplevel_page_legal-pages #wpcontent{
 }
 .wplegalpages-pro-promotion-settings-page,.wplegalpages-pro-promotion{
 	display: none;
+}
+
+/* connection tab styling  */
+.wplegal-connection-card-body{
+	display: flex;
+    padding: 60px 80px;
+}
+
+.wplegal-connection-card-body .wplegal-connection-success-tick{
+	padding-right: 10px;
+}
+.wplegal-connection-card-body .wplegal-connection-success-tick img{
+	height: 35px;
+	width: 35px;
+}
+.wplegal-connect-information h3 {
+	font-size: 25px;
+}
+.wplegal-connect-information p{
+	margin: 0;
+	font-size: 15px;
+}
+
+.wplegal-connect-information .gpdr-email-info{
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+.wplegal-connect-information p + p {
+    margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.wplegal-connect-information .wplegal-info-title{
+	font-family: roboto;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.wplegal-api-connection-disconnect-btn{
+	width: 140px;
+    height: 45px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #EB4143;
+    border: 1px solid #EB4143;
+	margin-top: 30px;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.wplegal-api-connection-disconnect-btn:hover{
+	background-color: antiquewhite;
+}
+
+/* spinner for ajax calls */
+.wplegal-ajax-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #333;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    z-index: 9999; /* Ensure the spinner is above other elements */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* modal notices  */
+
+#wplegal-wpcc-notice{
+	margin: 0;
+	margin-top: 15px;
+	margin-left: 20px;
+    margin-right: 20px;
+}
+
+#wplegal-wpcc-notice.wplegal-hidden{
+	display: none;
+}
+
+#wplegal-disconnect-wpcc-notice{
+	margin: 0;
+	margin-top: 15px;
+	margin-left: 20px;
+    margin-right: 20px;
+}
+
+#wplegal-disconnect-wpcc-notice.wplegal-hidden{
+	display: none;
+}
+
+#wplegal-disconnect-wpcc-notice .wplegal-api-connect-existing{
+	color: blue;
+	cursor: pointer;
+}
+
+/* spinner for ajax calls */
+.wplegal-ajax-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #333;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    z-index: 9999; /* Ensure the spinner is above other elements */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

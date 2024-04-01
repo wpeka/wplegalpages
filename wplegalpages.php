@@ -27,6 +27,12 @@ if ( ! defined( 'WPL_LITE_PLUGIN_BASENAME' ) ) {
 if ( ! defined( 'WPLEGAL_API_URL' ) ) {
 	define( 'WPLEGAL_API_URL', 'https://api.wpeka.com/wp-json/wplegal/v2/' );
 }
+/**
+ * Check if the constant GDPR_APP_URL is not already defined.
+*/
+if ( ! defined( 'WPLEGAL_APP_URL' ) ) {
+	define( 'WPLEGAL_APP_URL', 'https://d8c7243ac1.nxcli.io' );
+}
 
 if ( ! function_exists( 'wplp_fs' ) ) {
 	/**
