@@ -224,6 +224,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$this->loader->add_filter( 'wplegalpages_compliances_options', $plugin_admin, 'wplegalpages_pro_compliances_options', 10, 1 );
 			$this->loader->add_filter( 'wplegalpages_shortcodes_table', $plugin_admin, 'wplegalpages_pro_shortcodes_table', 10, 1 );
 			$this->loader->add_filter( 'wplegalpages_shortcode_content', $plugin_admin, 'wplegalpages_pro_shortcode_content', 10, 1 );
+			$this->loader->add_action( 'init', $plugin_admin, 'wplegalpages_pro_register_block_type' );
 		}
 
 		/**

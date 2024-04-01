@@ -234,6 +234,38 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-4"><c-input type="text" class="wplegalpages-full-width-input" name="lp-address" value="<?php echo ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : ''; ?>"></c-input></c-col>
 									<c-col class="col-sm-4"><c-input type="text" class="wplegalpages-full-width-input" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>"></c-input></c-col>
 								</c-row>
+								<c-row class="wplegalpages-label-row">
+								<c-col class="col-sm-6">
+									<label><?php esc_attr_e( 'Facebook URL', 'wplegalpages' ); ?></label>
+								</c-col>
+								<c-col class="col-sm-6">
+									<label><?php esc_attr_e( 'Google URL', 'wplegalpages' ); ?></label>
+								</c-col>
+							</c-row>
+							<c-row>
+								<c-col class="col-sm-6">
+									<c-input type="text" name="lp-facebook-url" value="<?php echo ! empty( $lp_general['facebook-url'] ) ? esc_attr( $lp_general['facebook-url'] ) : ''; ?>" ></c-input>
+								</c-col>
+								<c-col class="col-sm-6">
+									<c-input type="text" name="lp-google-url" value="<?php echo ! empty( $lp_general['google-url'] ) ? esc_attr( $lp_general['google-url'] ) : ''; ?>" ></c-input>
+								</c-col>
+							</c-row>
+							<c-row class="wplegalpages-label-row">
+								<c-col class="col-sm-6">
+									<label><?php esc_attr_e( 'Twitter URL', 'wplegalpages' ); ?></label>
+								</c-col>
+								<c-col class="col-sm-6">
+									<label><?php esc_attr_e( 'LinkedIn URL', 'wplegalpages' ); ?> </label>
+								</c-col>
+							</c-row>
+							<c-row>
+								<c-col class="col-sm-6">
+									<c-input type="text" name="lp-twitter-url" value="<?php echo ! empty( $lp_general['twitter-url'] ) ? esc_attr( $lp_general['twitter-url'] ) : ''; ?>" ></c-input>
+								</c-col>
+								<c-col class="col-sm-6">
+									<c-input type="text" name="lp-linkedin-url" value="<?php echo ! empty( $lp_general['linkedin-url'] ) ? esc_attr( $lp_general['linkedin-url'] ) : ''; ?>" ></c-input>
+								</c-col>
+							</c-row>
 									<?php
 								}
 								?>
@@ -293,18 +325,6 @@ if ( '1' === $lpterms ) {
 										<span class="wplegalpages-help-text">
 											<?php esc_html_e( 'If visitor clicks on "Leave" button then he/she redirects to this URL.', 'wplegalpages' ); ?>
 										</span>
-									</c-col>
-								</c-row>
-								<c-row class="wplegal-support-text-row">
-									<c-col class="col-sm-10">
-										<label><?php esc_attr_e( 'Forms Integration', 'wplegalpages' ); ?></label>
-										<span class="wplegalpages-help-text">
-											<?php esc_html_e( 'Display privacy policy links in contact forms. (Compatible with WPForms, Gravity Forms, and Contact Form 7)', 'wplegalpages' ); ?>
-										</span>
-									</c-col>
-									<c-col class="col-sm-2">
-										<input type="hidden" name="lp-privacy" v-model="privacy">
-										<c-switch v-bind="labelIcon" ref="privacy"  id="inline-form-privacy" variant="3d" color="success" <?php checked( isset( $lp_general['privacy'] ) ? boolval( $lp_general['privacy'] ) : false ); ?> v-on:update:checked="onChangePrivacy"></c-col>
 									</c-col>
 								</c-row>
 								<c-row v-show= "privacy" id="privacy_page_section" class="wplegal-support-text-row">
