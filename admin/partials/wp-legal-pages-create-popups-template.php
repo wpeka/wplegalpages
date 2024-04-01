@@ -228,7 +228,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<div style="padding:0 10px 10px; line-height:18px;"><?php esc_attr_e( ' Select the template from below drop down for which you need to have popup and copy paste the shortcodes to the editor.', 'wplegalpages' ); ?>
 								<br/>
 								<?php
-								$res = $wpdb->get_results( 'select * from ' . $lp_obj->tablename ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+								$res = $wpdb->get_results( 'select * from ' . $lp_obj->tablename );
+								 // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 								?>
 									<script type="text/javascript">
 										function wplpfunc(selectObj) {
@@ -241,6 +242,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 										<select name="wplp" id="wplp" onChange="wplpfunc(this);" style="width:250px;">
 											<option value=""><?php esc_attr_e( 'Select', 'wplegalpages' ); ?></option>
 											<?php
+
 											foreach ( $res as $ras ) {
 												?>
 												<option value="<?php echo esc_attr( $ras->id ); ?>">
