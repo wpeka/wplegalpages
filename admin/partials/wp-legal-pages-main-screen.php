@@ -58,21 +58,6 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 					</div>
 				</div>
 		</div>
-		<!-- promotional banner  -->
-		<?php
-
-		if ( ! $pro_is_activated ) {
-
-			?>
-			<div class="wp-legalpages-admin-promotional-banner">
-				<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=banner&utm_campaign=upgrade-to-pro" target="_blank">
-				<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/wp_legalpages_upgrade_to_pro.png'; ?>" alt="WP Cookie Consent Promotional Banner"></a>
-			</div>
-			<?php
-
-		}
-
-		?>
 		<!-- tabs -->
 		<div class="wp-legalpages-admin-tabs-section">
 			<div class="wp-legalpages-admin-tabs">
