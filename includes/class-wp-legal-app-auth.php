@@ -88,6 +88,7 @@ class WP_Legal_Pages_App_Auth {
 				'platform' => 'wordpress',
 				'site' => $site_address,
 				'rest_url' => rawurlencode(get_rest_url()),
+				'src_plugin' => 'wplegalpages',
 			),
 			$api_auth_url
 		);
