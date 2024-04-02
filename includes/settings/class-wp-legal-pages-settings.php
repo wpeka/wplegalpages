@@ -68,6 +68,9 @@ class WP_Legal_Pages_Settings {
 				'plan'      => 'free',
 				'site_key'  => '',
 			),
+			'src_plugin'     => array(
+				'plugin' => '',
+			),
 		);
 	}
 
