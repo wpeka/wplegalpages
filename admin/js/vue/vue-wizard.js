@@ -446,7 +446,6 @@ Vue.component('GettingStartedWizardForm',{
             var self = this;
             var html = [];
             formLabelElements.forEach((value, index) => {
-				console.log('VALUE IS->',value);
                 var buttonText = value.pid ? wizard_obj.welcome.edit : wizard_obj.welcome.create;
                 var el = createElement('label',{
                     class:self.labelClass(value.value)
