@@ -480,6 +480,11 @@ Vue.component('GettingStartedWizardForm',{
                     domProps: {
                         textContent: value.description
                     }
+                }),createElement('span',{
+                    staticClass: 'wplegal-pro-tag',
+                    domProps: {
+                        textContent: value.pro
+                    }
                 }), createElement('span', {
                     staticClass: "wplegal-create-button-wrapper"
                 }, [createElement('span', {
@@ -503,14 +508,14 @@ Vue.component('GettingStartedWizardForm',{
 
 								// Create and append an h3 element with the upgrade message
 								var h3 = document.createElement('h3');
-								var h3TextNode = document.createTextNode('Connect your website and unlock advanced features');
+								var h3TextNode = document.createTextNode('Connect Your Website');
 								h3.appendChild(h3TextNode);
 								newDiv.appendChild(h3);
 
 								// Create and append a paragraph element with the upgrade instructions
 								var p = document.createElement('p');
 								p.classList.add('wplegal-api-upgrade-text');
-								var pTextNode = document.createTextNode('Sign up for a free account and get access to unlock 25+ legal policy templates and other advanced features like adding an age verification popup, affiliate disclosure, and more.');
+								var pTextNode = document.createTextNode('Sign up for an account and get this free template.');
 								p.appendChild(pTextNode);
 								newDiv.appendChild(p);
 

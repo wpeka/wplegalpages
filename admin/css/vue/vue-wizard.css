@@ -1530,6 +1530,7 @@ button[data-v-09b2f69e] {
 	position: fixed;
     top: 50%;
     left: 50%;
+	width: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
     padding: 20px;
@@ -1630,4 +1631,11 @@ button[data-v-09b2f69e] {
 }
 .wplegal-api-close-icon:hover{
     color: black;
+}
+.wplegal-pro-tag{
+	position: absolute;
+	top: 5px;
+    right: 15px;
+    color: #39f;
+	font-size: 15px !important;
 }

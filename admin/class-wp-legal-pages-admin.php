@@ -3828,6 +3828,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'type'        => 'radio',
 						'description' => $lpage['desc'],
 						'pid'         => $pid,
+						'pro'         => $lpage['is_pro']
 					);
 					$data[] = $field;
 				}
