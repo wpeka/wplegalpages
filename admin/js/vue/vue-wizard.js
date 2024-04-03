@@ -515,7 +515,7 @@ Vue.component('GettingStartedWizardForm',{
 								// Create and append a paragraph element with the upgrade instructions
 								var p = document.createElement('p');
 								p.classList.add('wplegal-api-upgrade-text');
-								var pTextNode = document.createTextNode('Sign up for an account and get this free template.');
+								var pTextNode = document.createTextNode('Sign up for an account and get this legal template.');
 								p.appendChild(pTextNode);
 								newDiv.appendChild(p);
 
