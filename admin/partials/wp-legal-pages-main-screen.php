@@ -48,11 +48,11 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 						<!-- //support  -->
 						<div class="wp-legalpages-admin-support-icon">
 							<!-- //image  -->
-							<a href="https://club.wpeka.com/my-account/" target="_blank">
+							<a href="https://club.wpeka.com/contact/" target="_blank">
 							<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/wp_cookie_support.png'; ?>" alt="WP Cookie Consent Support">
 							</a>
 						</div>
-						<div class="wp-legalpages-admin-support-text"><a href="https://club.wpeka.com/my-account/" target="_blank">
+						<div class="wp-legalpages-admin-support-text"><a href="https://club.wpeka.com/contact/" target="_blank">
 							Support</a>
 						</div>
 					</div>
