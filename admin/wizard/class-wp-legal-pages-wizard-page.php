@@ -521,18 +521,15 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 			$email         = ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : '';
 			$phone         = ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : '';
 			$address       = ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : '';
-
-			if ( '1' === $is_pro ) {
-				$date             = ! empty( $lp_general['date'] ) ? esc_attr( $lp_general['date'] ) : '';
-				$days             = ! empty( $lp_general['days'] ) ? esc_attr( $lp_general['days'] ) : '';
-				$duration         = ! empty( $lp_general['duration'] ) ? esc_attr( $lp_general['duration'] ) : '';
-				$disclosing_party = ! empty( $lp_general['disclosing-party'] ) ? esc_attr( $lp_general['disclosing-party'] ) : '';
-				$recipient_party  = ! empty( $lp_general['recipient-party'] ) ? esc_attr( $lp_general['recipient-party'] ) : '';
-				$facebook         = ! empty( $lp_general['facebook-url'] ) ? esc_attr( $lp_general['facebook-url'] ) : '';
-				$google           = ! empty( $lp_general['google-url'] ) ? esc_attr( $lp_general['google-url'] ) : '';
-				$twitter          = ! empty( $lp_general['twitter-url'] ) ? esc_attr( $lp_general['twitter-url'] ) : '';
-				$linkedin         = ! empty( $lp_general['linkedin-url'] ) ? esc_attr( $lp_general['linkedin-url'] ) : '';
-			}
+			$date             = ! empty( $lp_general['date'] ) ? esc_attr( $lp_general['date'] ) : '';
+			$days             = ! empty( $lp_general['days'] ) ? esc_attr( $lp_general['days'] ) : '';
+			$duration         = ! empty( $lp_general['duration'] ) ? esc_attr( $lp_general['duration'] ) : '';
+			$disclosing_party = ! empty( $lp_general['disclosing-party'] ) ? esc_attr( $lp_general['disclosing-party'] ) : '';
+			$recipient_party  = ! empty( $lp_general['recipient-party'] ) ? esc_attr( $lp_general['recipient-party'] ) : '';
+			$facebook         = ! empty( $lp_general['facebook-url'] ) ? esc_attr( $lp_general['facebook-url'] ) : '';
+			$google           = ! empty( $lp_general['google-url'] ) ? esc_attr( $lp_general['google-url'] ) : '';
+			$twitter          = ! empty( $lp_general['twitter-url'] ) ? esc_attr( $lp_general['twitter-url'] ) : '';
+			$linkedin         = ! empty( $lp_general['linkedin-url'] ) ? esc_attr( $lp_general['linkedin-url'] ) : '';
 			switch ( $page ) {
 				case 'terms_of_use':
 					$fields = array(

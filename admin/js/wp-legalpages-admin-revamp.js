@@ -7,6 +7,7 @@ jQuery(document).ready(function () {
     const isProActivated = wplp_localize_data.is_pro_activated;
     const adminUrl = wplp_localize_data.admin_url;
 	const lpTerms  = wplp_localize_data.lp_terms;
+	const is_user_connected = wplp_localize_data.is_user_connected;
 
     if (isProActivated) {
         jQuery('.wp-legalpages-admin-tabs-section').addClass('pro-is-activated');
@@ -78,5 +79,246 @@ jQuery(document).ready(function () {
     if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'manual'
     }
+
+	/**
+	 * Javascript functionality for SaaS API Framework.
+	*/
+
+	/**
+	 * Add an event listener to listen for messages sent from the server.
+	*/
+	window.addEventListener("message", function(event) {
+		//event is originated on server
+		if ( event.isTrusted && event.origin === wplp_localize_data.wplegal_app_url ) {
+			storeAuth(event.data)
+		}
+	});
+
+	/**
+	 * Store the Authentication Data
+	 * @param {*} data
+	*/
+	function storeAuth(data) {
+
+		// Create spinner element
+		var spinner = jQuery('<div class="wplegal-ajax-spinner"></div>');
+   		jQuery('#wpbody-content').append(spinner);
+
+		//Make Ajax Call
+		jQuery.ajax({
+			type: 'POST',
+			url: wplp_localize_data.ajaxurl,
+			data: {
+				action: 'wp_legal_pages_app_store_auth',
+				_ajax_nonce : wplp_localize_data._ajax_nonce,
+				response: data.response,
+				origin: data.origin,
+
+			},
+			success: function(response) {
+
+				// Hide the spinner after the success HTML is loaded
+				spinner.hide();
+
+				// remove hidden instance from the local storage
+				localStorage.removeItem('wplegalConnectPopupHide');
+				//remove disconnect from local storage when user connects to the api
+				localStorage.removeItem('wplegalDisconnect');
+
+				//reload the window after settimeout.
+				setTimeout(function() {
+					location.reload();
+				}, 100);
+
+			},
+			error: function(error) {
+				// Handle error response
+				console.error('Error sending data to PHP:', error);
+			}
+		});
+
+	}
+
+	/**
+	 * Clicked on connect to exiting account.
+	*/
+	jQuery('.wplegal-api-connect-existing').on('click', startAuth );
+
+	/**
+	 * Function to Start the Authentication Process.
+	 *
+	 * @param {*} event
+	 */
+	function startAuth(event) {
+
+		// Prevent the default action of the event.
+		event.preventDefault();
+
+		var is_new_user = this.classList.contains('wplegal-api-connect-new');
+
+		// Create spinner element
+		var spinner = jQuery('<div class="wplegal-ajax-spinner"></div>');
+
+		// Append spinner to #wpbody-content div.
+
+		var container = jQuery('#wpbody-content');
+		container.css('position', 'relative'); // Ensure container has relative positioning.
+		container.append(spinner);
+
+		// Make an AJAX request.
+		jQuery.ajax(
+			{
+				url  : wplp_localize_data.ajaxurl,
+				type : 'POST',
+				data : {
+					action      : 'wp_legal_pages_app_start_auth',
+					_ajax_nonce : wplp_localize_data._ajax_nonce,
+					is_new_user : is_new_user,
+				},
+				beforeSend: function() {
+					// Show spinner before AJAX call starts
+					spinner.show();
+				},
+				complete: function() {
+					// Hide spinner after AJAX call completes
+					spinner.hide();
+				}
+			}
+		)
+		.done(
+			function ( response ) {
+
+				// Get the width and height of the viewport.
+				var viewportWidth = window.innerWidth;
+				var viewportHeight = window.innerHeight;
+
+				// Set the dimensions of the popup.
+				var popupWidth = 367;
+				var popupHeight = 650;
+
+				// Calculate the position to center the popup.
+				var leftPosition = (viewportWidth - popupWidth) / 2;
+				var topPosition = (viewportHeight - popupHeight) / 2;
+
+				// Open the popup window at the calculated position.
+				var e = window.open(
+				response.data.url,
+				"_blank",
+				"location=no,width=" + popupWidth + ",height=" + popupHeight + ",left=" + leftPosition + ",top=" + topPosition + ",scrollbars=0"
+				);
+
+				if (null === e) {
+					console.log('Failed to open the authentication window');
+				} else {
+					e.focus();// Focus on the popup window.
+				}
+
+			}
+		);
+
+
+	}
+
+
+
+	/**
+	 * modal pop after successfull connection or disconnection
+	*/
+
+	var fixedBanner = jQuery('.wp-legalpages-admin-fixed-banner');
+
+	jQuery('#wplegal-wpcc-notice').insertAfter(fixedBanner);
+	jQuery('#wplegal-disconnect-wpcc-notice').insertAfter(fixedBanner);
+
+
+	// check if user is connected, show connection popup
+	if ( is_user_connected ) {
+		jQuery('#wplegal-wpcc-notice').removeClass('wplegal-hidden');
+		jQuery('#wplegal-wpcc-notice').show();
+
+	}else if (localStorage.getItem('wplegalDisconnect') === 'true'){
+		jQuery('#wplegal-disconnect-wpcc-notice').removeClass('wplegal-hidden');
+		jQuery('#wplegal-disconnect-wpcc-notice').show();
+	}
+
+	// Check if the 'wplegalConnectPopupHide' item in localStorage is set to 'true'.
+	if (localStorage.getItem('wplegalConnectPopupHide') === 'true') {
+		jQuery('#wplegal-wpcc-notice').hide();
+		jQuery('#wplegal-disconnect-wpcc-notice').hide();
+	}
+
+	// Add a click event listener to the element with class 'notice-dismiss'.
+	jQuery('#wplegal-wpcc-notice .notice-dismiss').on('click', closeDiv );
+
+	/**
+	 * Method to close the div.
+	*/
+	function closeDiv (){
+		jQuery('#wplegal-wpcc-notice').hide();
+		localStorage.setItem('wplegalConnectPopupHide', 'true');
+	}
+
+	// Add a click event listener to the element with class 'notice-dismiss'.
+	jQuery('#wplegal-disconnect-wpcc-notice .notice-dismiss').on('click', closeDivDisconnect );
+
+	/**
+	 * Method to close the div.
+	*/
+	function closeDivDisconnect (){
+		jQuery('#wplegal-disconnect-wpcc-notice').hide();
+		localStorage.setItem('wplegalConnectPopupHide', 'true');
+	}
+
+	/**
+	 * click on disconnect button to disconnect api connection.
+	*/
+	jQuery('.wplegal-api-connection-disconnect-btn').on('click', disconnectAppAuth );
+
+	/**
+	 * Function to Disconnect the API Connection
+	*/
+	function disconnectAppAuth () {
+
+		// Create spinner element
+		var spinner = jQuery('<div class="wplegal-ajax-spinner"></div>');
+
+		// Append spinner to .wplegal-connection-tab-card div
+		var container = jQuery('.wplegal-connection-tab-card');
+		container.css('position', 'relative'); // Ensure container has relative positioning
+		container.append(spinner);
+
+		//Make Ajax Requests.
+		jQuery.ajax(
+			{
+				url  : wplp_localize_data.ajaxurl,
+				type : 'POST',
+				data : {
+					action      : 'wp_legal_pages_app_delete_auth',
+					_ajax_nonce : wplp_localize_data._ajax_nonce,
+				},
+				beforeSend: function() {
+					// Show spinner before AJAX call starts
+					spinner.show();
+				},
+				complete: function() {
+					// Hide spinner after AJAX call completes
+					spinner.hide();
+				}
+			}
+		).done(
+			function ( response ) {
+
+				// remove hidden instance from the local storage
+				localStorage.removeItem('wplegalConnectPopupHide');
+				// set the wplegalDisconnect to true when user clicks on the disconnect.
+				localStorage.setItem('wplegalDisconnect', 'true');
+
+				//reload the window after settimeout.
+				setTimeout(function() {
+					location.reload();
+				}, 100);
+			}
+		);
+	}
 
 });

@@ -168,7 +168,7 @@ Vue.component('TermsSection', {
         },
     },
     mounted: function(){
-        jQuery('.notice').css('display', 'none');
+
         jQuery.get(obj.ajax_url,{'action':'get_accept_terms','nonce':obj.ajax_nonce}).then((response => {
             if(response.success) {
                 if(response.data == '1') {
