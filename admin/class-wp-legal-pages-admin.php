@@ -2714,7 +2714,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_register_script( $this->plugin_name . '-vue-router', plugin_dir_url( __FILE__ ) . 'js/vue/vue-router.js', array(), $this->version, false );
 			wp_register_script( $this->plugin_name . '-vue-toast', plugin_dir_url( __FILE__ ) . 'js/vue/vue-toast.js', array(), $this->version, false );
 			wp_register_script( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'wizard/libraries/select2/select2.js', array( 'jquery' ), $this->version, true );
-			wp_register_script( $this->plugin_name . '-vue-script', plugin_dir_url( __FILE__ ) . 'js/vue/vue-wizard.js', array( 'jquery' ), $this->version, false );
+			wp_register_script( $this->plugin_name . '-vue-script', WPLEGAL_API_ADMIN_URL . 'vue-wizard/vue-wizard.js', array( 'jquery' ), $this->version, false );
 			wp_register_script( $this->plugin_name . '-tinymce-vue', plugin_dir_url( __FILE__ ) . 'js/vue/vue-tinymce.min.js', array( 'jquery' ), $this->version, false );
 			wp_register_script( $this->plugin_name . '-tinymce', plugin_dir_url( __FILE__ ) . 'js/vue/tinymce/tinymce.min.js', array( 'jquery' ), $this->version, false );
 			wp_register_script( $this->plugin_name . '-vue-nav-tabs', plugin_dir_url( __FILE__ ) . 'js/vue/vue-nav-tabs.js', array( 'jquery' ), $this->version, false );
