@@ -228,6 +228,118 @@ Vue.component('GettingStartedWizardForm',{
             this.$router.push('page_settings');
             this.$root.route.name = 'page_settings';
         },
+		storeAuth: function ( data,callback ) {
+			// Create spinner element
+			var spinner = jQuery('<div class="wplegal-ajax-spinner"></div>');
+			jQuery('.wplegal-wizard').append(spinner);
+
+			//Make Ajax Call
+			jQuery.ajax({
+				type: 'POST',
+				url: wizard_obj.ajax_url,
+				data: {
+					action: 'wp_legal_pages_app_store_auth',
+					_ajax_nonce : wizard_obj._ajax_nonce,
+					response: data.response,
+					origin: data.origin,
+
+				},
+				beforeSend: function() {
+					// Show spinner before AJAX call starts
+					spinner.show();
+				},
+				complete: function() {
+					// Hide spinner after AJAX call completes
+					spinner.hide();
+				},
+				success: function(response) {
+
+					// remove hidden instance from the local storage
+					localStorage.removeItem('wplegalConnectPopupHide');
+					//remove disconnect from local storage when user connects to the api
+					localStorage.removeItem('wplegalDisconnect');
+
+					jQuery('.wplegal-api-overlay').hide();
+					jQuery('.wplegal-api-connection-popup').hide();
+					callback();
+				},
+				error: function(error) {
+					// Handle error response
+					console.error('Error sending data to PHP:', error);
+				}
+			});
+		},
+		startAuth: function ( is_new_user,callback ) {
+			var self = this;
+
+			// Create spinner element
+			var spinner = jQuery('<div class="wplegal-ajax-spinner"></div>');
+
+			// Append spinner to .wplegal-wizard div.
+
+			var container = jQuery('.wplegal-wizard');
+			container.css('position', 'relative'); // Ensure container has relative positioning.
+			container.append(spinner);
+
+			// Make an AJAX request.
+			jQuery.ajax(
+				{
+					url  : wizard_obj.ajax_url,
+					type : 'POST',
+					data : {
+						action      : 'wp_legal_pages_app_start_auth',
+						_ajax_nonce : wizard_obj._ajax_nonce,
+						is_new_user : is_new_user,
+					},
+					beforeSend: function() {
+						// Show spinner before AJAX call starts
+						spinner.show();
+					},
+					complete: function() {
+						// Hide spinner after AJAX call completes
+						spinner.hide();
+					}
+				}
+			)
+			.done(
+				function ( response ) {
+
+					// Get the width and height of the viewport.
+					var viewportWidth = window.innerWidth;
+					var viewportHeight = window.innerHeight;
+
+					// Set the dimensions of the popup.
+					var popupWidth = 367;
+					var popupHeight = 650;
+
+					// Calculate the position to center the popup.
+					var leftPosition = (viewportWidth - popupWidth) / 2;
+					var topPosition = (viewportHeight - popupHeight) / 2;
+
+					// Open the popup window at the calculated position.
+					var e = window.open(
+					response.data.url,
+					"_blank",
+					"location=no,width=" + popupWidth + ",height=" + popupHeight + ",left=" + leftPosition + ",top=" + topPosition + ",scrollbars=0"
+					);
+
+					if (null === e) {
+						console.log('Failed to open the authentication window');
+					} else {
+						e.focus();// Focus on the popup window.
+					}
+
+					window.addEventListener("message", function(event) {
+						//event is originated on server
+						if ( event.isTrusted && event.origin === wizard_obj.wplegal_app_url) {
+							self.storeAuth(event.data, callback);
+						}
+					});
+
+				}
+			);
+
+		},
         labelClass: function(value) {
             var e = '';
             if(this.isChecked(value)) {
@@ -255,9 +367,7 @@ Vue.component('GettingStartedWizardForm',{
             var self = this;
             var html = [];
             var static_classes = 'wplegal-template-type-name';
-            if( 'Activated' !== wizard_obj.pro_active ) {
-                static_classes += ' wplegal-hide-content';
-            }
+
             for( let key in this.formElements ) {
                 var el = createElement('div', {
                     class: 'wplegal-template-type-row'
@@ -370,6 +480,11 @@ Vue.component('GettingStartedWizardForm',{
                     domProps: {
                         textContent: value.description
                     }
+                }),createElement('span',{
+                    staticClass: 'wplegal-pro-tag',
+                    domProps: {
+                        textContent: value.pro
+                    }
                 }), createElement('span', {
                     staticClass: "wplegal-create-button-wrapper"
                 }, [createElement('span', {
@@ -379,9 +494,88 @@ Vue.component('GettingStartedWizardForm',{
                     },
                     on: {
                         click: function(e) {
-                            self.updateSettings(value.value);
-                            return e.preventDefault(),
-                                self.handleSubmit(e);
+
+							if ( wizard_obj.is_user_connected != 'true' ) {
+
+								var overlay = document.createElement('div');
+								overlay.classList.add('wplegal-api-overlay');
+
+								// Append overlay to the body
+								document.body.appendChild(overlay);
+
+								var newDiv = document.createElement('div');
+								newDiv.classList.add('wplegal-api-connection-popup');
+
+								// Create and append an h3 element with the upgrade message
+								var h3 = document.createElement('h3');
+								var h3TextNode = document.createTextNode('Connect Your Website');
+								h3.appendChild(h3TextNode);
+								newDiv.appendChild(h3);
+
+								// Create and append a paragraph element with the upgrade instructions
+								var p = document.createElement('p');
+								p.classList.add('wplegal-api-upgrade-text');
+								var pTextNode = document.createTextNode('Sign up for an account and get this legal template.');
+								p.appendChild(pTextNode);
+								newDiv.appendChild(p);
+
+								// Create and append a button element with the specified text
+								var button = document.createElement('button');
+								button.classList.add('wplegal-api-connect-new');
+								button.textContent = "New? Create an account";
+								newDiv.appendChild(button);
+
+								// Create and append the "Already have an account?" message and link
+								var existingAccountP = document.createElement('p');
+								existingAccountP.classList.add('wplegal-api-connect-text');
+								existingAccountP.innerHTML = 'Already have an account? <span class="wplegal-api-connect-existing"><a href="#">Connect your existing account</a></span>';
+								newDiv.appendChild(existingAccountP);
+
+								// Append the new div just below the .wplegal-admin-page wizard
+								var wizardElement = document.querySelector('.wplegal-admin-page.wizard');
+								wizardElement.parentNode.insertBefore(newDiv, wizardElement.nextSibling);
+
+								var closeIcon = document.createElement('span');
+								closeIcon.classList.add('wplegal-api-close-icon');
+								closeIcon.innerHTML = '&times;'; // Using the 'times' symbol (×) for the close icon
+								newDiv.appendChild(closeIcon);
+
+								// Add a click event listener to the close icon to remove the popup
+								closeIcon.addEventListener('click', function() {
+									newDiv.parentNode.removeChild(newDiv); // Remove the popup from the DOM
+									overlay.parentNode.removeChild(overlay);
+								});
+
+
+								// Register event handler for the button inside the popup
+								newDiv.querySelector('.wplegal-api-connect-new').addEventListener('click', function() {
+
+									var is_new_user = this.classList.contains('wplegal-api-connect-new');
+
+									self.startAuth(is_new_user,function() {
+										// This function will be called when the AJAX call inside startAuth is successful
+										// Execute updateSettings and handleSubmit here
+										self.updateSettings(value.value);
+										self.handleSubmit(e);
+									});
+								});
+
+								newDiv.querySelector('.wplegal-api-connect-existing').addEventListener('click', function() {
+
+									var is_new_user = '';
+
+									self.startAuth(is_new_user,function() {
+										// This function will be called when the AJAX call inside startAuth is successful
+										// Execute updateSettings and handleSubmit here
+										self.updateSettings(value.value);
+										self.handleSubmit(e);
+									});
+								});
+							}else{
+								self.updateSettings(value.value);
+								return e.preventDefault(),
+									self.handleSubmit(e);
+							}
                         }
                     }
                 })])]);
@@ -476,38 +670,9 @@ Vue.component('WizardPromotional', {
 Vue.component('WizardForms', {
     render(createElement) {
         var self = this;
-        if( 'Activated' !== wizard_obj.pro_active ){
-            var tab_1 = createElement('v-tab', {
-                props: {
-                    title: createElement('span',{
-                        id: 'wplegal-available-tab-title',
-                        staticClass: 'wplegalpages-wizard-template-text',
-                        domProps: {
-                            textContent: wizard_obj.available_tab
-                        }
-                    })
-                },
-            }, [createElement('fieldset',{},[createElement('div',{
-                staticClass:'wplegal-settings-input-radio'
-            },[self.$parent.createFormTypeLabel(createElement)])]), createElement('WizardPromotional')]);
-            var tab_2 = createElement('v-tab', {
-                props: {
-                    title: createElement('span', {
-                        id: 'wplegalpage-pro-tab-title',
-                        domProps: {
-                            innerHTML: '<span class="wplegalpages-wizard-pro-text">PRO <span class="wplegalpages-wizard-template-text">' + wizard_obj.pro_tab +'</span></span>'
-                        }
-                    },)
-                },
-            }, [createElement('div',{},[createElement('div',{
-                staticClass:'wplegal-settings-input-radio'
-            },[self.$parent.createProTemplateLabels(createElement)])])]);
-            return createElement('vue-tabs',{},[tab_1, tab_2])
-        } else {
-            return createElement('fieldset',{},[createElement('div',{
-                staticClass:'wplegal-settings-input-radio'
-            },[self.$parent.createFormTypeLabel(createElement)])])
-        }
+		return createElement('fieldset',{},[createElement('div',{
+			staticClass:'wplegal-settings-input-radio'
+		},[self.$parent.createFormTypeLabel(createElement)])])
     }
 })
 
