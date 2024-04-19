@@ -485,7 +485,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 
 #wplegalpages-settings-general a.nav-link:before{
 	content: url('../images/settings_grey.svg'); 
-	margin-right: 12px; 
+	margin-right: 14px; 
 	display: inline-block; 
 	height: 15px; 
 	width: 15px; 
@@ -501,7 +501,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 
 #wplegalpages-advanced-setting a.nav-link:before{
 	content: url('../images/advanced_settings_grey.svg'); 
-	margin-right: 12px; 
+	margin-right: 14px; 
 	display: inline-block; 
 	height: 15px; 
 	width: 15px; 
@@ -540,7 +540,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 }
 
 #gdpr-cookie-consent-connection a.nav-link.active:before{
-	content: url('../images/compliance_blue.svg');
+	content: url('../images/connection_blue.svg');
 }
 #wplegalpages-settings-app .wplegalpages-settings-container .wplegalpages-settings-content .wplegalpages-settings-nav > div:nth-child(1) {
     background-color: white;
