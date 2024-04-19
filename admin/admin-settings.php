@@ -117,7 +117,7 @@ if ( '1' === $lpterms ) {
 			<div class="wplegalpages-settings-content">
 				<div id="wplegalpages-save-settings-alert">Settings saved</div>
 				<c-tabs variant="pills" ref="active_tab" class="wplegalpages-settings-nav">
-					<c-tab title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" href="#settings#general">
+					<c-tab title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" href="#settings#general" id="wplegalpages-settings-general">
 					<?php do_action( 'wp_legalpages_notice' ); ?>
 						<c-card>
 							<c-card-body>
@@ -291,7 +291,7 @@ if ( '1' === $lpterms ) {
 						do_action( 'wp_legalpages_after_data_tab' );
 					} else {
 						?>
-					<c-tab title="<?php esc_attr_e( 'Advanced', 'wplegalpages' ); ?>" href="#settings#advanced">
+					<c-tab title="<?php esc_attr_e( 'Advanced', 'wplegalpages' ); ?>" href="#settings#advanced" id="wplegalpages-advanced-setting">
 						<?php do_action( 'wp_legalpages_notice' ); ?>
 						<c-card>
 							<c-card-body>
@@ -404,7 +404,7 @@ if ( '1' === $lpterms ) {
 						<?php
 					}
 					?>
-					<c-tab title="<?php esc_attr_e( 'Compliances', 'wplegalpages' ); ?>" href="#settings#compliances">
+					<c-tab title="<?php esc_attr_e( 'Compliances', 'wplegalpages' ); ?>" href="#settings#compliances" id="wplegalpages-complianze">
 					<input type="hidden" name="lp-is-footer" v-model="is_footer">
 					<input type="hidden" v-model="footer_legal_pages" name="footer_legal_pages">
 					<input type="hidden" ref="footer_font_family" v-model="footer_font" name="lp-footer-font-family">
@@ -1430,7 +1430,7 @@ if ( '1' === $lpterms ) {
 					<!-- disconnection tab  -->
 
 					<?php if ( $is_user_connected  ) : ?>
-						<c-tab title="<?php esc_attr_e( 'Connection', 'wplegalpages' ); ?>" href="#settings#connection">
+						<c-tab title="<?php esc_attr_e( 'Connection', 'wplegalpages' ); ?>" href="#settings#connection" id="gdpr-cookie-consent-connection">
 
 						<c-card class="wplegal-connection-tab-card">
 
@@ -1514,7 +1514,7 @@ if ( '1' === $lpterms ) {
 			</div>
 			<div class="wplegalpages-settings-bottom">
 				<div class="wplegalpages-save-button">
-					<c-button color="info" @click="saveGeneralSettings"><span>Save Changes</span></c-button>
+					<c-button color="info" @click="saveGeneralSettings"><span><?php echo esc_html( 'Save Changes' ); ?></span></c-button>
 				</div>
 			</div>
 		</c-form>
