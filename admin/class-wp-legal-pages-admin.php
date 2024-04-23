@@ -1538,9 +1538,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'video_url'           => 'https://www.youtube-nocookie.com/embed/iqdLl9qsBHc',
 					'image_url'           => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
 					'welcome_text'        => __( 'Welcome to WPLegalPages!', 'wplegalpages' ),
-					'welcome_subtext'     => __( 'Simple one-click legal page management plugin.', 'wplegalpages' ),
-					'welcome_description' => __( 'Thank you for choosing WPLegalPages plugin - the most powerful legal page management plugin.', 'wplegalpages' ),
+					'welcome_subtext'     => __( 'Privacy Policy Generator For WordPress', 'wplegalpages' ),
+					'welcome_description' => __( 'Thank you for choosing WP Legal Pages plugin - A robust plugin for hassle-free legal compliance. ', 'wplegalpages' ),
+					'create_legal'        => __( 'Create Your Legal Page', 'wplegalpages' ),
+					'create_legal_subtext'   => __( 'Secure your site in 3 easy steps and generate a personalized legal policy page for enhanced protection.', 'wplegalpages' ),
 					'quick_links_text'    => __( 'See Quick Links', 'wplegalpages' ),
+					'link_title'    => __( 'Create Page', 'wplegalpages' ),
+					'create_legal_url'    =>  admin_url( 'index.php?page=wplegal-wizard#/' ),
+					'feature_heading'     => __( 'WP Legal Pages Features', 'wplegalpages' ),
+					'feature_description'    => __( 'Choose WP Legal Pages for seamless legal compliance.', 'wplegalpages' ),
+					'feature_button'    => __( 'Upgrade Now', 'wplegalpages' ),
 					'features'            => array(
 						'heading'           => __( 'WPLegalPages Features', 'wplegalpages' ),
 						'subheading'        => __( 'Why choose WPLegalPages?', 'wplegalpages' ),
@@ -1604,6 +1611,91 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 								__( 'terms of use', 'wplegalpages' )
 							)
 						),
+					),
+					'new_feature'        => array(
+						'powerful_yet_simple' => array(
+							'title'       => __( 'Powerful yet simple', 'wplegalpages' ),
+							'description' => __( 'Add 25+ legal policy pages to your WordPress website in less than 5 minutes.', 'wplegalpages' ),
+						 	'image_src'   =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/powerful_yet_simple.svg',
+						),
+						'pre_built_template' => array(
+							'title'       => __( 'Pre-built templates', 'wplegalpages' ),
+							'description' => __( 'Choose from 25+ lawyer approved, legal policy pages from GDPR policies to affiliate disclosures.', 'wplegalpages' ),
+						 	'image_src'   =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/pre_built_template.svg',
+						),
+						'editable_templates' => array(
+							'title'       => __( 'Editable templates', 'wplegalpages' ),
+							'description' => __( 'Edit or create your own legal policy templates using the WYSIWYG WordPress editor.', 'wplegalpages' ),
+						 	'image_src'   =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/editable_templates.svg',
+						),
+						'gdpr_compliance' => array(
+							'title'       => __( 'GDPR compliance', 'wplegalpages' ),
+							'description' => __( 'Easy to use shortcodes to display business information in legal policy pages.', 'wplegalpages' ),
+						 	'image_src'   =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/gdpr_compliance.svg',
+						),
+						'forced_consent' => array(
+							'title'       => __( 'Forced consent', 'wplegalpages' ),
+							'description' => __( 'Force website visitors to agree to your Terms, Privacy Policy, etc using post / page lock down features.', 'wplegalpages' ),
+						 	'image_src'   =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/forced_consent.svg',
+						),
+						'easy_shortcodes' => array(
+							'title'       => __( 'Easy shortcodes', 'wplegalpages' ),
+							'description' => __( 'Easy to use shortcodes to display business information in legal policy pages.', 'wplegalpages' ),
+						 	'image_src'   =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/easy_shortcodes.svg',
+						),
+						'easy_install' => array(
+							'title'       => __( 'Easy to install', 'wplegalpages' ),
+							'description' => __( 'WP Legal Pages is super-easy to install. Download & install takes less than 2 minutes.', 'wplegalpages' ),
+						 	'image_src'   =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/easy_to_install.svg',
+						),
+						'helpful_docs' => array(
+							'title'       => __( 'Helpful docs & guides', 'wplegalpages' ),
+							'description' => __( 'Even if you get stuck using WP Legal Pages, you can use our easy to follow docs & guides.', 'wplegalpages' ),
+						 	'image_src'   =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/helpful_docs.svg',
+						),
+						'multilingual_support' => array(
+							'title'       => __( 'Multilingual support', 'wplegalpages' ),
+							'description' => __( 'Supports multi-language translations for English, French, Spanish, German, Italian, Portuguese.', 'wplegalpages' ),
+						 	'image_src'   =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/multilingual_support.svg',
+						)
+
+					),
+					'quick_link'          => array(
+                    'help_center'        => array(
+						'title'       => __( 'Help Center', 'wplegalpages' ),
+						'description' => __( 'Read the documentation to find answers to your questions.', 'wplegalpages' ),
+						 'link'       =>  'https://club.wpeka.com/docs/wp-legal-pages',
+						 'link_name'  =>  __( 'Learn More', 'wplegalpages' ),
+						 'image_src'  =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/help_center.svg',
+					),
+					'video_guides'        => array(
+						'title'       => __( 'Video Guides', 'wplegalpages' ),
+						'description' => __( 'Explore video tutorials for insights on WP Legal Pages functionality.', 'wplegalpages' ),
+						 'link'       =>  'https://club.wpeka.com/docs/wp-legal-pages/video-guides/video-guides',
+						 'link_name'  =>  __( 'Watch Now', 'wplegalpages' ),
+						 'image_src'  =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/video_guides.svg',
+					),
+					'faq_answers'        => array(
+						'title'       => __( 'FAQ with Answers', 'wplegalpages' ),
+						'description' => __( 'Find answers to some of the most commonly asked questions.', 'wplegalpages' ),
+						 'link'       =>  'https://club.wpeka.com/docs/wp-legal-pages/faqs',
+						 'link_name'  =>  __( 'Find Out', 'wplegalpages' ),
+						 'image_src'  =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/faq_answers.svg',
+					),
+					'settings'        => array(
+						'title'       => __( 'Settings', 'wplegalpages' ),
+						'description' => __( 'Take a couple of minutes to set up your business info before generating pages.', 'wplegalpages' ),
+						 'link'       =>  admin_url( 'admin.php?page=legal-pages#settings' ),
+						 'link_name'  =>  __( 'Go To Settings', 'wplegalpages' ),
+						 'image_src'  =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings.svg',
+					),
+					'feedback'        => array(
+						'title'       => __( 'Feedback', 'wplegalpages' ),
+						'description' => __( 'Enjoy our WordPress plugin? Share your feedback!', 'wplegalpages' ),
+						 'link'       =>  'https://club.wpeka.com/contact',
+						 'link_name'  =>  __( 'Find Out', 'wplegalpages' ),
+						 'image_src'  =>  WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/feedback.svg',
+					),
 					),
 					'help_section'        => array(
 						'help_center'  => array(

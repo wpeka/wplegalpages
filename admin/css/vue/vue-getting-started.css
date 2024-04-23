@@ -89,6 +89,9 @@ body {
 	padding-left: 112px;
 	padding-right: 80px;
 }
+.wplegal-container .wplegal-container-main .wplegal-welcome-section{
+	padding-bottom: 10px;
+}
 .wplegal-container .wplegal-container-main .wplegal-video-section {
 	padding: 1px !important;
 	height: 350px;
@@ -266,7 +269,7 @@ body {
 }
 .wplegal-create-legal-subtext .wplegal-create-legal-subheading{
 	font-size: 16px;
-	font-weight: 600;
+	font-weight: 500;
 	color: #27272A;
 }
 .wplegal-create-legal-subtext .wplegal-create-legal-content{
@@ -356,6 +359,94 @@ body {
 	margin-top: 15px;
 	text-decoration: none;
 }
+
+/* Feature section */
+.wplegal-feature-section-header{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 7px;
+}
+.wplegal-feature-img-icon{
+	width: 50px;
+	height: 50px;
+}
+.wplegal-feature-section-header .wplegal-feature-heading{
+	font-size: 20px;
+	font-weight: 600;
+	color: #3F3F46;
+    margin-top: 10px;
+}
+.wplegal-feature-section-header .wplegal-feature-subheading{
+	font-size: 14px;
+	font-weight: 400;
+	color: #71717A;
+}
+
+.wplegal-feature-section-header .wplegal-feature-header-link-button{
+	padding: 12px 25px 12px 25px;
+	border-radius: 4px;
+	border: 1px solid #7195D0;
+	text-decoration: none;
+	margin: 15px;
+	font-size: 14px;
+	font-weight: 600;
+}
+.wplegal-feature-header-link-button span{
+	color: #2A4A7E;
+	font-size: 14px;
+	font-weight: 400px;
+	margin-right: 5px;
+}
+ .wplegal-container .wplegal-container-main .wplegal-feature-cards{
+	padding-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 20px;
+	padding: 20px;
+}
+
+.wplegal-container .wplegal-container-main .wplegal-feature-card{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 10px;
+	padding: 44px 24px 44px 24px;
+	background: #F4F8FF;
+	border-radius: 6px;
+}
+
+.wplegal-feature-card-icon{
+	width: 48px;
+	height: 48px;
+} 
+
+.wplegal-feature-content{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	flex-direction: column;
+	margin-top: 10px;
+}
+.wplegal-feature-content .wplegal-feature-heading{
+	font-size: 18px;
+	font-weight: 500;
+	color: #27272A;
+
+}
+.wplegal-feature-content .wplegal-feature-subheading{
+	font-size: 14px;
+	font-weight: 400;
+	color: #52525B;
+}
+
+.wplegal-container .wplegal-container-main .wplegal-feature-section{
+	padding: 20px;
+} 
 
 /* mascot quick links css */
 .wplegal-mascot-bg-img {
