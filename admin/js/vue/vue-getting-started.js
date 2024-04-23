@@ -1,18 +1,6 @@
 $ = jQuery.noConflict();
 var localised_data = obj;
-Vue.component('HeaderSection', {
-    render(createElement) {
-        return createElement('header', {
-            staticClass: 'wplegal-header-section'
-        }, [createElement('h1',{
-            staticClass: "wplegal-header-logo"
-        },[createElement('div',{
-            staticClass: "wplegal-logo"
-        },[createElement('div',{
-            staticClass: "wplegal-bg-img"
-        })])])]);
-    }
-});
+
 
 Vue.component('WelcomeSection', {
     render(createElement) {
@@ -20,7 +8,12 @@ Vue.component('WelcomeSection', {
             staticClass: 'wplegal-welcome-section'
         }, [createElement('div', {
             staticClass: 'wplegal-section-title'
-        }, [createElement('p', {
+        }, [createElement('img',{
+            domProps:{
+                src: obj.image_url + 'Wp-Legal-pages-logo.png'
+            }
+        }),
+            createElement('p', {
             staticClass: 'wplegal-title-heading',
             domProps: {
                 textContent: obj.welcome_text
@@ -30,13 +23,22 @@ Vue.component('WelcomeSection', {
             domProps: {
                 textContent: obj.welcome_subtext
             }
-        })]),
-        createElement('div', {
-            staticClass: 'wplegal-section-content'
-        }, [createElement('p', {
+        }), createElement('p', {
+            staticClass: 'wplegal-section-content',
             domProps: {
                 innerHTML: obj.welcome_description
             }
+        })
+    ]),
+        createElement('div', {
+            staticClass: 'wplegal-video-section'
+        }, [createElement('iframe', {
+            attrs: {
+                width: '550',
+                height: '260',
+                src: obj.video_url,
+                style: 'border-radius: 20px; margin-top: 15px;'
+            },
         })])]);
     }
 });
@@ -53,6 +55,141 @@ Vue.component('VideoSection', {
             },
         })]);
     }
+});
+
+Vue.component('CreateLegal', {
+    render(createElement) {
+        return createElement('div', {
+            staticClass: 'wplegal-create-legal'
+        }, [
+            createElement('div', {
+                staticClass: 'wplegal-feature-icon'
+            }, [
+                createElement('img', {
+                    attrs: {
+                        src: obj.image_url + 'create_legal.svg'
+                    }
+                })
+           ,
+            createElement('div', {
+                staticClass: "wplegal-create-legal-subtext"
+            }, [
+                createElement('p', {
+                    staticClass: 'wplegal-create-legal-subheading',
+                    domProps: {
+                        textContent: obj.create_legal
+                    }
+                }),
+                createElement('p', {
+                    staticClass: 'wplegal-create-legal-content',
+                    domProps: {
+                        innerHTML: obj.create_legal_subtext
+                    }
+                })
+            ]) ]),
+            createElement('div', {
+                staticClass: 'wplegal-create-legal-link'
+            }, [
+                createElement('a', {
+                    staticClass: 'wplegal-create-legal-button',
+                    attrs: {
+                        href: obj.create_legal_url
+                    }
+                }, [
+                    createElement('span', {
+                        domProps: {
+                            textContent: obj.link_title
+                        }
+                    }),
+                    createElement('img', {
+                        attrs: {
+                            src: obj.image_url + 'right_arrow.svg'
+                        }
+                    })
+                ])
+            ])
+        ]);
+    }
+});
+
+Vue.component('QuickLinks', {
+    methods: {
+        createHelpCards: function(createElement) {
+            var helpCards = [];
+            for (const [key, value] of Object.entries(obj.quick_link)){
+
+                var helpCard = [createElement('div', {
+                    staticClass: 'wplegal-quick-link'
+                },[createElement('div', {
+                    staticClass: 'wplegal-quick-link-card'
+                }, [
+                    createElement('img', {
+                        staticClass: 'wplegal-quick-link-icon',
+                        attrs: {
+                            src: value.image_src
+                        }
+                    })
+               ,
+                createElement('div', {
+                    staticClass: "wplegal-quick-link-content"
+                }, [
+                    createElement('p', {
+                        staticClass: 'wplegal-quick-link-heading',
+                        domProps: {
+                            textContent: value.title
+                        }
+                    }),
+                    createElement('p', {
+                        staticClass: 'wplegal-quick-link-subheading',
+                        domProps: {
+                            innerHTML: value.description
+                        }
+                    }),
+                    createElement('a', {
+                        staticClass: 'wplegal-quick-link-button',
+                        attrs: {
+                            href: value.link,
+                            target: '_blank'
+                        }
+                    }, [
+                        createElement('span', {
+                            domProps: {
+                                textContent: value.link_name
+                            }
+                        }),
+                        createElement('img', {
+                            attrs: {
+                                src: obj.image_url + 'blue_right_arrow.svg'
+                            }
+                        })
+                    ])
+                ]) ])])];
+                helpCards.push(helpCard);
+            };
+            return helpCards;
+
+        }
+    },
+    render(createElement) {
+        var self = this;
+        return createElement('div', {
+            staticClass: 'wplegal-quick-links-section',
+           
+        }, [
+            createElement('div', {
+                staticClass: "wplegal-quick-links-section-heading",
+                domProps: {
+                    textContent: 'Quick Links '
+                }
+            }),
+            createElement('div', {
+                staticClass: 'wplegal-quick-links',
+            }, [
+                self.createHelpCards(createElement)
+            ])
+        ]);
+    }
+    
 });
 
 Vue.component('HelpSection', {
@@ -536,7 +673,7 @@ var app = new Vue({
         },[createElement('header-section'),
         createElement('div',{
             staticClass: 'wplegal-container-main'
-        },[createElement('welcome-section'), createElement('video-section'), createElement('help-section'),createElement('terms-section'), this.disabled && !this.is_pro ? createElement('settings-section') : [], this.disabled && !this.is_pro ? createElement('pages-section') : []]),
+        },[createElement('welcome-section'), createElement('create-legal'), createElement('quick-links'), createElement('help-section'),createElement('terms-section'), this.disabled && !this.is_pro ? createElement('settings-section') : [], this.disabled && !this.is_pro ? createElement('pages-section') : []]),
         createElement('div',{
         staticClass: 'wplegal-container-features'
         },[this.is_pro ? this.disabled ? createElement('wizard-section') : [] : createElement('features-section')])]);
