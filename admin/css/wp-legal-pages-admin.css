@@ -501,7 +501,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 
 #wplegalpages-advanced-setting a.nav-link:before{
 	content: url('../images/advanced_settings_grey.svg'); 
-	margin-right: 14px; 
+	margin-right: 7px; 
 	display: inline-block; 
 	height: 15px; 
 	width: 15px; 

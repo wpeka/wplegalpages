@@ -3,6 +3,7 @@ var localised_data = obj;
 
 
 Vue.component('WelcomeSection', {
+
     render(createElement) {
         return createElement('div', {
             staticClass: 'wplegal-welcome-section'
@@ -12,7 +13,7 @@ Vue.component('WelcomeSection', {
             domProps:{
                 src: obj.image_url + 'Wp-Legal-pages-logo.png'
             }
-        }),
+        }), 
             createElement('p', {
             staticClass: 'wplegal-title-heading',
             domProps: {
@@ -294,60 +295,6 @@ Vue.component('Feature', {
     
 });
 
-Vue.component('HelpSection', {
-    methods: {
-        createHelpCards: function(createElement) {
-            var helpCards = [];
-            for (const [key, value] of Object.entries(obj.help_section)){
-
-                var helpCard = [createElement('div', {
-                    staticClass: 'wplegal-help-card'
-                },[createElement('div', {
-                    staticClass: 'wplegal-help-card-top',
-                    },[createElement('div', {
-                    staticClass: 'wplegal-help-card-icon',
-                    domProps: {
-                        innerHTML: '<img class="wplegal-help-img" src='+ value.image_src + key + '.png >'
-                    }
-                }),
-                createElement('div', {
-                    staticClass: 'wplegal-help-card-description'
-                },
-                [createElement('h3', {
-                    staticClass: 'wplegal-help-card-heading',
-                    domProps: {
-                        innerHTML: value.title
-                    }
-                }),
-                createElement('p', {
-                    staticClass: 'wplegal-help-card-summary',
-                    domProps: {
-                        innerHTML: value.description
-                    }
-                }),])]),
-                createElement('p', {
-                    staticClass: 'wplegal-help-card-link',
-                    domProps: {
-                        innerHTML: '<a  target="_blank" href=' + value.link +' >' + value.link_title + '</a>'
-                    }
-                })])];
-                helpCards.push(helpCard);
-            };
-            return helpCards;
-
-        }
-    },
-    render(createElement) {
-        var self = this;
-        return createElement('div', {
-            staticClass: 'wplegal-help-section',
-            attrs:{
-                display: 'flex',
-                justifyContent:'space-between',
-            }
-        }, [self.createHelpCards(createElement)]);
-    }
-});
 
 Vue.component('TermsSection', {
     data: function() {
@@ -397,10 +344,11 @@ Vue.component('TermsSection', {
                     data[this.name] = this.value;
                 }
             });
+            
             jQuery.post(localised_data.ajax_url,{'action':'save_accept_terms','data':data,'nonce':localised_data.ajax_nonce}).then((response => {
                 if(response.success) {
-                    this.$parent.disabled = 1;
-                    location.reload();
+                    this.$parent.disabled = 1; 
+                     location.reload();   
                 }
             }))
 
@@ -414,22 +362,39 @@ Vue.component('TermsSection', {
                     this.$parent.disabled = 1;
                     this.accept_terms.checked = 1;
                 }
-
             }
         }))
     },
     render(createElement) {
         var self = this;
-        return createElement('div', {
-            staticClass: 'wplegal-terms-section'
+        return this.$parent.disabled ? [] : createElement('div', {
+            staticClass: 'wplegal-terms-container',
+            style:  this.$parent.disabled ? "display:none": "display:block"
         }, [createElement('div', {
-            staticClass: 'wplegal-section-content'
-        }, [createElement('p', {
+            staticClass: this.$parent.disabled ? '' : 'wplegal-terms-card-overlay'
+        }),createElement('div', {
+            staticClass: 'wplegal-terms-section-content'
+        }, [
+        createElement('img', {
+            staticClass: 'wplegal-terms-card-icon',
+            attrs: {
+                src: localised_data.terms.image
+            }
+        }), 
+            createElement('span', {
+            staticClass: 'wplegal-terms-section-heading',
+            domProps: {
+                innerHTML: localised_data.terms.heading
+            }
+        }),
+            createElement('p', {
+            staticClass: 'wplegal-terms-section-text',
             domProps: {
                 innerHTML: localised_data.terms.text
             }
         }),
         createElement('p', {
+            staticClass: 'wplegal-terms-section-subtext',
             domProps: {
                 textContent: localised_data.terms.subtext
             }
@@ -456,6 +421,7 @@ Vue.component('TermsSection', {
                 value: 1,
                 checked: this.isChecked()
             },
+            staticClass: 'wplegal-terms-input-checkbox',
             on: {
                 change: function(event) {
                     event.preventDefault();
@@ -464,12 +430,13 @@ Vue.component('TermsSection', {
                 }
             }
         }),createElement('span',{
+            staticClass: 'wplegal-terms-input-checkbox-text',
             domProps: {
                 innerHTML: localised_data.terms.input_text
             }
         })]),
         this.$parent.disabled ? [] : createElement('button',{
-            staticClass: 'wplegal-button',
+            staticClass: this.isChecked() ? 'wplegal-accept-button' : 'wplegal-disable-accept-button' ,
             attrs: {
                 type: 'submit',
                 name: 'accept_terms'
@@ -481,287 +448,8 @@ Vue.component('TermsSection', {
     }
 });
 
-Vue.component('SettingsSection', {
-    render(createElement) {
-        return createElement('div', {
-            staticClass: 'wplegal-settings-section'
-        }, [createElement('div', {
-            staticClass: 'wplegal-section-content'
-        }, [createElement('p',{
-            domProps: {
-                textContent: localised_data.configure.text
-            }
-        }), createElement('a', {
-            staticClass: 'wplegal-button wplegal-configure-details-btn',
-            domProps: {
-                textContent: localised_data.configure.button_text,
-                href:localised_data.configure.url
-            },
-			on: {
-				click: function(e) {
-						var linkUrl = jQuery('.wplegal-configure-details-btn').attr('href');
-						window.location.assign(linkUrl);
-						location.reload();
-				}
-			}
-        })])]);
-    }
-});
 
-Vue.component('PagesSection', {
-    render(createElement) {
-        return createElement('div', {
-            staticClass: 'wplegal-pages-section'
-        }, [createElement('div', {
-            staticClass: 'wplegal-section-content'
-        }, [createElement('p',{
-            domProps: {
-                textContent: localised_data.create.text
-            }
-        }), createElement('a', {
-            staticClass: 'wplegal-button',
-            domProps: {
-                textContent: localised_data.create.button_text,
-                href:localised_data.create.url
-            }
-        })])]);
-    }
-});
 
-Vue.component('FeaturesSection', {
-    render(createElement) {
-        return createElement('div', {
-            staticClass: 'wplegal-features-section'
-        }, [createElement('div', {
-            staticClass: 'wplegal-section-title'
-        }, [createElement('p', {
-            staticClass: 'wplegal-title-heading',
-            domProps: {
-                textContent: obj.features.heading
-            }
-        }), createElement('p', {
-            staticClass: 'wplegal-title-subheading',
-            domProps: {
-                textContent: obj.features.subheading
-            }
-        })]), createElement('div',{
-            staticClass: 'wplegal-section-content'
-        }, [createElement('div', {
-            staticClass: 'wplegal-feature'
-        }, [createElement('div', {
-            staticClass: 'wplegal-feature-icon'
-        }, [createElement('img',{
-            domProps:{
-                src: obj.image_url + 'powerful-yet-simple.png'
-            }
-        })]), createElement('div', {
-            staticClass: 'wplegal-feature-content'
-        }, [createElement('p', {
-            staticClass: 'wplegal-feature-title',
-            domProps: {
-                textContent: obj.features.powerful_text
-            }
-        }), createElement('p',{
-            staticClass: 'wplegal-feature-text',
-            domProps: {
-                textContent: obj.features.powerful_desc
-            }
-        })])]), createElement('div', {
-            staticClass: 'wplegal-feature'
-        }, [createElement('div', {
-            staticClass: 'wplegal-feature-icon'
-        }, [createElement('img',{
-            domProps:{
-                src: obj.image_url + 'pre-built-templates.png'
-            }
-        })]), createElement('div', {
-            staticClass: 'wplegal-feature-content'
-        }, [createElement('p', {
-            staticClass: 'wplegal-feature-title',
-            domProps: {
-                textContent: obj.features.prebuilt_text
-            }
-        }), createElement('p',{
-            staticClass: 'wplegal-feature-text',
-            domProps: {
-                textContent: obj.features.prebuilt_desc
-            }
-        })])]), createElement('div', {
-            staticClass: 'wplegal-feature'
-        }, [createElement('div', {
-            staticClass: 'wplegal-feature-icon'
-        }, [createElement('img',{
-            domProps:{
-                src: obj.image_url + 'editable-templates.png'
-            }
-        })]), createElement('div', {
-            staticClass: 'wplegal-feature-content'
-        }, [createElement('p', {
-            staticClass: 'wplegal-feature-title',
-            domProps: {
-                textContent: obj.features.editable_text
-            }
-        }), createElement('p',{
-            staticClass: 'wplegal-feature-text',
-            domProps: {
-                textContent: obj.features.editable_desc
-            }
-        })])]), createElement('div', {
-            staticClass: 'wplegal-feature'
-        }, [createElement('div', {
-            staticClass: 'wplegal-feature-icon'
-        }, [createElement('img',{
-            domProps:{
-                src: obj.image_url + 'gdpr-compliance.png'
-            }
-        })]), createElement('div', {
-            staticClass: 'wplegal-feature-content'
-        }, [createElement('p', {
-            staticClass: 'wplegal-feature-title',
-            domProps: {
-                textContent: obj.features.gdpr_text
-            }
-        }), createElement('p',{
-            staticClass: 'wplegal-feature-text',
-            domProps: {
-                textContent: obj.features.gdpr_desc
-            }
-        })])]), createElement('div', {
-            staticClass: 'wplegal-feature'
-        }, [createElement('div', {
-            staticClass: 'wplegal-feature-icon'
-        }, [createElement('img',{
-            domProps:{
-                src: obj.image_url + 'forced-consent.png'
-            }
-        })]), createElement('div', {
-            staticClass: 'wplegal-feature-content'
-        }, [createElement('p', {
-            staticClass: 'wplegal-feature-title',
-            domProps: {
-                textContent: obj.features.forced_text
-            }
-        }), createElement('p',{
-            staticClass: 'wplegal-feature-text',
-            domProps: {
-                textContent: obj.features.forced_desc
-            }
-        })])]), createElement('div', {
-            staticClass: 'wplegal-feature'
-        }, [createElement('div', {
-            staticClass: 'wplegal-feature-icon'
-        }, [createElement('img',{
-            domProps:{
-                src: obj.image_url + 'easy-shortcodes.png'
-            }
-        })]), createElement('div', {
-            staticClass: 'wplegal-feature-content'
-        }, [createElement('p', {
-            staticClass: 'wplegal-feature-title',
-            domProps: {
-                textContent: obj.features.easy_text
-            }
-        }), createElement('p',{
-            staticClass: 'wplegal-feature-text',
-            domProps: {
-                textContent: obj.features.easy_desc
-            }
-        })])]), createElement('div', {
-            staticClass: 'wplegal-feature'
-        }, [createElement('div', {
-            staticClass: 'wplegal-feature-icon'
-        }, [createElement('img',{
-            domProps:{
-                src: obj.image_url + 'easy-to-install.png'
-            }
-        })]), createElement('div', {
-            staticClass: 'wplegal-feature-content'
-        }, [createElement('p', {
-            staticClass: 'wplegal-feature-title',
-            domProps: {
-                textContent: obj.features.install_text
-            }
-        }), createElement('p',{
-            staticClass: 'wplegal-feature-text',
-            domProps: {
-                textContent: obj.features.install_desc
-            }
-        })])]), createElement('div', {
-            staticClass: 'wplegal-feature'
-        }, [createElement('div', {
-            staticClass: 'wplegal-feature-icon'
-        }, [createElement('img',{
-            domProps:{
-                src: obj.image_url + 'helpful-docs-guides.png'
-            }
-        })]), createElement('div', {
-            staticClass: 'wplegal-feature-content'
-        }, [createElement('p', {
-            staticClass: 'wplegal-feature-title',
-            domProps: {
-                textContent: obj.features.helpful_text
-            }
-        }), createElement('p',{
-            staticClass: 'wplegal-feature-text',
-            domProps: {
-                textContent: obj.features.helpful_desc
-            }
-        })])]), createElement('div', {
-            staticClass: 'wplegal-feature'
-        }, [createElement('div', {
-            staticClass: 'wplegal-feature-icon'
-        }, [createElement('img',{
-            domProps:{
-                src: obj.image_url + 'multilingual-support.png'
-            }
-        })]), createElement('div', {
-            staticClass: 'wplegal-feature-content'
-        }, [createElement('p', {
-            staticClass: 'wplegal-feature-title',
-            domProps: {
-                textContent: obj.features.multilingual_text
-            }
-        }), createElement('p',{
-            staticClass: 'wplegal-feature-text',
-            domProps: {
-                textContent: obj.features.multilingual_desc
-            }
-        })])])]),createElement('a', {
-            attrs: {
-                target: 'blank',
-            },
-            staticClass: 'wplegal-button',
-            domProps: {
-                textContent: obj.features.button_text,
-                href:obj.features.url
-            }
-        })]);
-    }
-});
-
-Vue.component('WizardSection', {
-    render(createElement) {
-        return createElement('div', {
-            staticClass: 'wplegal-wizard-section'
-        }, [createElement('div', {
-            staticClass: 'wplegal-section-content'
-        }, [createElement('p',{
-            domProps: {
-                textContent: localised_data.wizard.text
-            }
-        }), createElement('p',{
-            domProps: {
-                textContent: localised_data.wizard.subtext
-            }
-        }), createElement('a', {
-            staticClass: 'wplegal-button',
-            domProps: {
-                textContent: localised_data.wizard.button_text,
-                href:localised_data.wizard.url
-            }
-        })])]);
-    }
-});
 
 var app = new Vue({
     el: '#gettingstartedapp',
