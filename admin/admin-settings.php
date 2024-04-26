@@ -299,6 +299,11 @@ if ( '1' === $lpterms ) {
 								<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
 							</c-card-body>
 						</c-card>
+						<div class="wplegalpages-settings-bottom">
+				<div class="wplegalpages-save-button">
+					<c-button color="info" @click="saveGeneralSettings"><span><?php echo esc_html( 'Save Changes' ); ?></span></c-button>
+				</div>
+			</div>
 					</c-tab>
 					<?php do_action( 'wp_legalpages_after_general_tab' ); ?>
 					<?php
@@ -415,6 +420,11 @@ if ( '1' === $lpterms ) {
 								</c-row>
 							</c-card-body>
 						</c-card>
+						<div class="wplegalpages-settings-bottom">
+				<div class="wplegalpages-save-button">
+					<c-button color="info" @click="saveGeneralSettings"><span><?php echo esc_html( 'Save Changes' ); ?></span></c-button>
+				</div>
+			</div>
 					</c-tab>
 						<?php
 					}
@@ -1440,6 +1450,11 @@ if ( '1' === $lpterms ) {
 								</c-row>
 							</c-card-body>
 						</div>
+						<div class="wplegalpages-settings-bottom">
+				<div class="wplegalpages-save-button">
+					<c-button color="info" @click="saveGeneralSettings"><span><?php echo esc_html( 'Save Changes' ); ?></span></c-button>
+				</div>
+			</div>
 					</c-tab>
 
 					<!-- disconnection tab  -->
@@ -1449,11 +1464,9 @@ if ( '1' === $lpterms ) {
 
 						<c-card class="wplegal-connection-tab-card">
 
-								<c-card-header><?php esc_html_e( 'Connection', 'wplegalpages' ); ?>
-								</c-card-header>
-								<c-card-body class="wplegal-connection-card-body" >
+									<c-card-body class="wplegal-connection-card-body" >
 									<div class="wplegal-connection-success-tick">
-									<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ) . 'images/check_ring.png'; ?>" alt="API Connection Success Mark">
+									<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ) . 'images/Check_ring.svg'; ?>" alt="API Connection Success Mark">
 									</div>
 									<div class="wplegal-connect-information">
 
@@ -1527,11 +1540,7 @@ if ( '1' === $lpterms ) {
 					?>
 				</c-tabs>
 			</div>
-			<div class="wplegalpages-settings-bottom">
-				<div class="wplegalpages-save-button">
-					<c-button color="info" @click="saveGeneralSettings"><span><?php echo esc_html( 'Save Changes' ); ?></span></c-button>
-				</div>
-			</div>
+			
 		</c-form>
 				</div>
 </div>
