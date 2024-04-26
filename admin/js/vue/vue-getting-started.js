@@ -154,8 +154,10 @@ Vue.component('QuickLinks', {
                         },
                         on: {
                               click: function(e) {
+                                    if(value.title =='Settings'){
                                      window.location.assign(value.link);
                                       location.reload();
+                                    }
                                 }
                             
                         }
