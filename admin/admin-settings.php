@@ -110,7 +110,7 @@ if ( '1' === $lpterms ) {
 	?>
 <div class="wplegalpages-app-container" id="wplegalpages-settings-app">
 	<div class="wplegalpages-settings-container">
-	<div class="wplegal-create-legal">
+	<div class="wplegal-create-legal-settings">
 			<div class="wplegal-feature-icon" id="wplegal-settings-create-legal">
 				<img src="<?php echo WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/create_legal_blue.svg'; ?>" alt="create legal" class="wplegal-create-legal-icon">
 				<div class="wplegal-create-legal-subtext">
