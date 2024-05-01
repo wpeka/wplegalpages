@@ -13,6 +13,9 @@ body {
 	line-height: 1.6;
 	margin: 0;
 }
+.wplegal-wizard{
+	background-color: #ffffff;
+}
 .wplegal-wizard .v-notices .v-toast {
 	max-width: 350px;
 }
@@ -96,39 +99,42 @@ a:hover {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
-	margin-top: 10px;
+	margin-top: 40px;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 35px;
+	margin-bottom: 56px;
 }
 .wplegal-wizard-step-line {
-	background: #d6e2ed;
-	height: 3px;
+	background: #F4F4F5;
+	height: 2px;
 	margin: 0 2px;
 	width: 20%;
 }
 .wplegal-wizard-step-line.wplegal-wizard-line-active {
-	background: #5cc0a5;
+	background: #22C55E;
 }
 .wplegal-wizard-step {
-	border: 2px solid #b6c9da;
+	border: 2px solid #D4D4D8;
 	border-radius: 50%;
 	-ms-flex-negative: 0;
 	flex-shrink: 0;
-	height: 25px;
-	width: 25px;
-	font-size: 10px;
+	height: 40px;
+	width: 40px;
+	font-size: 20px;
 	font-weight: 600;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	color: #A1A1AA;
 }
 .wplegal-wizard-step.wplegal-wizard-step-active,
 .wplegal-wizard-step.wplegal-wizard-step-completed {
-	background-color: #5cc0a5;
-	border-color: #5cc0a5;
+	background-color: #22C55E;
+	border-color: #16C6122E;
 	position: relative;
 	color: #fff;
+	font-weight: 700;
+	box-shadow: 0 0 2px 7px #16C6122E; 
 }
 .wplegal-wizard-step.wplegal-wizard-step-completed:after {
 	color: #fff;
@@ -146,11 +152,9 @@ a:hover {
 }
 .wplegal-wizard-content {
 	background: #fff;
-	border: 1px solid #d6e2ed;
 	color: #393f4a;
 	font-size: 14px;
 	margin: 50px 0;
-	padding: 50px;
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
@@ -200,6 +204,10 @@ a:hover {
 	opacity: 0;
 	position: absolute;
 }
+.wplegal-settings-input-radio  .wplegal-template-type-row{
+	margin-top: 60px;
+}
+
 .wplegal-settings-input-radio input[type="text"],
 .wplegal-settings-input-checkbox input[type="text"],
 input[type="search"] {
@@ -258,7 +266,7 @@ input[type="search"] {
 }
 .wplegal-settings-input-radio .wplegal-styled-radio.wplegal-styled-radio-checked,
 .wplegal-settings-input-checkbox .wplegal-styled-checkbox.wplegal-styled-checkbox-checked {
-	border-color: #5cc0a5;
+	border-color: #0059B3;
 }
 .wplegal-settings-input-radio .wplegal-styled-radio.wplegal-styled-radio-checked:after,
 .wplegal-settings-input-checkbox .wplegal-styled-checkbox.wplegal-styled-checkbox-checked:after {
@@ -268,7 +276,7 @@ input[type="search"] {
 	bottom: 2px;
 	position: absolute;
 	content: "";
-	background: #5cc0a5;
+	background: #0059B3;
 	display: block;
 	border-radius: 50%;
 }
@@ -607,7 +615,9 @@ input[type="search"] {
 }
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-header {
 	margin: 15px 0;
-	font-size: 15px;
+	font-size: 18px;
+	font-weight: 500;
+	color: #3F3F46;
 }
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-header .wplegal-hide-content {
 	display: none;
@@ -624,14 +634,16 @@ input[type="search"] {
 	display: flex;
 	text-indent: 0;
 	flex-direction: column;
-	padding: 28px;
+	justify-content: center;
+	align-items: center;
+	padding: 44px 21px;
 	margin: 0;
-	width: 95%;
+	width: 96%;
 	height: auto;
 	min-height: 100px;
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
-	border-radius: 8px;
+	border-radius: 6px;
 	-webkit-box-shadow: 0px 0px 4px 0px rgba(83, 81, 81, 0.30);
 	-moz-box-shadow: 0px 0px 4px 0px rgba(83, 81, 81, 0.30);
 	box-shadow:0px 0px 4px 0px rgba(83, 81, 81, 0.30);
@@ -639,8 +651,8 @@ input[type="search"] {
 	position: relative;
 }
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label > img {
-	width: 60px;
-	height: 60px;
+	width: 48px;
+	height: 48px;
 	margin: 0 auto 10px;
 }
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label:hover {
@@ -655,14 +667,18 @@ input[type="search"] {
 }
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label > span {
 	margin:0 0 10px;
-	font-size: 18px;
-	font-weight: 600;
+	font-size: 16px;
+	font-weight: 500;
+	color: #3F3F46;
+	margin-top: 13px;
 }
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label > p.wplegal-description {
 	margin: 0;
 	font-size: 14px;
+	font-weight: 400;
+	color: #71717A;
 	text-indent:0;
-}
+	}
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label > span.wplegal-create-button-wrapper {
 	font-size: 16px;
 	font-weight: 600;
@@ -710,6 +726,28 @@ input[type="search"] {
 }
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label:hover span.wplegal-create-button {
 	display: block;
+}
+.wizard_pro_section{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	margin-top: 36px;
+	margin-bottom: 20px;
+}
+.wizard_pro_section p{
+	font-size: 14px;
+	font-weight: 400;
+	color: #52525B;
+}
+.wizard_pro_section a{
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 500;
+	color: #115CA7;
+}
+.wizard_pro_section a img{
+	margin-left: 5px;
 }
 p > label {
 	display: block;
@@ -803,8 +841,41 @@ p .wplegal-info {
 .wplegal-logo .wplegal-bg-img {
 	padding: 35px;
 }
-.wplegal-logo .wplegal-bg-img:after {
-	background-image: url('data:image/png;base64,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');
+
+.wplegal-wizard-step-page-settings header{
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	margin-bottom: 36px;
+}
+.wplegal-wizard-step-page-sections header{
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	margin-bottom: 36px;
+}
+.wplegal-wizard-step-page-preview header{
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	margin-bottom: 36px;
+}
+.wplegal-wizard-header .wplegal-header-text{
+	font-size: 22px;
+	font-weight: 500;
+	color: #3F3F46;
+	display: block;
+	margin-top: 24px;
+}
+.wplegal-wizard-header .wplegal-header-subtext{
+   font-size: 16px;
+   font-weight: 400;
+   color: #71717A;
+   margin-top: 10px;
+   margin-bottom: 40px;
 }
 .settings-input-license p {
 	color: #444;
@@ -1634,8 +1705,16 @@ button[data-v-09b2f69e] {
 }
 .wplegal-pro-tag{
 	position: absolute;
-	top: 5px;
-    right: 15px;
-    color: #39f;
-	font-size: 15px !important;
+    top: 16px;
+    right: 16px;
+    color: #098436;
+    font-size: 12px !important;
+    font-weight: 800;
+    padding: 5px 15px;
+    border-radius: 6px;
+    background-color: #F0FDF4;
+	border: 1px solid #16A34A4D;
+}
+.wplegal-settings-input-radio{
+	margin-top: 25px;
 }

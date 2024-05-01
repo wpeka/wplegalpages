@@ -2771,6 +2771,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'pro_tab'            => __( 'Templates', 'wplegalpages' ),
 					'promotion_text'     => __( 'Can\'t find what you are looking for?', 'wplegalpages' ),
 					'promotion_button'   => __( 'Go Pro', 'wplegalpages' ),
+					'pro_text'   => __( "Can't find what you are looking for?", 'wplegalpages' ),
+					'pro_button'   => __( 'Go Pro', 'wplegalpages' ),
 					'wplegal_app_url'	 => WPLEGAL_APP_URL,
 					'is_user_connected'	 => $is_user_connected,
 					'_ajax_nonce'       => wp_create_nonce( 'wp-legal-pages' ),
@@ -2781,7 +2783,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'next'       => __( 'Next', 'wplegalpages' ),
 						'prev'       => __( 'Go Back', 'wplegalpages' ),
 						'title'      => __( 'Welcome to WPLegalPages Wizard!', 'wplegalpages' ),
-						'subtitle'   => __( 'Lets get started by selecting the policy template', 'wplegalpages' ),
+						'subtitle'   => __( 'Follow the guided wizard to get started', 'wplegalpages' ),
 						'inputtitle' => __( 'Select the policy template to get started.', 'wplegalpages' ),
 					),
 					'settings'           => array(
