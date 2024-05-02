@@ -59,7 +59,7 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 				</div>
 			</div>
 			<div class="wplegal-create-legal-link">
-				<a href="" class="wplegal-create-legal-page-button">
+				<a href=<?php echo admin_url( 'index.php?page=wplegal-wizard#/' ); ?> class="wplegal-create-legal-page-button">
 					<span><?php esc_attr_e( 'Create Page', 'wplegalpages' ); ?></span>
 					<img src="<?php echo WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/right_arrow.svg'; ?>" alt="right arrow">
 				</a>
