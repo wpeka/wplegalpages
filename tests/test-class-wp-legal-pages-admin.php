@@ -242,8 +242,7 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		ob_start();
 		self::$wplegalpages_admin->vue_getting_started();
 		$actual_html = ob_get_clean();
-
-		$this->assertContains( '<div id="gettingstartedapp"></div>', $actual_html );
+       $this->assertContains( '<div id="gettingstartedapp"></div>', $actual_html );
 		$this->assertContains( '<div id="wplegal-mascot-app"></div>', $actual_html );
 
 		global $wp_styles, $wp_scripts;
@@ -254,8 +253,7 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		$this->assertTrue( in_array( 'wp-legal-pages-vue', $all_enqueue_script ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		$this->assertTrue( in_array( 'wp-legal-pages-vue-js', $all_enqueue_script ) ); //phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		$data = $wp_scripts->get_data( 'wp-legal-pages-vue-js', 'data' );
-
-		// Select only string which is actually an object.
+        // Select only string which is actually an object.
 		$start = strpos( $data, '{' );
 		$end   = strrpos( $data, '}' );
 		$data  = substr( $data, $start, ( $end - $start ) + 1 );
@@ -268,6 +266,8 @@ class WP_Legal_Pages_Admin_Test extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'welcome_text', $data, 'Failed to localize array index welcome_text.' );
 		$this->assertArrayHasKey( 'welcome_subtext', $data, 'Failed to localize array index welcome_subtext.' );
 		$this->assertArrayHasKey( 'welcome_description', $data, 'Failed to localize array index welcome_description.' );
+		$this->assertArrayHasKey( 'create_legal', $data, 'Failed to localize array index create_legal.' );
+		$this->assertArrayHasKey( 'create_legal_subtext', $data, 'Failed to localize array index create_legal_subtext.' );
 		$this->assertArrayHasKey( 'quick_links_text', $data, 'Failed to localize array index quick_links_text.' );
 		$this->assertArrayHasKey( 'features', $data, 'Failed to localize array index features.' );
 		$this->assertArrayHasKey( 'configure', $data, 'Failed to localize array index configure.' );
