@@ -18,7 +18,7 @@ body {
 	display: flex;
     justify-content: space-between;
     background: linear-gradient(180deg, #EDF6FB 47.73%, rgba(248, 252, 255, 0) 116.89%);
-	gap: 112px;
+	gap: 106px;
 }
 .wplegal-container p {
 	color: inherit;
@@ -121,6 +121,9 @@ body {
 .wplegal-container .wplegal-container-features p.wplegal-title-heading {
 	font-size: 26px;
 	font-weight: 600;
+}
+.wplegal-container .wplegal-container-main p.wplegal-title-heading{
+	color: #021D37;
 }
 .wplegal-container .wplegal-container-main p.wplegal-title-subheading,
 .wplegal-container .wplegal-container-features p.wplegal-title-subheading {
@@ -389,6 +392,7 @@ c-container.wplegalpages-settings-container{
 	margin-top: 18px;
     font-size: 18px;
     font-weight: 500;
+	color: #3F3F46;
 }
 .wplegal-quick-link-content .wplegal-quick-link-subheading{
 	margin-top: 12px;

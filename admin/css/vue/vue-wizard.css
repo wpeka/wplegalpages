@@ -160,14 +160,21 @@ a:hover {
 	border-radius: 8px;
 }
 .wplegal-wizard-content h2 {
-	color: #393f4a;
-	font-size: 24px;
-	font-weight: 600;
+	color: #3F3F46;
+	font-size: 18px;
+	font-weight: 500;
 	margin: 0 0 5px;
 }
 .wplegal-wizard-content .subtitle {
 	font-size: 16px;
+	font-weight: 400;
+	color: #71717A;
 	margin-top: 0;
+}
+.wplegal-form-buttons{
+	display: flex;
+	justify-content: end;
+	gap: 16px;
 }
 .wplegal-wizard-content .wplegal-separator {
 	border-top: 1px solid #F4F4F5;
@@ -300,23 +307,32 @@ input[type="search"] {
 	padding: 10px 18px;
 	text-decoration: none;
 }
-.wplegal-wizard-button-prev {
-	margin-right: 16px;
-}
-.wplegal-wizard-button-next {
 
-}
-.wplegal-wizard-button.wplegal-wizard-button-large {
+.wplegal-wizard-button.wplegal-wizard-button-prev {
 	text-transform: uppercase;
-	background-color: #2862b1;
 	border-radius: 4px;
-	font-size: 16px;
-	padding: 20px 45px;
+	font-size: 14px;
+	padding: 12px 30px;
+	border: 1px solid #7195D0;
+	font-weight: 600;
+	color: #2A4A7E;
+	background-color: #FFFFFF;
 }
-.wplegal-wizard-button.wplegal-wizard-button-large:focus,
-.wplegal-wizard-button.wplegal-wizard-button-large:hover {
-	background-color: #18488a;
+.wplegal-wizard-button.wplegal-wizard-button-prev:hover {
+	color: #2A4A7E;
+	background-color: #FFFFFF;
 }
+.wplegal-wizard-button.wplegal-wizard-button-next {
+	text-transform: uppercase;
+	border-radius: 4px;
+	font-size: 14px;
+	padding: 12px 30px;
+	border: 1px solid #7195D0;
+	font-weight: 600;
+	color: #FFFFFF;
+	background-color: #2A4A7E;
+}
+
 .wplegal-wizard-button.wplegal-wizard-button-regular,
 .request-filesystem-credentials-action-buttons .button,
 .request-filesystem-credentials-action-buttons input[type="submit"] {

@@ -69,7 +69,7 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 <table class="widefat fixed comments table table-striped-all-pages">
 	<thead>
 		<tr class="wplegalpages-all-pages-heading">
-			<th width="5%" ><?php esc_attr_e( 'S.No.', 'wplegalpages' ); ?></th>
+			<th width="6%" ><?php esc_attr_e( 'S.No.', 'wplegalpages' ); ?></th>
 			<th width="20%"><?php esc_attr_e( 'Page Title', 'wplegalpages' ); ?></th>
 			<th width="10%"><?php esc_attr_e( 'Page ID', 'wplegalpages' ); ?></th>
 			<th width="20%"><?php esc_attr_e( 'Shortcode', 'wplegalpages' ); ?></th>

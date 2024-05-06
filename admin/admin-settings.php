@@ -352,9 +352,9 @@ if ( '1' === $lpterms ) {
 									</c-col>
 								</c-row>
 								<c-row v-show= "is_adult" id="exit_url_section" class="wplegal-support-text-row">
-									<c-col class="col-sm-8 wplegalpages-input-for-toggle-button">
-										<c-input class="wplegalpages-settings-input legal-page-leave-url input-with-support-text" placeholder="Exit URL on clicking the 'Leave' button" type="text" name="lp-leave-url" value="<?php echo ! empty( $lp_general['leave-url'] ) ? esc_attr( $lp_general['leave-url'] ) : ''; ?>" ></c-input>
-										<span class="wplegalpages-help-text">
+									<c-col class="col-sm-8 wplegalpages-input-for-toggle-button wplegalpages-input-for-helping-toggle-button">
+										<c-input class="wplegalpages-settings-input legal-page-leave-url input-with-support-text" placeholder="Exit URL on clicking the 'Leave' button" class="wplegal-support-text-row-input" type="text" name="lp-leave-url" value="<?php echo ! empty( $lp_general['leave-url'] ) ? esc_attr( $lp_general['leave-url'] ) : ''; ?>" ></c-input>
+										<span class="wplegalpages-help-text helping-text">
 											<?php esc_html_e( 'If visitor clicks on "Leave" button then he/she redirects to this URL.', 'wplegalpages' ); ?>
 										</span>
 									</c-col>
