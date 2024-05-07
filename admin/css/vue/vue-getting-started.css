@@ -9,9 +9,16 @@ body {
 	font-size: 16px;
 	line-height: 1.6;
 	font-weight: normal;
-	width: 750px;
+	width: 100%;
 	margin: 50px auto;
 	margin-top: -21px;
+}
+
+.wplegal-welcome-section{
+	display: flex;
+    justify-content: space-between;
+    background: linear-gradient(180deg, #EDF6FB 47.73%, rgba(248, 252, 255, 0) 116.89%);
+	gap: 106px;
 }
 .wplegal-container p {
 	color: inherit;
@@ -20,6 +27,9 @@ body {
 	font-size: inherit;
 	line-height: inherit;
 	font-weight: inherit;
+	font-size: 16px;
+	color: #71717A;
+    font-weight: 300;
 }
 .wplegal-container a {
 	text-decoration: underline;
@@ -71,8 +81,15 @@ body {
 .wplegal-container .wplegal-container-main > div,
 .wplegal-container .wplegal-container-features > div {
 	padding: 45px;
-	border: 1px solid #d6e2ed;
 	border-collapse: collapse;
+}
+.wplegal-container .wplegal-container-main > div{
+	padding-top: 60px;
+	padding-left: 112px;
+	padding-right: 80px;
+}
+.wplegal-container .wplegal-container-main .wplegal-welcome-section{
+	padding-bottom: 10px;
 }
 .wplegal-container .wplegal-container-main .wplegal-video-section {
 	padding: 1px !important;
@@ -80,16 +97,32 @@ body {
 }
 .wplegal-container .wplegal-container-main > div:nth-child( even ),
 .wplegal-container .wplegal-container-features > div:nth-child( even ) {
-	background: #f5f3ff;
+	background: #FFFFFF;
 }
 .wplegal-container .wplegal-container-main div.wplegal-section-title,
 .wplegal-container .wplegal-container-features div.wplegal-section-title {
 	margin-bottom: 25px;
 }
+.wplegal-section-title img{
+	width: 96px;
+    height: 96px;
+
+}
+.wplegal-container .wplegal-container-main div.wplegal-section-title{
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: baseline;
+ gap: 10px;
+ text-align: left;
+}
 .wplegal-container .wplegal-container-main p.wplegal-title-heading,
 .wplegal-container .wplegal-container-features p.wplegal-title-heading {
 	font-size: 26px;
 	font-weight: 600;
+}
+.wplegal-container .wplegal-container-main p.wplegal-title-heading{
+	color: #021D37;
 }
 .wplegal-container .wplegal-container-main p.wplegal-title-subheading,
 .wplegal-container .wplegal-container-features p.wplegal-title-subheading {
@@ -98,13 +131,16 @@ body {
 	color: #777;
 	/*margin-top: -5px;*/
 }
+.wplegal-container .wplegal-container-main p.wplegal-title-subheading{
+	font-size: 16px;
+	color: #52525B;
+	font-weight: 400;
+}
 .wplegal-container input[type="checkbox"] {
 	opacity: 0;
 	position: absolute;
 }
-.wplegal-container .wplegal-input-checkbox {
-	margin-top: 25px;
-}
+
 .wplegal-container .wplegal-input-checkbox > label {
 	display: block;
 	/*text-indent: -30px;*/
@@ -120,17 +156,19 @@ body {
 .wplegal-container .wplegal-input-checkbox .wplegal-styled-checkbox {
 	width: 20px;
 	height: 20px;
-	border: 1px solid #b2c1cd;
 	position: relative;
 	display: inline-block;
 	border-radius: 50%;
 	margin-right: 10px;
+	border-radius: 4px;
+	color: #FAFAFA;
+	border: 1px solid #D4D4D8;
 }
 .wplegal-container .wplegal-input-checkbox .wplegal-styled-checkbox {
-	border-radius: unset;
+	border-radius: 4px;
 }
 .wplegal-container .wplegal-input-checkbox .wplegal-styled-checkbox.wplegal-styled-checkbox-checked {
-	border-color: #5cc0a5;
+	border-color: #0059B3;
 }
 .wplegal-container .wplegal-input-checkbox label.wplegal-styled-checkbox-label-disabled .wplegal-styled-checkbox.wplegal-styled-checkbox-checked {
 	border-color: rgba(92, 192, 165, 0.25);
@@ -142,7 +180,7 @@ body {
 	bottom: 2px;
 	position: absolute;
 	content: "";
-	background: #5cc0a5;
+	background: #0059B3;
 	display: block;
 }
 .wplegal-container .wplegal-input-checkbox label.wplegal-styled-checkbox-label-disabled .wplegal-styled-checkbox.wplegal-styled-checkbox-checked:after {
@@ -210,8 +248,366 @@ body {
 .wplegal-container .wplegal-container-features .wplegal-features-section .wplegal-section-content .wplegal-feature .wplegal-feature-content .wplegal-feature-text {
 	font-size: 14px;
 }
+/* Create Legal Page */
+.wplegal-container .wplegal-container-main .wplegal-create-legal{
+	padding: 28px;
+	background-color: #FFFFFF;
+	border-radius: 6px;
+	box-shadow: 0px 0px 56px 0px rgb(10 62 118 / 9%);
+	
+}
+.wplegal-container .wplegal-container-main .wplegal-create-legal-container{
+	padding: 20px;
+}
+.wplegal-create-legal{
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+	padding: 20px;
+	padding-top: 0px;
+	border: 1px solid #E4E4E7;
+}
+.wplegal-create-legal-all-pages{
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+	padding: 20px;
+	padding-left: 0px;
+	padding-right: 0px;
+	border-bottom: 1px solid #E4E4E7;
+}
+.wplegal-create-legal-settings{
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+	margin: 20px;
+	margin-top: 0px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #E4E4E7;
+}
+.wplegal-feature-icon{
+	display: flex;
+	gap: 15px;
+}
+.wplegal-create-legal-subtext{
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.wplegal-create-legal-subtext .wplegal-create-legal-subheading{
+	font-size: 16px;
+	font-weight: 500;
+	color: #27272A;
+}
+#wplegal-settings-create-legal .wplegal-create-legal-subtext .wplegal-create-legal-page-subheading{
+	font-size: 16px;
+	font-weight: 500;
+	color: #27272A;
+	height: 8px;
+}
+.wplegal-create-legal-subtext .wplegal-create-legal-content{
+	font-weight: 400;
+	font-size: 14px;
+}
+.wplegal-create-legal-icon{
+	height: 39px;
+	width: 39px;
+	margin-top: 3px;
+}
+.wplegal-feature-icon .wplegal-create-legal-subtext .wplegal-create-legal-page-content{
+	font-weight: 400;
+	font-size: 14px;
+	height: 8px;
+}
+c-container.wplegalpages-settings-container{
+	width: 100%;
+}
+.wplegal-create-legal-link .wplegal-create-legal-page-button{
+	background: #0059B3;
+    padding: 12px 40px 12px 40px;
+	border-radius: 4px;
+	color: #FFFFFF;
+	font-weight: 700;
+	font-size: 16px;
+	text-decoration: none;
 
+}
+.wplegal-create-legal-link .wplegal-create-legal-button{
+	background: #14873E;
+    padding: 12px 40px 12px 40px;
+	border-radius: 4px;
+	color: #FFFFFF;
+	font-weight: 700;
+	font-size: 16px;
+	text-decoration: none;
 
+}
+.wplegal-create-legal-button span{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+.wplegal-create-legal-button img{
+	margin-left: 5px;
+}
+
+/* Quick Links */
+.wplegal-container .wplegal-container-main .wplegal-quick-links-section{
+	padding: 0px;
+}
+.wplegal-quick-links-section-heading{
+	font-size: 20px;
+	font-weight: 500;
+	text-align: left;
+	padding: 20px;
+	padding-bottom: 0px;
+}
+.wplegal-container .wplegal-container-main .wplegal-quick-links{
+	padding-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-row-gap: 25px;
+    grid-column-gap: 30px;
+	padding: 20px;
+}
+.wplegal-quick-link-card{
+	flex-direction: column;
+    display: flex;
+    text-align: left;
+    border: 1px solid #D4D4D8;
+    border-radius: 4px;
+    padding: 20px;
+    padding-right: 10px;
+}
+.wplegal-quick-link-icon{
+	width: 48px;
+	height: 48px;
+}
+.wplegal-quick-link-content{
+	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    margin-top: 15px;
+}
+.wplegal-quick-link-content .wplegal-quick-link-heading{
+	margin-top: 18px;
+    font-size: 18px;
+    font-weight: 500;
+	color: #3F3F46;
+}
+.wplegal-quick-link-content .wplegal-quick-link-subheading{
+	margin-top: 12px;
+    max-width: 250px;
+    color: #71717A;
+    height: 55px;
+	font-size: 14px;
+	font-weight: 400;
+}
+.wplegal-quick-link-button span{
+	color: #004080;
+    font-size: 14px;
+	font-weight: 500;
+	text-decoration: none;
+	margin-right: 5px;
+}
+
+.wplegal-quick-link-content .wplegal-quick-link-button{
+	margin-top: 15px;
+	text-decoration: none;
+}
+
+/* Feature section */
+.wplegal-feature-section-header{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 7px;
+}
+.wplegal-feature-img-icon{
+	width: 50px;
+	height: 50px;
+}
+.wplegal-feature-section-header .wplegal-feature-heading{
+	font-size: 20px;
+	font-weight: 600;
+	color: #3F3F46;
+    margin-top: 10px;
+}
+.wplegal-feature-section-header .wplegal-feature-subheading{
+	font-size: 14px;
+	font-weight: 400;
+	color: #71717A;
+}
+
+.wplegal-feature-section-header .wplegal-feature-header-link-button{
+	padding: 12px 25px 12px 25px;
+	border-radius: 4px;
+	border: 1px solid #7195D0;
+	text-decoration: none;
+	margin: 15px;
+	font-size: 14px;
+	font-weight: 600;
+}
+.wplegal-feature-header-link-button span{
+	color: #2A4A7E;
+	font-size: 14px;
+	font-weight: 400px;
+	margin-right: 5px;
+}
+ .wplegal-container .wplegal-container-main .wplegal-feature-cards{
+	padding-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 20px;
+	padding: 20px;
+}
+
+.wplegal-container .wplegal-container-main .wplegal-feature-card{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 10px;
+	padding: 44px 24px 44px 24px;
+	background: #F4F8FF;
+	border-radius: 6px;
+}
+
+.wplegal-feature-card-icon{
+	width: 48px;
+	height: 48px;
+} 
+
+.wplegal-feature-content{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	flex-direction: column;
+	margin-top: 10px;
+}
+.wplegal-feature-content .wplegal-feature-heading{
+	font-size: 18px;
+	font-weight: 500;
+	color: #27272A;
+
+}
+.wplegal-feature-content .wplegal-feature-subheading{
+	font-size: 14px;
+	font-weight: 400;
+	color: #52525B;
+	max-width: 260px;
+}
+
+.wplegal-container .wplegal-container-main .wplegal-feature-section{
+	padding: 20px;
+} 
+/* Dashboard popup */
+.wplegal-accept-button{
+	padding: 12px 57px 12px 57px;
+	background: #0059B3;
+	border: solid #0059B3;
+	border-radius: 4px;
+	font-size: 14px;
+	font-weight: 600;
+	margin-top: 30px;
+	color: #FFFFFF;
+}
+.wplegal-disable-accept-button{
+	padding: 12px 57px 12px 57px;
+	background: #0059B3;
+	border: solid #0059B3;
+	border-radius: 4px;
+	font-size: 14px;
+	font-weight: 600;
+	margin-top: 30px;
+	color: #FFFFFF;
+	opacity: 0.5;
+}
+.wplegal-container .wplegal-container-main .wplegal-terms-container{
+	top: 0;
+    left: 0;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5); 
+    z-index: 1000; 
+}
+.wplegal-container .wplegal-container-main .wplegal-terms-section-content{
+	position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	padding: 40px;
+	background: #FFFFFF;
+
+}
+.wplegal-terms-card-icon{
+	width: 50px;
+	height: 50px;
+}
+.wplegal-terms-section-heading{
+	display: block;
+	font-size: 20px;
+	margin-top: 15px;
+	font-weight: 500;
+	color: #3F3F46;
+}
+.wplegal-terms-section-content .wplegal-terms-section-text{
+   font-size: 14px;
+   font-weight: 400;
+   color: #71717A;
+   margin-top: 15px;
+}
+.wplegal-terms-section-content .wplegal-terms-section-subtext{
+	font-size: 14px;
+   font-weight: 400;
+   color: #71717A;
+   margin-top: 10px;
+}
+.wplegal-input-checkbox .wplegal-terms-input-checkbox{
+	height: 20px;
+	width: 20px;
+	border-radius: 4px;
+	color: #FAFAFA;
+	border: 1px solid #D4D4D8;
+}
+.wplegal-container .wplegal-input-checkbox {
+	margin-top: 40px;
+}
+.wplegal-container .wplegal-terms-input-checkbox-text{
+	font-size: 14px;
+	font-weight: 400;
+	color: #71717A;
+}
+.wplegal-container .wplegal-terms-input-checkbox-text a{
+    text-decoration: none;
+	font-size: 14px;
+	font-weight: 400;
+}
+.wplegal-container  .wplegal-terms-section-text a{
+    text-decoration: none;
+	font-size: 14px;
+	font-weight: 400;
+}
+.wplegal-terms-card-overlay{
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+}
 /* mascot quick links css */
 .wplegal-mascot-bg-img {
 	width: 100%;

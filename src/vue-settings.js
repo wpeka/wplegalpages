@@ -35,7 +35,7 @@ var gen = new Vue({
                 labelOn: '\u2713',
                 labelOff: '\u2715'
             },
-            configure_image_url: require('../admin/images/configure-icon.png'),
+            configure_image_url: require('../admin/images/configure_icon.svg'),
             appendField: ".wplegalpages-settings-container",
             customToolbarForm:  [],
             domain:'',
