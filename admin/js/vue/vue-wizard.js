@@ -495,7 +495,7 @@ Vue.component('GettingStartedWizardForm',{
                     on: {
                         click: function(e) {
 
-							if ( (wizard_obj.is_user_connected != 'true') &&  wizard_obj.pro_active != 'Activated' ) {
+							if ( wizard_obj.is_user_connected != 'true' ) {
 
 								var overlay = document.createElement('div');
 								overlay.classList.add('wplegal-api-overlay');
