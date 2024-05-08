@@ -318,6 +318,11 @@ body {
 	width: 39px;
 	margin-top: 3px;
 }
+.wplegal-save-settings-icon{
+	width:18px;
+	height: 18px;
+	margin-right: 10px;
+}
 .wplegal-feature-icon .wplegal-create-legal-subtext .wplegal-create-legal-page-content{
 	font-weight: 400;
 	font-size: 14px;

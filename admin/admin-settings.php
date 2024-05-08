@@ -130,7 +130,6 @@ if ( '1' === $lpterms ) {
 		<c-form id="lp-save-settings-form" spellcheck="false" class="wplegalpages-settings-form">
 			<input type="hidden" name="settings_form_nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings-form-nonce' ) ); ?>"/>
 			<div class="wplegalpages-settings-content">
-				<div id="wplegalpages-save-settings-alert">Settings saved</div>
 				<c-tabs variant="pills" ref="active_tab" class="wplegalpages-settings-nav">
 					<c-tab title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" href="#settings#general" id="wplegalpages-settings-general">
 					<?php do_action( 'wp_legalpages_notice' ); ?>
