@@ -90,6 +90,7 @@ body {
 }
 .wplegal-container .wplegal-container-main .wplegal-welcome-section{
 	padding-bottom: 10px;
+	margin-top: 21px;
 }
 .wplegal-container .wplegal-container-main .wplegal-video-section {
 	padding: 1px !important;
@@ -285,6 +286,7 @@ body {
 	padding-top: 20px;
 	padding-bottom: 20px;
 	border-bottom: 1px solid #E4E4E7;
+	margin-right: 25px;
 }
 .wplegal-feature-icon{
 	display: flex;
@@ -315,6 +317,11 @@ body {
 	height: 39px;
 	width: 39px;
 	margin-top: 3px;
+}
+.wplegal-save-settings-icon{
+	width:18px;
+	height: 18px;
+	margin-right: 10px;
 }
 .wplegal-feature-icon .wplegal-create-legal-subtext .wplegal-create-legal-page-content{
 	font-weight: 400;

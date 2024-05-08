@@ -3853,6 +3853,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$pid = get_option( 'wplegal_custom_legal_page' );
 							break;
 					}
+
 					$field  = array(
 						'name'        => 'policy_template',
 						'label'       => $lpage['title'],
@@ -3860,7 +3861,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'type'        => 'radio',
 						'description' => $lpage['desc'],
 						'pid'         => $pid,
-						'pro'         => $lpage['is_pro']
+    					'pro'         => isset($lpage['is_pro']) ? $lpage['is_pro'] : ""
 					);
 					$data[] = $field;
 				}
