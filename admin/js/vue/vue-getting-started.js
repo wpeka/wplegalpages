@@ -60,7 +60,9 @@ Vue.component('VideoSection', {
 
 Vue.component('CreateLegal', {
     render(createElement) {
-        return createElement('div', {
+        return createElement('div',{
+            staticClass: 'wplegal-create-legal-container'
+        },[createElement('div', {
             staticClass: 'wplegal-create-legal'
         }, [
             createElement('div', {
@@ -109,7 +111,7 @@ Vue.component('CreateLegal', {
                     })
                 ])
             ])
-        ]);
+        ])]);
     }
 });
 

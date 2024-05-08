@@ -139,7 +139,8 @@ a{
 }
 
 .label-success {
-    background-color: #5cb85c;
+	background-color: #5cb85c;
+
 }
 
 .label {
@@ -485,7 +486,9 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 #wplegalpages-settings-general{
 	margin-bottom: 0px;
 }
-
+#wplegalpages-settings-general  .card-body{
+	padding-right: 5px;
+}
 #wplegalpages-settings-general a.nav-link:before{
 	content: url('../images/settings_grey.svg'); 
 	margin-right: 8px; 
@@ -600,7 +603,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 	border-bottom: 0px;	
 }
 #wplegalpages-settings-app .wplegalpages-settings-container .wplegalpages-settings-content .wplegalpages-settings-nav > div:nth-child(2) .tab-content {
-    width: 1380px;
+    width: 100%;
 }
 
 
@@ -646,7 +649,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 	font-size: 14px;
 	font-weight: 600;
     margin-bottom: 40px;
-	margin-right: -10px;
+	margin-right: -11px;
 }
 .wplegalpages-save-button button:hover,.wplegalpages-save-button button:focus{
 	background-color: #0059B3;
@@ -731,18 +734,21 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
     grid-row-gap: 20px;
 }
 #wplegalpages-save-settings-alert{
-	position: fixed;
+	position: relative;
+    top: 20px;
+	width: 250px;
+	height: 43px;
     background-color: #72b85c;
-    padding: 10px;
-    width: 200px;
-    font-size: 18px;
+    padding: 10px 16px 10px 16px;
+    font-size: 14px;
+	font-weight: 500;
     text-align: center;
-    border-radius: 5px;
     display: none;
-    color: #fff;
-    margin-left: 70%;
-    margin-top: 1%;
     z-index: 1002;
+	background-color: #ECFDF3;
+    font-weight: 500;
+	color: #027A48;
+	border: 1px solid #027A4833;
 }
 div.ql-toolbar.ql-snow {
     display: none;
@@ -991,7 +997,7 @@ div.ql-toolbar.ql-snow {
   .wplegalpages-help-text {
 	color: #71717A;
 	font-weight: 400;
-	max-width: 70%;
+	max-width: 72%;
 	display: block;
 	font-size: 14px;
 }
@@ -1256,7 +1262,7 @@ body.toplevel_page_legal-pages #wpcontent{
 @media only screen and (max-device-width: 1500px) and (min-device-width: 1280px) {
 	/* Assuming MacBook Air screen size falls within these dimensions */
 	#wplegalpages-settings-app .wplegalpages-settings-container .wplegalpages-settings-content .wplegalpages-settings-nav > div:nth-child(2) .tab-content {
-		width: 1315px;
+		width: 100%;
 	}
 	.wplegal-support-text-row  .col-sm-10{
       padding-left: 40px;
@@ -1276,6 +1282,12 @@ body.toplevel_page_legal-pages #wpcontent{
 	}
 	.wplegalpages-input-for-helping-toggle-button .helping-text{
 		padding-left: 5px;
+	}
+	#wplegalpages-settings-general  .card-body{
+		padding-right: 20px;
+	}
+	.wplegalpages-save-button button{
+		margin-right: -3px;
 	}
 
 }
