@@ -24,11 +24,12 @@ if ( ! defined( 'WPL_LITE_PLUGIN_URL' ) ) {
 if ( ! defined( 'WPL_LITE_PLUGIN_BASENAME' ) ) {
 	define( 'WPL_LITE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 }
+
 if ( ! defined( 'WPLEGAL_API_URL' ) ) {
-	define( 'WPLEGAL_API_URL', 'https://apitest.wpeka.com/wp-json/wplegal/v2/' );
+	define( 'WPLEGAL_API_URL', 'https://api.wpeka.com/wp-json/wplegal/v2/' );
 }
 if ( ! defined( 'WPLEGAL_API_ADMIN_URL' ) ) {
-	define( 'WPLEGAL_API_ADMIN_URL', 'https://apitest.wpeka.com/wp-content/plugins/wplegal-api/admin/' );
+	define( 'WPLEGAL_API_ADMIN_URL', 'https://api.wpeka.com/wp-content/plugins/wplegal-api/admin/' );
 }
 /**
  * Check if the constant GDPR_APP_URL is not already defined.
@@ -73,7 +74,7 @@ if ( ! function_exists( 'wplp_fs' ) ) {
 }
 
 if ( ! defined( 'WPLPP_SUFFIX' ) ) {
-	define( 'WPLPP_SUFFIX', ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min' );
+	define( 'WPLPP_SUFFIX', ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '' );
 }
 
 if ( ! function_exists( 'activate_wp_legal_pages' ) ) {
