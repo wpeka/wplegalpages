@@ -32,6 +32,7 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 						<div class="wp-legalpages-admin-label_wp_label"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/Wp_Legal_pages_text_logo.png'; ?>" alt="WP Cookie Consent Label"></div>
 					</div>
 				</div>
+				<div id="wplegalpages-save-settings-alert"><img src="<?php echo WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg'; ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_attr_e( 'Settings saved successfully', 'wplegalpages' ); ?></div>
 				<div class="wp-legalpages-admin-help-and-support">
 				<div class="wp-legalpages-admin-help">
 						<div class="wp-legalpages-admin-help-icon">
