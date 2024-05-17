@@ -25,16 +25,16 @@ if ( ! defined( 'WPL_LITE_PLUGIN_BASENAME' ) ) {
 	define( 'WPL_LITE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 }
 if ( ! defined( 'WPLEGAL_API_URL' ) ) {
-	define( 'WPLEGAL_API_URL', 'https://apitest.wpeka.com/wp-json/wplegal/v2/' );
+	define( 'WPLEGAL_API_URL', 'https://d8c7243ac1.nxcli.io/wp-json/wplegal/v2/' );
 }
 if ( ! defined( 'WPLEGAL_API_ADMIN_URL' ) ) {
-	define( 'WPLEGAL_API_ADMIN_URL', 'https://apitest.wpeka.com/wp-content/plugins/wplegal-api/admin/' );
+	define( 'WPLEGAL_API_ADMIN_URL', 'https://d8c7243ac1.nxcli.io/wp-content/plugins/wplegal-api/admin/' );
 }
 /**
  * Check if the constant GDPR_APP_URL is not already defined.
 */
 if ( ! defined( 'WPLEGAL_APP_URL' ) ) {
-	define( 'WPLEGAL_APP_URL', 'https://app.wplegalpages.com' );
+	define( 'WPLEGAL_APP_URL', 'https://d8c7243ac1.nxcli.io' );
 }
 
 if ( ! function_exists( 'wplp_fs' ) ) {
@@ -70,6 +70,20 @@ if ( ! function_exists( 'wplp_fs' ) ) {
 	// wplp_fs();
 	// SDK initiated.
 	// do_action( 'wplp_fs_loaded' );
+}
+/**
+ * Load WC_AM_Client class if it exists.
+ */
+if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'wc-am-client-legalpages.php';
+}
+
+/*
+ * Instantiate WC_AM_Client class object if the WC_AM_Client class is loaded.
+ */
+if ( class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
+
+	$wcam_lib_legalpages = new WC_AM_Client_2_7_WPLegalPages( __FILE__, '', '3.1.0', 'plugin', WPLEGAL_APP_URL, 'WPLegalPages', 'wplegalpages' );
 }
 
 if ( ! defined( 'WPLPP_SUFFIX' ) ) {
