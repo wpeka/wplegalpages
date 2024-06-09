@@ -67,6 +67,7 @@ class WP_Legal_Pages_Settings {
 				'connected' => false,
 				'plan'      => 'free',
 				'site_key'  => '',
+				'product_id' => '',
 			),
 			'src_plugin'     => array(
 				'plugin' => '',
@@ -160,6 +161,15 @@ class WP_Legal_Pages_Settings {
 	}
 
 	/**
+	 * Get email
+	 *
+	 * @return string
+	 */
+	public function get_product_id() {
+		return $this->get( 'account', 'product_id' );
+	}
+
+	/**
 	 * Check whether the site is connected to app.wplegalpages Webapp.
 	 *
 	 * @return boolean
@@ -167,5 +177,48 @@ class WP_Legal_Pages_Settings {
 	public function is_connected() {
 		return $this->get( 'account', 'connected' );
 	}
+
+	/**
+	 * update the value of  plan
+	 *
+	 * @return boolean
+	 */
+
+
+	public function set_plan($new_value) {
+		// Retrieve the current settings from the database
+		$settings = get_option('wplegal_api_framework_app_settings', array(
+			'site'    => array(
+				'url'       => get_site_url(),
+				'installed' => time(),
+			),
+			'api'     => array(
+				'token' => '',
+			),
+			'account' => array(
+				'email'     => '',
+				'id'        => '',
+				'connected' => false,
+				'plan'      => 'free',
+				'site_key'  => '',
+				'product_id' => '',
+			),
+			'src_plugin' => array(
+				'plugin' => '',
+			),
+		));
+	
+		// Ensure 'account' key exists and is an array
+		if (!isset($settings['account']) || !is_array($settings['account'])) {
+			$settings['account'] = array();
+		}
+	
+		// Update the 'plan' key with the new value
+		$settings['account']['plan'] = $new_value;
+	
+		// Update the settings in the database
+		update_option('wplegal_api_framework_app_settings', $settings);
+	}
+	
 
 }

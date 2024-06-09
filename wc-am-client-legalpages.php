@@ -132,6 +132,13 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 				$this->data                    = get_option( $this->data_key );
 				$this->wc_am_plugin_name       = $this->plugin_or_theme == 'plugin' ? untrailingslashit( plugin_basename( $this->file ) ) : get_stylesheet(); // same as plugin slug. if a theme use a theme name like 'twentyeleven'
 				$this->wc_am_instance_id       = get_option( $this->wc_am_instance_key ); // Instance ID (unique to each blog activation)
+				
+				$instance_option = get_option('wc_am_client_gdpr_cookie_consent_instance');
+					
+				if (!empty($instance_option)) {
+   					$this->wc_am_instance_id = $instance_option;
+				}
+				
 				/**
 				 * Some web hosts have security policies that block the : (colon) and // (slashes) in http://,
 				 * so only the host portion of the URL can be sent. For example the host portion might be
@@ -284,7 +291,10 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 		 *
 		 * @return bool|string
 		 */
-		public function activate( $args ) {
+		public function activate( $args, $product_id = 0 ) {
+
+			$this->product_id = $product_id;
+
 			$defaults = array(
 				'wc_am_action'          => 'activate',
 				'product_id'       => $this->product_id,
@@ -305,17 +315,32 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 		 *
 		 * @return bool|string
 		 */
-		public function deactivate( $args ) {
+		public function deactivate( $args , $product_id = '') {
+
+		if($product_id !== ''){
+			$defaults = array(
+				'wc_am_action'    => 'deactivate',
+				'product_id' => $product_id,
+				'instance'   => $this->wc_am_instance_id,
+				'object'     => $this->wc_am_domain
+			);
+		} 
+		else{
 			$defaults = array(
 				'wc_am_action'    => 'deactivate',
 				'product_id' => $this->product_id,
 				'instance'   => $this->wc_am_instance_id,
 				'object'     => $this->wc_am_domain
 			);
-
+		}
 			$args       = wp_parse_args( $defaults, $args );
+			error_log("deactivate function");
+			error_log("deactivate args".print_r($args,true));
 			$target_url = esc_url_raw( $this->create_software_api_url( $args ) );
+			error_log("deactivate target_url".print_r($target_url,true));
+
 			$request    = wp_safe_remote_post( $target_url, array( 'timeout' => 15 ) );
+			error_log("deactivate request".print_r($request,true));
 
 			if ( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) != 200 ) {
 				// Request failed
@@ -332,11 +357,11 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 		 *
 		 * @return bool|string
 		 */
-		public function status() {
+		public function status( $args, $product_id ) {
 			$defaults = array(
 				'wc_am_action'    => 'status',
 				'api_key'      => $this->data ? $this->data[ $this->wc_am_api_key_key ] : $args['api_key'],
-				'product_id' => $this->product_id,
+				'product_id' => $product_id,
 				'instance'   => $this->wc_am_instance_id,
 				'object'     => $this->wc_am_domain
 			);

@@ -1362,7 +1362,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 			// Call the is_connected() method from the instantiated object to check if the user is connected.
 			$is_user_connected = $this->settings->is_connected();
-
+			$plan_name = $this->settings->get_plan();
+			
 			$pro_is_activated = get_option( '_lp_pro_active' );
 
 			$if_terms_are_accepted = get_option( 'lp_accept_terms' );
@@ -1388,6 +1389,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'lp_terms'				=> $if_terms_are_accepted,
 					'wplegal_app_url'		=> WPLEGAL_APP_URL,
 					'is_user_connected'		=> $is_user_connected,
+					'plan_name'             => $plan_name,
 					'_ajax_nonce'           => wp_create_nonce( 'wp-legal-pages' ),
 
 				)
@@ -2756,6 +2758,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 			// Call the is_connected() method from the instantiated object to check if the user is connected.
 			$is_user_connected = $this->settings->is_connected();
+			$plan_name = $this->settings->get_plan();
 
 			wp_localize_script(
 				$this->plugin_name . '-vue-script',
@@ -2775,6 +2778,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'pro_button'   => __( 'Go Pro', 'wplegalpages' ),
 					'wplegal_app_url'	 => WPLEGAL_APP_URL,
 					'is_user_connected'	 => $is_user_connected,
+					'plan_name'             => $plan_name,
 					'_ajax_nonce'       => wp_create_nonce( 'wp-legal-pages' ),
 					'promotion_link'     => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=wizard&utm_content=go-pro-button',
 					'welcome'            => array(
