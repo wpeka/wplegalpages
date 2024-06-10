@@ -24,6 +24,7 @@ if ( ! defined( 'WPL_LITE_PLUGIN_URL' ) ) {
 if ( ! defined( 'WPL_LITE_PLUGIN_BASENAME' ) ) {
 	define( 'WPL_LITE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 }
+
 if ( ! defined( 'WPLEGAL_API_URL' ) ) {
 	define( 'WPLEGAL_API_URL', 'https://d8c7243ac1.nxcli.io/wp-json/wplegal/v2/' );
 }
