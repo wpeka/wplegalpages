@@ -59,6 +59,8 @@ class WP_Legal_Pages_App_Auth {
 		// Add AJAX actions for authentication.
 		if ( is_admin() ) {
 			add_action( 'wp_ajax_wp_legal_pages_app_start_auth', array( $this, 'ajax_auth_url' ) );
+			add_action( 'wp_ajax_legalpages_template_view_capabilities', array( $this, 'legalpages_template_view_capabilities' ) );
+			add_action( 'wp_ajax_wp_legal_pages_app_paid_start_auth', array( $this, 'legal_page_upgrade_user_plan' ) );
 			add_action( 'wp_ajax_wp_legal_pages_app_store_auth', array( $this, 'store_auth_key' ) );
 			add_action( 'wp_ajax_wp_legal_pages_app_delete_auth', array( $this, 'delete_app_auth' ) );
 		}
@@ -81,6 +83,18 @@ class WP_Legal_Pages_App_Auth {
 		$is_new_user = filter_input( INPUT_POST, 'is_new_user', FILTER_VALIDATE_BOOLEAN );
 		$site_address = rawurlencode( get_site_url() );
 		$api_auth_url = $is_new_user ? $this->get_api_url( 'signup' ) : $this->get_api_url( 'login' );
+		// Require necessary file and get settings.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/settings/class-wp-legal-pages-settings.php';
+		$settings = new WP_Legal_Pages_Settings();
+		global $wcam_lib_legalpages;
+
+		$instance_id = $wcam_lib_legalpages->wc_am_instance_id;
+		$object   = $wcam_lib_legalpages->wc_am_domain;
+		$software_version = $wcam_lib_legalpages->wc_am_software_version;
+		error_log('instance_id'.$instance_id);
+		error_log('object'.$object);
+		error_log('software_version'.$software_version);
+		
 
 		// Build auth URL with site name.
 		$auth_url = add_query_arg(
@@ -89,11 +103,200 @@ class WP_Legal_Pages_App_Auth {
 				'site' => $site_address,
 				'rest_url' => rawurlencode(get_rest_url()),
 				'src_plugin' => 'wplegalpages',
+				'instance_id'    => rawurldecode($instance_id),
+				'object'  => rawurldecode($object),
+				'software_version' => rawurldecode($software_version)
 			),
 			$api_auth_url
 		);
 
 		// Send JSON response with auth URL.
+		wp_send_json_success(
+			array(
+				'url' => $auth_url,
+			)
+		);
+	}
+    
+	/**
+	 * Get current template view capabilities
+	 *
+	 * @since 3.0.3
+	 */
+	public function legalpages_template_view_capabilities() {
+
+		check_ajax_referer( 'wp-legal-pages', '_ajax_nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action', 'wplegalpages' ) );
+		}
+
+		
+		// Require necessary file and get settings.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/settings/class-wp-legal-pages-settings.php';
+		$settings = new WP_Legal_Pages_Settings();
+		
+		global $wcam_lib_legalpages;
+		// $wcam_lib_responsive_addons = new WC_AM_Client_2_7_Responsive_Addons( __FILE__, '', '3.0.5', 'plugin', CC_APP_URL, 'Responsive Addons', 'responsive-addons' );
+		
+		$api_key    = $settings->get( 'api', 'token' );
+		 $product_id = $settings->get( 'account', 'product_id' );
+		error_log("hello world");
+		error_log($settings->get( 'api', 'token' ));
+		error_log(print_r($settings->get( 'account', 'product_id' ),true));
+		error_log('/plugin/importcaps'.print_r($settings->get(),true));
+		error_log('/plugin/importcaps');
+		error_log('/plugin/importcaps'.$settings->get_user_id());
+		error_log('/plugin/importcaps'.$_POST['demo_type']);
+		error_log('/plugin/importcaps'.print_r($wcam_lib_legalpages->data,true));
+		
+		if ( empty( $api_key ) || '' === $api_key || empty( $product_id ) || '' === $product_id ) {
+			wp_send_json_error(
+				array(
+					'message' => 'Please check your connection with Wplegalpages  Domain',
+					'error'   => true,
+				),
+			);
+		}
+		
+		$args = array(
+			'api_key' => $api_key,
+		);
+		
+		update_option( $wcam_lib_legalpages->wc_am_product_id, $product_id );
+		update_option(
+			$wcam_lib_legalpages->data_key,
+			array(
+				$wcam_lib_legalpages->data_key . '_api_key' => $api_key,
+			),
+		);
+		error_log("apikeys ".$api_key);
+		error_log("productid ".$product_id);
+		$activate_args = $wcam_lib_legalpages->activate( $args, $product_id );
+		$status_args   = $wcam_lib_legalpages->status( $args, $product_id );
+        error_log("activate args".print_r($activate_args,true));
+		error_log("status_args ".print_r($status_args,true));
+		error_log("user id".$settings->get_user_id());
+		error_log("wc_am_activated_key ".print_r($wcam_lib_legalpages->data,true));
+
+		$response = $this->post(
+			'plugin/importcaps',
+			wp_json_encode(
+				array(
+					'id'                  => $settings->get_user_id(),
+					'platform'            => 'wordpress',
+					'demo_type'           => $_POST['demo_type'],
+					'status_args'         => $status_args,
+					'activate_args'       => $activate_args,
+					'wc_am_activated_key' => $wcam_lib_legalpages->data,
+				)
+			)
+		);
+		
+
+
+
+		$response_code = wp_remote_retrieve_response_code( $response );
+		if ( 200 !== $response_code ) {
+			wp_send_json_error(
+				array(
+					'message' => 'Cannot made request with Wplegalpages Domain. Some data is missing.',
+					'error'   => true,
+				),
+			);
+		}
+		$response_body = json_decode( wp_remote_retrieve_body( $response ) );
+		error_log("response_body".print_r($response_body,true));
+		if ( ! $response_body->allow_import ) {
+			wp_send_json_error(
+				array(
+					'message' => 'Please check your connection with Wplegalpages Domain',
+					'error'   => true,
+				),
+			);
+		}
+		if ( isset( $response_body->update_options ) ) {
+			if ( 'success' === $response_body->update_options ) {
+				error_log("hello success ".  $response_body->activated_key);
+				error_log("hello success ".  $response_body->deactivate_checkbox_key);
+				update_option( $wcam_lib_legalpages->wc_am_activated_key, $response_body->activated_key );
+				update_option( $wcam_lib_legalpages->wc_am_deactivate_checkbox_key, $response_body->deactivate_checkbox_key );
+			} else if ( 'fail_1' === $response_body->update_options ) {
+				if ( isset( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ] ) ) {
+					error_log("hello fail1 ".$wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ]);
+					update_option( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ], $response_body->activated_key );
+				}
+			} else if ( 'fail_2' === $response_body->update_options ) {
+				if ( isset( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ] ) ) {
+					error_log("hello fail2 ");
+					error_log("hello fail2 ".$wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ]);
+					update_option( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ], $response_body->activated_key );
+				}
+			}
+		}
+		error_log("response body ".print_r($response_body,true));
+
+
+		if ( isset( $response_body->current_instance ) && $response_body->current_instance == "active" ) {
+			$settings->set_plan($response_body->plan);
+			wp_send_json_success(
+				array(
+					'connection_status' => $response_body->current_instance,
+					'error'             => false,
+				),
+			);
+		} else {
+			wp_send_json_error(
+				array(
+					'connection_status' => $response_body->current_instance,
+					"error"            =>  true,
+				)
+			);
+		}
+	}
+	/**
+	 * Ajax handler that returns the auth url used to start the Connect process.
+	 *
+	 * @return void
+	 */
+	public function legal_page_upgrade_user_plan() {
+		check_ajax_referer( 'wp-legal-pages', '_ajax_nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( esc_html__( 'You do not have permission.', 'responsive-addons' ) );
+		}
+
+		$site_address = rawurlencode( get_site_url() );
+		$rest_url     = rawurlencode( get_rest_url() );
+
+		// Require necessary file and get settings.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/settings/class-wp-legal-pages-settings.php';
+		$settings = new WP_Legal_Pages_Settings();
+		global $wcam_lib_legalpages;
+
+		$instance_id = $wcam_lib_legalpages->wc_am_instance_id;
+		$object   = $wcam_lib_legalpages->wc_am_domain;
+		$software_version = $wcam_lib_legalpages->wc_am_software_version;
+		error_log('instance_id'.$instance_id);
+		error_log('object'.$object);
+		error_log('software_version'.$software_version);
+
+		
+
+		$api_auth_url = $this->get_api_url( 'pricing' );
+
+		$auth_url = add_query_arg(
+			array(
+				'platform' => 'wordpress',
+				'site'     => $site_address,
+				'rest_url' => $rest_url,
+				'src_plugin' => 'wplegalpages',
+				'instance_id'    => rawurldecode($instance_id),
+				'object'  => rawurldecode($object),
+				'software_version' => rawurldecode($software_version),
+			),
+			$api_auth_url
+		);
 		wp_send_json_success(
 			array(
 				'url' => $auth_url,
@@ -131,87 +334,149 @@ class WP_Legal_Pages_App_Auth {
 	 * @return void
 	 */
 	public function store_auth_key() {
-
-		// Verify AJAX nonce.
-		check_ajax_referer( 'wp-legal-pages', '_ajax_nonce' );
-
-		// Check user capabilities.
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( esc_html__( 'You do not have permissions to connect WP Cookie Consent.', 'wplegalpages' ) );
+		// Ensure no output before this point
+		ob_start();
+	
+		// Verify AJAX nonce
+		check_ajax_referer('wp-legal-pages', '_ajax_nonce');
+		global $wcam_lib_legalpages;
+	
+		// Check user capabilities
+		if (!current_user_can('manage_options')) {
+			ob_end_clean();
+			wp_send_json_error(esc_html__('You do not have permissions to connect WP Cookie Consent.', 'wplegalpages'));
 		}
-
-		// Get data from POST request.
-		$data   = $_POST['response'];
-		$origin = ! empty( $_POST['origin'] ) ? esc_url_raw( wp_unslash( $_POST['origin'] ) ) : false;
-
-		// Verify data and origin.
-		if ( empty( $data ) || WPLEGAL_APP_URL !== $origin ) {
+	
+		// Get data from POST request
+		error_log("response: " . print_r($_POST['response'], true));
+		error_log("response to store: " . print_r($_POST, true));
+	
+		$data = isset($_POST['response']) ? $_POST['response'] : null;
+		$origin = !empty($_POST['origin']) ? esc_url_raw(wp_unslash($_POST['origin'])) : false;
+	
+		// Verify data and origin
+		if (empty($data) || WPLEGAL_APP_URL !== $origin) {
+			ob_end_clean();
 			wp_send_json_error();
 		}
-
-		// Update option with auth data.
-		update_option( 'wplegal_api_framework_app_settings', $data );
-
+	
+		// Update option with auth data
+		update_option('wplegal_api_framework_app_settings', $data);
+		$wcam_lib_legalpages->product_id = isset($_POST['response']['account']['product_id']) ? $_POST['response']['account']['product_id'] : '';
+	
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/settings/class-wp-legal-pages-settings.php';
+		$settings = new WP_Legal_Pages_Settings();
+		error_log("response product id: " . print_r($settings->get('account', 'product_id', true)));
+	
+		if (isset($_POST['update_options'])) {
+			if ('success' === $_POST['update_options']) {
+				error_log("hello success " . $_POST['activated_key']);
+				error_log("hello success " . $_POST['deactivate_checkbox_key']);
+				update_option($wcam_lib_legalpages->wc_am_activated_key, $_POST['activated_key']);
+				update_option($wcam_lib_legalpages->wc_am_deactivate_checkbox_key, $_POST['deactivate_checkbox_key']);
+			} else if ('fail_1' === $_POST['update_options']) {
+				if (isset($wcam_lib_legalpages->data[$wcam_lib_legalpages->wc_am_activated_key])) {
+					error_log("hello fail1 " . $wcam_lib_legalpages->data[$wcam_lib_legalpages->wc_am_activated_key]);
+					update_option($wcam_lib_legalpages->data[$wcam_lib_legalpages->wc_am_activated_key], $_POST['activated_key']);
+				}
+			} else if ('fail_2' === $_POST['update_options']) {
+				if (isset($wcam_lib_legalpages->data[$wcam_lib_legalpages->wc_am_activated_key])) {
+					error_log("hello fail2 ");
+					error_log("hello fail2 " . $wcam_lib_legalpages->data[$wcam_lib_legalpages->wc_am_activated_key]);
+					update_option($wcam_lib_legalpages->data[$wcam_lib_legalpages->wc_am_activated_key], $_POST['activated_key']);
+				}
+			}
+		}
+	
 		$this->auth_data = $data;
-
-		// Send success response.
+	
+		// Clear any buffered output
+		ob_end_clean();
+	
+		// Send success response
 		wp_send_json_success(
 			array(
-				'title' => __( 'Authentication successfully completed', 'wplegalpages' ),
-				'text'  => __( 'Reloading page, please wait.', 'wplegalpages' ),
+				'title' => __('Authentication successfully completed', 'wplegalpages'),
+				'text' => __('Reloading page, please wait.', 'wplegalpages'),
 			)
 		);
 	}
+	
 
 	/**
 	 * Ajax handler to delete the auth data and disconnect the site from the WPCode Library.
 	 *
 	 * @return void
 	 */
-	public function delete_app_auth() {
 
-		// Verify AJAX nonce.
+	 public function delete_app_auth() {
 		check_ajax_referer( 'wp-legal-pages', '_ajax_nonce' );
 
-		// Require necessary file and get settings.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( esc_html__( 'You do not have permissions to disconnect  to App Wpeka Responsive Domain.', 'wplegalpages' ) );
+		}
+
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/settings/class-wp-legal-pages-settings.php';
 		$settings = new WP_Legal_Pages_Settings();
-		$options  = $settings->get();
+		$options  = $settings->get_defaults();
+		$product_id = $settings->get('account','product_id');
+        
 
-		// Make auth request.
-		$this->make_auth_request();
+		global $wcam_lib_legalpages;
+		$activation_status = get_option( $wcam_lib_legalpages->wc_am_activated_key );
 
-		// Make POST request to disconnect plugin.
-		$response = $this->post(
-			'plugin/disconnect',
-			wp_json_encode(
-				array(
-					'id'       => $settings->get_user_id(),
-					'site_key' => $settings->get_website_key(),
-					'platform' => 'wordpress',
-				)
-			)
+		$args = array(
+			'api_key' => $settings->get( 'api', 'token' ),
 		);
-
-		$response_code = wp_remote_retrieve_response_code( $response );
-
-		// Check response code and update settings.
-		if ( 200 !== $response_code ) {
-			wp_send_json_error();
+		update_option( 'wplegal_api_framework_app_settings', $options );
+    
+		if(false !== get_option('gdpr_api_framework_app_settings')){
+			update_option( 'gdpr_api_framework_app_settings', $options );
 		}
-		$options['api']['token'] = '';
-		$settings->update( $options );
-		$options['account']['connected'] = false;
-		$settings->update( $options );
+		
+        error_log("activation_status".print_r($activation_status,true));
+		error_log("activation_status args".print_r($args,true));
+		error_log("activation_status product_id".print_r($product_id,true));
+		error_log("activation_status  product_id".print_r($wcam_lib_legalpages->product_id,true));
+			error_log("deactivate".print_r($args,true));
+			$deactivate_results = json_decode( $wcam_lib_legalpages->deactivate( $args,$product_id ), true );
 
-		// Send success response.
-		wp_send_json_success(
-			array(
-				'title' => __( 'Plugin disconnected', 'wplegalpages' ),
-				'text'  => __( 'Reloading page, please wait.', 'wplegalpages' ),
-			)
-		);
+			if ( true === $deactivate_results['success'] && true === $deactivate_results['deactivated'] ) {
+				if ( ! empty( $wcam_lib_legalpages->wc_am_activated_key ) ) {
+					update_option( $wcam_lib_legalpages->wc_am_activated_key, 'Deactivated' );
+				}
+
+				wp_send_json_success(
+					array(
+						'deactivate_results' => $deactivate_results,
+						'error'              => false,
+						'message'            => $deactivate_results['activations_remaining'],
+					)
+				);
+			}
+
+			if ( isset( $deactivate_results['data']['error_code'] ) && ! empty( $wcam_lib_legalpages->data ) && ! empty( $wcam_lib_legalpages->wc_am_activated_key ) ) {
+				if( isset( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ] ) ) {
+					update_option( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ], 'Deactivated' );
+				}
+				wp_send_json_error(
+					array(
+						'deactivate_results' => $deactivate_results,
+						'error'              => true,
+						'message'            => $deactivate_results['data']['error'],
+					)
+				);
+			}
+			wp_send_json_error(
+				array(
+					'deactivate_results' => false,
+					'error'              => true,
+					'message'            => 'Connection Already Deactivated',
+				)
+			);
+		
 	}
+
 
 	/**
 	 * Check if the site is authenticated.
