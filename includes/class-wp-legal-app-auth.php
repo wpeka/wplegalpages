@@ -361,7 +361,7 @@ class WP_Legal_Pages_App_Auth {
 		}
 	
 		// Update option with auth data
-		update_option('wplegal_api_framework_app_settings', $data);
+		update_option('wpeka_api_framework_app_settings', $data);
 		$wcam_lib_legalpages->product_id = isset($_POST['response']['account']['product_id']) ? $_POST['response']['account']['product_id'] : '';
 	
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/settings/class-wp-legal-pages-settings.php';
@@ -428,7 +428,7 @@ class WP_Legal_Pages_App_Auth {
 		$args = array(
 			'api_key' => $settings->get( 'api', 'token' ),
 		);
-		update_option( 'wplegal_api_framework_app_settings', $options );
+		update_option( 'wpeka_api_framework_app_settings', $options );
     
 		if(false !== get_option('gdpr_api_framework_app_settings')){
 			update_option( 'gdpr_api_framework_app_settings', $options );
@@ -512,7 +512,7 @@ class WP_Legal_Pages_App_Auth {
 	 */
 	public function get_auth_data() {
 		if ( ! isset( $this->auth_data ) ) {
-			$this->auth_data = get_option( 'wplegal_api_framework_app_settings', false );
+			$this->auth_data = get_option( 'wpeka_api_framework_app_settings', false );
 		}
 		return $this->auth_data;
 	}
