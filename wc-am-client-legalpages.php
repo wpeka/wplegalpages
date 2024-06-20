@@ -43,22 +43,22 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 		 *
 		 * @var string
 		 */
-		public $data                              = array();
-		public $identifier                        = '';
-		public $no_product_id                     = false;
-		public $product_id_chosen                 = 0;
-		public $wc_am_activated_key               = '';
-		public $wc_am_activation_tab_key          = '';
-		public $wc_am_api_key_key                 = '';
-		public $wc_am_deactivate_checkbox_key     = '';
-		public $wc_am_deactivation_tab_key        = '';
-		public $wc_am_domain                      = '';
-		public $wc_am_instance_id                 = '';
-		public $wc_am_instance_key                = '';
-		public $wc_am_plugin_name                 = '';
-		public $wc_am_product_id                  = '';
-		public $wc_am_software_version            = '';
-        public $legalpages_activated              = false;
+		public $data                          = array();
+		public $identifier                    = '';
+		public $no_product_id                 = false;
+		public $product_id_chosen             = 0;
+		public $wc_am_activated_key           = '';
+		public $wc_am_activation_tab_key      = '';
+		public $wc_am_api_key_key             = '';
+		public $wc_am_deactivate_checkbox_key = '';
+		public $wc_am_deactivation_tab_key    = '';
+		public $wc_am_domain                  = '';
+		public $wc_am_instance_id             = '';
+		public $wc_am_instance_key            = '';
+		public $wc_am_plugin_name             = '';
+		public $wc_am_product_id              = '';
+		public $wc_am_software_version        = '';
+		public $legalpages_activated          = false;
 
 		public function __construct( $file, $product_id, $software_version, $plugin_or_theme, $api_url, $software_title = '', $text_domain = '' ) {
 			$this->no_product_id   = empty( $product_id ) ? true : false;
@@ -107,8 +107,6 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 
 				add_action( 'admin_notices', array( $this, 'check_external_blocking' ) );
 
-
-
 				/**
 				 * Set all data defaults here
 				 */
@@ -129,16 +127,16 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 				/**
 				 * Set all software update data here
 				 */
-				$this->data                    = get_option( $this->data_key );
-				$this->wc_am_plugin_name       = $this->plugin_or_theme == 'plugin' ? untrailingslashit( plugin_basename( $this->file ) ) : get_stylesheet(); // same as plugin slug. if a theme use a theme name like 'twentyeleven'
-				$this->wc_am_instance_id       = get_option( $this->wc_am_instance_key ); // Instance ID (unique to each blog activation)
-				
-				$instance_option = get_option('wc_am_client_gdpr_cookie_consent_instance');
-					
-				if (!empty($instance_option)) {
-   					$this->wc_am_instance_id = $instance_option;
+				$this->data              = get_option( $this->data_key );
+				$this->wc_am_plugin_name = $this->plugin_or_theme == 'plugin' ? untrailingslashit( plugin_basename( $this->file ) ) : get_stylesheet(); // same as plugin slug. if a theme use a theme name like 'twentyeleven'
+				$this->wc_am_instance_id = get_option( $this->wc_am_instance_key ); // Instance ID (unique to each blog activation)
+
+				$instance_option = get_option( 'wc_am_client_gdpr_cookie_consent_instance' );
+
+				if ( ! empty( $instance_option ) ) {
+					$this->wc_am_instance_id = $instance_option;
 				}
-				
+
 				/**
 				 * Some web hosts have security policies that block the : (colon) and // (slashes) in http://,
 				 * so only the host portion of the URL can be sent. For example the host portion might be
@@ -171,30 +169,29 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 			}
 		}
 
-	
+
 		/**
 		 * Generate the default data.
 		 */
-
 		public function activation() {
 			// Get the instance key and instance option from the database
-			$instance_exists = get_option($this->wc_am_instance_key);
-			$instance_option = get_option('wc_am_client_gdpr_cookie_consent_instance');
+			$instance_exists = get_option( $this->wc_am_instance_key );
+			$instance_option = get_option( 'wc_am_client_gdpr_cookie_consent_instance' );
 
 			// Check if the data key or instance key does not exist
-			if (get_option($this->data_key) === false || $instance_exists === false) {
-    		// If instance option exists, update the instance key with the instance option
-    		if ($instance_option !== false) {
-    	    update_option($this->wc_am_instance_key, $instance_option);
-    		} 
-    		// If instance does not exist and instance option is also false, generate a new instance key
-    		else if ($instance_exists === false) {
-    	    update_option($this->wc_am_instance_key, wp_generate_password(12, false));
-   			 }
+			if ( get_option( $this->data_key ) === false || $instance_exists === false ) {
+				// If instance option exists, update the instance key with the instance option
+				if ( $instance_option !== false ) {
+					update_option( $this->wc_am_instance_key, $instance_option );
+				}
+				// If instance does not exist and instance option is also false, generate a new instance key
+				elseif ( $instance_exists === false ) {
+					update_option( $this->wc_am_instance_key, wp_generate_password( 12, false ) );
+				}
 
-    		// Update the deactivate checkbox key and activated key options
-    		update_option($this->wc_am_deactivate_checkbox_key, 'on');
-    		update_option($this->wc_am_activated_key, 'Deactivated');
+				// Update the deactivate checkbox key and activated key options
+				update_option( $this->wc_am_deactivate_checkbox_key, 'on' );
+				update_option( $this->wc_am_activated_key, 'Deactivated' );
 			}
 		}
 
@@ -234,7 +231,7 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 						array(
 							$this->wc_am_instance_key,
 							$this->wc_am_deactivate_checkbox_key,
-							$this->wc_am_activated_key
+							$this->wc_am_activated_key,
 						) as $option
 					) {
 
@@ -260,7 +257,7 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 			}
 		}
 
-		
+
 		/**
 		 * Check for external blocking contstant.
 		 */
@@ -272,17 +269,17 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 
 				if ( ! defined( 'WP_ACCESSIBLE_HOSTS' ) || stristr( WP_ACCESSIBLE_HOSTS, $host ) === false ) {
 					?>
-                    <div class="notice notice-error">
-                        <p><?php printf( __( '<b>Warning!</b> You\'re blocking external requests which means you won\'t be able to get %s updates. Please add %s to %s.', $this->text_domain ), $this->software_title, '<strong>' . $host . '</strong>', '<code>WP_ACCESSIBLE_HOSTS</code>' ); ?></p>
-                    </div>
+					<div class="notice notice-error">
+						<p><?php printf( __( '<b>Warning!</b> You\'re blocking external requests which means you won\'t be able to get %1$s updates. Please add %2$s to %3$s.', $this->text_domain ), $this->software_title, '<strong>' . $host . '</strong>', '<code>WP_ACCESSIBLE_HOSTS</code>' ); ?></p>
+					</div>
 					<?php
 				}
 			}
 		}
 
-		
 
-		
+
+
 		/**
 		 * Builds the URL containing the API query string for activation, deactivation, and status requests.
 		 *
@@ -306,15 +303,15 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 			$this->product_id = $product_id;
 
 			$defaults = array(
-				'wc_am_action'          => 'activate',
+				'wc_am_action'     => 'activate',
 				'product_id'       => $this->product_id,
 				'instance'         => $this->wc_am_instance_id,
 				'object'           => $this->wc_am_domain,
-				'software_version' => $this->wc_am_software_version
+				'software_version' => $this->wc_am_software_version,
 			);
 
-			$args       = wp_parse_args( $defaults, $args );
-			
+			$args = wp_parse_args( $defaults, $args );
+
 			return $args;
 		}
 
@@ -325,33 +322,26 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 		 *
 		 * @return bool|string
 		 */
-		public function deactivate( $args , $product_id = '') {
+		public function deactivate( $args, $product_id = '' ) {
 
-		if($product_id !== ''){
-			$defaults = array(
-				'wc_am_action'    => 'deactivate',
-				'product_id' => $product_id,
-				'instance'   => $this->wc_am_instance_id,
-				'object'     => $this->wc_am_domain
-			);
-		} 
-		else{
-			$defaults = array(
-				'wc_am_action'    => 'deactivate',
-				'product_id' => $this->product_id,
-				'instance'   => $this->wc_am_instance_id,
-				'object'     => $this->wc_am_domain
-			);
-		}
+			if ( $product_id !== '' ) {
+				$defaults = array(
+					'wc_am_action' => 'deactivate',
+					'product_id'   => $product_id,
+					'instance'     => $this->wc_am_instance_id,
+					'object'       => $this->wc_am_domain,
+				);
+			} else {
+				$defaults = array(
+					'wc_am_action' => 'deactivate',
+					'product_id'   => $this->product_id,
+					'instance'     => $this->wc_am_instance_id,
+					'object'       => $this->wc_am_domain,
+				);
+			}
 			$args       = wp_parse_args( $defaults, $args );
-			error_log("deactivate function");
-			error_log("deactivate args".print_r($args,true));
 			$target_url = esc_url_raw( $this->create_software_api_url( $args ) );
-			error_log("deactivate target_url".print_r($target_url,true));
-
 			$request    = wp_safe_remote_post( $target_url, array( 'timeout' => 15 ) );
-			error_log("deactivate request".print_r($request,true));
-
 			if ( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) != 200 ) {
 				// Request failed
 				return false;
@@ -369,11 +359,11 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 		 */
 		public function status( $args, $product_id ) {
 			$defaults = array(
-				'wc_am_action'    => 'status',
+				'wc_am_action' => 'status',
 				'api_key'      => $this->data ? $this->data[ $this->wc_am_api_key_key ] : $args['api_key'],
-				'product_id' => $product_id,
-				'instance'   => $this->wc_am_instance_id,
-				'object'     => $this->wc_am_domain
+				'product_id'   => $product_id,
+				'instance'     => $this->wc_am_instance_id,
+				'object'       => $this->wc_am_domain,
 			);
 
 			return $defaults;
@@ -394,7 +384,7 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 
 			/*********************************************************************
 			 * The plugin and theme filters should not be active at the same time
-			 *********************************************************************/ /**
+			 */ /**
 			 * More info:
 			 * function set_site_transient moved from wp-includes/functions.php
 			 * to wp-includes/option.php in WordPress 3.4
@@ -422,7 +412,7 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 				add_filter( 'pre_set_site_transient_update_themes', array( $this, 'update_check' ) );
 
 				// Check For Theme Information to display on the update details page
-				//add_filter( 'themes_api', array( $this, 'information_request' ), 10, 3 );
+				// add_filter( 'themes_api', array( $this, 'information_request' ), 10, 3 );
 
 			}
 		}
@@ -464,13 +454,13 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 			}
 
 			$args = array(
-				'wc_am_action'     => 'update',
-				'slug'        => $this->slug,
-				'plugin_name' => $this->plugin_name,
-				'version'     => $this->wc_am_software_version,
-				'product_id'  => $this->product_id,
-				'api_key'     => $this->data[ $this->wc_am_api_key_key ],
-				'instance'    => $this->wc_am_instance_id,
+				'wc_am_action' => 'update',
+				'slug'         => $this->slug,
+				'plugin_name'  => $this->plugin_name,
+				'version'      => $this->wc_am_software_version,
+				'product_id'   => $this->product_id,
+				'api_key'      => $this->data[ $this->wc_am_api_key_key ],
+				'instance'     => $this->wc_am_instance_id,
 			);
 
 			// Check for a plugin update.
@@ -537,13 +527,13 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 			}
 
 			$args = array(
-				'wc_am_action'     => 'plugininformation',
-				'plugin_name' => $this->plugin_name,
-				'version'     => $this->wc_am_software_version,
-				'product_id'  => $this->product_id,
-				'api_key'     => $this->data[ $this->wc_am_api_key_key ],
-				'instance'    => $this->wc_am_instance_id,
-				'object'      => $this->wc_am_domain,
+				'wc_am_action' => 'plugininformation',
+				'plugin_name'  => $this->plugin_name,
+				'version'      => $this->wc_am_software_version,
+				'product_id'   => $this->product_id,
+				'api_key'      => $this->data[ $this->wc_am_api_key_key ],
+				'instance'     => $this->wc_am_instance_id,
+				'object'       => $this->wc_am_domain,
 			);
 
 			$response = unserialize( $this->send_query( $args ) );

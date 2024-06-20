@@ -1,9 +1,7 @@
 var jQuery = jQuery.noConflict();
 var jQuery = jQuery.noConflict();
-console.log( 'revamp.js loaded' );
 
 jQuery(document).ready(function () {
-	console.log( 'revamp.js loaded' );
     // localised variable
     const isProActivated = wplp_localize_data.is_pro_activated;
     const adminUrl = wplp_localize_data.admin_url;
