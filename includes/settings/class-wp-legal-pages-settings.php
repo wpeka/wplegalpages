@@ -54,21 +54,22 @@ class WP_Legal_Pages_Settings {
 	public function get_defaults() {
 
 		return array(
-			'site'    => array(
+			'site'       => array(
 				'url'       => get_site_url(),
 				'installed' => time(),
 			),
-			'api'     => array(
+			'api'        => array(
 				'token' => '',
 			),
-			'account' => array(
-				'email'     => '',
-				'id'        => '',
-				'connected' => false,
-				'plan'      => 'free',
-				'site_key'  => '',
+			'account'    => array(
+				'email'      => '',
+				'id'         => '',
+				'connected'  => false,
+				'plan'       => 'free',
+				'site_key'   => '',
+				'product_id' => '',
 			),
-			'src_plugin'     => array(
+			'src_plugin' => array(
 				'plugin' => '',
 			),
 		);
@@ -82,7 +83,7 @@ class WP_Legal_Pages_Settings {
 	 * @return array
 	 */
 	public function get( $group = '', $key = '' ) {
-		$settings = get_option( 'wplegal_api_framework_app_settings', $this->data );
+		$settings = get_option( 'wpeka_api_framework_app_settings', $this->data );
 
 		if ( empty( $key ) && empty( $group ) ) {
 			return $settings;
@@ -103,13 +104,13 @@ class WP_Legal_Pages_Settings {
 	 */
 	public function update( $data ) {
 
-		$settings = get_option( 'wplegal_api_framework_app_settings', $this->data );
+		$settings = get_option( 'wpeka_api_framework_app_settings', $this->data );
 		if ( empty( $settings ) ) {
 			$settings = $this->data;
 		}
 		$settings = $data;
 
-		update_option( 'wplegal_api_framework_app_settings', $settings );
+		update_option( 'wpeka_api_framework_app_settings', $settings );
 	}
 
 	// Getter Functions.
@@ -160,12 +161,71 @@ class WP_Legal_Pages_Settings {
 	}
 
 	/**
+	 * Get email
+	 *
+	 * @return string
+	 */
+	public function get_product_id() {
+		return $this->get( 'account', 'product_id' );
+	}
+
+	/**
 	 * Check whether the site is connected to app.wplegalpages Webapp.
 	 *
 	 * @return boolean
 	 */
 	public function is_connected() {
-		return $this->get( 'account', 'connected' );
+		$lp_connected = $this->get( 'account', 'connected' );
+
+		if ( $lp_connected ) {
+			update_option( 'lp_connected', true );
+		} else {
+			update_option( 'lp_connected', false );
+		}
+
+		return $lp_connected;
 	}
 
+	/**
+	 * update the value of  plan
+	 *
+	 * @return boolean
+	 */
+	public function set_plan( $new_value ) {
+		// Retrieve the current settings from the database
+		$settings = get_option(
+			'wpeka_api_framework_app_settings',
+			array(
+				'site'       => array(
+					'url'       => get_site_url(),
+					'installed' => time(),
+				),
+				'api'        => array(
+					'token' => '',
+				),
+				'account'    => array(
+					'email'      => '',
+					'id'         => '',
+					'connected'  => false,
+					'plan'       => 'free',
+					'site_key'   => '',
+					'product_id' => '',
+				),
+				'src_plugin' => array(
+					'plugin' => '',
+				),
+			)
+		);
+
+		// Ensure 'account' key exists and is an array
+		if ( ! isset( $settings['account'] ) || ! is_array( $settings['account'] ) ) {
+			$settings['account'] = array();
+		}
+
+		// Update the 'plan' key with the new value
+		$settings['account']['plan'] = $new_value;
+
+		// Update the settings in the database
+		update_option( 'wpeka_api_framework_app_settings', $settings );
+	}
 }

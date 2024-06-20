@@ -1679,6 +1679,22 @@ button[data-v-09b2f69e] {
 	cursor: pointer;
 }
 
+.wplegal-api-connection-popup .wplegal-paid-api-connect{
+    border-radius: 4px;
+    padding: 16px 23px 16px 23px;
+    margin-bottom: 20px;
+    background: #074EA8;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #fff;
+    border: none;
+	cursor: pointer;
+}
+
 .wplegal-api-overlay {
     position: fixed;
     top: 0;
