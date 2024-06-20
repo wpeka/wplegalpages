@@ -132,8 +132,6 @@ class WP_Legal_Pages_App_Auth {
 		$settings = new WP_Legal_Pages_Settings();
 
 		global $wcam_lib_legalpages;
-		// $wcam_lib_responsive_addons = new WC_AM_Client_2_7_Responsive_Addons( __FILE__, '', '3.0.5', 'plugin', CC_APP_URL, 'Responsive Addons', 'responsive-addons' );
-
 		$api_key    = $settings->get( 'api', 'token' );
 		$product_id = $settings->get( 'account', 'product_id' );
 
