@@ -26,10 +26,10 @@ if ( ! defined( 'WPL_LITE_PLUGIN_BASENAME' ) ) {
 }
 
 if ( ! defined( 'WPLEGAL_API_URL' ) ) {
-	define( 'WPLEGAL_API_URL', 'https://app.wplegalpages.com/wp-json/wplegal/v2/' );
+	define( 'WPLEGAL_API_URL', 'https://api.wpeka.com/com/wp-json/wplegal/v2/' );
 }
 if ( ! defined( 'WPLEGAL_API_ADMIN_URL' ) ) {
-	define( 'WPLEGAL_API_ADMIN_URL', 'https://app.wplegalpages.com/wp-content/plugins/wplegal-api/admin/' );
+	define( 'WPLEGAL_API_ADMIN_URL', 'https://api.wpeka.com/wp-content/plugins/wplegal-api/admin/' );
 }
 /**
  * Check if the constant GDPR_APP_URL is not already defined.
