@@ -1,5 +1,4 @@
 var jQuery = jQuery.noConflict();
-
 var jQuery = jQuery.noConflict();
 
 jQuery(document).ready(function () {
@@ -87,23 +86,22 @@ jQuery(document).ready(function () {
 	/**
 	 * Add an event listener to listen for messages sent from the server.
 	*/
-	window.addEventListener("message", function(event) {
-		//event is originated on server
+	 window.addEventListener("message", function(event) {// 	//event is originated on server
 		if ( event.isTrusted && event.origin === wplp_localize_data.wplegal_app_url ) {
-			storeAuth(event.data)
-		}
-	});
+	 		storeAuth(event.data)
+	 	}
+	 },false);
 
 	/**
 	 * Store the Authentication Data
 	 * @param {*} data
 	*/
 	function storeAuth(data) {
-
+		
 		// Create spinner element
 		var spinner = jQuery('<div class="wplegal-ajax-spinner"></div>');
    		jQuery('#wpbody-content').append(spinner);
-
+ 
 		//Make Ajax Call
 		jQuery.ajax({
 			type: 'POST',
@@ -116,8 +114,7 @@ jQuery(document).ready(function () {
 
 			},
 			success: function(response) {
-
-				// Hide the spinner after the success HTML is loaded
+               // Hide the spinner after the success HTML is loaded
 				spinner.hide();
 
 				// remove hidden instance from the local storage
@@ -308,15 +305,8 @@ jQuery(document).ready(function () {
 		).done(
 			function ( response ) {
 
-				// remove hidden instance from the local storage
-				localStorage.removeItem('wplegalConnectPopupHide');
-				// set the wplegalDisconnect to true when user clicks on the disconnect.
-				localStorage.setItem('wplegalDisconnect', 'true');
-
-				//reload the window after settimeout.
-				setTimeout(function() {
 					location.reload();
-				}, 100);
+				
 			}
 		);
 	}
