@@ -2678,14 +2678,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 */
 		public function wplegalpages_trash_page( $post_id ) {
 			if ( 'yes' === get_post_meta( $post_id, 'is_legal', true ) ) {
-				// error_log("Trying to delete:  ".  $post_id);
 				$footer_options = get_option( 'lp_footer_options' );
 				if ( empty( $footer_options ) ) {
-					// error_log("Inside first if");
 					return;
 				}
 				$footer_pages = $footer_options['footer_legal_pages'];
-				// error_log(var_dump(($footer_pages)));
 				if ( ! empty( $footer_pages ) && in_array( $post_id, $footer_pages, true ) ) {
 					error_log("Inside second if");	
 					$length               = count( $footer_pages );
@@ -4576,7 +4573,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		public function wplegalpages_pro_trash_post( $post_id ) {
 			$legal_page_type = get_post_meta( $post_id, 'legal_page_type', true );
 			if ( $legal_page_type && ! empty( $legal_page_type ) ) {
-				error_log("Inside if of pro function");
 				switch ( $legal_page_type ) {
 					case 'terms_of_use':
 						delete_option( 'wplegal_terms_of_use_page' );
@@ -4689,7 +4685,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						}
 						break;
 				}
-				error_log("Outside switch of pro function");
 			echo '<script>window.location.replace("' . admin_url( 'admin.php?page=legal-pages#all_legal_pages' ) . '");</script>';
 			}
 		}
