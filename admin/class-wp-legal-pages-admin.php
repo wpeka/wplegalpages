@@ -2684,7 +2684,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				}
 				$footer_pages = $footer_options['footer_legal_pages'];
 				if ( ! empty( $footer_pages ) && in_array( $post_id, $footer_pages, true ) ) {
-					error_log("Inside second if");	
 					$length               = count( $footer_pages );
 					$updated_footer_pages = array();
 					$j                    = 0;
