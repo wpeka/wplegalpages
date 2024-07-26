@@ -1603,9 +1603,12 @@ table tbody tr td .table-link-alert:hover{
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+.legalpages-banner-div{
+	display: flex;
+}
 .legal-pages-upgrade-to-pro-banner{
-	width: 100%;
+	width: 103%;
+    padding-right: 29px;
 	padding-left: 21px;
-    padding-right: 21px;
     padding-top: 24px;
 }
