@@ -4684,6 +4684,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						}
 						break;
 				}
+			echo '<script>window.location.replace("' . admin_url( 'admin.php?page=legal-pages#all_legal_pages' ) . '");</script>';
 			}
 		}
 
@@ -4730,7 +4731,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 				$lp_obj = new WP_Legal_Pages();
 			}
-			if ( isset( $_REQUEST['mode'] ) && 'delete' === $_REQUEST['mode'] && current_user_can( 'manage_options' ) ) {
+			if ( isset( $_REQUEST['mode'] ) && 'deletepopup' === $_REQUEST['mode'] && current_user_can( 'manage_options' ) ) {
 				if ( isset( $_REQUEST['nonce'] ) ) {
 					wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'lp-submit-create-popups' );
 				}

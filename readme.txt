@@ -1,4 +1,4 @@
-=== Privacy Policy Generator, Terms & Conditions Generator WordPress Plugin : WPLegalPages ===
+=== Privacy Policy Generator, Terms & Conditions Generator WordPress Plugin : WP Legal Pages ===
 Contributors: WPEka Club
 Donate link: https://club.wpeka.com/product/wplegalpages
 License: GPLv2 or later
@@ -6,8 +6,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: gdpr, ccpa, privacy policy, cookie policy, privacy, eprivacy, DSGVO, RGPD, CalOPPA, datenschutz, impressum, coppa, terms and conditions, terms of service, disclosure, disclaimer, disclosure statement, affiliate, affiliate links, amazon, woo commerce, woo, antispam, confidentiality, refund, refund policy, returns, earnings, ftc, medical disclaimer, adsense, analytics, google ads, law, legal, cookie consent, cookie notice, cookie, comments, testimonial, webshop, ttdsg
 Requires at least: 5.0
 Requires PHP: 7.0
-Tested up to: 6.5
-Stable tag: 3.2.0
+Tested up to: 6.6
+Stable tag: 3.2.1
 
 Easiest way to generate legal pages (Privacy, Terms, Disclaimers & more) on your website. Ideal for blogs, ecommerce and marketing websites.
 
@@ -17,7 +17,7 @@ Easiest way to generate legal pages (Privacy, Terms, Disclaimers & more) on your
 
 Generate a professional Privacy Policy, terms of use, terms & conditions, eCommerce returns & refunds policy, affiliate disclaimers & more. Covers 25+ expert vetted legal pages for WordPress websites.
 
-[WPLegalPages](https://club.wpeka.com/product/wplegalpages/?utm_source=wprepo&utm_medium=link&utm_campaign=wplliteplugin&utm_content=name) is a popular and regularly updated legal pages generator plugin with more than 3,70,000 downloads. Bloggers, Affiliate Marketers, corporate websites, ecommerce stores, consultants use WPLegalPages for their legal requirements. You can generate professional policy pages tailored to your requirements across multiple geographies.
+[WP Legal Pages](https://club.wpeka.com/product/wplegalpages/?utm_source=wprepo&utm_medium=link&utm_campaign=wplliteplugin&utm_content=name) is a popular and regularly updated legal pages generator plugin with more than 3,70,000 downloads. Bloggers, Affiliate Marketers, corporate websites, ecommerce stores, consultants use WP Legal Pages for their legal requirements. You can generate professional policy pages tailored to your requirements across multiple geographies.
 
 = Privacy Policy Generator - Free =
 Generate a standard privacy policy to comply with ad networks, analytics, marketing tools on websites. Required for blogs, businesses and ecommerce websites. For a customized privacy policy (with GDPR opt out links), please use the Pro version.
@@ -34,13 +34,13 @@ Generate a standard DMCA privacy policy page. Required for blogs, businesses and
 [youtube https://www.youtube.com/watch?v=iqdLl9qsBHc]
 
 
-WPLegalPages makes it super easy to generate privacy policy pages for websites.
+WP Legal Pages makes it super easy to generate privacy policy pages for websites.
 
 1. Add your business information.
 1. Select a legal policy page template.
 1. Click 'Generate'.
 
-== Why WPLegalPages? ==
+== Why WP Legal Pages? ==
 
 = Easy to install =
 Install and add legal policy pages to your website in 5 minutes or less.
@@ -74,7 +74,7 @@ TTTDSG (Telekommunikation-Telemedien-Datenschutzgesetz) is the Telecommunication
 The information must be provided in accordance with the GDPR and must be clear and comprehensive. Using our GDPR Cookie Policy template in [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wprepo&utm_medium=link&utm_campaign=wplliteplugin), you can display a TTDSG compliant Cookie policy on your website.
 
 = Integrates with your favorite contact form (Pro Feature) =
-WPLegalPages seamlessly works with your favorite contact form plugin. Users are informed about data being collected and can read the privacy policy before form submission. This helps in getting informed consent as per the privacy requirements.
+WP Legal Pages seamlessly works with your favorite contact form plugin. Users are informed about data being collected and can read the privacy policy before form submission. This helps in getting informed consent as per the privacy requirements.
 
 List of supported contact form plugins include:
 
@@ -84,7 +84,7 @@ List of supported contact form plugins include:
 - Ninja Forms
 
 = 25+ pre-built policy templates (Pro Feature) =
-WPLegalPages comes with ready-to-use policy page templates. Fill in your business information and hit generate.
+WP Legal Pages comes with ready-to-use policy page templates. Fill in your business information and hit generate.
 
 = Option to force agreement (Pro Feature) =
 Force users to accept your policy before they can access a page or post. Available in [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wprepo&utm_medium=link&utm_campaign=wplliteplugin&utm_content=readme-force-agreement) only.
@@ -93,7 +93,7 @@ Force users to accept your policy before they can access a page or post. Availab
 Confirm with FTC guidelines. Add affiliate disclosure to the end of a page or post. Available in [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wprepo&utm_medium=link&utm_campaign=wplliteplugin&utm_content=readme-affiliate-disclosure) only.
 
 == Premium Policy Pages ==
-[WPLegalPages Pro](https://club.wpeka.com/product/wplegalpages/?utm_source=wprepo&utm_medium=link&utm_campaign=wplliteplugin&utm_content=readme-premium-policy-pages) can generate 25+ premium policy pages including:
+[WP Legal Pages Pro](https://club.wpeka.com/product/wplegalpages/?utm_source=wprepo&utm_medium=link&utm_campaign=wplliteplugin&utm_content=readme-premium-policy-pages) can generate 25+ premium policy pages including:
 
 = GDPR Privacy Policy =
 Generate a privacy policy to help comply with GDPR's privacy policy requirements. Required for businesses who gather visitor information from EU countries. Also available for France - RGPD and Germany - DSGVO.
@@ -150,11 +150,11 @@ WPML Compatible - [Learn more](https://club.wpeka.com/docs/wp-legal-pages/)
 
 Endorsements: If you need to disclose about your affiliate links on your website. This feature enables you to include disclaimer at the end of your posts which has affiliate links. You can also use the Affiliate Disclosure Block to add the disclaimer easily anywhere in your content on page or posts.
 
-Learn more about [WPLegalPages Pro](http://bit.ly/32n3Qrq).
+Learn more about [WP Legal Pages Pro](http://bit.ly/32n3Qrq).
 
 ==Help Resources==
 
-Check out our specially curated playlist on YouTube for tutorial videos [WPLegalPages tutorial videos](https://youtube.com/playlist?list=PLb2uZyVYHgAXGnKHTr2EouG8ZWba60URR).
+Check out our specially curated playlist on YouTube for tutorial videos [WP Legal Pages tutorial videos](https://youtube.com/playlist?list=PLb2uZyVYHgAXGnKHTr2EouG8ZWba60URR).
 
 Browse through our [Help documentations and FAQs](https://club.wpeka.com/docs/wp-legal-pages/).
 
@@ -169,10 +169,10 @@ We’re continuously improving. Contact us on our website to have your wishlist 
 
 1. Head over to your WordPress Dashboard
 2. Click on 'Plugins > Add New'
-3. Type WPLegalPages on the search bar
-4. Select the WPLegalPages plugin
+3. Type WP Legal Pages on the search bar
+4. Select the WP Legal Pages plugin
 5. Click on Install Now button, and then Activate
-6. Click on the ‘WPLegalPages’ admin menu to get started.
+6. Click on the ‘WP Legal Pages’ admin menu to get started.
 7. The free privacy policy generator plugin is now activated and ready to use.
 
 = Manually =
@@ -180,10 +180,10 @@ We’re continuously improving. Contact us on our website to have your wishlist 
 1. On your WordPress Dashboard, click on 'Plugins > Add New'
 2. Click on 'Upload Plugin', and select the plugin files that you have downloaded from WordPress.org.
 3. Install and activate the plugin.
-4. WPLegalPages menu will appear on the left hand side.
-5. Click on the ‘WPLegalPages’ admin menu to get started.
+4. WP Legal Pages menu will appear on the left hand side.
+5. Click on the ‘WP Legal Pages’ admin menu to get started.
 
-Refer the [help and documentation](https://club.wpeka.com/docs/wp-legal-pages/) to know more about How to Install WPLegalPages.
+Refer the [help and documentation](https://club.wpeka.com/docs/wp-legal-pages/) to know more about How to Install WP Legal Pages.
 
 == Screenshots ==
 1. Create Legal Page
@@ -207,31 +207,34 @@ The Pro version is ideal:
 
 = Can I generate a Returns and Refunds Policy for my WooCommerce store? =
 
-Yes! WPLegalPages Pro has a returns and refunds policy for your WooCommerce website. You can use the guided wizard to create a customized returns and refund policy for your WooCommerce store.
+Yes! WP Legal Pages Pro has a returns and refunds policy for your WooCommerce website. You can use the guided wizard to create a customized returns and refund policy for your WooCommerce store.
 
 = How can I generate a Terms and Conditions policy for my WooCommerce store? =
-WPLegalPages Free version has a Terms Of Use policy page with standard terms and conditions. For a customized Terms and Conditions policy created using a guided wizard, please use the [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wprepo&utm_medium=link&utm_campaign=wplliteplugin&utm_content=faq).
+WP Legal Pages Free version has a Terms Of Use policy page with standard terms and conditions. For a customized Terms and Conditions policy created using a guided wizard, please use the [Pro Version](https://club.wpeka.com/product/wplegalpages/?utm_source=wprepo&utm_medium=link&utm_campaign=wplliteplugin&utm_content=faq).
 
 = How to create a GDPR contact form? =
-As your contact forms are generally used to collect user email for being contacted, users consent is needed. This makes the contact forms subject to GDPR consent rules. In WPLegalPages Pro, you can enable contact form integration. This helps to capture informed consent from the users. Users can also easily view the privacy policy before submitting the form.
+As your contact forms are generally used to collect user email for being contacted, users consent is needed. This makes the contact forms subject to GDPR consent rules. In WP Legal Pages Pro, you can enable contact form integration. This helps to capture informed consent from the users. Users can also easily view the privacy policy before submitting the form.
 
 = Is the cookie notice bar GDPR compliant? =
 The Cookie Notice feature of this plugin is useful for small websites to show basic cookie notice. To have GDPR compliant notices, use the [GDPR Cookie Consent Plugin](https://wordpress.org/plugins/gdpr-cookie-consent/)
 
-= Why use WPLegalPages? =
-GDPR, FTC and other privacy regulators along with ad networks require you to have legal policy pages on your website. Instead of spending hours researching and creating your own policy pages, use WPLegalPages to generate them in a few clicks.
+= Why use WP Legal Pages? =
+GDPR, FTC and other privacy regulators along with ad networks require you to have legal policy pages on your website. Instead of spending hours researching and creating your own policy pages, use WP Legal Pages to generate them in a few clicks.
 
-= How to use WPLegalPages? =
-1. Click on the 'WPLegalPages' admin menu.
+= How to use WP Legal Pages? =
+1. Click on the 'WP Legal Pages' admin menu.
 1. Accept the disclaimer.
 1. Fill in business details.
 1. Click create legal pages >> Select the type of legal template >> Publish.
 1. You can also use shortcodes of each template and save it as a post or page.
 
 = Will it protect my website? =
-WPLegalPages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
+WP Legal Pages provides you pre-approved templates. You may want to customize it as per your needs. Please consult your lawyer for any specific needs for compliance with your local law regulators.
 
 == Changelog ==
+= 3.2.1 =
+* Fix: Minor bug fixes and improvements.
+
 = 3.2.0 =
 * Fix: Minor bug fixes and improvements.
 
@@ -407,7 +410,7 @@ Fix: Minification issue.
 Fix: Filter for Legal template count.
 
 = 2.2.6 =
-Integration of WPLegalPages Pro version.
+Integration of WP Legal Pages Pro version.
 
 = 2.2.5 =
 Fixed issue with filter for Legal Pages rendering
@@ -417,11 +420,11 @@ Improved design of Admin screens.
 Compatibility with WordPress 5.2.2
 
 = 2.2.3 =
-Updated Admin menu for WPLegalPages Cookies.
+Updated Admin menu for WP Legal Pages Cookies.
 Made compatible with WordPress 5.2.1
 
 = 2.2.2 =
-Made compatible with WPLegalPages Cookie Consent Addon.
+Made compatible with WP Legal Pages Cookie Consent Addon.
 Fixed broken links.
 
 = 2.2.1 =
@@ -485,10 +488,10 @@ Added new DMCA template
 Updated for Compatibility with WP 4.5.3. Improved Admin Dashboard for easy creation of policy pages
 
 = 1.3 =
-WPLegalPages is now compatible with WordPress 4.5.
+WP Legal Pages is now compatible with WordPress 4.5.
 
 = 1.2 =
-Added banner to upgrade WPLegalPages Pro version on plugin dashboard
+Added banner to upgrade WP Legal Pages Pro version on plugin dashboard
 
 = 1.1 =
 Enhanced security
@@ -507,4 +510,4 @@ If you like this plugin, then consider checking out our other projects:
 - [WP AdCenter](https://wpadcenter.com/?&utm_source=wporg&utm_medium=referral&utm_campaign=wplegalpages) - Easily Manage Ads on WordPress - Banner, Amazon, Google Adsense Ads
 
 == Official Site ==
-For more information and to take a look at the advanced WPLegalPages version, visit our website - <a href="http://wplegalpages.com/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=wp-legal-pages-version">WPLegalPages version</a>.
+For more information and to take a look at the advanced WP Legal Pages version, visit our website - <a href="http://wplegalpages.com/?utm_source=wporg&utm_campaign=wplegalpages&utm_content=wp-legal-pages-version">WP Legal Pages version</a>.

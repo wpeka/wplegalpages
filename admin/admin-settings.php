@@ -22,7 +22,7 @@ if ( isset( $_POST['lp_submit'] ) && 'Accept' === $_POST['lp_submit'] ) {
 	update_option( 'lp_accept_terms', isset( $_POST['lp_accept_terms'] ) ? sanitize_text_field( wp_unslash( $_POST['lp_accept_terms'] ) ) : '' );
 }
 
-require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/settings/class-wp-legal-pages-settings.php';
+require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
 
 // // Instantiate a new object of the wplegal_Cookie_Consent_Settings class.
 $this->settings = new WP_Legal_Pages_Settings();
@@ -363,12 +363,12 @@ if ( '1' === $lpterms ) {
 										<?php
 										$lp_pages = get_posts(
 											array(
-												'post_type'   => 'page',
+												'post_type' => 'page',
 												'post_status' => 'publish',
 												'numberposts' => -1,
-												'orderby'     => 'title',
-												'order'       => 'ASC',
-												'meta_query'  => array( // phpcs:ignore slow query
+												'orderby' => 'title',
+												'order'   => 'ASC',
+												'meta_query' => array( // phpcs:ignore slow query
 													array(
 														'key'     => 'is_legal',
 														'value'   => 'yes',
@@ -1458,7 +1458,7 @@ if ( '1' === $lpterms ) {
 
 					<!-- disconnection tab  -->
 
-					<?php if ( $is_user_connected  ) : ?>
+					<?php if ( $is_user_connected ) : ?>
 						<c-tab title="<?php esc_attr_e( 'Connection', 'wplegalpages' ); ?>" href="#settings#connection" id="gdpr-cookie-consent-connection">
 
 						<c-card class="wplegal-connection-tab-card">
@@ -1526,7 +1526,7 @@ if ( '1' === $lpterms ) {
 												<c-col class="col-sm-6"><?php echo esc_attr( $val ); ?></c-col>
 											</c-row>
 											<?php
-											$i++;
+											++$i;
 									}
 									do_action( 'wplegalpages_shortcodes_table' );
 									?>
