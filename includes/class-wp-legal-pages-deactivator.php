@@ -58,6 +58,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Deactivator' ) ) {
 				delete_option( '_lp_terms_fr_de_updated' );
 				delete_option( 'lp_accept_terms' );
 			}
+
+			// to delete the particular option 
+			delete_option( 'wplp_review_pending');
 		}
 
 	}
