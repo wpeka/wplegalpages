@@ -744,27 +744,39 @@ input[type="search"] {
 .wplegal-wizard-form .wplegal-wizard-getting-started-form .wplegal-settings-input-radio .wplegal-template-type-row .wplegal-template-type-labels-row > label:hover span.wplegal-create-button {
 	display: block;
 }
-.wizard_pro_section{
+.wizard_pro_section {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	gap: 5px;
 	margin-top: 36px;
 	margin-bottom: 20px;
+	position: fixed;
+	top: 90vh;
+	z-index: 1000;
+	transition: top 0.5s ease, left 0.5s ease, opacity 0.5s ease;
+	opacity: 1;
+	background-color: rgb(46, 119, 192);
+	width:100%;
+	margin-left: -5%;
 }
+
+
 .wizard_pro_section p{
 	font-size: 14px;
 	font-weight: 400;
-	color: #52525B;
+	color:white;
 }
 .wizard_pro_section a{
-	text-decoration: none;
+	text-decoration: underline;
 	font-size: 14px;
 	font-weight: 500;
-	color: #115CA7;
+	color: white;
+	
 }
 .wizard_pro_section a img{
 	margin-left: 5px;
+	
 }
 p > label {
 	display: block;
