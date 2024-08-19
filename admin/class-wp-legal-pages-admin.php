@@ -120,7 +120,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 						<form method="post" action="%2$s" id="review_form">
 							<div class="wplp-review-notice-text-container">
-								<p><span>%3$s<strong>Cookie Consent fro WP</strong>.%4$s</span></p>
+								<p><span>%3$s<strong>WP Legal Pages?</strong>%4$s</span></p>
 								<button class="wplp-review-dismiss-btn" style="border: none;padding:0;background: none;color: #2271b1;"href="%2$s"><i class="dashicons dashicons-dismiss"></i>%5$s</button>
 							</div>
 							<div class="wplp-review-btns-container">
@@ -131,10 +131,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							</form>
 						</div>
 						',
-						esc_url( 'https://wordpress.org/support/plugin/wplp-legal-pages/reviews/' ),
+						esc_url( 'https://wordpress.org/support/plugin/wplegalpages/reviews/' ),
 						esc_url( get_admin_url() . '?already_done=1' ),
-						esc_html__( 'Hey, we hope you are enjoying managing cookies with ', 'wplp' ),
-						esc_html__( ' Could you please write us a review and give it a 5- star rating on WordPress? Just to help us spread the word and boost our motivation.', 'wplp' ),
+						esc_html__( 'Love ', 'wplp' ),
+						esc_html__( ' Share your experience! Leave a review on WordPress.org and let others know how WP Legal Pages helps you in generating legal pages like privacy policy and other 25+ legal policies.', 'wplp' ),
 						esc_html__( 'Dismiss', 'wplp' ),
 						esc_html__( 'Rate Us', 'wplp' ),
 						esc_html__( 'I already did', 'wplp' )
@@ -2855,7 +2855,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'is_user_connected'  => $is_user_connected,
 					'plan_name'          => $plan_name,
 					'_ajax_nonce'        => wp_create_nonce( 'wp-legal-pages' ),
-					'promotion_link'     => 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=wizard&utm_content=go-pro-button',
+					'promotion_link'     => 'https://app.wplegalpages.com/checkout/?add-to-cart=143&utm_source=wplegalpagesplugin&utm_medium=floating_bar',
 					'welcome'            => array(
 						'create'     => __( 'Create', 'wplegalpages' ),
 						'edit'       => __( 'Edit', 'wplegalpages' ),

@@ -1,6 +1,6 @@
 {
   "name": "wplegalpages",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "main": "Gruntfile.js",
   "author": "WPeka",
   "devDependencies": {
