@@ -750,9 +750,8 @@ input[type="search"] {
 	align-items: center;
 	gap: 5px;
 	margin-top: 36px;
-	margin-bottom: 20px;
 	position: fixed;
-	top: 90vh;
+	bottom: 0;
 	z-index: 1000;
 	transition: top 0.5s ease, left 0.5s ease, opacity 0.5s ease;
 	opacity: 1;
