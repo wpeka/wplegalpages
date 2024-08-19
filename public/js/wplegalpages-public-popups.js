@@ -52,7 +52,8 @@
 
 			$( "#lp_submit" ).click(
 				function() {
-					$.cookie( 'lp_eu_terms_condition__popup_' + full_url_last_char, 'NO', { expires: 7, path: '/' } );
+					location.reload();
+					$.cookie( 'lp_eu_terms_condition__popup_' + full_url_last_char, 'YES', { expires: 7, path: '/' } );
 					self.parent.tb_remove();
 				}
 			);
@@ -60,6 +61,7 @@
 			$( window ).load(
 				function() {
 					if ($.cookie( 'lp_eu_terms_condition__popup_' + full_url_last_char ) == null) {
+						$.cookie( 'lp_eu_terms_condition__popup_' + full_url_last_char, 'NO', { expires: 7, path: '/' } );
 						if ( jQuery( window ).width() == 640 ) {
 							var window_width = 629;
 						} else {
