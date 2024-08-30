@@ -2834,7 +2834,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			// Call the is_connected() method from the instantiated object to check if the user is connected.
 			$is_user_connected = $this->settings->is_connected();
 			$plan_name         = $this->settings->get_plan();
-
+			$installed_plugins = get_plugins();
+			$pro_installed     = isset( $installed_plugins['wplegalpages-pro/wplegalpages-pro.php'] ) ? "Activated" : "Not Activated";
 			wp_localize_script(
 				$this->plugin_name . '-vue-script',
 				'wizard_obj',
@@ -2844,7 +2845,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'image_url'          => WPL_LITE_PLUGIN_URL . 'admin/js/vue/wizard_images/',
 					'ajax_url'           => admin_url( 'admin-ajax.php' ),
 					'ajax_nonce'         => wp_create_nonce( 'admin-ajax-nonce' ),
-					'pro_active'         => get_option( 'wc_am_client_wplegalpages_pro_activated' ),
+					'pro_active'         => $pro_installed,
 					'available_tab'      => __( 'Available Templates', 'wplegalpages' ),
 					'pro_tab'            => __( 'Templates', 'wplegalpages' ),
 					'promotion_text'     => __( 'Can\'t find what you are looking for?', 'wplegalpages' ),
