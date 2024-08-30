@@ -234,7 +234,7 @@ WP Legal Pages provides you pre-approved templates. You may want to customize it
 == Changelog ==
 
 = 3.2.3 =
-* Fix: Minor bug fixes and improvements.
+* Fix: Fixed minor connection related issue for Pro users.
 
 = 3.2.2 =
 * Fix: Minor bug fixes and improvements.
