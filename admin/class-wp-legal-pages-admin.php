@@ -204,11 +204,65 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * class.
 		 */
 		public function admin_menu() {
-			$terms = get_option( 'lp_accept_terms' );
-			if ( '1' === $terms ) {
-				add_menu_page( __( 'WPLegalPages', 'wplegalpages' ), __( 'WPLegalPages', 'wplegalpages' ), 'manage_options', 'legal-pages', array( $this, 'wp_legalpages_new_admin_screen' ), WPL_LITE_PLUGIN_URL . 'admin/images/wp_legalpages_dashicon_1.png', 66 );
-			} else {
-				add_menu_page( __( 'WPLegalPages', 'wplegalpages' ), __( 'WPLegalPages', 'wplegalpages' ), 'manage_options', 'legal-pages', array( $this, 'wp_legalpages_new_admin_screen' ), WPL_LITE_PLUGIN_URL . 'admin/images/wp_legalpages_dashicon_1.png', 66 );
+			$terms = get_option('lp_accept_terms');
+
+			$installed_plugins = get_plugins();
+
+			$legal_pages_installed     = isset( $installed_plugins['wplegalpages/wplegalpages.php'] ) ? true : false;
+			$gdpr_installed     = isset( $installed_plugins['gdpr-cookie-consent/gdpr-cookie-consent.php'] ) ? true : false;
+			$plugin_name                   = 'gdpr-cookie-consent/gdpr-cookie-consent.php';
+			$is_gdpr_active = is_plugin_active( $plugin_name );
+			$plugin_name_lp                   = 'wplegalpages/wplegalpages.php';
+			$is_legalpages_active = is_plugin_active( $plugin_name_lp );
+			$callback_function = $is_gdpr_active  ? array( $this, 'gdpr_cookie_consent_new_admin_screen' ) : array( $this, 'gdpr_cookie_consent_install_activate_screen' );
+			if (empty($GLOBALS['admin_page_hooks']['wp-legal-pages'])) {
+				add_menu_page(
+				__( 'WP Legal Pages', 'wp-legal-pages' ), // Page title
+				__( 'WP Legal Pages', 'wp-legal-pages' ), // Menu title
+				'manage_options', // Capability
+				'wp-legal-pages', // Menu slug
+				$callback_function , // Callback function
+				WPL_LITE_PLUGIN_URL . 'admin/images/wp_legalpages_dashicon_1.png', // Icon URL (choose an icon from the WordPress Dashicons library)
+				67 // Position
+				);
+			}
+			// Add the "WPLegalPages" sub-menu under "WP Legal Pages"
+			add_submenu_page(
+				'wp-legal-pages', // Parent slug (same as main menu slug)
+				__( 'WPLegalPages', 'wplegalpages' ), // Page title
+				__( 'Legal Pages', 'wplegalpages' ), // Menu title
+				'manage_options', // Capability
+				'legal-pages', // Menu slug
+				array( $this, 'wp_legalpages_new_admin_screen' ), // Callback function
+				85
+			);
+			if($is_legalpages_active && $is_gdpr_active){
+				add_submenu_page(
+					'wp-legal-pages', // Parent slug
+					__('WP Cookie Consent', 'gdpr-cookie-consent'),  // Page title
+					__('Cookie Consent', 'gdpr-cookie-consent'),    // Menu title
+					'manage_options',   // Capability
+					'gdpr-cookie-consent', // Menu slug
+					function() {
+						// Call the function via the hook
+						do_action('gdpr_cookie_consent_admin_screen');
+					}, // Custom function to call the callback
+					90
+				);
+			}
+			if(!$gdpr_installed || ($gdpr_installed && !$is_gdpr_active)){
+				add_submenu_page(
+					'wp-legal-pages', // Parent slug (same as main menu slug)
+					__( 'WP Cookie Consent', 'gdpr-cookie-consent' ),  // Page title
+					__( 'Cookie Consent', 'gdpr-cookie-consent' ),     // Menu title
+					'manage_options',   // Capability
+					'gdpr-cookie-consent', // Menu slug
+					array( $this, 'gdpr_cookie_consent_install_activate_screen' ), // Callback function
+				);
+			}
+
+			if($legal_pages_installed || $gdpr_installed){
+				remove_submenu_page('wp-legal-pages', 'wp-legal-pages');
 			}
 			if ( '1' === $terms ) {
 				add_dashboard_page( '', '', 'manage_options', 'wplegal-wizard', '' );
@@ -217,7 +271,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				}
 			}
 		}
-
 		/**
 		 * Admin init for database update.
 		 *
@@ -1426,6 +1479,40 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		/**
 		 * Callback function for Dashboard page.
 		 *
+		 * @since 
+		 */
+		public function gdpr_cookie_consent_install_activate_screen() { 
+
+		$gdpr_install_url = wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=gdpr-cookie-consent' ), 'install-plugin_gdpr-cookie-consent' );
+		$plugin_name                   = 'gdpr-cookie-consent/gdpr-cookie-consent.php';
+		$gdpr_activation_url = wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $plugin_name . '&amp;plugin_status=all&amp;paged=1&amp;s', 'activate-plugin_' . $plugin_name );
+		$installed_plugins = get_plugins();
+		$is_gdpr_installed     = isset( $installed_plugins['gdpr-cookie-consent/gdpr-cookie-consent.php'] ) ? true : false;
+		?>
+		<div class="gdpr-install-activate-screen">
+			<img id="gdpr-install-activate-img"src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/cookie-consent-install-banner.jpg'; ?>" alt="WP Cookie Consent Logo">
+			<div class="lp-popup-container">
+
+				<p class="lp-plugin-install-activation-text"><?php esc_html_e( 'WP Cookie Consent is currently inactive. Please install and activate the plugin to display the cookie banner and collect user consent.', 'wplegalpages' ); ?></p>
+				<?php 
+				if(!$is_gdpr_installed) { ?>
+				<a style="width:27%;" href="<?php echo esc_url($gdpr_install_url); ?>">
+					<button id="lp-install-activate-btn"><?php esc_html_e('Install Now','wplegalpages') ?></button>
+				</a> 
+				<?php }
+				else { ?>
+					<a style="width:27%;" href="<?php echo esc_url($gdpr_activation_url); ?>">
+					<button id="lp-install-activate-btn"><?php esc_html_e('Activate Now','wplegalpages') ?></button>
+					</a> 
+				<?php } ?>
+        </div>
+		</div>
+		
+		<?php   wp_enqueue_style( $this->plugin_name . '-admin' );} 
+
+		/**
+		 * Callback function for Dashboard page.
+		 *
 		 * @since 2.10.0
 		 */
 		public function wp_legalpages_new_admin_screen() {
@@ -1452,6 +1539,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				array( 'jquery' ),
 				true
 			);
+
 			wp_localize_script(
 				'wp-legalpages-admin-revamp',
 				'wplp_localize_data',
@@ -2778,8 +2866,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * Setup wizard.
 		 */
 		public function setup_legal_wizard() {
-			// The below phpcs ignore comment is added after referring woocommerce plugin.
-			if ( empty( $_GET['page'] ) || 'wplegal-wizard' !== $_GET['page'] ) { // phpcs:ignore CSRF ok, input var ok.
+			// The below phpcs ignore comment is added after referring woocommerce plugin.]
+			if ( empty( $_GET['page'] ) || 'wplegal-wizard' !== $_GET['page'] ) { // phpcs:ignore CSRF ok, input var ok.\
 				return;
 			}
 
@@ -2801,7 +2889,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 */
 		public function load_wplegal_wizard() {
 			$this->wplegal_wizard_enqueue_scripts();
-
 			$this->wplegal_wizard_header();
 			$this->wplegal_wizard_content();
 			$this->wplegal_wizard_footer();
