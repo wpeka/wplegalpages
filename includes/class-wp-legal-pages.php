@@ -85,7 +85,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 
 			global $table_prefix;
 			$this->plugin_name = 'wp-legal-pages';
-			$this->version     = '3.2.3';
+			$this->version     = '3.2.4';
 			$this->tablename   = $table_prefix . 'legal_pages';
 			$this->popuptable  = $table_prefix . 'lp_popups';
 			$this->plugin_url  = plugin_dir_path( __DIR__ );
@@ -336,10 +336,6 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			wp_print_scripts( 'jquery-ui-core' );
 			wp_print_scripts( 'jquery-ui-tabs' );
 			wp_print_scripts( 'editor' );
-			wp_enqueue_script( 'jscolor', $this->plugin_url . 'admin/js/jscolor/jscolor' . WPLPP_SUFFIX . '.js', array(), $this->version, true );
-			wp_enqueue_script( 'jquery-min', $this->plugin_url . 'admin/js/jquery.min.js', array(), $this->version, true );
-			wp_enqueue_script( 'bootstrap-min-js', $this->plugin_url . 'admin/js/bootstrap.min.js', array(), $this->version, true );
-			wp_enqueue_script( 'tooltip-js', $this->plugin_url . 'admin/js/tooltip' . WPLPP_SUFFIX . '.js', array(), $this->version, true );
 			wp_print_scripts( 'wplink' );
 			wp_print_styles( 'wplink' );
 			add_thickbox();
