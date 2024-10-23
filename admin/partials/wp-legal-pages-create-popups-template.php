@@ -200,7 +200,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 										<?php echo '[wp-legalpopup pid=' . esc_attr( $res->id ) . ']'; ?>
 											</td>
 											</td>
-											<td><a href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=legal-pages&lpid=<?php echo esc_attr( $res->id ); ?>&mode=edit"><?php esc_attr_e( 'Edit', 'wplegalpages' ); ?></a> | <a href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=legal-pages&nonce=<?php echo esc_attr( wp_create_nonce( 'lp-submit-create-popups' ) ); ?>&lpid=<?php echo esc_attr( $res->id ); ?>&mode=delete" onclick="return confirm('Popup will be permanently deleted. Are you sure you want to delete?')"><?php esc_attr_e( 'Delete', 'wplegalpages' ); ?></a></td>
+											<td><a href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=legal-pages&lpid=<?php echo esc_attr( $res->id ); ?>&mode=edit"><?php esc_attr_e( 'Edit', 'wplegalpages' ); ?></a> | <a href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=legal-pages&nonce=<?php echo esc_attr( wp_create_nonce( 'lp-submit-create-popups' ) ); ?>&lpid=<?php echo esc_attr( $res->id ); ?>&mode=deletepopup" onclick="return confirm('Popup will be permanently deleted. Are you sure you want to delete?')"><?php esc_attr_e( 'Delete', 'wplegalpages' ); ?></a></td>
 											</tr>
 										<?php
 										$count++;

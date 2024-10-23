@@ -53,6 +53,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Activator' ) ) {
 			} else {
 				self::install_db();
 			}
+
+	    //Option for the legal pages review 
+		$wplp_review_option_exists = get_option( 'wplp_review_pending');
+		if ( ! $wplp_review_option_exists ) {
+			add_option( 'wplp_review_pending', '0', '', true );
+		}
+
+		
 		}
 
 		/**

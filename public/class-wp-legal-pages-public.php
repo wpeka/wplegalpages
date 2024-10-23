@@ -719,6 +719,22 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			if ( empty( $footer_pages ) || empty( $footer_pages[0] ) ) {
 				return;
 			}
+
+			/* marking all the customized css property added as important */
+			function appendImportantToCss($css) {
+				// Regular expression to match properties and values
+				$css = preg_replace_callback('/(\s*[\w-]+\s*:\s*[^;]+)(;)/i', function($matches) {
+					// $matches[1] contains the property and value
+					// $matches[2] contains the semicolon
+
+					return $matches[1] . ' !important' . $matches[2];
+				}, $css);
+				
+				return $css;
+			}
+
+			$footer_custom_css=appendImportantToCss($footer_custom_css);
+			
 			wp_enqueue_style( $this->plugin_name . '-public' );
 			wp_add_inline_style( $this->plugin_name . '-public', '@import url(' . $font_family_url . ');' );
 			$page_count = count( $footer_pages );
@@ -743,7 +759,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			?>
 			</div>
 			<script type="text/javascript">
-				jQuery(document).ready(function(){
+					  jQuery(document).ready(function(){
 					jQuery('#wplegalpages_footer_links_container').css({
 						'width': '100%',
 						'background-color': '<?php echo esc_attr( $footer_bg_color ); ?>',
@@ -757,7 +773,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 					jQuery('.wplegalpages_footer_separator_text').css({
 						'color': '<?php echo esc_attr( $footer_text_color ); ?>'
 					})
-				})
+				})		
 			</script>
 			<?php
 		}

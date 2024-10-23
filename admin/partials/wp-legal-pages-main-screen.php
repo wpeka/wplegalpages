@@ -11,8 +11,13 @@
  * @package Wplegalpages
  */
 
-$pro_is_activated      = get_option( '_lp_pro_active' );
+// // Instantiate a new object of the wplegal_Cookie_Consent_Settings class.
+$this->settings = new WP_Legal_Pages_Settings();
+
+$is_user_connected     = $this->settings->is_connected();
+$lp_pro_active         = get_option( '_lp_pro_active' );
 $popup                 = get_option( 'lp_popup_enabled' );
+$lp_pro_installed      = get_option( '_lp_pro_installed' );
 $lp_pro_key_activated  = get_option( 'wc_am_client_wplegalpages_pro_activated' );
 $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 
@@ -58,6 +63,20 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 						</div>
 					</div>
 				</div>
+		</div>
+		<?php if ( $if_terms_are_accepted ) { ?>
+			<div class="legalpages-banner-div">
+			<?php
+			if ( ! $is_user_connected && ! $lp_pro_installed && ! $lp_pro_key_activated ) {
+				?>
+			<!-- Legal pages banner for upgrade to pro -->
+			<a href="https://app.wplegalpages.com/checkout/?add-to-cart=143&utm_source=wplegalpagesplugin&utm_medium=banner" target="_blank">
+				<img class="legal-pages-upgrade-to-pro-banner" src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/legal-pages-banner-upgrade-to-pro.png'; ?>" alt="Banner legal pages">
+			</a> 
+				<?php
+			}
+		}
+		?>
 		</div>
 		<!-- tabs -->
 		<div class="wp-legalpages-admin-tabs-section">
