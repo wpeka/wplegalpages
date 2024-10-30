@@ -49,6 +49,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 */
 		private $version;
 
+
+		protected $settings;
 		/**
 		 * The name of the plugin.
 		 *

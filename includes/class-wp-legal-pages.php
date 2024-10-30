@@ -54,6 +54,21 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 		protected $loader;
 
 		/**
+		 * API endpoint for wp legalpages
+		 *
+		 * @since    1.5.2
+		 * @access   protected
+		 */
+		protected $respadons_api;
+
+		/**
+		 * 
+		 *
+		 * @since    1.5.2
+		 * @access   protected
+		 */
+		protected $library_auth;
+		/**
 		 * The unique identifier of WPLegalPages.
 		 *
 		 * @since    1.5.2
@@ -63,12 +78,36 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 		public $plugin_name;
 
 		/**
+		 * The root url of the plugin folder.
+		 *
+		 * @since    1.5.2
+		 * @access   protected
+		 */
+		public $plugin_url;
+
+		/**
+		 * popup table
+		 *
+		 * @since    1.5.2
+		 * @access   protected
+		 */
+		public $popuptable;
+
+		/**
 		 * The current version of the WPLegalPages.
 		 *
 		 * @since    1.5.2
 		 * @access   protected
 		 * @var      string    $version    The current version of the WPLegalPages.
 		 */
+
+		 /**
+		 * Table Name
+		 *
+		 * @since    1.5.2
+		 * @access   protected
+		 */
+		public $tablename;
 
 		public $version;
 
