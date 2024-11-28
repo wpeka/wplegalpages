@@ -31,7 +31,7 @@ Generate a standard terms & conditions policy page. For a customized policy crea
 = DMCA Policy Generator - Free =
 Generate a standard DMCA privacy policy page. Required for blogs, businesses and ecommerce websites that provide content sourced from other content producers.
 
-[youtube https://www.youtube.com/watch?v=iqdLl9qsBHc]
+[youtube  https://youtu.be/j8FpzV--5vM
 
 
 WP Legal Pages makes it super easy to generate privacy policy pages for websites.
