@@ -140,7 +140,7 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 							<?php
 							if ( $api_user_plan == 'free' ) {
 								?>
-							<img src="<?php echo esc_url( GDPR_COOKIE_CONSENT_PLUGIN_URL ) . 'admin/images/gdpr_upgrade_btn.png'; ?>" class="wplegalpages-admin-upgrade-button wplegalpages-connection-popup" alt="<?php echo esc_attr( 'Upgrade Button', 'wplegalpages' ); ?>">
+							<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr_upgrade_btn.png'; ?>" class="wplegalpages-admin-upgrade-button wplegalpages-connection-popup" alt="<?php echo esc_attr( 'Upgrade Button', 'wplegalpages' ); ?>">
 								<?php
 							}
 							?>
