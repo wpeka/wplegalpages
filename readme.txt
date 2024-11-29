@@ -99,10 +99,6 @@ Absolutely! You can edit the templates to match your specific requirements.
 = Does WP Legal Pages support other plugins? =
 Yes, WP Legal Pages integrates seamlessly with WPForms, Contact Form 7, Gravity Forms, and more.
 
-== Upgrade Notice ==
-= 1.0.0 =
-Initial release of WP Legal Pages. Upgrade to Pro for advanced templates and compliance features.
-
 == Notes ==
 For more information, visit [Official WP Legal Pages Website](https://www.yourwebsite.com/).
 
