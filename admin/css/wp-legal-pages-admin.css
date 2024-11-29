@@ -2040,6 +2040,9 @@ table tbody tr td .table-link-alert:hover {
 }
 
 .legal-pages-upgrade-to-pro-banner {
+	width: 103%;
+	padding-right: 63px;
+	padding-left: 21px;
 	padding-top: 24px;
 }
 
