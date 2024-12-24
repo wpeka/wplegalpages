@@ -417,4 +417,43 @@ jQuery(document).ready(function () {
 		);
 	}
 
+	   //For Installing GDPR plugin - Unified Dashboard 
+	   jQuery(document).ready(function ($) {
+		$('.install-gdpr-button').on('click', function (e) {
+			e.preventDefault();
+	
+			var pluginSlug = 'gdpr-cookie-consent'; //$(this).data('plugin-slug'); // Get the plugin slug from the anchor tag
+			var baseURL = window.location.origin;
+		// Construct the URL for plugins.php
+		var dashboardpageurl =
+		  baseURL + "/wp-admin/admin.php?page=wplp-dashboard";
+		
+			 var $clickedButton = $(this); // Reference to the clicked button
+	
+			$.ajax({
+				url: wplp_localize_data.ajaxurl,
+				method: 'POST',
+				data: {
+					action: 'gdpr_install_plugin',
+					plugin_slug: pluginSlug,
+					_ajax_nonce: wplp_localize_data._ajax_nonce,
+				},
+				beforeSend: function () {
+					$clickedButton.text('Installing...');
+				},
+				success: function (response) {
+					if (response.success) {
+					  window.location.href = dashboardpageurl;
+  
+					} else {
+					   // $('.install-plugin-status').text('Error: ' + response.data.message);
+					}
+				},
+				error: function () {
+					//$('.install-plugin-status').text('An unexpected error occurred.');
+				},
+			});
+		});
+	});
+
 });

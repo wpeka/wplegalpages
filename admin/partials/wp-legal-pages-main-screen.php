@@ -168,10 +168,10 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 		<!-- tabs -->
 		<div class="wp-legalpages-admin-tabs-section">
 			<div class="wp-legalpages-admin-tabs">
-				<!-- Gettins Started tab  -->
-				<div class="wp-legalpages-admin-tab wp-legalpages-admin-getting-started-tab" data-tab="getting_started">
-					<p class="wp-legalpages-admin-tab-name">Getting&nbsp;Started</p>
-				</div>
+				<!-- Dashboard tab  -->
+				<div class="wp-legalpages-admin-tab wp-legalpages-admin-create_legalpages-tab" data-tab="create_legal_page">
+						<p class="wp-legalpages-admin-tab-name">Dashboard</p>
+					</div>
 
 				<?php
 				// if terms are accepted only then show rest of the tabs
@@ -179,17 +179,13 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 
 					?>
 
-					<!-- Create Legal Pages tab  -->
-					<div class="wp-legalpages-admin-tab wp-legalpages-admin-create_legalpages-tab" data-tab="create_legal_page">
-						<p class="wp-legalpages-admin-tab-name">Create&nbsp;Legal&nbsp;Pages</p>
-					</div>
-					<!-- Settings tab  -->
+					<!-- Legal Pages tab  -->
 					<div class="wp-legalpages-admin-tab wp-legalpages-admin-settings-tab" data-tab="settings">
-						<p class="wp-legalpages-admin-tab-name">Settings</p>
+						<p class="wp-legalpages-admin-tab-name">Legal Pages</p>
 					</div>
-					<!-- All Legal Pages data tab  -->
+					<!-- Cookie Consent tab  -->
 					<div class="wp-legalpages-admin-tab wp-legalpages-admin-all_legalpages-tab" data-tab="all_legal_pages">
-					<p class="wp-legalpages-admin-tab-name">All Legal Pages</p>
+					<p class="wp-legalpages-admin-tab-name">Cookie Consent</p>
 					</div>
 					<?php
 

@@ -80,7 +80,89 @@ Vue.component("VideoSection", {
     );
   },
 });
-
+//WP Cookie Consent installation quick section
+Vue.component("create-gdpr", {
+  render(createElement) {
+    return createElement(
+      "div",
+      {
+        staticClass: "wplegal-create-legal-container",
+      },
+      [
+        createElement(
+          "div",
+          {
+            staticClass: "wplegal-create-gdpr",
+          },
+          [
+            createElement(
+              "div",
+              {
+                staticClass: "wplegal-feature-icon",
+              },
+              [
+                createElement("img", {
+                  attrs: {
+                    src: obj.image_url + "cookie-img.svg",
+                  },
+                }),
+                createElement(
+                  "div",
+                  {
+                    staticClass: "wplegal-create-gdpr-subtext",
+                  },
+                  [
+                    createElement("p", {
+                      staticClass: "wplegal-create-gdpr-subheading",
+                      domProps: {
+                        textContent: obj.install_gdpr_text,
+                      },
+                    }),
+                    createElement("p", {
+                      staticClass: "wplegal-create-gdpr-content",
+                      domProps: {
+                        innerHTML: obj.install_gdpr_subtext,
+                      },
+                    }),
+                  ]
+                ),
+              ]
+            ),
+            createElement(
+              "div",
+              {
+                staticClass: "wplegal-create-gdpr-link",
+              },
+              [
+                createElement(
+                  "a",
+                  {
+                    staticClass: "install-gdpr-button",
+                    attrs: {
+                      href: obj.create_legal_url,
+                    },
+                  },
+                  [
+                    createElement("span", {
+                      domProps: {
+                        textContent: obj.install_gdpr_btn,
+                      },
+                    }),
+                    createElement("img", {
+                      attrs: {
+                        src: obj.image_url + "down-arrow.png",
+                      },
+                    }),
+                  ]
+                ),
+              ]
+            ),
+          ]
+        ),
+      ]
+    );
+  },
+});
 Vue.component("CreateLegal", {
   render(createElement) {
     return createElement(
@@ -103,7 +185,7 @@ Vue.component("CreateLegal", {
               [
                 createElement("img", {
                   attrs: {
-                    src: obj.image_url + "create_legal.svg",
+                    src: obj.image_url + "wplp-icon.png",
                   },
                 }),
                 createElement(
@@ -366,7 +448,7 @@ Vue.component("Feature", {
               {
                 staticClass: "wplegal-feature-header-link-button",
                 attrs: {
-                  href: "https://app.wplegalpages.com/pricing/",
+                  href: "https://wplegalpages.com/pricing/?utm_source=wplegalpagesplugin&utm_medium=upgrade&utm_campaign=button",
                   target: "_blank",
                 },
               },
@@ -616,6 +698,7 @@ var app = new Vue({
           },
           [
             createElement("welcome-section"),
+            createElement("create-gdpr"),
             createElement("create-legal"),
             createElement("quick-links"),
             createElement("feature"),

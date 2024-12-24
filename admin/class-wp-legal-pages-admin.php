@@ -78,6 +78,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				add_action( 'save_post', array( $this, 'wplegalpages_pro_save_meta_box' ) );
 				add_filter( 'the_content', array( $this, 'wplegalpages_pro_post_content' ) );
 			}
+			add_action('wp_ajax_gdpr_install_plugin', array($this, 'wplp_gdpr_install_plugin_ajax_handler'));
+
 		}
 
 		/**
@@ -226,6 +228,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$callback_function , // Callback function
 				WPL_LITE_PLUGIN_URL . 'admin/images/wp_legalpages_dashicon_1.png', // Icon URL (choose an icon from the WordPress Dashicons library)
 				67 // Position
+				);
+			}
+			if(($legal_pages_installed && $is_legalpages_active) && ($gdpr_installed && !$is_gdpr_active)){
+				add_submenu_page(
+					'wp-legal-pages', // Parent slug (same as main menu slug)
+					__( 'Dashboard', 'wplegalpages' ),  // Page title
+					__( 'Dashboard', 'wplegalpages' ),     // Dashboard page title
+					'manage_options',   // Capability
+					'wplp-dashboard', // Menu slug
+					array( $this, 'wp_legalpages_new_admin_screen' ), // Callback function
+					90
 				);
 			}
 			// Add the "WPLegalPages" sub-menu under "WP Legal Pages"
@@ -1707,11 +1720,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'welcome_text'         => __( 'Welcome to WPLegalPages!', 'wplegalpages' ),
 					'welcome_subtext'      => __( 'Privacy Policy Generator For WordPress', 'wplegalpages' ),
 					'welcome_description'  => __( 'Thank you for choosing WP Legal Pages plugin - A robust plugin for hassle-free legal compliance. ', 'wplegalpages' ),
+					'install_gdpr_text'		   => __('Install WP Cookie Consent!', 'wplegalpages'),
+					'install_gdpr_subtext' => __('Seamlessly add a cookie consent banner to your WordPress website.', 'wplegalpages'),
+					'install_gdpr_btn'	   => __('Install Now', 'wplegalpages'),
+					'create_gdpr'         => __( 'Your Site\'s Cookie Banner', 'wplegalpages' ),
+					'create_gdpr_subtext' => __( 'The banner currently displayed on your website.', 'wplegalpages' ),
 					'create_legal'         => __( 'Create Your Legal Page', 'wplegalpages' ),
-					'create_legal_subtext' => __( 'Secure your site in 3 easy steps and generate a personalized legal policy page for enhanced protection.', 'wplegalpages' ),
+					'create_legal_subtext' => __( 'Generate your personalized legal policy page for enhanced protection.', 'wplegalpages' ),
 					'quick_links_text'     => __( 'See Quick Links', 'wplegalpages' ),
 					'link_title'           => __( 'Create Page', 'wplegalpages' ),
-					'create_legal_url'     => admin_url( 'index.php?page=wplegal-wizard#/' ),
+					'create_legal_url'     => '#',
 					'feature_heading'      => __( 'WP Legal Pages Features', 'wplegalpages' ),
 					'feature_description'  => __( 'Choose WP Legal Pages for seamless legal compliance.', 'wplegalpages' ),
 					'feature_button'       => __( 'Upgrade Now', 'wplegalpages' ),
@@ -4994,6 +5012,55 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 			// Call the is_connected() method from the instantiated object to check if the user is connected.
 			$is_user_connected = $this->settings->is_connected();
+		}
+		
+		// GDPR Plugin Installation code
+		public function wplp_gdpr_install_plugin_ajax_handler() {
+			// Check nonce for security
+			check_ajax_referer( 'wp-legal-pages', '_ajax_nonce' );
+		
+		
+			// Load necessary WordPress plugin installer classes
+			if ( ! class_exists( 'Plugin_Upgrader' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+			}
+			if ( ! function_exists( 'plugins_api' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+			}
+		
+			$plugin_slug = sanitize_text_field( $_POST['plugin_slug'] ); // Plugin slug from AJAX request
+		
+			// Get plugin information
+			$api = plugins_api(
+				'plugin_information',
+				array(
+					'slug'   => $plugin_slug,
+					'fields' => array(
+						'sections' => false,
+					),
+				)
+			);
+		
+			if ( is_wp_error( $api ) ) {
+				wp_send_json_error( array( 'message' => $api->get_error_message() ) );
+			}
+		
+			// Install the plugin
+			$upgrader = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
+			$result   = $upgrader->install( $api->download_link );
+		
+			if ( is_wp_error( $result ) ) {
+				wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+			}
+		
+			// Activate the plugin
+			$activate = activate_plugin( $plugin_slug . '/' . $plugin_slug . '.php' );
+			if ( is_wp_error( $activate ) ) {
+				wp_send_json_error( array( 'message' => $activate->get_error_message() ) );
+			}
+		
+			// Success response
+			wp_send_json_success( array( 'message' => __( 'Plugin installed and activated successfully.', 'your-textdomain' ) ) );
 		}
 	}
 }
