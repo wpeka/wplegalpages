@@ -147,6 +147,19 @@ register_deactivation_hook( __FILE__, 'deactivate_wp_legal_pages' );
 register_uninstall_hook( __FILE__, 'delete_wp_legal_pages' );
 
 
+// Display the admin notice if a wp cookie consent pro plugin was activated or installed.
+add_action('admin_notices', 'lp_display_user_mirgation_notice');
+
+function gdpr_display_user_mirgation_notice() {
+	$lp_pro_installed = get_option( '_lp_pro_installed' );
+	if($lp_pro_installed){
+		echo '<div class="notice notice-error notice-alt">';
+		echo '<p>' . esc_html__('Action Required: Switch to the New WP Legal Pages Compliance Platform!** The new platform no longer requires Pro plugins.', 'wplegalpages') . 
+		' <a href="https://wplegalpages.com/docs/migration-from-wpeka/migration/seamless-migration-to-the-new-wp-legal-pages-compliance-platform/" target="_blank" rel="noopener noreferrer" previewlistener="true">' . 
+		esc_html__('Follow this guide to migrate now.', 'wplegalpages') . '</a></p>';
+		echo '</div>';
+	}
+}
 
 
 /**
