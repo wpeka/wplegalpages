@@ -150,7 +150,7 @@ register_uninstall_hook( __FILE__, 'delete_wp_legal_pages' );
 // Display the admin notice if a wp cookie consent pro plugin was activated or installed.
 add_action('admin_notices', 'lp_display_user_mirgation_notice');
 
-function gdpr_display_user_mirgation_notice() {
+function lp_display_user_mirgation_notice() {
 	$lp_pro_installed = get_option( '_lp_pro_installed' );
 	if($lp_pro_installed){
 		echo '<div class="notice notice-error notice-alt">';
