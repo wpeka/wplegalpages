@@ -25,7 +25,17 @@ jQuery(document).ready(function () {
     // Hide all tab contents initially except the first one
     jQuery('.wp-legalpages-admin-tab-content').not(':first').hide();
     jQuery('.wp-legalpages-admin-getting-started-tab').addClass('active-tab');
+	jQuery('.wp-legalpages-admin-wplp-dashboard-tab').addClass('active-tab');
     jQuery('#getting_started').show();
+
+	// Check if the "wp-legalpages-admin-getting-started-tab" is active
+    if (jQuery('.wp-legalpages-admin-getting-started-tab').hasClass('active-tab')) {
+        // Add 'active' class to the other tab
+        jQuery('.legalpages-tab').addClass('active-tab');
+    } else {
+        // Remove 'active' class from the other tab if not needed
+        jQuery('.legalpages-tab').removeClass('active-tab');
+    }
 
     // On tab click, redirect to the specified URL for create_legalpages tab
     jQuery('.wp-legalpages-admin-create_legalpages-tab').on('click', function () {
