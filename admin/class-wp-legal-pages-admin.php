@@ -230,7 +230,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				67 // Position
 				);
 			}
-			if(($legal_pages_installed && $is_legalpages_active) && ($gdpr_installed && !$is_gdpr_active)){
+			if(($legal_pages_installed && $is_legalpages_active) || ($gdpr_installed && !$is_gdpr_active)){
 				add_submenu_page(
 					'wp-legal-pages', // Parent slug (same as main menu slug)
 					__( 'Dashboard', 'wplegalpages' ),  // Page title
@@ -275,13 +275,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					array( $this, 'gdpr_cookie_consent_install_activate_screen' ), // Callback function
 				);
 			}
-			if(($legal_pages_installed && $is_legalpages_active) && ($gdpr_installed && !$is_gdpr_active)){
+			if(($legal_pages_installed && $is_legalpages_active) || ($gdpr_installed && !$is_gdpr_active)){
 				add_submenu_page(
 					'wp-legal-pages', // Parent slug (same as main menu slug)
 					__( 'Help', 'wplegalpages' ),  // Page title
 					__( 'Help', 'wplegalpages' ),     // Dashboard page title
 					'manage_options',   // Capability
-					'help_page', // Menu slug
+					'wplp-dashboard#help_page', // Menu slug
 					array( $this, 'help_page_content' ), // Callback function
 					91
 				);
@@ -1755,7 +1755,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		public function help_page_content() {
 			wp_enqueue_style( $this->plugin_name . '-admin' );
 			wp_enqueue_script( $this->plugin_name . '-tooltip' );
-			//include_once plugin_dir_path( __DIR__ ) . 'admin/partials/wp-legal-pages-main-screen.php';
 			include_once plugin_dir_path( __DIR__ ) . 'admin/help-page.php';
 			$this->wplegalpages_mascot_enqueue();
 		}

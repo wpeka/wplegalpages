@@ -211,7 +211,7 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 			<div class="wp-legalpages-admin-tabs wplp-sub-tabs">
 				<!-- Gettins Started tab  -->
 				<div class="wp-legalpages-admin-tab wp-legalpages-admin-getting-started-tab" data-tab="getting_started">
-					<p class="wp-legalpages-admin-tab-name">Getting&nbsp;Started</p>
+					Getting&nbsp;Started
 				</div>
 
 				<?php
@@ -222,15 +222,15 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 
 					<!-- Create Legal Pages tab  -->
 					<div class="wp-legalpages-admin-tab wp-legalpages-admin-create_legalpages-tab" data-tab="create_legal_page">
-						<p class="wp-legalpages-admin-tab-name">Create&nbsp;Legal&nbsp;Pages</p>
+						Create&nbsp;Legal&nbsp;Pages
 					</div>
 					<!-- Settings tab  -->
 					<div class="wp-legalpages-admin-tab wp-legalpages-admin-settings-tab" data-tab="settings">
-						<p class="wp-legalpages-admin-tab-name">Settings</p>
+						Settings
 					</div>
 					<!-- All Legal Pages data tab  -->
 					<div class="wp-legalpages-admin-tab wp-legalpages-admin-all_legalpages-tab" data-tab="all_legal_pages">
-					<p class="wp-legalpages-admin-tab-name">All Legal Pages</p>
+					All Legal Pages
 					</div>
 					<?php
 
