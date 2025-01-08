@@ -229,15 +229,7 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 				<?php require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-all-legalpages-template.php'; ?>
 
 				</div>
-				<!-- create popup  -->
-				<!-- <div class="wp-legalpages-admin-legal-pages-content wp-legalpages-admin-tab-content" id="create_popup">
-
-				<?php
-					//require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-create-popups-template.php';
-				?>
-
-
-				</div> -->
+				
 				<!-- help content  -->
 				<div class="wp-legalpages-admin-help-page-content wp-legalpages-admin-tab-content" id="help_page">
 

@@ -196,9 +196,12 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 					</div>
 					</a>
 					<!-- Help tab  -->
-					<div class="wp-legalpages-admin-tab wp-legalpages-admin-help-tab" data-tab="help_page">
-					<p class="wp-legalpages-admin-tab-name"><?php echo esc_html('Help','wplegalpages'); ?></p>
+					
+					<a href="?page=wplp-dashboard#help_page" class="wp-legalpages-admin-tab-link">
+					<div class="wp-legalpages-admin-wplp-tab">
+						<?php echo esc_html('Help','wplegalpages'); ?>
 					</div>
+					</a>
 					<?php
 
 				}
@@ -287,6 +290,14 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 					require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-create-popups-template.php';
 				?>
 
+
+				</div>
+				<!-- help content  -->
+				<div class="wp-legalpages-admin-help-page-content wp-legalpages-admin-tab-content" id="help_page">
+
+				<?php
+					require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-help-page-template.php';
+				?>
 
 				</div>
 			</div>
