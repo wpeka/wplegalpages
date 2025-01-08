@@ -78,14 +78,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php 
 
 if (isset($_POST['sup-submit']) ) {
-	error_log('in isset');
 	// Sanitize and validate input
 	$name = sanitize_text_field($_POST['sup-name']);
-	error_log('$name='.$name);
 	$email = sanitize_email($_POST['sup-email']);
-	error_log('email=='.$email);
 	$message = sanitize_textarea_field($_POST['sup-message']);
-	error_log('message=='.$message);
 
 	// Support email details
 	$to = "support@wpeka.com"; // Replace with your support email
@@ -95,12 +91,10 @@ if (isset($_POST['sup-submit']) ) {
 
 	// Send the email
 	if (wp_mail($to, $subject, $body, $headers)) {
-		error_log('in wp_mail send==');
 		add_action('admin_notices', function() {
 			echo '<div class="notice notice-success is-dismissible"><p>Your message has been sent successfully.</p></div>';
 		});
 	} else {
-		error_log('in elseeee wp_mail send==');
 		add_action('admin_notices', function() {
 			echo '<div class="notice notice-error is-dismissible"><p>There was an error sending your message. Please try again later.</p></div>';
 		});
