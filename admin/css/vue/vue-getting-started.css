@@ -356,7 +356,8 @@ c-container.wplegalpages-settings-container{
 
 }
 .wplegal-create-legal-link .wplegal-create-legal-button,
-.wplegal-create-gdpr-link .install-gdpr-button{
+.wplegal-create-gdpr-link .install-gdpr-button,
+.wplegal-create-gdpr-link .create-gdpr-button{
 	background: #14873E;
     padding: 11px 12px;
 	border-radius: 4px;
@@ -364,21 +365,24 @@ c-container.wplegalpages-settings-container{
 	font-weight: 600;
 	font-size: 14px;
 	text-decoration: none;
-	width: 157px;
+	width: max-content;
     display: block;
     margin-left: 17px;
 
 }
-.wplegal-create-gdpr-link .install-gdpr-button:focus{
+.wplegal-create-gdpr-link .install-gdpr-button:focus,
+.wplegal-create-gdpr-link .create-gdpr-button:focus{
 	color: #ffffff !important;
 }
 .wplegal-create-legal-button span,
-.install-gdpr-button span{
+.install-gdpr-button span,
+.create-gdpr-button span{
 	color: #FFFFFF;
 	text-decoration: none;
 }
 .wplegal-create-legal-button img,
-.install-gdpr-button img{
+.install-gdpr-button img,
+.create-gdpr-button img{
 	margin-left: 5px;
 }
 
