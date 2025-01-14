@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
          <div class="wplegalpages-settings-nav">
             <div class="">
                <ul class="nav nav-pills">
-                  <li data-v-0f37f1a8="" class="nav-item" id="wplegalpages-help-general"><a data-v-0f37f1a8="" href="#settings#general" target="_self" class="nav-link active"><?php echo esc_html('Open a Ticket','wplegalpages'); ?></a></li>
+                  <li data-v-0f37f1a8="" class="nav-item" id="wplegalpages-help-general"><a data-v-0f37f1a8="" href="#help-page" target="_self" class="nav-link active"><?php echo esc_html('Open a Ticket','wplegalpages'); ?></a></li>
 				</ul>
             </div>
             <div class="">
@@ -75,29 +75,3 @@ if ( ! defined( 'ABSPATH' ) ) {
    </form>
 </div>
 </div>
-<?php 
-
-if (isset($_POST['sup-submit']) ) {
-	// Sanitize and validate input
-	$name = sanitize_text_field($_POST['sup-name']);
-	$email = sanitize_email($_POST['sup-email']);
-	$message = sanitize_textarea_field($_POST['sup-message']);
-
-	// Support email details
-	$to = "support@wpeka.com"; // Replace with your support email
-	$subject = "Support Request from $name";
-	$body = "Name: $name\nEmail: $email\n\nMessage:\n$message";
-	$headers = ['Reply-To: ' . $email];
-
-	// Send the email
-	if (wp_mail($to, $subject, $body, $headers)) {
-		add_action('admin_notices', function() {
-			echo '<div class="notice notice-success is-dismissible"><p>Your message has been sent successfully.</p></div>';
-		});
-	} else {
-		add_action('admin_notices', function() {
-			echo '<div class="notice notice-error is-dismissible"><p>There was an error sending your message. Please try again later.</p></div>';
-		});
-	}
-}
-?>
