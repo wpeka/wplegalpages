@@ -230,11 +230,22 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				67 // Position
 				);
 			}
-			if(($legal_pages_installed && $is_legalpages_active) && ( !$is_gdpr_active)){
+			if($is_legalpages_active && $is_gdpr_active){
 				add_submenu_page(
 					'wp-legal-pages', // Parent slug (same as main menu slug)
 					__( 'Dashboard', 'wplegalpages' ),  // Page title
 					__( 'Dashboard', 'wplegalpages' ),     // Dashboard page title
+					'manage_options',   // Capability
+					'wplp-dashboard', // Menu slug
+					array( $this, 'conditional_dashboard_callback'),
+					90
+				);
+			}
+			if(!$gdpr_installed || ($gdpr_installed && !$is_gdpr_active)){
+				add_submenu_page(
+					'wp-legal-pages', // Parent slug (same as main menu slug)
+					__( 'Dashboard', 'gdpr-cookie-consent' ),  // Page title
+					__( 'Dashboard', 'gdpr-cookie-consent' ),     // Dashboard page title
 					'manage_options',   // Capability
 					'wplp-dashboard', // Menu slug
 					array( $this, 'wp_legalpages_new_admin_screen_dashboard' ), // Callback function
@@ -275,7 +286,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					array( $this, 'gdpr_cookie_consent_install_activate_screen' ), // Callback function
 				);
 			}
-			if(($legal_pages_installed && $is_legalpages_active) && ( !$is_gdpr_active)){
+			if($is_legalpages_active && $is_gdpr_active){
+				add_submenu_page(
+					'wp-legal-pages', // Parent slug (same as main menu slug)
+					__( 'Help', 'wplegalpages' ),  // Page title
+					__( 'Help', 'wplegalpages' ),     // Dashboard page title
+					'manage_options',   // Capability
+					'wplp-dashboard#help_page', // Menu slug
+					array( $this, 'conditional_help_callback' ), // Callback function
+					91
+				);
+			}
+			if(!$gdpr_installed || ($gdpr_installed && !$is_gdpr_active)){
 				add_submenu_page(
 					'wp-legal-pages', // Parent slug (same as main menu slug)
 					__( 'Help', 'wplegalpages' ),  // Page title
@@ -296,6 +318,27 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				}
 			}
 		}
+		function conditional_dashboard_callback() {
+			// Check if the action hook exists
+			if ( has_action( 'gdpr_cookie_consent_new_admin_dashboard_screen' ) ) {
+				// Trigger the action
+				do_action( 'gdpr_cookie_consent_new_admin_dashboard_screen' );
+			} else {
+				// Default callback content
+				$this->wp_legalpages_new_admin_screen_dashboard();
+			}
+		}
+		function conditional_help_callback() {
+			// Check if the action hook exists
+			if ( has_action( 'gdpr_help_page_content' ) ) {
+				// Trigger the action
+				do_action( 'gdpr_help_page_content' );
+			} else {
+				// Default callback content
+				$this->help_page_content();
+			}
+		}
+		
 		/**
 		 * Admin init for database update.
 		 *

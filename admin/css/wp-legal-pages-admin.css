@@ -534,10 +534,9 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 }
 #wplegalpages-help-app .wplegalpages-settings-nav{
 	display: flex;
-	margin: 0 20px;
-	margin-right: 0px;
+	margin: 0 auto;
 	gap: 20px;
-	width: 100%;
+	width: 83%;
 	padding-top: 20px;
 }
 
@@ -768,6 +767,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 	border: 1px solid #d4d4d8;
 	margin-top: 3px;
 	margin-left: 1px;
+	width: 100%;
 }
 
 #wplegalpages-settings-app .form-control:focus,
@@ -1473,6 +1473,9 @@ body.toplevel_page_legal-pages #wpcontent {
 	padding: 0 20px 0 20px;
 	min-height: 44px;
 	margin-top: 20px;
+	position: sticky;
+    top: 39px;
+    z-index: 99;
 }
 
 .wp-legalpages-admin-tab {
