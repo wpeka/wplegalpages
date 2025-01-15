@@ -1,12 +1,12 @@
 === Privacy Policy Generator, Terms & Conditions Generator WordPress Plugin : WP Legal Pages ===
-Contributors: WPEka Club
-Donate link: https://club.wpeka.com/product/wplegalpages
+Contributors: wplegalpages
+Donate link:  https://wplegalpages.com/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: CCPA, GDPR, Privacy Policy, Terms and conditions, Cookie Policy
 Requires at least: 5.0
 Requires PHP: 7.0
-Tested up to: 6.6
+Tested up to: 6.7.1
 Stable tag: 3.3.0
 
 Easiest way to generate legal pages (Privacy, Terms, Disclaimers & more) on your website. Ideal for blogs, ecommerce and marketing websites.
@@ -105,6 +105,12 @@ For more information, visit [Official WP Legal Pages Website](https://www.yourwe
 == Changelog ==
 = 3.3.0 =
 * Feature  - Introduced a Unified Dashboard for managing WP Legal Pages and WP Cookie Consent, providing a seamless interface, improved navigation and enhanced user experience.
+
+= 3.2.8 =
+* Fix: Fixed minor vulnerability issues.
+
+= 3.2.7 =
+* Fix: Minor bug fixes and improvements within the plugin.
 
 = 3.2.6 =
 * Fix: MInor bug fixes and improvements within the plugin.

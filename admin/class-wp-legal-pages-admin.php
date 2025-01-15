@@ -75,11 +75,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$lp_general = get_option( 'lp_general' );
 			if ( isset( $lp_general['affiliate-disclosure'] ) && '1' === $lp_general['affiliate-disclosure'] ) {
 				add_action( 'add_meta_boxes', array( $this, 'wplegalpages_pro_register_meta_boxes' ) );
+				
 				add_action( 'save_post', array( $this, 'wplegalpages_pro_save_meta_box' ) );
 				add_filter( 'the_content', array( $this, 'wplegalpages_pro_post_content' ) );
 			}
 			add_action('wp_ajax_gdpr_install_plugin', array($this, 'wplp_gdpr_install_plugin_ajax_handler'));
-
+			add_action('rest_api_init', array($this, 'register_wpl_dashboard_route'));
 		}
 
 		/**
@@ -98,6 +99,81 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		    wp_enqueue_style( $this->plugin_name . '-review-notice' );
 		}
 
+
+		/**
+		 * Register REST Route to send data to saas server
+		 *
+		 * @since    1.0.0
+		 */
+	public function register_wpl_dashboard_route() {
+		require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
+		global $is_user_connected, $api_user_plan; // Make global variables accessible
+		$this->settings = new WP_Legal_Pages_Settings();
+		
+		$is_user_connected = $this->settings->is_connected();
+		
+		
+		register_rest_route(
+			'wpl/v2', // Namespace
+			'/get_user_dashboard_data', 
+			array(
+				'methods'  => 'POST',
+				'callback' => array($this, 'wplp_send_data_to_dashboard_appwplp_server'), // Function to handle the request
+				'permission_callback' => function() use ($is_user_connected) {
+					// Check if user is connected and the API plan is valid
+					if ($is_user_connected) {
+						return true; // Allow access
+					}
+					return new WP_Error('rest_forbidden', 'Unauthorized access', array('status' => 401));
+				},
+			)
+		);
+		
+	}
+
+	/* Added endpoint to send dashboard data from plugin to the saas appwplp server */
+	public function wplp_send_data_to_dashboard_appwplp_server(WP_REST_Request $request  ){		
+		$current_user = wp_get_current_user();
+		
+		require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
+		$this->settings = new WP_Legal_Pages_Settings();
+		$user_email_id         = $this->settings->get_email();
+
+
+		$is_user_connected = $this->settings->is_connected();
+
+		global $wpdb;
+		$post_tbl     = $wpdb->prefix . 'posts';
+		$postmeta_tbl = $wpdb->prefix . 'postmeta';
+		$count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) 
+         FROM ' . $post_tbl . ' as ptbl, ' . $postmeta_tbl . ' as pmtbl 
+         WHERE ptbl.ID = pmtbl.post_id 
+         AND ptbl.post_status = %s 
+         AND pmtbl.meta_key = %s',
+        array('publish', 'is_legal')));
+		$pagesresult = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT ptbl.post_title FROM ' . $post_tbl . ' as ptbl, ' . $postmeta_tbl . ' as pmtbl 
+				WHERE ptbl.ID = pmtbl.post_id 
+				AND ptbl.post_status = %s 
+				AND pmtbl.meta_key = %s',
+				array('publish', 'is_legal')
+			),
+			ARRAY_A // Fetch results as an associative array
+		); 
+	$titles = array_column($pagesresult, 'post_title');
+
+		return rest_ensure_response(
+			array(
+				'success' => true,
+				'is_user_connected'                => $is_user_connected,
+				'client_site_url'                  => get_site_url(),
+				'user_email_id'					   => $user_email_id,
+				'legal_pages_published'			   => $count,
+				'page_results'					   => $titles,
+			)
+		);
+	}
 		
 	/**
 	 * Function to display gdpr review notice on admin page.
@@ -5034,22 +5110,36 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @since 2.3.5
 		 */
 		public function create_popup_delete_process() {
-
 			global $wpdb;
 
 			if ( class_exists( 'WP_Legal_Pages' ) ) {
-
 				$lp_obj = new WP_Legal_Pages();
 			}
+
 			if ( isset( $_REQUEST['mode'] ) && 'deletepopup' === $_REQUEST['mode'] && current_user_can( 'manage_options' ) ) {
 				if ( isset( $_REQUEST['nonce'] ) ) {
-					wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'lp-submit-create-popups' );
+					$nonce = sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) );
+					
+					// Verify the nonce and stop execution if it is invalid.
+					if ( ! wp_verify_nonce( $nonce, 'lp-submit-create-popups' ) ) {
+						wp_die( __( 'Security check failed. Please try again.', 'text-domain' ) );
+					}
+				} else {
+					wp_die( __( 'Missing nonce. Please try again.', 'text-domain' ) );
 				}
-				$lpid = isset( $_REQUEST['lpid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) : '';
-				$wpdb->delete( $lp_obj->popuptable, array( 'id' => $lpid ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+
+				$lpid = isset( $_REQUEST['lpid'] ) ? intval( sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) ) : 0;
+
+				// Proceed only if a valid ID is provided.
+				if ( $lpid > 0 ) {
+					$wpdb->delete( $lp_obj->popuptable, array( 'id' => $lpid ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				}
+
 				wp_redirect( admin_url( 'admin.php?page=legal-pages#create_popup' ) );
+				exit; // Always exit after a redirect.
 			}
 		}
+
 
 		/**
 		 * Create Popup Edit Process.
