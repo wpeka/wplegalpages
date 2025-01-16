@@ -429,6 +429,37 @@ jQuery(document).ready(function () {
 
 	   //For Installing GDPR plugin - Unified Dashboard 
 	   jQuery(document).ready(function ($) {
+		// Handle wp help menu click- start
+		jQuery('#toplevel_page_wp-legal-pages a[href="admin.php?page=wplp-dashboard#help-page"]').on('click', function (e) {
+			e.preventDefault(); // Prevent default anchor behavior
+			// Remove 'current' class from all <li> elements
+			jQuery('li').removeClass('current');
+	  
+			// Add 'current' class to the immediate <li> parent of the clicked <a> tag
+			jQuery(this).closest('li').addClass('current');
+	  
+			// Show the #help-page div and hide all other sibling divs
+			if (jQuery('.wplegal-container').length > 0) {
+			  jQuery('.wplegal-container').hide();
+			  jQuery('.wp-legalpages-admin-wplp-dashboard-tab').removeClass('active-tab');
+
+        		jQuery('.wp-legalpages-admin-help-tab').addClass('active-tab');
+			}
+			jQuery('#help-page').show();
+		 });
+		if (window.location.href.includes('#help-page')) {
+			// Select the "Help Page" link and its immediate parent <li>
+			var $helpPageLink = jQuery('#toplevel_page_wp-legal-pages a[href="admin.php?page=wplp-dashboard#help-page"]');
+			var $dashboardLink = jQuery('#toplevel_page_wp-legal-pages a[href="admin.php?page=wplp-dashboard"]');
+			
+			// Add the 'current' class to the parent <li> of the "Help Page" link
+			$helpPageLink.closest('li').addClass('current');
+	  
+			// Remove the 'current' class from the parent <li> of the "Dashboard" link
+			$dashboardLink.closest('li').removeClass('current');
+		  }
+		// Handle wp help menu click- end
+
 		$('.install-gdpr-button').on('click', function (e) {
 			e.preventDefault();
 	
@@ -436,7 +467,7 @@ jQuery(document).ready(function () {
 			var baseURL = window.location.origin;
 		// Construct the URL for plugins.php
 		var dashboardpageurl =
-		  baseURL + "/wp-admin/admin.php?page=wplp-dashboard";
+		  baseURL + "/wp-admin/admin.php?page=legal-pages";
 		
 			 var $clickedButton = $(this); // Reference to the clicked button
 	
@@ -497,6 +528,7 @@ jQuery(document).ready(function () {
 				},
 			});
 		});
+		
 	});
 
 });

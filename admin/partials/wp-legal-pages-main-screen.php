@@ -22,6 +22,12 @@ $lp_pro_installed      = get_option( '_lp_pro_installed' );
 $lp_pro_key_activated  = get_option( 'wc_am_client_wplegalpages_pro_activated' );
 $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 
+$installed_plugins = get_plugins();
+$plugin_name                   = 'gdpr-cookie-consent/gdpr-cookie-consent.php';
+$is_gdpr_active = is_plugin_active( $plugin_name );
+$plugin_name_lp                   = 'wplegalpages/wplegalpages.php';
+$is_legalpages_active = is_plugin_active( $plugin_name_lp );
+
 ?>
 
 <div id="wp-legalpages-main-admin-structure" class="wp-legalpages-main-admin-structure">
@@ -169,11 +175,31 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 		<div class="wp-legalpages-admin-tabs-section">
 			<div class="wp-legalpages-admin-tabs">
 				<!-- Dashboard tab  -->
-				 <a href="?page=wplp-dashboard" class="wp-legalpages-admin-tab-link dashboard-tab">
-					<div class="wp-legalpages-admin-wplp-tab" >
-							<?php echo esc_html('Dashboard','wplegalpages'); ?>
-					</div>
-				</a>
+				<?php 
+					
+					if ($is_gdpr_active) {
+						$plugin_slug = 'gdpr-cookie-consent/gdpr-cookie-consent.php';
+						
+						// Fetch the plugin data
+						$plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/' . $plugin_slug);
+			
+						// Get the version
+						$gdpr_version = $plugin_data['Version'];
+						if($gdpr_version >= '3.7.0') { ?>
+							<a href="?page=wplp-dashboard" class="wp-legalpages-admin-tab-link dashboard-tab">
+								<div class="wp-legalpages-admin-wplp-tab" >
+										<?php echo esc_html('Dashboard','wplegalpages'); ?>
+								</div>
+							</a>
+				<?php } }else{
+					?>
+					<a href="?page=wplp-dashboard" class="wp-legalpages-admin-tab-link dashboard-tab">
+								<div class="wp-legalpages-admin-wplp-tab" >
+										<?php echo esc_html('Dashboard','wplegalpages'); ?>
+								</div>
+							</a>
+				<?php
+					} ?>
 
 				<?php
 				// if terms are accepted only then show rest of the tabs
@@ -196,12 +222,29 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 					</div>
 					</a>
 					<!-- Help tab  -->
-					
-					<a href="?page=wplp-dashboard#help_page" class="wp-legalpages-admin-tab-link">
+					<?php if ($is_gdpr_active) {
+						$plugin_slug = 'gdpr-cookie-consent/gdpr-cookie-consent.php';
+						
+						// Fetch the plugin data
+						$plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/' . $plugin_slug);
+			
+						// Get the version
+						$gdpr_version = $plugin_data['Version'];
+						if($gdpr_version >= '3.7.0') {  ?>
+					<a href="?page=wplp-dashboard#help-page" class="wp-legalpages-admin-tab-link">
 					<div class="wp-legalpages-admin-wplp-tab">
 						<?php echo esc_html('Help','wplegalpages'); ?>
 					</div>
 					</a>
+					<?php }} else{
+						?>
+					<a href="?page=wplp-dashboard#help-page" class="wp-legalpages-admin-tab-link">
+					<div class="wp-legalpages-admin-wplp-tab">
+						<?php echo esc_html('Help','wplegalpages'); ?>
+					</div>
+					</a>
+						<?php
+					} ?>
 					<?php
 
 				}
@@ -293,7 +336,7 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 
 				</div>
 				<!-- help content  -->
-				<div class="wp-legalpages-admin-help-page-content wp-legalpages-admin-tab-content" id="help_page">
+				<div class="wp-legalpages-admin-help-page-content wp-legalpages-admin-tab-content" id="help-page">
 
 				<?php
 					require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-help-page-template.php';

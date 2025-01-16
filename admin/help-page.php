@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div id="wplegalpages-help-app" class="wplegalpages-app-container">
 <div class="wplegalpages-settings-container">
    <div class="wplegalpages-marketing-banner"></div>
-   <form  method="post" id="support_form" name="support_form" spellcheck="false" action="admin.php?page=wplp-dashboard#help_page" class="wplegalpages-settings-form">
+   <form  method="post" id="support_form" name="support_form" spellcheck="false" action="admin.php?page=wplp-dashboard#help-page" class="wplegalpages-settings-form">
    <?php wp_nonce_field('wplegalpages_support_request_nonce', 'wplegalpages_nonce'); ?>
   
    <input type="hidden" name="action" value="wplegalpages_support_request">

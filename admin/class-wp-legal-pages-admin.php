@@ -271,7 +271,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_register_script( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'wizard/libraries/select2/select2.js', array( 'jquery' ), $this->version, false );
 		   
 		}
-
+		public function wplp_remove_dashboard_submenu() {
+			// Define the current version constant
+			$current_version = $this->version;
+		
+			// Target version to hide the submenu
+			$target_version = '3.3.0';
+		
+			// Check if the current version is below the target version
+			if (version_compare($current_version, $target_version, '<')) {
+				// Remove the 'Dashboard' submenu
+				remove_submenu_page('wp-legal-pages', 'wplp-dashboard');
+				remove_submenu_page('wp-legal-pages', 'wplp-dashboard#help-page');
+			}
+		}
 		/**
 		 * This function is provided for WordPress dashbord menus.
 		 *
@@ -306,6 +319,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				67 // Position
 				);
 			}
+			
 			if($is_legalpages_active && $is_gdpr_active){
 				add_submenu_page(
 					'wp-legal-pages', // Parent slug (same as main menu slug)
@@ -368,7 +382,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					__( 'Help', 'wplegalpages' ),  // Page title
 					__( 'Help', 'wplegalpages' ),     // Dashboard page title
 					'manage_options',   // Capability
-					'wplp-dashboard#help_page', // Menu slug
+					'wplp-dashboard#help-page', // Menu slug
 					array( $this, 'conditional_help_callback' ), // Callback function
 					91
 				);
@@ -379,7 +393,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					__( 'Help', 'wplegalpages' ),  // Page title
 					__( 'Help', 'wplegalpages' ),     // Dashboard page title
 					'manage_options',   // Capability
-					'wplp-dashboard#help_page', // Menu slug
+					'wplp-dashboard#help-page', // Menu slug
 					array( $this, 'help_page_content' ), // Callback function
 					91
 				);
