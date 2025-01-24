@@ -1923,7 +1923,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'is_pro'               => $is_pro,
 					'video_url'            => 'https://www.youtube-nocookie.com/embed/iqdLl9qsBHc',
 					'image_url'            => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
-					'welcome_text'         => __( 'Welcome to WPLegalPages!', 'wplegalpages' ),
+					'welcome_text'         => __( 'Welcome to WPLP Compliance Platform!', 'wplegalpages' ),
 					'welcome_subtext'      => __( 'Privacy Policy Generator For WordPress', 'wplegalpages' ),
 					'welcome_description'  => __( 'Thank you for choosing WP Legal Pages plugin - A robust plugin for hassle-free legal compliance. ', 'wplegalpages' ),
 					'legal_pages_installed' => $legal_pages_installed,
