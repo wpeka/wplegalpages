@@ -42,7 +42,7 @@ $lp_pro_key_activated    = get_option( 'wc_am_client_wplegalpages_pro_activated'
 $lp_general              = get_option( 'lp_general' );
 $lp_footer_options       = get_option( 'lp_footer_options' );
 $lp_banner_options       = get_option( 'lp_banner_options' );
-$cookie_bar_title        = get_option( 'lp_eu_cookie_title' );
+// $cookie_bar_title        = get_option( 'lp_eu_cookie_title' );
 $lp_eu_button_text       = get_option( 'lp_eu_button_text' );
 $lp_eu_link_text         = get_option( 'lp_eu_link_text' );
 $lp_eu_link_url          = get_option( 'lp_eu_link_url' );
@@ -930,7 +930,7 @@ if ( '1' === $lpterms ) {
 								</c-card-body>
 							</c-card>
 						</v-modal>
-						<input type="hidden" name="lp-cookie-bar-enable" v-model="is_cookie_bar">
+						<!-- <input type="hidden" name="lp-cookie-bar-enable" v-model="is_cookie_bar">
 						<input type="hidden" ref="cookie_text_size_ref" v-model="cookie_text_size" name="lp-cookie-text-size">
 						<input type="hidden" ref="cookie_text_size_mount" value="<?php echo esc_html( stripslashes( $lp_eu_text_size ) ); ?>">
 						<v-modal :append-to="appendField" :based-on="show_cookie_form" title="Cookie Bar" @close="showCookieBar">
@@ -1158,7 +1158,7 @@ if ( '1' === $lpterms ) {
 									</c-row>
 								</c-card-body>
 							</c-card>
-						</v-modal> 
+						</v-modal>  -->
 						<?php
 						$is_age                = get_option( '_lp_require_for' );
 						$age_verify_for        = get_option( '_lp_always_verify' );
@@ -1387,7 +1387,7 @@ if ( '1' === $lpterms ) {
 										</c-button>
 									</c-col>
 								</c-row>
-								<c-row class="wplegal-support-text-row ">
+								<!-- <c-row class="wplegal-support-text-row ">
 									<c-col class="col-sm-7 wplegal-compliances-text">
 										<label><?php esc_attr_e( 'Cookie Bar', 'wplegalpages' ); ?></label>
 										<span class="wplegalpages-help-text">
@@ -1406,7 +1406,7 @@ if ( '1' === $lpterms ) {
 											</span>
 										</c-button>
 									</c-col>
-								</c-row>
+								</c-row> -->
 								<c-row class="wplegal-support-text-row">
 									<c-col class="col-sm-7 wplegal-compliances-text">
 										<label><?php esc_attr_e( 'Add Age Verification popup', 'wplegalpages' ); ?></label>
