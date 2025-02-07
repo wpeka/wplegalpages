@@ -1797,4 +1797,7 @@ button[data-v-09b2f69e] {
 	color: #fff;
 	border: none;
 	margin-bottom: 0px;
+}.wplegal-wizard .wplegal-wizard-header img{
+	height: 96px;
+    width: 96px;
 }
