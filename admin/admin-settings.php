@@ -1160,7 +1160,7 @@ if ( '1' === $lpterms ) {
 									</c-col>
 								</c-row>
 
-							
+				
 								<c-row class="wplegal-support-text-row">
 									<c-col class="col-sm-7 wplegal-compliances-text">
 										<label><?php esc_attr_e( 'Add Age Verification popup', 'wplegalpages' ); ?></label>
