@@ -130,11 +130,14 @@ if ( '1' === $lpterms ) {
 		<c-form id="lp-save-settings-form" spellcheck="false" class="wplegalpages-settings-form">
 			<input type="hidden" name="settings_form_nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings-form-nonce' ) ); ?>"/>
 			<div class="wplegalpages-settings-content">
+				<div id="wplegalpages-save-settings-alert"><img src="<?php echo WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg'; ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_attr_e( 'Settings saved successfully', 'wplegalpages' ); ?></div>
+
 				<c-tabs variant="pills" ref="active_tab" class="wplegalpages-settings-nav">
 					<c-tab title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" href="#settings#general" id="wplegalpages-settings-general">
 					<?php do_action( 'wp_legalpages_notice' ); ?>
 						<c-card>
 							<c-card-body>
+
 								<?php
 								if ( ! $lp_show_improved_ui ) {
 									?>
@@ -298,11 +301,11 @@ if ( '1' === $lpterms ) {
 								<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
 							</c-card-body>
 						</c-card>
-						<div class="wplegalpages-settings-bottom">
+				<div class="wplegalpages-settings-bottom">
 				<div class="wplegalpages-save-button">
 					<c-button color="info" @click="saveGeneralSettings"><span><?php echo esc_html( 'Save Changes' ); ?></span></c-button>
 				</div>
-			</div>
+				</div>
 					</c-tab>
 					<?php do_action( 'wp_legalpages_after_general_tab' ); ?>
 					<?php
