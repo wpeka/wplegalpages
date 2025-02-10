@@ -3181,7 +3181,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'is_user_connected'  => $is_user_connected,
 					'plan_name'          => $plan_name,
 					'_ajax_nonce'        => wp_create_nonce( 'wp-legal-pages' ),
-					'promotion_link'     => 'https://app.wplegalpages.com/checkout/?add-to-cart=143&utm_source=wplegalpagesplugin&utm_medium=floating_bar',
+					'promotion_link'     => 'https://app.wplegalpages.com/pricing/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=upgrade',
 					'welcome'            => array(
 						'create'     => __( 'Create', 'wplegalpages' ),
 						'edit'       => __( 'Edit', 'wplegalpages' ),
