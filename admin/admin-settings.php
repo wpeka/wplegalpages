@@ -442,7 +442,7 @@ if ( '1' === $lpterms ) {
 					<input type="hidden" ref="footer_text_align" v-model="footer_text_align" name="lp-footer-text-align">
 					<input type="hidden" ref="footer_text_align_mount" value="<?php echo esc_html( stripslashes( $lp_footer_options['footer_text_align'] ) ); ?>">
 					<v-modal :append-to="appendField" :based-on="show_footer_form" title="Add Legal Pages Link to the Footer" @close="showFooterForm">
-						<c-card>
+						<c-card id="footer-links-wrapper">
 							<c-card-body>
 								<c-row>
 									<?php
@@ -657,8 +657,8 @@ if ( '1' === $lpterms ) {
 								<c-row class="wplegalpages-modal-footer">
 									<c-col class="col-sm-4"><input type="hidden" id="wplegalpages-footer-form-nonce" name="lp-footer-form-nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings_footer_form_nonce' ) ); ?>"/></c-col>
 									<c-col class="col-sm-8 wplegalpages-modal-buttons">
-										<c-button class="wplegalpages-modal-button" @click="saveFooterData" color="info"><span>Save</span></c-button>
-										<c-button class="wplegalpages-modal-button" color="secondary" @click="showFooterForm"><span>Cancel</span></c-button>
+										<c-button id="footer-save-btn" class="wplegalpages-modal-button" @click="saveFooterData" color="info"><span>Save</span></c-button>
+										<c-button id="footer-cancel-btn" class="wplegalpages-modal-button" color="secondary" @click="showFooterForm"><span>Cancel</span></c-button>
 									</c-col>
 								</c-row>
 							</c-card-body>
