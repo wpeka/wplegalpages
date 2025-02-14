@@ -2224,11 +2224,11 @@ table tbody tr td .table-link-alert:hover {
 }
 
 /* Footer Links COnfiguration */
-#footer-links-wrapper {
+#wplp-conf-wrapper {
 	max-width: 200% !important;
 }
 
-#footer-save-btn{
+#wplp-conf-save-btn{
 	border-radius: 4px;
 	font-family: Roboto;
 	background-color: #0059b3;
@@ -2238,7 +2238,7 @@ table tbody tr td .table-link-alert:hover {
 	color: #fff;
 	border: none;
 }
-#footer-cancel-btn{
+#wplp-conf-cancel-btn{
 	border-radius: 4px;
 	font-family: Roboto;
 	font-size: 14px;
