@@ -1921,7 +1921,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'ajax_url'             => admin_url( 'admin-ajax.php' ),
 					'ajax_nonce'           => wp_create_nonce( 'admin-ajax-nonce' ),
 					'is_pro'               => $is_pro,
-					'video_url'            => 'https://www.youtube-nocookie.com/embed/iqdLl9qsBHc',
+					'video_url'            => 'https://www.youtube.com/embed/WkTqA60bGRg?si=aty3JoOdjsyWsetx',
 					'image_url'            => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
 					'welcome_text'         => __( 'Welcome to WPLP Compliance Platform!', 'wplegalpages' ),
 					'welcome_subtext'      => __( 'Privacy Policy Generator For WordPress', 'wplegalpages' ),
