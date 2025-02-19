@@ -261,8 +261,6 @@ jQuery(document).ready(function () {
 	function paidAuth(event) {
 		// Prevent the default action of the event.
 		event.preventDefault();
-		console.log("Function called"),
-		console.log("Event is:", event);
 	
 		var is_new_user = this.classList.contains('wplegal-api-connect-new');
 	
