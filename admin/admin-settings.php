@@ -940,6 +940,7 @@ if ( '1' === $lpterms ) {
 						$minimum_age           = get_option( '_lp_minimum_age' );
 						$age_type_option       = get_option( '_lp_display_option' );
 						$yes_button_text       = get_option( 'lp_eu_button_text' );
+						$redirect_url_text       = '';
 						$no_button_text        = get_option( 'lp_eu_button_text_no' );
 						$age_verify_for_value  = $age_verify_for ? 'all' === $age_verify_for ? 'All visitors' : 'Guests only' : 'Guests only';
 						$age_type_option_value = $age_type_option ? 'date' === $age_type_option ? 'Input Date of Birth' : 'Yes/No Buttons' : 'Yes/No Buttons';
@@ -1050,6 +1051,25 @@ if ( '1' === $lpterms ) {
 											<c-input type="text" name="lp-no-text" id="wplegalpages-no-text" v-model="age_no_button" value="<?php echo ! empty( $no_button_text ) ? esc_attr( $no_button_text ) : 'No, I am not'; ?>"></c-input>
 										</c-col>
 									</c-row>
+
+									<!-- Redirection for Leave Button -->
+									<c-row v-show="yes_leave">
+										<?php
+										if ( ! $lp_show_improved_ui ) {
+											?>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Redirection URL', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'If visitor clicks on "Leave" button then he/she redirects to this URL.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<?php
+										} else {
+											?>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Redirection URL', 'wplegalpages' ); ?> <tooltip text="<?php esc_html_e( 'If visitor clicks on "Leave" button then he/she redirects to this URL.', 'wplegalpages' ); ?>"></tooltip></label></c-col>
+											<?php
+										}
+										?>
+										<c-col class="col-sm-8">
+											<c-input type="url" name="lp-redirect-url" id="wplegalpages-redirect-url" v-model="redirect_url" value="<?php echo ! empty( $redirect_url_text ) ? esc_attr( $redirect_url_text ) : ''; ?>"></c-input>
+										</c-col>
+									</c-row>
+
 									<c-row>
 										<?php
 										if ( ! $lp_show_improved_ui ) {

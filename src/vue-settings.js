@@ -90,8 +90,11 @@ var gen = new Vue({
             age_verify_for: 'Guests only',
             age_verify_for_options: ['Guests only', 'All visitors'],
             minimum_age: obj.minimum_age ? obj.minimum_age : 18,
-            age_type_options: ['Input Date of Birth', 'Yes/No Buttons'],
+            age_type_options: ['Input Date of Birth', 'Yes/No Buttons', 'Yes/Leave Buttons'],
+            redirect_url: obj.redirect_url ? obj.redirect_url : '',
+            is_valid_url: true,
             age_type_option: 'Yes/No Buttons',
+            yes_leave: true,
             age_buttons: true,
             age_yes_button: obj.age_yes_button ? obj.age_yes_button : 'Yes, I am',
             age_no_button: obj.age_no_button ? obj.age_no_button : 'No, I am not',
@@ -123,6 +126,7 @@ var gen = new Vue({
             this.age_type_option = this.$refs.hasOwnProperty('age_type_option_mount') ? this.$refs.age_type_option_mount.value : 'Yes/No Buttons';
             this.age_button_content = this.is_age === 'site' ? true : false;
             this.age_buttons = this.age_type_option === 'Yes/No Buttons' ? true : false;
+            this.yes_leave = this.age_type_option === 'Yes/Leave Buttons' ? true : false;
             
             let navLinks = j('.nav-link').map(function () {
                 return this.getAttribute('href');
@@ -299,6 +303,7 @@ var gen = new Vue({
         },
         showButtonOptions() {
             this.age_buttons = this.age_type_option === 'Yes/No Buttons' ? true : false;
+            this.yes_leave = this.age_type_option === 'Yes/Leave Buttons' ? true : false;
         },
         showPopupForm() {
             this.show_popup_form = !this.show_popup_form;
