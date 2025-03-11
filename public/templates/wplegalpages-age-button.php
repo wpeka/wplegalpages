@@ -16,22 +16,6 @@ $lp_eu_button_text_no = get_option( 'lp_eu_button_text_no' );
 $data                 = apply_filters( 'wplegalpages_pro_invalid_description', get_option( '_lp_invalid_description', __( 'We are Sorry.', 'wplegalpages' ) ) );
 ?>
 
-				<?php
-				$age_type = get_option('_lp_display_option');
-				$redirect_url = get_option('_lp_redirect_url');
-				?>
-
-				<div class="verify" style="<?php $age_type == 'Yes/Leave Buttons' ? 'display:block' : 'display:none'; ?>">
-					<div class="buttons-set">
-						<span class="ageleavebutton">
-							<input type="submit" name="lp_verify" id="lp_verify_yes" value="<?php echo esc_attr( $lp_eu_button_text ); ?>" />
-						</span>
-						<span class="ageleavebutton">
-							<input type="submit" name="lp_verify" id="lp_verify_leave" value="Leave" onclick="window.location.href='<?php echo esc_url($redirect_url); ?>'" />	
-						</span>
-					</div>
-				</div>
-
 				<div class="verify">
 						<div class="buttons-set">
 						<span class="agebutton">
