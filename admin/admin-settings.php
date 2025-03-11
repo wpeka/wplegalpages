@@ -940,7 +940,7 @@ if ( '1' === $lpterms ) {
 						$minimum_age           = get_option( '_lp_minimum_age' );
 						$age_type_option       = get_option( '_lp_display_option' );
 						$yes_button_text       = get_option( 'lp_eu_button_text' );
-						$redirect_url_text       = '';
+						$redirect_url_text     = get_option( '_lp_redirect_url' );
 						$no_button_text        = get_option( 'lp_eu_button_text_no' );
 						$age_verify_for_value  = $age_verify_for ? 'all' === $age_verify_for ? 'All visitors' : 'Guests only' : 'Guests only';
 						$age_type_option_value = $age_type_option ? 'date' === $age_type_option ? 'Input Date of Birth' : 'Yes/No Buttons' : 'Yes/No Buttons';

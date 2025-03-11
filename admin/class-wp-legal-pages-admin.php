@@ -2687,6 +2687,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( isset( $_POST['lp-display-option'] ) ) {
 				'Input Date of Birth' === $_POST['lp-display-option'] ? update_option( '_lp_display_option', 'date' ) : update_option( '_lp_display_option', 'button' );
 			}
+			if ( isset( $_POST['lp-redirect-url'] ) ) {
+				update_option( '_lp_redirect_url', sanitize_text_field( wp_unslash( $_POST['lp-redirect-url'] ) ) );
+			}
 			if ( isset( $_POST['lp-yes-button-text'] ) ) {
 				update_option( 'lp_eu_button_text', sanitize_text_field( wp_unslash( $_POST['lp-yes-button-text'] ) ) );
 			}

@@ -427,6 +427,7 @@ var gen = new Vue({
             var display_option = this.age_type_option;
             var yes_button_text = this.age_yes_button;
             var no_button_text = this.age_no_button;
+            var redirect_url_text = this.redirect_url;
             j.ajax({
                 type: 'POST',
                 url: obj.ajaxurl,
@@ -439,6 +440,7 @@ var gen = new Vue({
                 'lp-display-option': display_option,
                 'lp-yes-button-text': yes_button_text,
                 'lp-no-button-text': no_button_text,
+                'lp-redirect-url': redirect_url_text, 
                 'lp-verification-description': j('#wplegalpages-lp-age-description-message').text(),
                 'lp-verification-description-invalid': j('#wplegalpages-lp-age-description-invalid-message').text(),
             },
