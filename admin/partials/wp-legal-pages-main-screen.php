@@ -288,7 +288,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 			<div class="wp-legalpages-admin-tabs wplp-sub-tabs">
 				<!-- Gettins Started tab  -->
 				<div class="wp-legalpages-admin-tab wp-legalpages-admin-getting-started-tab" data-tab="getting_started">
-					Getting&nbsp;Started
+				<?php echo esc_html__('Getting Started', 'wplegalpages'); ?>
 				</div>
 
 				<?php
@@ -299,15 +299,15 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 
 					<!-- Create Legal Pages tab  -->
 					<div class="wp-legalpages-admin-tab wp-legalpages-admin-create_legalpages-tab" data-tab="create_legal_page">
-						Create&nbsp;Legal&nbsp;Pages
+					<?php echo esc_html__('Create Legal Pages', 'wplegalpages'); ?>
 					</div>
 					<!-- Settings tab  -->
 					<div class="wp-legalpages-admin-tab wp-legalpages-admin-settings-tab" data-tab="settings">
-						Settings
+					<?php echo esc_html__('Settings', 'wplegalpages'); ?>
 					</div>
 					<!-- All Legal Pages data tab  -->
 					<div class="wp-legalpages-admin-tab wp-legalpages-admin-all_legalpages-tab" data-tab="all_legal_pages">
-					All Legal Pages
+					<?php echo esc_html__('All Legal Pages', 'wplegalpages'); ?>
 					</div>
 					<?php
 
@@ -320,7 +320,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 				if ( $popup ) {
 					?>
 						<div class="wp-legalpages-admin-tab wp-legalpages-admin-create-popups-tab" data-tab="create_popup">
-						<p class="wp-legalpages-admin-tab-name">Create&nbsp;Popups</p>
+							<?php echo esc_html__('Create Popups', 'wplegalpages'); ?>
 						</div>
 
 					<?php
