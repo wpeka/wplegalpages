@@ -341,26 +341,6 @@ if ( '1' === $lpterms ) {
 										<c-switch v-bind="labelIcon" ref="affiliate_disclosure"  id="inline-form-affiliate" variant="3d" color="success" <?php checked( isset( $lp_general['affiliate-disclosure'] ) ? boolval( $lp_general['affiliate-disclosure'] ) : false ); ?> v-on:update:checked="onChangeAffiliate"></c-col>
 									</c-col>
 								</c-row>
-								<c-row class="wplegal-support-text-row">
-									<c-col class="col-sm-10">
-										<label><?php esc_attr_e( 'Adult Content Site', 'wplegalpages' ); ?></label>
-										<span class="wplegalpages-help-text">
-											<?php esc_html_e( 'If you enable this, a popup will display the first time a user visits your website. Each visitor will be forced to confirm that he/she is above his/her country legal age limit.', 'wplegalpages' ); ?>
-										</span>
-									</c-col>
-									<c-col class="col-sm-2">
-										<input type="hidden" name="lp-is_adult" v-model="is_adult">
-										<c-switch v-bind="labelIcon" ref="is_adult"  id="inline-form-is-adult" variant="3d" color="success" <?php checked( isset( $lp_general['is_adult'] ) ? boolval( $lp_general['is_adult'] ) : false ); ?> v-on:update:checked="onChangeIsAdult"></c-col>
-									</c-col>
-								</c-row>
-								<c-row v-show= "is_adult" id="exit_url_section" class="wplegal-support-text-row">
-									<c-col class="col-sm-8 wplegalpages-input-for-toggle-button wplegalpages-input-for-helping-toggle-button">
-										<c-input class="wplegalpages-settings-input legal-page-leave-url input-with-support-text" placeholder="Exit URL on clicking the 'Leave' button" class="wplegal-support-text-row-input" type="text" name="lp-leave-url" value="<?php echo ! empty( $lp_general['leave-url'] ) ? esc_attr( $lp_general['leave-url'] ) : ''; ?>" ></c-input>
-										<span class="wplegalpages-help-text helping-text">
-											<?php esc_html_e( 'If visitor clicks on "Leave" button then he/she redirects to this URL.', 'wplegalpages' ); ?>
-										</span>
-									</c-col>
-								</c-row>
 								<c-row v-show= "privacy" id="privacy_page_section" class="wplegal-support-text-row">
 									<c-col class="col-sm-8 wplegalpages-input-for-toggle-button">
 										<?php
