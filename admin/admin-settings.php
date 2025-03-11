@@ -184,7 +184,7 @@ if ( '1' === $lpterms ) {
 										</c-col>
 										<c-col class="col-sm-8">
 											<input type="hidden" name="lp-generate" v-model="generate">
-											<c-switch v-bind="labelIcon" ref="generate"  id="inline-form-credits" variant="3d" color="success" <?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?> v-on:update:checked="onChangeCredit"></c-col>
+											<c-switch v-bind="labelIcon" ref="generate"  id="inline-form-credits" variant="3d" color="success" <?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : true ); ?> v-on:update:checked="onChangeCredit"></c-col>
 										</c-col>
 									</c-row>
 									<c-row>
@@ -405,7 +405,7 @@ if ( '1' === $lpterms ) {
 									</c-col>
 									<c-col class="col-sm-2">
 										<input type="hidden" name="lp-generate" v-model="generate">
-										<c-switch v-bind="labelIcon" ref="generate"  id="inline-form-credits" variant="3d" color="success" <?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?> v-on:update:checked="onChangeCredit"></c-col>
+										<c-switch v-bind="labelIcon" ref="generate"  id="inline-form-credits" variant="3d" color="success" <?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : true ); ?> v-on:update:checked="onChangeCredit"></c-col>
 									</c-col>
 								</c-row>
 								<c-row class="wplegal-support-text-row">

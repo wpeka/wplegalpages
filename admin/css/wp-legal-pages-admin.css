@@ -2297,3 +2297,9 @@ table tbody tr td .table-link-alert:hover {
 	border: none;
 	margin-top: 0px;
   }
+  #wplp-admin-dashboard-signup{
+	color: #074EA8;
+	background-color: transparent;
+	border: 1px solid #346DB1;
+	font-weight: 600;
+  }
