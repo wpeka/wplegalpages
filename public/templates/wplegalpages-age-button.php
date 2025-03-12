@@ -18,12 +18,12 @@ $data                 = apply_filters( 'wplegalpages_pro_invalid_description', g
 
 				<div class="verify">
 						<div class="buttons-set">
-						<span class="agebutton">
-							<input type="submit" name="lp_verify" id="lp_verify_yes" value="<?php echo esc_attr( $lp_eu_button_text ); ?>" />
+							<span class="agebutton">
+								<input type="submit" name="lp_verify" id="lp_verify_no" value=" <?php echo esc_attr( $lp_eu_button_text_no ); ?> " href="#" />
 							</span>
 							<span class="agebutton">
-						<input type="submit" name="lp_verify" id="lp_verify_no" value=" <?php echo esc_attr( $lp_eu_button_text_no ); ?> " href="#" />
-						</span>
+								<input type="submit" name="lp_verify" id="lp_verify_yes" value="<?php echo esc_attr( $lp_eu_button_text ); ?>" />
+							</span>
 						<br>
 						</div>
 				</div>

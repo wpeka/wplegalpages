@@ -2752,7 +2752,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$no_button = 'No, I am not';
 			}
 			if ( ! $age_description ) {
-				$age_description = "You must be atleast {age} years of age to visit this site.\n{form}";
+				$age_description = "To proceed, we need to verify that you're {age} or older.\n<br><span>Please verify your age.</span>\n{form}";
 			}
 			if ( ! $invalid_age_description ) {
 				$invalid_age_description = 'We are sorry. You are not of valid age.';
