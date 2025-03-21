@@ -1432,7 +1432,7 @@ body.toplevel_page_legal-pages #wpcontent {
 	margin-top: 20px;
 	position: sticky;
     top: 39px;
-    z-index: 10002;
+    z-index: 99;
 }
 
 .wp-legalpages-admin-tab {
