@@ -221,12 +221,15 @@ Notify users whenever legal pages are updated by displaying a customizable banne
 - **Outstanding Support**: Share suggestions, and we’ll work to add your wishlist features.
 
 == Screenshots ==
-1. Dashboard
-2. List of available
-3. General Tab
-4. Compliance Settings Tab
-5. Advanced Tab
-6. Create Popup Tabs
+1. WP Legal Pages Wizard
+2. WP Legal Pages Step Wise Policy Settings
+3. WP Legal Pages Policy Template Preview
+4. WP Legal Pages Getting Started
+5. WP Legal Pages General Settings
+6. WP Legal Pages Advanced Settings
+7. WP Legal Pages Compliance Settings
+8. WP Legal Pages Templates
+9. WP Legal Pages Features
 
 == Installation ==
 1. Download the plugin from WordPress.org.
