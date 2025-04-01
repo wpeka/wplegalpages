@@ -2732,6 +2732,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( isset( $_POST['lp-display-option'] ) ) {
 				'Input Date of Birth' === $_POST['lp-display-option'] ? update_option( '_lp_display_option', 'date' ) : update_option( '_lp_display_option', 'button' );
 			}
+			if ( isset( $_POST['lp-redirect-url'] ) ) {
+				update_option( '_lp_redirect_url', sanitize_text_field( wp_unslash( $_POST['lp-redirect-url'] ) ) );
+			}
+			if ( isset( $_POST['lp-age-popup-no'] ) ) {
+				update_option( '_lp_age_popup_no', sanitize_text_field( wp_unslash( $_POST['lp-age-popup-no'] ) ) );
+			}
 			if ( isset( $_POST['lp-yes-button-text'] ) ) {
 				update_option( 'lp_eu_button_text', sanitize_text_field( wp_unslash( $_POST['lp-yes-button-text'] ) ) );
 			}
@@ -2791,7 +2797,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$no_button = 'No, I am not';
 			}
 			if ( ! $age_description ) {
-				$age_description = "You must be atleast {age} years of age to visit this site.\n{form}";
+				$age_description = "To proceed, we need to verify that you're {age} or older.\n<br><span>Please verify your age.</span>\n{form}";
 			}
 			if ( ! $invalid_age_description ) {
 				$invalid_age_description = 'We are sorry. You are not of valid age.';
