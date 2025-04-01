@@ -597,9 +597,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			);
 			$tid            = $atts['tid'];
 
-			$res = $wpdb->get_row( $wpdb->prepare( 'SELECT * from ' . $legalpages_pro->tablename . ' where id= %d', $tid ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( isset( $res->content ) ) {
-				$content = $res->content;
+			$res = $wpdb->get_row( $wpdb->prepare( "SELECT ID, post_title, post_content FROM {$wpdb->posts} WHERE ID  = %d AND post_type = %s AND post_status != %s", $tid, 'page', 'trash' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( isset( $res->post_content ) ) {
+				$content = $res->post_content;
 			}
 			$lp_find    = array( '[Domain]', '[Business Name]', '[Phone]', '[Street]', '[City, State, Zip code]', '[Country]', '[Email]', '[Address]', '[Niche]' );
 			$lp_general = get_option( 'lp_general' );
