@@ -103,7 +103,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			$checked      = 'checked="checked"';
 			$selected     = 'selected="selected"';
-			wp_enqueue_style( 'wp-legal-pages-vue-wizard', plugin_dir_url( __FILE__ ) . '../css/vue/vue-wizard.css', array(), '1.0.0', 'all');
 			?>
 						<style type="text/css">
 							.clear {
@@ -168,20 +167,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 								width: 800px;
 							}
 						</style>
-						<?php
-							if( !$is_user_connected ) {
-						?>
-						<div class="wplegal-api-connection-popup">
-							<h3>Connect Your Website</h3>
-							<p class="wplegal-api-upgrade-text">
-								Sign up for an account to use this feature.
-							</p>
-							<button class="gdpr-start-auth gdpr-signup">New? Create an account</button>
-							<p class="wplegal-api-connect-text">
-								Already have an account? <span class="wplegal-api-connect-existing"><a href="#">Connect your existing account</a></span>
-							</p>
-						</div>
-						<?php } else { ?>
 						<h2 class="hndle myLabel-head create-popup"> <?php esc_attr_e( 'Available Popups', 'wplegalpages' ); ?> : </h2>
 						<table class="widefat fixed comments table table-striped create-popup">
 							<thead>
@@ -298,7 +283,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 											document.getElementById('wplpcode').innerHTML = "[wp-legalpage tid=" + which + "]";
 										}
 									</script>
-									<form name="me" style="margin-top: 10px;">
+									<form name="me" id="wplp-shortcode-select" style="margin-top: 10px;">
 										<select name="wplp" id="wplp" onChange="wplpfunc(this);" style="width:250px;">
 											<option value=""><?php esc_attr_e( 'Select', 'wplegalpages' ); ?></option>
 											<?php
@@ -365,4 +350,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 									<div class="clear"></div>
 						</div>
 
-						<?php }
+						<?php 

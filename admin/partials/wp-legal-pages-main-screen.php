@@ -362,8 +362,66 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 				<div class="wp-legalpages-admin-legal-pages-content wp-legalpages-admin-tab-content" id="create_popup">
 
 				<?php
+				if( $is_user_connected ){
 					require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-create-popups-template.php';
-				?>
+				} else {
+					wp_enqueue_style('wp-legal-pages-vue-wizard', plugin_dir_url(__FILE__) . '../css/vue/vue-wizard.css', array(), '1.0.0', 'all');
+					?>
+					<div class="wplegal-api-connection-popup">
+							<h3>Connect Your Website</h3>
+							<p class="wplegal-api-upgrade-text">
+								Sign up for an account to use this feature.
+							</p>
+							<button class="gdpr-start-auth gdpr-signup">New? Create an account</button>
+							<p class="wplegal-api-connect-text">
+								Already have an account? <span class="wplegal-api-connect-existing"><a href="#">Connect your existing account</a></span>
+							</p>
+							<span class="wplegal-api-close-icon">&times;</span>
+					</div>
+					<div class="wplegal-api-overlay"></div>	
+					<script>
+						document.addEventListener("DOMContentLoaded", function () {
+						    const popup = document.querySelector(".wplegal-api-connection-popup");
+						    const overlay = document.querySelector(".wplegal-api-overlay");
+						    const closeButton = document.querySelector(".wplegal-api-close-icon");
+						    const restrictedContent = document.querySelector(".postbox"); 
+							restrictedContent.style.cursor = 'not-allowed';
+
+						    function showPopup() {
+						        popup.style.display = "block";
+						        overlay.style.display = "block";
+						    }
+						
+						    function closePopup() {
+						        popup.style.display = "none";
+						        overlay.style.display = "none";
+						    }
+						
+						    closeButton.addEventListener("click", closePopup);
+						    overlay.addEventListener("click", closePopup);
+
+							document.getElementById('wplp').addEventListener('mousedown', function (event) {
+							    event.preventDefault(); // Prevents the dropdown from opening
+														
+							    // Show the popup (modify this based on your popup logic)
+							    showPopup(); 
+							});
+						
+						    // Show popup when user interacts with restricted content
+						    if (restrictedContent) {
+						        restrictedContent.addEventListener("click", showPopup);
+						        restrictedContent.addEventListener("focusin", showPopup, true); // Handles input fields
+								restrictedContent.addEventListener('click', function (event) {
+								    event.stopImmediatePropagation(); 
+    								event.preventDefault(); 
+    								return false; 
+								});
+						    }
+						});
+
+					</script>
+				<?php require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-create-popups-template.php';
+			} ?>
 
 
 				</div>
