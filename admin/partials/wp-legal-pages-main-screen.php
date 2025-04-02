@@ -381,6 +381,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 					<div class="wplegal-api-overlay"></div>	
 					<script>
 						document.addEventListener("DOMContentLoaded", function () {
+							const createPopupTab = document.querySelector(".wp-legalpages-admin-create-popups-tab");
 						    const popup = document.querySelector(".wplegal-api-connection-popup");
 						    const overlay = document.querySelector(".wplegal-api-overlay");
 						    const closeButton = document.querySelector(".wplegal-api-close-icon");
@@ -401,12 +402,20 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 						    overlay.addEventListener("click", closePopup);
 
 							document.getElementById('wplp').addEventListener('mousedown', function (event) {
-							    event.preventDefault(); // Prevents the dropdown from opening
-														
-							    // Show the popup (modify this based on your popup logic)
+							    event.preventDefault(); // Prevents the dropdown from opening														
 							    showPopup(); 
 							});
+
+							createPopupTab.addEventListener("click", function () {
+							    showPopup();
+							});
 						
+							setTimeout(() => {
+    						    if (createPopupTab.classList.contains("active-tab")) {
+    						        showPopup();
+    						    }
+    						}, 500);
+
 						    // Show popup when user interacts with restricted content
 						    if (restrictedContent) {
 						        restrictedContent.addEventListener("click", showPopup);
