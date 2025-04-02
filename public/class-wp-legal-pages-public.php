@@ -65,6 +65,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			add_shortcode( 'wplegalpage', array( $this, 'wplegalpages_page_shortcode' ) );
 			$lp_pro_active    = get_option( '_lp_pro_active' );
 			$lp_general = get_option( 'lp_general' );
+			if (!is_array($lp_general)) {
+				$lp_general = array();
+			}
 			$lp_general['is_adult'] = '0';
 			if( !$lp_pro_active ){
 				// age verification feature.
