@@ -88,7 +88,7 @@ if ( class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 }
 
 if ( ! defined( 'WPLPP_SUFFIX' ) ) {
-	define( 'WPLPP_SUFFIX', ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '' );
+	define( 'WPLPP_SUFFIX', ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min' );
 }
 
 if ( ! function_exists( 'activate_wp_legal_pages' ) ) {

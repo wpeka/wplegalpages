@@ -368,13 +368,17 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 					wp_enqueue_style('wp-legal-pages-vue-wizard', plugin_dir_url(__FILE__) . '../css/vue/vue-wizard.css', array(), '1.0.0', 'all');
 					?>
 					<div class="wplegal-api-connection-popup">
-							<h3>Connect Your Website</h3>
+							<h3>
+								<?php echo esc_html('Connect Your Website','wplegalpages'); ?>
+							</h3>
 							<p class="wplegal-api-upgrade-text">
-								Sign up for an account to use this feature.
+								<?php echo esc_html('Sign up for an account to use this feature.','wplegalpages'); ?>
 							</p>
-							<button class="gdpr-start-auth gdpr-signup">New? Create an account</button>
+							<button class="gdpr-start-auth gdpr-signup">
+								<?php echo esc_html('New? Create an account','wplegalpages'); ?>
+							</button>
 							<p class="wplegal-api-connect-text">
-								Already have an account? <span class="wplegal-api-connect-existing"><a href="#">Connect your existing account</a></span>
+								<?php echo esc_html('Already have an account?','wplegalpages'); ?> <span class="wplegal-api-connect-existing"><a href="#"><?php echo esc_html('Connect your existing account','wplegalpages'); ?></a></span>
 							</p>
 							<span class="wplegal-api-close-icon">&times;</span>
 					</div>
