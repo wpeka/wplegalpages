@@ -1703,6 +1703,7 @@ button[data-v-09b2f69e] {
     text-align: center;
     color: #fff;
     border: none;
+	width: 190px;
 	cursor: pointer;
 }
 
@@ -1761,4 +1762,63 @@ button[data-v-09b2f69e] {
 }
 .wplegal-settings-input-radio{
 	margin-top: 25px;
+}
+/* Overlay Redesign */
+.wplegal-button-wrapper {
+	display: flex;
+	padding: 0 20%;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
+}
+.wplegal-button-wrapper .wplegal-api-connect-existing{
+	width: 215px;
+	height: 52px;
+	border-radius: 4px;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 20px;
+	letter-spacing: 0em;
+	text-align: center;
+	color: #0059B3;
+	background: transparent;
+	border: 1px solid #346DB1;
+}
+.wplegal-button-wrapper .wplegal-paid-api-connect{
+	width: 215px;
+	height: 52px;
+	padding: 16px 23px;
+	border-radius: 4px;
+	background: #074EA8;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 20px;
+	letter-spacing: 0em;
+	text-align: center;
+	color: #fff;
+	border: none;
+	margin-bottom: 0px;
+}.wplegal-wizard .wplegal-wizard-header img{
+	height: 96px;
+    width: 96px;
+}
+.wplegal-button-wrapper .wplegal-api-connect-existing {
+	width: 190px;
+	height: 52px;
+	border-radius: 4px;
+	font-family: Roboto;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 20px;
+	letter-spacing: 0em;
+	text-align: center;
+	color: #2A4A7E;
+	border: 1px solid #7195D0;
+	background-color: transparent;
+	margin-right: 8px;
+}
+
+/* Connection popup for create popup page */
+#create_popup .wplegal-api-connection-popup, #create_popup .wplegal-api-overlay {
+	display: none;
 }

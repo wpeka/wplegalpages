@@ -25,7 +25,17 @@ jQuery(document).ready(function () {
     // Hide all tab contents initially except the first one
     jQuery('.wp-legalpages-admin-tab-content').not(':first').hide();
     jQuery('.wp-legalpages-admin-getting-started-tab').addClass('active-tab');
+	jQuery('.wp-legalpages-admin-wplp-dashboard-tab').addClass('active-tab');
     jQuery('#getting_started').show();
+
+	// Check if the "wp-legalpages-admin-getting-started-tab" is active
+    if (jQuery('.wp-legalpages-admin-getting-started-tab').hasClass('active-tab')) {
+        // Add 'active' class to the other tab
+        jQuery('.legalpages-tab').addClass('active-tab');
+    } else {
+        // Remove 'active' class from the other tab if not needed
+        jQuery('.legalpages-tab').removeClass('active-tab');
+    }
 
     // On tab click, redirect to the specified URL for create_legalpages tab
     jQuery('.wp-legalpages-admin-create_legalpages-tab').on('click', function () {
@@ -166,6 +176,7 @@ jQuery(document).ready(function () {
 	jQuery(".gdpr-start-auth").on("click", startAuth);
 	jQuery('.api-connect-to-account-btn').on('click', startAuth );
 	jQuery('.wplegal-api-connect-existing').on('click', startAuth );
+	jQuery(".gdpr-cookie-consent-admin-upgrade-button").on("click", paidAuth);
 
 	/**
 	 * Function to Start the Authentication Process.
@@ -177,7 +188,7 @@ jQuery(document).ready(function () {
 		// Prevent the default action of the event.
 		event.preventDefault();
 
-		var is_new_user = this.classList.contains('wplegal-api-connect-new');
+		var is_new_user = this.classList.contains("gdpr-signup");
 
 		// Create spinner element
 		var spinner = jQuery('<div class="wplegal-ajax-spinner"></div>');
@@ -216,8 +227,8 @@ jQuery(document).ready(function () {
 				var viewportHeight = window.innerHeight;
 
 				// Set the dimensions of the popup.
-				var popupWidth = 367;
-				var popupHeight = 650;
+				var popupWidth = 1360;
+				var popupHeight = 740;
 
 				// Calculate the position to center the popup.
 				var leftPosition = (viewportWidth - popupWidth) / 2;
@@ -241,6 +252,77 @@ jQuery(document).ready(function () {
 
 
 	}
+
+	/**
+   * Store the Redirect to the Buying Page.
+   * @param {*} data
+   */
+
+	function paidAuth(event) {
+		// Prevent the default action of the event.
+		event.preventDefault();
+	
+		var is_new_user = this.classList.contains('wplegal-api-connect-new');
+	
+		// Create spinner element
+		var spinner = jQuery('<div class="wplegal-ajax-spinner"></div>');
+	
+		// Append spinner to #wpbody-content div.
+
+		var container = jQuery('#wpbody-content');
+		container.css('position', 'relative'); // Ensure container has relative positioning.
+		container.append(spinner);
+	
+		// Make an AJAX request.
+		jQuery
+		  .ajax({
+			url: wplp_localize_data.ajaxurl,
+			type: "POST",
+			data: {
+				action      : 'wp_legal_pages_app_paid_start_auth',
+				_ajax_nonce : wplp_localize_data._ajax_nonce,
+				is_new_user : is_new_user,
+			},
+			beforeSend: function () {
+			  // Show spinner before AJAX call starts
+			  spinner.show();
+			},
+			complete: function () {
+			  // Hide spinner after AJAX call completes
+			  spinner.hide();
+			},
+		  })
+		  .done(function (response) {
+			// Get the width and height of the viewport
+			var viewportWidth = window.innerWidth;
+			var viewportHeight = window.innerHeight;
+	
+			// Set the dimensions of the popup
+			var popupWidth = 1260;
+			var popupHeight = 740;
+	
+			// Calculate the position to center the popup
+			var leftPosition = (viewportWidth - popupWidth) / 2;
+			var topPosition = (viewportHeight - popupHeight) / 2;
+			// Open the popup window at the calculated position
+			var e = window.open(
+			  response.data.url,
+			  "_blank",
+			  "location=no,width=" +
+				popupWidth +
+				",height=" +
+				popupHeight +
+				",left=" +
+				leftPosition +
+				",top=" +
+				topPosition +
+				",scrollbars=0"
+			);
+			if (null == e) {
+			  console.log("error while opening the popup window");
+			}
+		  });
+	  }
 
 
 	/**
@@ -417,4 +499,131 @@ jQuery(document).ready(function () {
 		);
 	}
 
+	   //For Installing GDPR plugin - Unified Dashboard 
+	   jQuery(document).ready(function ($) {
+		// Handle wp help menu click- start
+		jQuery('#toplevel_page_wp-legal-pages a[href="admin.php?page=wplp-dashboard#help-page"]').on('click', function (e) {
+			e.preventDefault(); // Prevent default anchor behavior
+			// Remove 'current' class from all <li> elements
+			jQuery('li').removeClass('current');
+	  
+			// Add 'current' class to the immediate <li> parent of the clicked <a> tag
+			jQuery(this).closest('li').addClass('current');
+	  
+			// Show the #help-page div and hide all other sibling divs
+			if (jQuery('.wplegal-container').length > 0) {
+			  jQuery('.wplegal-container').hide();
+			  jQuery('.wp-legalpages-admin-wplp-dashboard-tab').removeClass('active-tab');
+
+        		jQuery('.wp-legalpages-admin-help-tab').addClass('active-tab');
+			}
+			jQuery('#help-page').show();
+		 });
+		if (window.location.href.includes('#help-page')) {
+			// Select the "Help Page" link and its immediate parent <li>
+			var $helpPageLink = jQuery('#toplevel_page_wp-legal-pages a[href="admin.php?page=wplp-dashboard#help-page"]');
+			var $dashboardLink = jQuery('#toplevel_page_wp-legal-pages a[href="admin.php?page=wplp-dashboard"]');
+			
+			// Add the 'current' class to the parent <li> of the "Help Page" link
+			$helpPageLink.closest('li').addClass('current');
+	  
+			// Remove the 'current' class from the parent <li> of the "Dashboard" link
+			$dashboardLink.closest('li').removeClass('current');
+		  }
+		// Handle wp help menu click- end
+
+		$('.install-gdpr-button').on('click', function (e) {
+			e.preventDefault();
+	
+			var pluginSlug = 'gdpr-cookie-consent'; //$(this).data('plugin-slug'); // Get the plugin slug from the anchor tag
+			var baseURL = window.location.origin;
+		// Construct the URL for plugins.php
+		var dashboardpageurl =
+		  baseURL + "/wp-admin/admin.php?page=legal-pages";
+		
+			 var $clickedButton = $(this); // Reference to the clicked button
+	
+			$.ajax({
+				url: wplp_localize_data.ajaxurl,
+				method: 'POST',
+				data: {
+					action: 'gdpr_install_plugin',
+					plugin_slug: pluginSlug,
+					_ajax_nonce: wplp_localize_data._ajax_nonce,
+				},
+				beforeSend: function () {
+					$clickedButton.text('Installing...');
+				},
+				success: function (response) {
+					if (response.success) {
+					  window.location.href = dashboardpageurl;
+  
+					} else {
+					   // $('.install-plugin-status').text('Error: ' + response.data.message);
+					}
+				},
+				error: function () {
+					//$('.install-plugin-status').text('An unexpected error occurred.');
+				},
+			});
+		});
+
+		$('#support_form').on('submit', function (e) {
+			e.preventDefault();
+	
+			// Collect form data
+			var formData = {
+				action: 'wplegalpages_support_request',
+				name: $('input[name="sup-name"]').val(),
+				email: $('input[name="sup-email"]').val(),
+				message: $('textarea[name="sup-message"]').val(),
+				wplegalpages_nonce: $('input[name="wplegalpages_nonce"]').val(),
+			};
+	
+			// Clear previous messages
+			$('.notice').remove();
+	
+			// Send AJAX request
+			$.ajax({
+				url: ajaxurl, // Provided by WordPress
+				type: 'POST',
+				data: formData,
+				success: function (response) {
+					if (response.success) {
+						$('<div class="notice notice-success is-dismissible"><p>' + response.data.message + '</p></div>').insertBefore('#support_form');
+					} else {
+						$('<div class="notice notice-error is-dismissible"><p>' + response.data.message + '</p></div>').insertBefore('#support_form');
+					}
+				},
+				error: function () {
+					$('<div class="notice notice-error is-dismissible"><p>An unexpected error occurred. Please try again.</p></div>').insertBefore('#support_form');
+				},
+			});
+		});
+		
+	});
+
 });
+document.addEventListener("DOMContentLoaded", alignSideBar);
+function alignSideBar(){
+  var side_bar = document.querySelector(".wplp-sub-tabs");
+
+  function updateTopBasedOnTab(tabList) {
+        if (tabList.includes("settings") || tabList.includes("all_legal_pages")) {
+            side_bar.style.top = "185px";
+        } 
+		else {
+            side_bar.style.top = "65px"; // Default value
+        }
+    }
+    // Get the hash (part after #)
+    var urlParts = window.location.href.split("#");
+    updateTopBasedOnTab(urlParts);
+
+    document.querySelectorAll(".wplp-sub-tabs .wp-legalpages-admin-tab").forEach(function(tab){
+        tab.addEventListener("click", function () {
+            var tabValue = this.getAttribute("data-tab");
+            updateTopBasedOnTab([tabValue]);
+        });
+    });
+}

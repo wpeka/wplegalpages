@@ -65,8 +65,8 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 				</a>
 			</div>
 		</div>
-<h2 class="hndle myLabel-head"> <?php esc_attr_e( 'Available Pages', 'wplegalpages' ); ?> </h2>
-<table class="widefat fixed comments table table-striped-all-pages">
+<h2 class="hndle myLabel-head all-pages"> <?php esc_attr_e( 'Available Pages', 'wplegalpages' ); ?> </h2>
+<table class="widefat fixed comments table table-striped-all-pages all-pages">
 	<thead>
 		<tr class="wplegalpages-all-pages-heading">
 			<th width="6%" ><?php esc_attr_e( 'S.No.', 'wplegalpages' ); ?></th>
@@ -100,7 +100,7 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 				<td><?php echo esc_attr( $count ); ?></td>
 				<td><?php echo esc_attr( $res->post_title ); ?></td>
 				<td><?php echo esc_attr( $res->ID ); ?></td>
-				<td><?php echo '[wplegalpage pid=' . esc_attr( $res->ID ) . ']'; ?></td>
+				<td><?php echo '[wplegalpage tid=' . esc_attr( $res->ID ) . ']'; ?></td>
 				<td><?php echo esc_attr( ucfirst( $author[0]->user_login ) ); ?></td>
 				<td><?php echo esc_attr( gmdate( 'Y/m/d', strtotime( $res->post_date ) ) ); ?></td>
 				<td class="wplegal-table-link">

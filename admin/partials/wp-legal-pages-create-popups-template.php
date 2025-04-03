@@ -30,8 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	$lp_obj->wplegalpages_pro_enqueue_editor();
 	$baseurl = esc_url( get_bloginfo( 'wpurl' ) );
 	?>
-		<div style="width:1000px;float:left;">
-			<h1><?php esc_attr_e( 'WPLegalPages', 'wplegalpages' ); ?></h1> </div>
+		
 		<div style="clear:both;"></div>
 		<div class="wrap">
 			<?php
@@ -168,8 +167,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 								width: 800px;
 							}
 						</style>
-						<h2 class="hndle title-head"> <?php esc_attr_e( 'Available Popups', 'wplegalpages' ); ?> : </h2>
-						<table class="widefat fixed comments table table-striped">
+						<h2 class="hndle myLabel-head create-popup"> <?php esc_attr_e( 'Available Popups', 'wplegalpages' ); ?> : </h2>
+						<table class="widefat fixed comments table table-striped create-popup">
 							<thead>
 								<tr>
 									<th width="5%"><?php esc_attr_e( 'S.No.', 'wplegalpages' ); ?></th>
@@ -221,32 +220,78 @@ if ( ! defined( 'ABSPATH' ) ) {
 								</tr>
 							</tfoot>
 						</table>
-						<br/>
-						<br/>
-						<div class="postbox" style="float:left; width:300px; margin-left:0px;">
+						<div class="postbox create-popup" style="float:left;">
 							<h3 class="hndle title-head" style=" padding:7px 10px; font-size:20px;"><?php esc_attr_e( 'Use Template Shortcode', 'wplegalpages' ); ?> :</h3>
 							<div style="padding:0 10px 10px; line-height:18px;"><?php esc_attr_e( ' Select the template from below drop down for which you need to have popup and copy paste the shortcodes to the editor.', 'wplegalpages' ); ?>
 								<br/>
 								<?php
-								$res = $wpdb->get_results( 'select * from ' . $lp_obj->tablename );
+								$all_page_options = ['wplegal_terms_of_use_page', 
+													'wplegal_terms_of_use_free_page', 
+													'wplegal_fb_policy_page', 
+													'wplegal_affiliate_agreement_page',
+													'wplegal_affiliate_disclosure_page',
+													'wplegal_amazon_affiliate_disclosure_page',
+													'wplegal_testimonials_disclosure_page',
+													'wplegal_advertising_disclosure_page',
+													'wplegal_confidentiality_disclosure_page',
+													'wplegal_earnings_disclaimer_page',
+													'wplegal_medical_disclaimer_page',
+													'wplegal_antispam_page',
+													'wplegal_ftc_statement_page',
+													'wplegal_double_dart_page',
+													'wplegal_about_us_page',
+													'wplegal_cpra_page',
+													'wplegal_end_user_license_page',
+													'wplegal_digital_goods_refund_policy_page',
+													'wplegal_newsletters_page',
+													'wplegal_general_disclaimer_page',
+													'wplegal_standard_privacy_policy_page',
+													'wplegal_ccpa_free_page',
+													'wplegal_coppa_policy_page',
+													'wplegal_terms_forced_policy_page',
+													'wplegal_gdpr_cookie_policy_page',
+													'wplegal_gdpr_privacy_policy_page',
+													'wplegal_cookies_policy_page',
+													'wplegal_blog_comments_policy_page',
+													'wplegal_linking_policy_page',
+													'wplegal_external_link_policy_page',
+													'wplegal_dmca_page',
+													'wplegal_california_privacy_policy_page',
+													'wplegal_privacy_policy_page',
+													'wplegal_returns_refunds_policy_page',
+													'wplegal_impressum_page',
+													'wplegal_custom_legal_page'];
+
+								$post_id_arr = [];
+								
+								foreach ($all_page_options as $page_option) {
+									$page_id = get_option( $page_option );
+									if ( $page_id ) {
+										$post_id_arr[] = $page_id;
+									}
+								}
+
+								$id_list = implode( ',', $post_id_arr );
+
+								$res = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_content FROM {$wpdb->posts} WHERE ID IN ({$id_list}) AND post_type = %s AND post_status != %s", 'page', 'trash'));
 								 // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 								?>
 									<script type="text/javascript">
 										function wplpfunc(selectObj) {
-											var idx = selectObj.selectedIndex;
-											var which = selectObj.options[idx].value;
+											var idx = selectObj.value;
+											var which = selectObj.value;
 											document.getElementById('wplpcode').innerHTML = "[wp-legalpage tid=" + which + "]";
 										}
 									</script>
-									<form name="me" style="margin-top: 10px;">
+									<form name="me" id="wplp-shortcode-select" style="margin-top: 10px;">
 										<select name="wplp" id="wplp" onChange="wplpfunc(this);" style="width:250px;">
 											<option value=""><?php esc_attr_e( 'Select', 'wplegalpages' ); ?></option>
 											<?php
 
 											foreach ( $res as $ras ) {
 												?>
-												<option value="<?php echo esc_attr( $ras->id ); ?>">
-													<?php echo esc_attr( $ras->title ); ?>
+												<option value="<?php echo esc_attr( $ras->ID ); ?>">
+													<?php echo esc_attr( $ras->post_title ); ?>
 												</option>
 												<?php
 											}
@@ -257,7 +302,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 									<div style="clear:both;"></div>
 							</div>
 						</div>
-						<div class="postbox" style="width:850px; float:left;">
+						<div class="postbox create-popup" style="width:850px; float:left;">
 							<?php $row = ''; ?>
 								<?php
 								if ( get_option( 'wplegalpalges_flag_key' ) ) {
@@ -305,4 +350,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 									<div class="clear"></div>
 						</div>
 
-						<?php
+						<?php 

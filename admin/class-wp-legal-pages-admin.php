@@ -79,6 +79,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				add_action( 'save_post', array( $this, 'wplegalpages_pro_save_meta_box' ) );
 				add_filter( 'the_content', array( $this, 'wplegalpages_pro_post_content' ) );
 			}
+			add_action('wp_ajax_gdpr_install_plugin', array($this, 'wplp_gdpr_install_plugin_ajax_handler'));
 			add_action('rest_api_init', array($this, 'register_wpl_dashboard_route'));
 		}
 
@@ -127,7 +128,52 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				},
 			)
 		);
+		register_rest_route(
+			'wpl/v2', // Namespace
+			'/delete_activation', 
+			array(
+				'methods'  => 'POST',
+				'callback' => array($this, 'disconnect_account_request'), // Function to handle the request
+				'permission_callback' => function() use ($is_user_connected) {
+					// Check if user is connected and the API plan is valid
+					if ($is_user_connected) {
+						return true; // Allow access
+					}
+					return new WP_Error('rest_forbidden', 'Unauthorized access', array('status' => 401));
+				},
+			)
+		);
 		
+	}
+
+
+	/**
+	 * Fucntion to disconnect account when site deleted from saas dashboard
+	 */
+	public function disconnect_account_request(){
+
+		require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
+		$settings   = new WP_Legal_Pages_Settings();
+		$options    = $settings->get_defaults();
+		$product_id = $settings->get( 'account', 'product_id' );
+
+		global $wcam_lib_legalpages;
+		$activation_status = get_option( $wcam_lib_legalpages->wc_am_activated_key );
+
+		$args = array(
+			'api_key' => $settings->get( 'api', 'token' ),
+		);
+		update_option( 'wpeka_api_framework_app_settings', $options );
+
+		if ( false !== get_option( 'wplegal_api_framework_app_settings' ) ) {
+			update_option( 'wplegal_api_framework_app_settings', $options );
+		}
+
+		update_option( $wcam_lib_legalpages->wc_am_activated_key, 'Deactivated' );
+
+		if ( isset( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ] ) ) {
+			update_option( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ], 'Deactivated' );
+		}
 	}
 
 	/* Added endpoint to send dashboard data from plugin to the saas appwplp server */
@@ -270,7 +316,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_register_script( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'wizard/libraries/select2/select2.js', array( 'jquery' ), $this->version, false );
 		   
 		}
-
+		public function wplp_remove_dashboard_submenu() {
+			// Define the current version constant
+			$current_version = $this->version;
+		
+			// Target version to hide the submenu
+			$target_version = '3.3.5';
+		
+			// Check if the current version is below the target version
+			if (version_compare($current_version, $target_version, '<')) {
+				// Remove the 'Dashboard' submenu
+				remove_submenu_page('wp-legal-pages', 'wplp-dashboard');
+				remove_submenu_page('wp-legal-pages', 'wplp-dashboard#help-page');
+			}
+		}
 		/**
 		 * This function is provided for WordPress dashbord menus.
 		 *
@@ -303,6 +362,29 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$callback_function , // Callback function
 				WPL_LITE_PLUGIN_URL . 'admin/images/wp_legalpages_dashicon_1.png', // Icon URL (choose an icon from the WordPress Dashicons library)
 				67 // Position
+				);
+			}
+			
+			if($is_legalpages_active && $is_gdpr_active){
+				add_submenu_page(
+					'wp-legal-pages', // Parent slug (same as main menu slug)
+					__( 'Dashboard', 'wplegalpages' ),  // Page title
+					__( 'Dashboard', 'wplegalpages' ),     // Dashboard page title
+					'manage_options',   // Capability
+					'wplp-dashboard', // Menu slug
+					array( $this, 'conditional_dashboard_callback'),
+					90
+				);
+			}
+			if(!$gdpr_installed || ($gdpr_installed && !$is_gdpr_active)){
+				add_submenu_page(
+					'wp-legal-pages', // Parent slug (same as main menu slug)
+					__( 'Dashboard', 'gdpr-cookie-consent' ),  // Page title
+					__( 'Dashboard', 'gdpr-cookie-consent' ),     // Dashboard page title
+					'manage_options',   // Capability
+					'wplp-dashboard', // Menu slug
+					array( $this, 'wp_legalpages_new_admin_screen_dashboard' ), // Callback function
+					90
 				);
 			}
 			// Add the "WPLegalPages" sub-menu under "WP Legal Pages"
@@ -339,7 +421,28 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					array( $this, 'gdpr_cookie_consent_install_activate_screen' ), // Callback function
 				);
 			}
-
+			if($is_legalpages_active && $is_gdpr_active){
+				add_submenu_page(
+					'wp-legal-pages', // Parent slug (same as main menu slug)
+					__( 'Help', 'wplegalpages' ),  // Page title
+					__( 'Help', 'wplegalpages' ),     // Dashboard page title
+					'manage_options',   // Capability
+					'wplp-dashboard#help-page', // Menu slug
+					array( $this, 'conditional_help_callback' ), // Callback function
+					91
+				);
+			}
+			if(!$gdpr_installed || ($gdpr_installed && !$is_gdpr_active)){
+				add_submenu_page(
+					'wp-legal-pages', // Parent slug (same as main menu slug)
+					__( 'Help', 'wplegalpages' ),  // Page title
+					__( 'Help', 'wplegalpages' ),     // Dashboard page title
+					'manage_options',   // Capability
+					'wplp-dashboard#help-page', // Menu slug
+					array( $this, 'help_page_content' ), // Callback function
+					91
+				);
+			}
 			if($legal_pages_installed || $gdpr_installed){
 				remove_submenu_page('wp-legal-pages', 'wp-legal-pages');
 			}
@@ -350,6 +453,27 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				}
 			}
 		}
+		function conditional_dashboard_callback() {
+			// Check if the action hook exists
+			if ( has_action( 'gdpr_cookie_consent_new_admin_dashboard_screen' ) ) {
+				// Trigger the action
+				do_action( 'gdpr_cookie_consent_new_admin_dashboard_screen' );
+			} else {
+				// Default callback content
+				$this->wp_legalpages_new_admin_screen_dashboard();
+			}
+		}
+		function conditional_help_callback() {
+			// Check if the action hook exists
+			if ( has_action( 'gdpr_help_page_content' ) ) {
+				// Trigger the action
+				do_action( 'gdpr_help_page_content' );
+			} else {
+				// Default callback content
+				$this->help_page_content();
+			}
+		}
+		
 		/**
 		 * Admin init for database update.
 		 *
@@ -391,7 +515,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( '1' !== $lp_pro_installed ) {
 				$links = array_merge(
 					array(
-						'<a href="' . esc_url( 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugins&utm_campaign=wplegalpages&utm_content=upgrade-to-pro' ) . '" target="_blank" rel="noopener noreferrer"><strong style="color: #11967A; display: inline;">' . __( 'Upgrade to Pro', 'wplegalpages' ) . '</strong></a>',
+						'<a href="' . esc_url( 'https://app.wplegalpages.com/pricing/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=upgrade' ) . '" target="_blank" rel="noopener noreferrer"><strong style="color: #11967A; display: inline;">' . __( 'Upgrade to Pro', 'wplegalpages' ) . '</strong></a>',
 					),
 					$links
 				);
@@ -410,996 +534,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$legal_pages = new WP_Legal_Pages();
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-			$privacy                    = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/privacy.html' );
-			$dmca                       = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/dmca.html' );
-			$terms_latest               = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/Terms-of-use.html' );
-			$ccpa                       = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/CCPA.html' );
-			$terms_fr                   = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/Terms-of-use-fr.html' );
-			$terms_de                   = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/Terms-of-use-de.html' );
-			$terms                      = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/Terms.html' );
-			$privacy_california         = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/privacyCalifornia.html' );
-			$earnings                   = '<p>Effective date - [Last Updated]</p><p>EVERY EFFORT HAS BEEN MADE TO ACCURATELY REPRESENT THIS PRODUCT AND IT\'S POTENTIAL. EVEN THOUGH THIS INDUSTRY IS ONE OF THE FEW WHERE ONE CAN WRITE THEIR OWN CHECK IN TERMS OF EARNINGS, THERE IS NO GUARANTEE THAT YOU WILL EARN ANY MONEY USING THE TECHNIQUES AND IDEAS IN THESE MATERIALS. EXAMPLES IN THESE MATERIALS ARE NOT TO BE INTERPRETED AS A PROMISE OR GUARANTEE OF EARNINGS. EARNING POTENTIAL IS ENTIRELY DEPENDENT ON THE PERSON USING OUR PRODUCT, IDEAS AND TECHNIQUES. WE DO NOT PURPORT THIS AS A "GET RICH SCHEME."</p><p>ANY CLAIMS MADE OF ACTUAL EARNINGS OR EXAMPLES OF ACTUAL RESULTS CAN BE VERIFIED UPON REQUEST. YOUR LEVEL OF SUCCESS IN ATTAINING THE RESULTS CLAIMED IN OUR MATERIALS DEPENDS ON THE TIME YOU DEVOTE TO THE PROGRAM, IDEAS AND TECHNIQUES MENTIONED, YOUR FINANCES, KNOWLEDGE AND VARIOUS SKILLS. SINCE THESE FACTORS DIFFER ACCORDING TO INDIVIDUALS, WE CANNOT GUARANTEE YOUR SUCCESS OR INCOME LEVEL. NOR ARE WE RESPONSIBLE FOR ANY OF YOUR ACTIONS.</p><p>MATERIALS IN OUR PRODUCT AND OUR WEBSITE MAY CONTAIN INFORMATION THAT INCLUDES OR IS BASED UPON FORWARD-LOOKING STATEMENTS WITHIN THE MEANING OF THE SECURITIES LITIGATION REFORM ACT OF 1995. FORWARD-LOOKING STATEMENTS GIVE OUR EXPECTATIONS OR FORECASTS OF FUTURE EVENTS. YOU CAN IDENTIFY THESE STATEMENTS BY THE FACT THAT THEY DO NOT RELATE STRICTLY TO HISTORICAL OR CURRENT FACTS. THEY USE WORDS SUCH AS "ANTICIPATE," "ESTIMATE," "EXPECT," "PROJECT," "INTEND," "PLAN," "BELIEVE," AND OTHER WORDS AND TERMS OF SIMILAR MEANING IN CONNECTION WITH A DESCRIPTION OF POTENTIAL EARNINGS OR FINANCIAL PERFORMANCE.</p><p>ANY AND ALL FORWARD LOOKING STATEMENTS HERE OR ON ANY OF OUR SALES MATERIAL ARE INTENDED TO EXPRESS OUR OPINION OF EARNINGS POTENTIAL. MANY FACTORS WILL BE IMPORTANT IN DETERMINING YOUR ACTUAL RESULTS AND NO GUARANTEES ARE MADE THAT YOU WILL ACHIEVE RESULTS SIMILAR TO OURS OR ANYBODY ELSES, IN FACT NO GUARANTEES ARE MADE THAT YOU WILL ACHIEVE ANY RESULTS FROM OUR IDEAS AND TECHNIQUES IN OUR MATERIAL.</p><p>The author and publisher disclaim any warranties (express or implied), merchantability, or fitness for any particular purpose. The author and publisher shall in no event be held liable to any party for any direct, indirect, punitive, special, incidental or other consequential damages arising directly or indirectly from any use of this material, which is provided "as is", and without warranties.</p><p>As always, the advice of a competent legal, tax, accounting or other  professional should be sought.</p><p>[Domain] does not warrant the performance, effectiveness or applicability of any sites listed or linked to on [Domain]</p><p>All links are for information purposes only and are not warranted for content, accuracy or any other implied or explicit purpose.</p>';
-			$disclaimer                 = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/disclaimer.html' );
-			$disclaimer_fr              = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/disclaimer-fr.html' );
-			$disclaimer_de              = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/disclaimer-de.html' );
-			$testimonials               = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/testimonial-disclosure.html' );
-			$linking                    = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/linking-policy.html' );
-			$refund                     = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/refund-policy.html' );
-			$return_refund              = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/return-refund-policy.html' );
-			$affiliate                  = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/affiliate-agreement.html' );
-			$disclosure                 = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/affiliate-disclosure.html' );
-			$antispam                   = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/antispam.html' );
-			$ftc                        = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/ftcstatement.html' );
-			$medical                    = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/medical-disclaimer.html' );
-			$dart                       = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/double-dart-cookie.html' );
-			$external                   = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/external-links.html' );
-			$fbpolicy                   = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/fbpolicy.html' );
-			$about_us                   = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/about-us.html' );
-			$digital_goods              = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/digital-goods-refund-policy.html' );
-			$coppa                      = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/COPPA.html' );
-			$blog_policy                = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/blog-comments-policy.html' );
-			$newsletter                 = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/Newsletter-Subscription-and-Disclaimer.html' );
-			$cookies_policy             = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/cookies-policy.html' );
-			$gdpr_cookie_policy         = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/gdpr-cookie-policy.html' );
-			$gdpr_privacy_policy        = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/gdpr-privacy-policy.html' );
-			$gdpr_privacy_policy_fr     = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/gdpr-privacy-policy-fr.html' );
-			$gdpr_privacy_policy_de     = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/gdpr-privacy-policy-de.html' );
-			$confidentiality_disclosure = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/confidentiality-disclosure.html' );
-
-			$terms_count          = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'B8wltvJ4cB' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			$privacy_policy_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE contentfor=%s', array( 'kCjTeYOZxB' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $privacy_policy_count ) {
-				$wpdb->insert(
-					$legal_pages->tablename,
-					array(
-						'title'      => 'Privacy Policy',
-						'content'    => $privacy,
-						'contentfor' => 'kCjTeYOZxB',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				); // db call ok; no-cache ok.
-			} else {
-				$wpdb->update(
-					$legal_pages->tablename,
-					array(
-						'is_active'  => '1',
-						'content'    => $privacy,
-						'contentfor' => 'kCjTeYOZxB',
-					),
-					array( 'title' => 'Privacy Policy' ),
-					array( '%d', '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$dmca_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE contentfor=%s', array( '1r4X6y8tssz0j' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $dmca_count ) {
-				$wpdb->insert(
-					$legal_pages->tablename,
-					array(
-						'title'      => 'DMCA',
-						'content'    => $dmca,
-						'contentfor' => '1r4X6y8tssz0j',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				); // db call ok; no-cache ok.
-			} else {
-				$wpdb->update(
-					$legal_pages->tablename,
-					array(
-						'is_active'  => '1',
-						'content'    => $dmca,
-						'contentfor' => 'r4X6y8tssz',
-					),
-					array( 'title' => 'DMCA' ),
-					array( '%d', '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$terms_of_use_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE contentfor=%s', array( 'n1bmPjZ6Xj' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $terms_of_use_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages->tablename,
-					array(
-						'title'      => 'Terms of Use',
-						'content'    => $terms_latest,
-						'contentfor' => 'n1bmPjZ6Xj',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages->tablename,
-					array(
-						'is_active'  => '1',
-						'content'    => $terms_latest,
-						'contentfor' => 'n1bmPjZ6Xj',
-					),
-					array( 'title' => 'Terms of Use' ),
-					array( '%d', '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$terms_of_use_fr_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE contentfor=%s', array( 'MMFqUJfC3m' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $terms_of_use_fr_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages->tablename,
-					array(
-						'title'      => 'Terms of Use - FR',
-						'content'    => $terms_fr,
-						'contentfor' => 'MMFqUJfC3m',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages->tablename,
-					array(
-						'is_active'  => '1',
-						'content'    => $terms_fr,
-						'contentfor' => 'MMFqUJfC3m',
-					),
-					array( 'title' => 'Terms of Use - FR' ),
-					array( '%d', '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$terms_of_use_de_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE contentfor=%s', array( 'fbBlC5Y4yZ' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $terms_of_use_de_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages->tablename,
-					array(
-						'title'      => 'Terms of Use - DE',
-						'content'    => $terms_de,
-						'contentfor' => 'fbBlC5Y4yZ',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages->tablename,
-					array(
-						'is_active'  => '1',
-						'content'    => $terms_de,
-						'contentfor' => 'fbBlC5Y4yZ',
-					),
-					array( 'title' => 'Terms of Use - DE' ),
-					array( '%d', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$ccpa_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages->tablename . ' WHERE contentfor=%s', array( 'JRevVk8nkP' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $ccpa_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages->tablename,
-					array(
-						'title'      => 'CCPA - California Consumer Privacy Act',
-						'content'    => $ccpa,
-						'contentfor' => 'JRevVk8nkP',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages->tablename,
-					array(
-						'is_active'  => '1',
-						'content'    => $ccpa,
-						'contentfor' => 'JRevVk8nkP',
-					),
-					array( 'title' => 'CCPA - California Consumer Privacy Act' ),
-					array( '%d', '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			if ( '0' === $terms_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Terms(forced agreement)',
-						'content'    => $terms,
-						'contentfor' => 'B8wltvJ4cB',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $terms,
-						'contentfor' => 'B8wltvJ4cB',
-					),
-					array( 'title' => 'Terms(forced agreement)' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$california_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'wOHnKlLcmo' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $california_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'California Privacy Rights',
-						'content'    => $privacy_california,
-						'contentfor' => 'wOHnKlLcmo',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $privacy_california,
-						'contentfor' => 'wOHnKlLcmo',
-					),
-					array( 'title' => 'California Privacy Rights' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$earnings_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'J5GdjXkOYs' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $earnings_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Earnings Disclaimer',
-						'content'    => $earnings,
-						'contentfor' => 'J5GdjXkOYs',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $earnings,
-						'contentfor' => 'J5GdjXkOYs',
-					),
-					array( 'title' => 'Earnings Disclaimer' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$disclaimer_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'Xq8I33kdBD' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $disclaimer_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Disclaimer',
-						'content'    => $disclaimer,
-						'contentfor' => 'Xq8I33kdBD',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $disclaimer,
-						'contentfor' => 'Xq8I33kdBD',
-					),
-					array( 'title' => 'Disclaimer' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$disclaimer_fr_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'ywMXk14kX5' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $disclaimer_fr_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Disclaimer - FR',
-						'content'    => $disclaimer_fr,
-						'contentfor' => 'ywMXk14kX5',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $disclaimer_fr,
-						'contentfor' => 'ywMXk14kX5',
-					),
-					array( 'title' => 'Disclaimer - FR' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$disclaimer_de_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'sOGbuLkgDX' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $disclaimer_de_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Disclaimer - DE',
-						'content'    => $disclaimer_de,
-						'contentfor' => 'sOGbuLkgDX',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $disclaimer_de,
-						'contentfor' => 'sOGbuLkgDX',
-					),
-					array( 'title' => 'Disclaimer - DE' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$testimonials_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'ICdlpogo8O' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $testimonials_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Testimonials Disclosure',
-						'content'    => $testimonials,
-						'contentfor' => 'ICdlpogo8O',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $testimonials,
-						'contentfor' => 'ICdlpogo8O',
-					),
-					array( 'title' => 'Testimonials Disclosure' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$linking_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'HCdw9KSLn8' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $linking_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Linking Policy',
-						'content'    => $linking,
-						'contentfor' => 'HCdw9KSLn8',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $linking,
-						'contentfor' => 'HCdw9KSLn8',
-					),
-					array( 'title' => 'Linking Policy' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$refund_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'Xg2AWjKu7e' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' !== $refund_count ) {
-				if ( ! get_option( '_lp_pro_refund_db_updated' ) ) {
-					$wpdb->delete(
-						$legal_pages_pro->tablename,
-						array(
-							'contentfor' => 'Xg2AWjKu7e',
-						),
-						array(
-							'%s',
-						)
-					); // db call ok; no-cache ok.
-					add_option( '_lp_pro_refund_db_updated', true );
-				}
-			}
-			$return_refund_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'R4CiGI3sJ4' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $return_refund_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Returns and Refunds Policy: General',
-						'content'    => $return_refund,
-						'contentfor' => 'R4CiGI3sJ4',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Returns and Refunds Policy: General',
-						'content'    => $return_refund,
-						'contentfor' => 'R4CiGI3sJ4',
-					),
-					array( 'contentfor' => 'R4CiGI3sJ4' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$affiliate_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'uxygs19AsJ' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $affiliate_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Affiliate Agreement',
-						'content'    => $affiliate,
-						'contentfor' => 'uxygs19AsJ',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $affiliate,
-						'contentfor' => 'uxygs19AsJ',
-					),
-					array( 'title' => 'Affiliate Agreement' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$antispam_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( '9nEm1Jy29P' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $antispam_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Antispam',
-						'content'    => $antispam,
-						'contentfor' => '9nEm1Jy29P',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $antispam,
-						'contentfor' => '9nEm1Jy29P',
-					),
-					array( 'title' => 'Antispam' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$ftc_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'dbLy6a8FAx' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $ftc_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'FTC Statement',
-						'content'    => $ftc,
-						'contentfor' => 'dbLy6a8FAx',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $ftc,
-						'contentfor' => 'dbLy6a8FAx',
-					),
-					array( 'title' => 'FTC Statement' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$medical_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'RLlofiRSgd' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $medical_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Medical Disclaimer',
-						'content'    => $medical,
-						'contentfor' => 'RLlofiRSgd',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $medical,
-						'contentfor' => 'RLlofiRSgd',
-					),
-					array( 'title' => 'Medical Disclaimer' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$dart_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'EdNSxwT2eB' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $dart_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Double Dart Cookie',
-						'content'    => $dart,
-						'contentfor' => 'EdNSxwT2eB',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $dart,
-						'contentfor' => 'EdNSxwT2eB',
-					),
-					array( 'title' => 'Double Dart Cookie' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$external_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'GsnkrA9R91' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $external_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'External Links Policy',
-						'content'    => $external,
-						'contentfor' => 'GsnkrA9R91',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $external,
-						'contentfor' => 'GsnkrA9R91',
-					),
-					array( 'title' => 'External Links Policy' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$disclosure_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'TwiV64Z4y1' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $disclosure_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Affiliate Disclosure',
-						'content'    => $disclosure,
-						'contentfor' => 'TwiV64Z4y1',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $disclosure,
-						'contentfor' => 'TwiV64Z4y1',
-					),
-					array( 'title' => 'Affiliate Disclosure' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$fbpolicy_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'Q9ytZuRIgJ' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $fbpolicy_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'FB Policy',
-						'content'    => $fbpolicy,
-						'contentfor' => 'Q9ytZuRIgJ',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $fbpolicy,
-						'contentfor' => 'Q9ytZuRIgJ',
-					),
-					array( 'title' => 'FB Policy' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$about_us_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'J2tfsnhta5' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $about_us_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'About Us',
-						'content'    => $about_us,
-						'contentfor' => 'J2tfsnhta5',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $about_us,
-						'contentfor' => 'J2tfsnhta5',
-					),
-					array( 'title' => 'About Us' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$digital_goods_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'DDj1NshuFZ' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' !== $digital_goods_count ) {
-				if ( ! get_option( '_lp_pro_digital_db_updated' ) ) {
-					$wpdb->delete(
-						$legal_pages_pro->tablename,
-						array(
-							'contentfor' => 'DDj1NshuFZ',
-						),
-						array(
-							'%s',
-						)
-					); // db call ok; no-cache ok.
-					add_option( '_lp_pro_digital_db_updated', true );
-				}
-			}
-			$coppa_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( '5o3hglUfDr' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $coppa_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'COPPA - Children’s Online Privacy Policy',
-						'content'    => $coppa,
-						'contentfor' => '5o3hglUfDr',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $coppa,
-						'contentfor' => '5o3hglUfDr',
-					),
-					array( 'title' => 'COPPA - Children’s Online Privacy Policy' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$blog_policy_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( '3PjAe6pJUc' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $blog_policy_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Blog Comments Policy',
-						'content'    => $blog_policy,
-						'contentfor' => '3PjAe6pJUc',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $blog_policy,
-						'contentfor' => '3PjAe6pJUc',
-					),
-					array( 'title' => 'Blog Comments Policy' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$newsletter_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( '52ahHjKsVH' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $newsletter_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Newsletter : Subscription and Disclaimer',
-						'content'    => $newsletter,
-						'contentfor' => '52ahHjKsVH',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $newsletter,
-						'contentfor' => '52ahHjKsVH',
-					),
-					array( 'title' => 'Newsletter : Subscription and Disclaimer' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$cookies_policy_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'Kp726GRpYC' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $cookies_policy_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Cookies Policy',
-						'content'    => $cookies_policy,
-						'contentfor' => 'Kp726GRpYC',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $cookies_policy,
-						'contentfor' => 'Kp726GRpYC',
-					),
-					array( 'title' => 'Cookies Policy' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$gdpr_cookie_policy_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'EfjpLEnTzv' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $gdpr_cookie_policy_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'GDPR Cookie Policy',
-						'content'    => $gdpr_cookie_policy,
-						'contentfor' => 'EfjpLEnTzv',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $gdpr_cookie_policy,
-						'contentfor' => 'EfjpLEnTzv',
-					),
-					array( 'title' => 'GDPR Cookie Policy' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$gdpr_privacy_policy_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( '6x5434Xdu7' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $gdpr_privacy_policy_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'GDPR Privacy Policy',
-						'content'    => $gdpr_privacy_policy,
-						'contentfor' => '6x5434Xdu7',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $gdpr_privacy_policy,
-						'contentfor' => '6x5434Xdu7',
-					),
-					array( 'title' => 'GDPR Privacy Policy' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$gdpr_privacy_policy_fr_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'IUZtVbDV68' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $gdpr_privacy_policy_fr_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'GDPR Privacy Policy - FR',
-						'content'    => $gdpr_privacy_policy_fr,
-						'contentfor' => 'IUZtVbDV68',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $gdpr_privacy_policy_fr,
-						'contentfor' => 'IUZtVbDV68',
-					),
-					array( 'title' => 'GDPR Privacy Policy - FR' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$gdpr_privacy_policy_de_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'EsbCPJ5XCB' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $gdpr_privacy_policy_de_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'GDPR Privacy Policy - DE',
-						'content'    => $gdpr_privacy_policy_de,
-						'contentfor' => 'EsbCPJ5XCB',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $gdpr_privacy_policy_de,
-						'contentfor' => 'EsbCPJ5XCB',
-					),
-					array( 'title' => 'GDPR Privacy Policy - DE' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$confidentiality_disclosure_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( 'LuXcsW5oIn' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $confidentiality_disclosure_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Confidentiality Disclosure',
-						'content'    => $confidentiality_disclosure,
-						'contentfor' => 'LuXcsW5oIn',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $confidentiality_disclosure,
-						'contentfor' => 'LuXcsW5oIn',
-					),
-					array( 'title' => 'Confidentiality Disclosure' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$returns_refunds_norefunds        = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/returns-refunds-policy-norefunds.html' );
-			$returns_refunds_digital_goods    = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/returns-refunds-policy-digital-goods.html' );
-			$returns_refunds_physical_goods   = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/returns-refunds-policy-physical-goods.html' );
-			$returns_refunds_perishable_goods = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/returns-refunds-policy-perishable-goods.html' );
-			$amazon                           = file_get_contents( plugin_dir_path( __DIR__ ) . 'templates/amazon-affiliate.html' );
-			$returns_refunds_norefunds_count  = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE title=%s', array( 'Returns and Refunds Policy: No Refunds' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $returns_refunds_norefunds_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Returns and Refunds Policy: No Refunds',
-						'content'    => $returns_refunds_norefunds,
-						'contentfor' => 'NCknfH8jrd',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $returns_refunds_norefunds,
-						'contentfor' => 'NCknfH8jrd',
-					),
-					array( 'title' => 'Returns and Refunds Policy: No Refunds' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$returns_refunds_digital_goods_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE title=%s', array( 'Returns and Refunds Policy: Digital Goods' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $returns_refunds_digital_goods_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Returns and Refunds Policy: Digital Goods',
-						'content'    => $returns_refunds_digital_goods,
-						'contentfor' => 'SVwyhB4wbf',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $returns_refunds_digital_goods,
-						'contentfor' => 'SVwyhB4wbf',
-					),
-					array( 'title' => 'Returns and Refunds Policy: Digital Goods' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$returns_refunds_physical_goods_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE title=%s', array( 'Returns and Refunds Policy: Physical Goods' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $returns_refunds_physical_goods_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Returns and Refunds Policy: Physical Goods',
-						'content'    => $returns_refunds_physical_goods,
-						'contentfor' => 'sfjX0CxRCV',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $returns_refunds_physical_goods,
-						'contentfor' => 'sfjX0CxRCV',
-					),
-					array( 'title' => 'Returns and Refunds Policy: Physical Goods' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$returns_refunds_perishable_goods_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE title=%s', array( 'Returns and Refunds Policy: Perishable Goods' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $returns_refunds_perishable_goods_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Returns and Refunds Policy: Perishable Goods',
-						'content'    => $returns_refunds_perishable_goods,
-						'contentfor' => 'hFrxQomrZM',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'content'    => $returns_refunds_perishable_goods,
-						'contentfor' => 'hFrxQomrZM',
-					),
-					array( 'title' => 'Returns and Refunds Policy: Perishable Goods' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
-			$amazon_count = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . $legal_pages_pro->tablename . ' WHERE contentfor=%s', array( '3ILrb9ARfX' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( '0' === $amazon_count ) {
-				$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$legal_pages_pro->tablename,
-					array(
-						'title'      => 'Amazon Affiliate Disclosure',
-						'content'    => $amazon,
-						'contentfor' => '3ILrb9ARfX',
-						'is_active'  => '1',
-					),
-					array( '%s', '%s', '%s', '%d' )
-				);
-			} else {
-				$wpdb->update(
-					$legal_pages_pro->tablename,
-					array(
-						'title'   => 'Amazon Affiliate Disclosure',
-						'content' => $amazon,
-					),
-					array( 'contentfor' => '3ILrb9ARfX' ),
-					array( '%s', '%s' ),
-					array( '%s' )
-				); // db call ok; no-cache ok.
-			}
 			update_option( '_lp_templates_updated', true );
 			update_option( '_lp_effective_date_templates_updated', true );
 		}
@@ -1639,7 +773,51 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 			include_once plugin_dir_path( __DIR__ ) . 'admin/partials/wp-legal-pages-main-screen.php';
 		}
+		public function wp_legalpages_new_admin_screen_dashboard() {
 
+			require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
+
+			// Instantiate a new object of the wplegal_Cookie_Consent_Settings class.
+			$this->settings = new WP_Legal_Pages_Settings();
+
+			// Call the is_connected() method from the instantiated object to check if the user is connected.
+			$is_user_connected = $this->settings->is_connected();
+			$plan_name         = $this->settings->get_plan();
+
+			$pro_is_activated = get_option( '_lp_pro_active' );
+
+			$if_terms_are_accepted = get_option( 'lp_accept_terms' );
+
+			$this->enqueue_common_style_scripts();
+			$this->wplegalpages_mascot_enqueue();
+
+			wp_enqueue_script(
+				'wp-legalpages-admin-revamp',
+				WPL_LITE_PLUGIN_URL . 'admin/js/wp-legalpages-admin-revamp.js',
+				array( 'jquery' ),
+				true
+			);
+
+			wp_localize_script(
+				'wp-legalpages-admin-revamp',
+				'wplp_localize_data',
+				array(
+					'ajaxurl'           => admin_url( 'admin-ajax.php' ),
+					'wplpurl'           => WPL_LITE_PLUGIN_URL,
+					'siteurl'           => site_url(),
+					'admin_url'         => admin_url(),
+					'is_pro_activated'  => $pro_is_activated,
+					'lp_terms'          => $if_terms_are_accepted,
+					'wplegal_app_url'   => WPLEGAL_APP_URL,
+					'is_user_connected' => $is_user_connected,
+					'plan_name'         => $plan_name,
+					'_ajax_nonce'       => wp_create_nonce( 'wp-legal-pages' ),
+
+				)
+			);
+
+			include_once plugin_dir_path( __DIR__ ) . 'admin/partials/wp-legal-pages-main-screen-dashboard.php';
+		}
 		/**
 		 * This Callback function for Admin Setting menu for WPLegalpages.
 		 */
@@ -1760,10 +938,29 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		/**
+		 * This Callback function for Help Page menu for WPLegalpages.
+		 */
+		public function help_page_content() {
+			wp_enqueue_style( $this->plugin_name . '-admin' );
+			wp_enqueue_script( $this->plugin_name . '-tooltip' );
+			include_once plugin_dir_path( __DIR__ ) . 'admin/help-page.php';
+			$this->wplegalpages_mascot_enqueue();
+		}
+
+		/**
 		 * This Callback function for Getting Started menu for WPLegalpages.
 		 */
 		public function vue_getting_started() {
 			$is_pro = get_option( '_lp_pro_active' );
+			$installed_plugins = get_plugins();
+
+			$legal_pages_installed     = isset( $installed_plugins['wplegalpages/wplegalpages.php'] ) ? '1' : '0';
+			$gdpr_installed     = isset( $installed_plugins['gdpr-cookie-consent/gdpr-cookie-consent.php'] ) ? '1' : '0';
+
+			$plugin_name                   = 'gdpr-cookie-consent/gdpr-cookie-consent.php';
+			$is_gdpr_active = is_plugin_active( $plugin_name );
+			$plugin_name_lp                   = 'wplegalpages/wplegalpages.php';
+			$is_legalpages_active = is_plugin_active( $plugin_name_lp );
 			if ( $is_pro ) {
 				$support_url = 'https://club.wpeka.com/my-account/orders/?utm_source=wplegalpages&utm_medium=help-mascot&utm_campaign=link&utm_content=support';
 			} else {
@@ -1779,16 +976,26 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'ajax_url'             => admin_url( 'admin-ajax.php' ),
 					'ajax_nonce'           => wp_create_nonce( 'admin-ajax-nonce' ),
 					'is_pro'               => $is_pro,
-					'video_url'            => 'https://www.youtube-nocookie.com/embed/iqdLl9qsBHc',
+					'video_url'            => 'https://www.youtube.com/embed/WkTqA60bGRg?si=aty3JoOdjsyWsetx',
 					'image_url'            => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/',
-					'welcome_text'         => __( 'Welcome to WPLegalPages!', 'wplegalpages' ),
+					'welcome_text'         => __( 'Welcome to WPLP Compliance Platform!', 'wplegalpages' ),
 					'welcome_subtext'      => __( 'Privacy Policy Generator For WordPress', 'wplegalpages' ),
 					'welcome_description'  => __( 'Thank you for choosing WP Legal Pages plugin - A robust plugin for hassle-free legal compliance. ', 'wplegalpages' ),
+					'legal_pages_installed' => $legal_pages_installed,
+					'gdpr_installed'		=> $gdpr_installed,
+					'is_gdpr_active'		=> $is_gdpr_active,
+					'install_gdpr_text'		   => __('Install WP Cookie Consent!', 'wplegalpages'),
+					'install_gdpr_subtext' => __('Seamlessly add a cookie consent banner to your WordPress website.', 'wplegalpages'),
+					'install_gdpr_btn'	   => __('Install Now', 'wplegalpages'),
+					'create_gdpr'         => __( 'Your Site\'s Cookie Banner', 'wplegalpages' ),
+					'create_gdpr_subtext' => __( 'The banner currently displayed on your website.', 'wplegalpages' ),
 					'create_legal'         => __( 'Create Your Legal Page', 'wplegalpages' ),
-					'create_legal_subtext' => __( 'Secure your site in 3 easy steps and generate a personalized legal policy page for enhanced protection.', 'wplegalpages' ),
+					'create_legal_subtext' => __( 'Generate your personalized legal policy page for enhanced protection.', 'wplegalpages' ),
 					'quick_links_text'     => __( 'See Quick Links', 'wplegalpages' ),
 					'link_title'           => __( 'Create Page', 'wplegalpages' ),
+					'gdpr_link_title' 	   => __( 'Configure Banner', 'wplegalpages'),
 					'create_legal_url'     => admin_url( 'index.php?page=wplegal-wizard#/' ),
+					'create_gdpr_url' 	   => admin_url('admin.php?page=gdpr-cookie-consent#cookie_settings'),
 					'feature_heading'      => __( 'WP Legal Pages Features', 'wplegalpages' ),
 					'feature_description'  => __( 'Choose WP Legal Pages for seamless legal compliance.', 'wplegalpages' ),
 					'feature_button'       => __( 'Upgrade Now', 'wplegalpages' ),
@@ -2400,6 +1607,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_die( -1 );
 			}
+			
 			if ( isset( $_POST['lp-analytics-on'] ) ) {
 				$ask_for_usage_analytics = true === sanitize_text_field( wp_unslash( $_POST['lp-analytics-on'] ) ) || 'true' === sanitize_text_field( wp_unslash( $_POST['lp-analytics-on'] ) ) ? '1' : '0';
 				update_option( 'wplegalpages-ask-for-usage-optin', $ask_for_usage_analytics );
@@ -2534,6 +1742,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( isset( $_POST['lp-display-option'] ) ) {
 				'Input Date of Birth' === $_POST['lp-display-option'] ? update_option( '_lp_display_option', 'date' ) : update_option( '_lp_display_option', 'button' );
 			}
+			if ( isset( $_POST['lp-redirect-url'] ) ) {
+				update_option( '_lp_redirect_url', sanitize_text_field( wp_unslash( $_POST['lp-redirect-url'] ) ) );
+			}
+			if ( isset( $_POST['lp-age-popup-no'] ) ) {
+				update_option( '_lp_age_popup_no', sanitize_text_field( wp_unslash( $_POST['lp-age-popup-no'] ) ) );
+			}
 			if ( isset( $_POST['lp-yes-button-text'] ) ) {
 				update_option( 'lp_eu_button_text', sanitize_text_field( wp_unslash( $_POST['lp-yes-button-text'] ) ) );
 			}
@@ -2593,7 +1807,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$no_button = 'No, I am not';
 			}
 			if ( ! $age_description ) {
-				$age_description = "You must be atleast {age} years of age to visit this site.\n{form}";
+				$age_description = "To proceed, we need to verify that you're {age} or older.\n<br><span>Please verify your age.</span>\n{form}";
 			}
 			if ( ! $invalid_age_description ) {
 				$invalid_age_description = 'We are sorry. You are not of valid age.';
@@ -3028,7 +2242,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					'is_user_connected'  => $is_user_connected,
 					'plan_name'          => $plan_name,
 					'_ajax_nonce'        => wp_create_nonce( 'wp-legal-pages' ),
-					'promotion_link'     => 'https://app.wplegalpages.com/checkout/?add-to-cart=143&utm_source=wplegalpagesplugin&utm_medium=floating_bar',
+					'promotion_link'     => 'https://app.wplegalpages.com/pricing/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=upgrade',
 					'welcome'            => array(
 						'create'     => __( 'Create', 'wplegalpages' ),
 						'edit'       => __( 'Edit', 'wplegalpages' ),
@@ -4972,22 +4186,36 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @since 2.3.5
 		 */
 		public function create_popup_delete_process() {
-
 			global $wpdb;
 
 			if ( class_exists( 'WP_Legal_Pages' ) ) {
-
 				$lp_obj = new WP_Legal_Pages();
 			}
+
 			if ( isset( $_REQUEST['mode'] ) && 'deletepopup' === $_REQUEST['mode'] && current_user_can( 'manage_options' ) ) {
 				if ( isset( $_REQUEST['nonce'] ) ) {
-					wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'lp-submit-create-popups' );
+					$nonce = sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) );
+					
+					// Verify the nonce and stop execution if it is invalid.
+					if ( ! wp_verify_nonce( $nonce, 'lp-submit-create-popups' ) ) {
+						wp_die( __( 'Security check failed. Please try again.', 'text-domain' ) );
+					}
+				} else {
+					wp_die( __( 'Missing nonce. Please try again.', 'text-domain' ) );
 				}
-				$lpid = isset( $_REQUEST['lpid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) : '';
-				$wpdb->delete( $lp_obj->popuptable, array( 'id' => $lpid ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+
+				$lpid = isset( $_REQUEST['lpid'] ) ? intval( sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) ) : 0;
+
+				// Proceed only if a valid ID is provided.
+				if ( $lpid > 0 ) {
+					$wpdb->delete( $lp_obj->popuptable, array( 'id' => $lpid ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				}
+
 				wp_redirect( admin_url( 'admin.php?page=legal-pages#create_popup' ) );
+				exit; // Always exit after a redirect.
 			}
 		}
+
 
 		/**
 		 * Create Popup Edit Process.
@@ -5072,5 +4300,82 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			// Call the is_connected() method from the instantiated object to check if the user is connected.
 			$is_user_connected = $this->settings->is_connected();
 		}
+		
+		// GDPR Plugin Installation code
+		public function wplp_gdpr_install_plugin_ajax_handler() {
+			// Check nonce for security
+			check_ajax_referer( 'wp-legal-pages', '_ajax_nonce' );
+		
+		
+			// Load necessary WordPress plugin installer classes
+			if ( ! class_exists( 'Plugin_Upgrader' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+			}
+			if ( ! function_exists( 'plugins_api' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+			}
+		
+			$plugin_slug = sanitize_text_field( $_POST['plugin_slug'] ); // Plugin slug from AJAX request
+		
+			// Get plugin information
+			$api = plugins_api(
+				'plugin_information',
+				array(
+					'slug'   => $plugin_slug,
+					'fields' => array(
+						'sections' => false,
+					),
+				)
+			);
+		
+			if ( is_wp_error( $api ) ) {
+				wp_send_json_error( array( 'message' => $api->get_error_message() ) );
+			}
+		
+			// Install the plugin
+			$upgrader = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
+			$result   = $upgrader->install( $api->download_link );
+		
+			if ( is_wp_error( $result ) ) {
+				wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+			}
+		
+			// Activate the plugin
+			$activate = activate_plugin( $plugin_slug . '/' . $plugin_slug . '.php' );
+			if ( is_wp_error( $activate ) ) {
+				wp_send_json_error( array( 'message' => $activate->get_error_message() ) );
+			}
+		
+			// Success response
+			wp_send_json_success( array( 'message' => __( 'Plugin installed and activated successfully.', 'your-textdomain' ) ) );
+		}
+
+
+
+	public function wplegalpages_support_request_handler() {
+		// Verify nonce for security
+		if (!isset($_POST['wplegalpages_nonce']) || !wp_verify_nonce($_POST['wplegalpages_nonce'], 'wplegalpages_support_request_nonce')) {
+			wp_send_json_error(['message' => 'Security check failed.']);
+		}
+
+		// Sanitize and validate input
+		$name = sanitize_text_field($_POST['name']);
+		$email = sanitize_email($_POST['email']);
+		$message = sanitize_textarea_field($_POST['message']);
+
+		// Support email details
+		$to = "hello@wpeka.com"; // Replace with your support email
+		$subject = "Support Request from $name";
+		$body = "Name: $name\nEmail: $email\n\nMessage:\n$message";
+		$headers = ['Reply-To: ' . $email];
+
+		// Send the email and respond with JSON
+		if (wp_mail($to, $subject, $body, $headers)) {
+			wp_send_json_success(['message' => 'Your message has been sent successfully.']);
+		} else {
+			wp_send_json_error(['message' => 'There was an error sending your message. Please try again later.']);
+		}
+	}
+
 	}
 }
