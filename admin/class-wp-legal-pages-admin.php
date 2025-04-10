@@ -3027,19 +3027,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							}
 							update_post_meta( $pid, 'legal_page_privacy_options', $data );
 							break;
-							case 'dmca_policy':
+							case 'dmca':
 								if ( empty( $pid ) ) {
 									$pid = $this->wplegalpages_get_pid_by_insert_page( 'DMCA' );
 									update_post_meta( $pid, 'is_legal', 'yes' );
 									update_post_meta( $pid, 'legal_page_type', $page );
 									$dmca_options = $this->wplegalpages_get_remote_data( 'get_dmca_policy_settings' );
-									$dmca_options = self::wplegalpages_add_gdpr_options_to_remote_data( $dmca_options );
-									update_post_meta( $pid, 'legal_page_dmca_settings', $dmca_options );
+									update_post_meta( $pid, 'legal_page_dmca_policy_settings', $dmca_options );
 									update_option( 'wplegal_dmca_page', $pid );
 								} else {
-									$dmca_settings = get_post_meta( $pid, 'legal_page_dmca_settings', true );
+									$dmca_settings = get_post_meta( $pid, 'legal_page_dmca_policy_settings', true );
 									$dmca_options  = $dmca_settings;
-									$dmca_options  = self::wplegalpages_add_gdpr_options_to_remote_data( $dmca_options );
 								}
 								$data = array();
 								foreach ( $dmca_options as $key => $option ) {
@@ -3057,7 +3055,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 									}
 									$data[ $key ] = $option;
 								}
-								update_post_meta( $pid, 'legal_page_dmca_settings', $data );
+								update_post_meta( $pid, 'legal_page_dmca_policy_settings', $data );
 								$options = array();
 								foreach ( $data as $key => $value ) {
 									if ( $value->checked ) {
@@ -3074,7 +3072,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 								foreach ( $options as $option ) {
 									$data = array_merge( $data, $option );
 								}
-								update_post_meta( $pid, 'legal_page_dmca_settings', $data );
+								update_post_meta( $pid, 'legal_page_dmca_policy_options', $data );
 								break;
 								case 'cookies_policy':
 									if ( empty( $pid ) ) {
@@ -3121,7 +3119,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 									foreach ( $options as $option ) {
 										$data = array_merge( $data, $option );
 									}
-									update_post_meta( $pid, 'legal_page_cookies_policy_settings', $data );
+									update_post_meta( $pid, 'legal_page_cookies_policy_options', $data );
 									break;
 								case 'general_disclaimer':
 										if ( empty( $pid ) ) {
@@ -3168,7 +3166,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 										foreach ( $options as $option ) {
 											$data = array_merge( $data, $option );
 										}
-										update_post_meta( $pid, 'legal_page_general_disclaimer_settings', $data );
+										update_post_meta( $pid, 'legal_page_general_disclaimer_options', $data );
 										break;
 								case 'earnings_disclaimer':
 											if ( empty( $pid ) ) {
@@ -3215,7 +3213,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 											foreach ( $options as $option ) {
 												$data = array_merge( $data, $option );
 											}
-											update_post_meta( $pid, 'legal_page_earnings_disclaimer_settings', $data );
+											update_post_meta( $pid, 'legal_page_earnings_disclaimer_options', $data );
 											break;
 											case 'coppa':
 												if ( empty( $pid ) ) {
@@ -3262,7 +3260,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 												foreach ( $options as $option ) {
 													$data = array_merge( $data, $option );
 												}
-												update_post_meta( $pid, 'legal_page_coppa_settings', $data );
+												update_post_meta( $pid, 'legal_page_coppa_options', $data );
 												break;
 						case 'custom_legal':
 							if ( empty( $pid ) ) {
