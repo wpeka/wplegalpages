@@ -81,6 +81,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 			add_action('wp_ajax_gdpr_install_plugin', array($this, 'wplp_gdpr_install_plugin_ajax_handler'));
 			add_action('rest_api_init', array($this, 'register_wpl_dashboard_route'));
+			
 		}
 
 		/**
@@ -321,7 +322,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$current_version = $this->version;
 		
 			// Target version to hide the submenu
-			$target_version = '3.3.5';
+			$target_version = '3.3.6';
 		
 			// Check if the current version is below the target version
 			if (version_compare($current_version, $target_version, '<')) {
@@ -770,7 +771,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 				)
 			);
-
 			include_once plugin_dir_path( __DIR__ ) . 'admin/partials/wp-legal-pages-main-screen.php';
 		}
 		public function wp_legalpages_new_admin_screen_dashboard() {
@@ -4611,6 +4611,40 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_send_json_error(['message' => 'There was an error sending your message. Please try again later.']);
 		}
 	}
+	public function wplp_admin_new_clause_addition_notice(){
+		$screen = get_current_screen();
+		// Show notice only on Plugins page
+		if ($screen->id !== 'plugins') {
+			return;
+		}
+	
+		// Check if dismissed
+		if (get_option('wplp_template_notice_dismissed')) {
+			return;
+		}
+		// Dismiss Notice via URL
+		if (isset($_GET['wplp_template_dismiss_notice'])) {
+			update_option('wplp_template_notice_dismissed', true);
+			return;
+		}
+		?>
+	
+		<div class="notice notice-success">
+			<div style="display: flex; justify-content: space-between; align-items: center;padding: 5px;">
+			<div style="max-width: 80%;">
+				<p style="margin: 0;">
+					<strong><?php _e('WP Legal Pages: ','wplegalpages'); ?></strong>
+					<?php _e('We\'ve recently updated our DMCA, Professional Privacy Policy, COPPA, General Disclaimer, Earnings Disclaimer, Terms and Conditions Pro, and Cookies Policy templates. These updates include additional clauses related to AI-generated media usage to help you stay compliant with evolving standards. Kindly update your policies to stay compliant.', 'wplegalpages'); ?>
+				</p>
+			</div>
+				<a href="<?php echo esc_url(add_query_arg('wplp_template_dismiss_notice', '1')); ?>" class="button"><?php _e('Dismiss','wplegalpages'); ?></a>
+			</div>
+		</div>
+
+		<?php
+	}
 
 	}
+	
+	
 }
