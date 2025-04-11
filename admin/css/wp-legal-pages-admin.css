@@ -1256,6 +1256,11 @@ div.ql-toolbar.ql-snow {
 	outline: none;
 }
 
+.wplegalpages-configure-button.disabled {
+	cursor: not-allowed;
+	pointer-events: auto !important;
+}
+
 .wplegalpages-configure-image {
 	height: 32px;
 	width: 32px;
@@ -2278,4 +2283,16 @@ table tbody tr td .table-link-alert:hover {
   #all_legal_pages .notice-success.is-dismissible{
 	display: none;
   }
- 
+
+  .wplegalpages-not-pro-tooltip-text {
+	position: absolute;
+    padding: 5px 10px;
+    background: rgb(51, 51, 51);
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    pointer-events: auto;
+    z-index: 9;
+    width: 150px;
+    display: none;
+  }
+

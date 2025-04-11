@@ -4644,6 +4644,56 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		<?php
 	}
 
+		/**
+		 * Fetches the Age Verification popup markup from the WP Legal Pages API.
+		 *
+		 * Constructs the API request URL by switching to v1 of the endpoint and appending 
+		 * necessary query arguments based on site options such as minimum age, button texts, 
+		 * and redirect URL. Sends a GET request to retrieve the popup markup.
+		 *
+		 * @return array|null The decoded JSON response containing the markup, or null on failure.
+		 */
+		public function wplegalpages_fetch_age_verification_popup_markup() {
+			
+			$api_url = WPLEGAL_API_URL;
+
+			$updated_api_url = str_replace('/v2/', '/v1/', $api_url);
+
+			$url = $updated_api_url . 'get_age_verification_popup_markup';
+
+			$lp_show_improved_ui = true;
+			$lp_pro_installed    = get_option( '_lp_pro_installed' );
+			if ( $lp_pro_installed && get_option( 'wplegalpages_pro_version' ) && version_compare( get_option( 'wplegalpages_pro_version' ), '8.4.0' ) < 0 ) {
+				$lp_show_improved_ui = false;
+			}
+			$minimum_age       = get_option( '_lp_minimum_age' );
+			$yes_button_text   = get_option( 'lp_eu_button_text' );
+			$no_button_text    = get_option( 'lp_eu_button_text_no' );
+			$redirect_url_text = get_option( '_lp_redirect_url' );
+
+			$args = array(
+				'source'              => 'wplegalpages',
+				'lp_show_improved_ui' => $lp_show_improved_ui,
+				'minimum_age'         => $minimum_age,
+				'yes_button_text'     => $yes_button_text,
+				'no_button_text'      => $no_button_text,
+				'redirect_url_text'   => $redirect_url_text,
+			);
+
+			$request_url = add_query_arg( $args, $url );
+
+			$response = wp_remote_get( $request_url, array( 'timeout' => 10 ) );
+
+			$status_code = wp_remote_retrieve_response_code( $response );
+
+			if ( 200 !== (int) $status_code ) {
+				return;
+			}
+
+			$body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+			return $body;
+		}
 	}
 	
 	
