@@ -190,7 +190,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 						</div>
 						<?php
 					}
-					if ( get_option( 'app_wplp_subscription_status_cancelled' ) ) {
+					if ( get_option( 'app_wplp_subscription_status_pending_cancel' ) ) {
 						?>
 						<div class="wp-legalpages-subsription-payment-failed-notice">
 							<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your plan has been canceled to the Free Plan due to a failed payment or manual cancellation. Upgrade now to restore premium features.', 'wplegalpages' ); ?></p>
