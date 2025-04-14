@@ -187,14 +187,14 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 					if ( get_transient( 'app_wplp_subscription_payment_status_failed' ) ) {
 						?>
 						<div class="wp-legalpages-subsription-payment-failed-notice">
-							<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your last payment attempt failed. Please update your payment details within 7 days to avoid service disruption.', 'gdpr-cookie-consent' ); ?></p>
+							<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your last payment attempt failed. Please update your payment details within 7 days to avoid service disruption.', 'wplegalpages' ); ?></p>
 						</div>
 						<?php
 					}
 					if ( get_option( 'app_wplp_subscription_status_cancelled' ) ) {
 						?>
 						<div class="wp-legalpages-subsription-payment-failed-notice">
-							<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your plan has been canceled to the Free Plan due to a failed payment or manual cancellation. Upgrade now to restore premium features.', 'gdpr-cookie-consent' ); ?></p>
+							<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your plan has been canceled to the Free Plan due to a failed payment or manual cancellation. Upgrade now to restore premium features.', 'wplegalpages' ); ?></p>
 						</div>
 						<?php
 					}
