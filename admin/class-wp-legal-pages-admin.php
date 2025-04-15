@@ -193,10 +193,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 	}
 
+	/**
+	 * REST API callback to update and store the subscription payment status.
+	 *
+	 * This endpoint is hit by the main site to inform the client site about the subscription payment status.
+	 * It either sets or deletes a transient based on whether the payment is 'completed' or not.
+	 *
+	 * @param WP_REST_Request $request The REST request object containing the payment status.
+	 *
+	 * @return WP_REST_Response The response confirming the updated status.
+	 */
 	public function wplegalpages_get_wplp_payment_status( WP_REST_Request $request ) {
-		error_log( 'GOT IT :)' );
-
-		error_log( print_r( $request, true ) );
 
 		$payment_status = $request->get_param( 'payment_status' );
 
@@ -215,9 +222,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		);
 	}
 
+	/**
+	 * REST API callback to update the local subscription status to either 'active' or 'pending-cancel'.
+	 *
+	 * This endpoint is called by the main site to notify the client site about the subscription status change.
+	 * It updates or deletes an option based on the received status.
+	 *
+	 * @param WP_REST_Request $request The REST request object containing the subscription status.
+	 *
+	 * @return WP_REST_Response The response confirming the updated status.
+	 */
 	public function wplegalpages_set_subscription_payment_pending_cancel( WP_REST_Request $request ) {
-		error_log( 'GOT IT PENDING CANCELED' );
-		error_log( print_r( $request, true ) );
 
 		$subscription_status = $request->get_param( 'subscription_status' );
 
