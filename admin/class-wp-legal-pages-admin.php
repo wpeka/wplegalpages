@@ -177,7 +177,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		if ( ! array_key_exists( $appwplp_subscription_status_full_route, $routes ) ) {
 			register_rest_route(
 				$appwplp_namespace,
-				'/' . $appwplp_subscription_status_cancelled_route,
+				'/' . $appwplp_subscription_status_pending_cancel_route,
 				array(
 					'methods'  => 'POST',
 					'callback' => array( $this, 'wplegalpages_set_subscription_payment_pending_cancel' ),
