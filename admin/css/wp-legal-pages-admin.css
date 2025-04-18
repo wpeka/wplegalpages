@@ -1867,6 +1867,20 @@ table tbody tr td .table-link-alert:hover {
 	left: -20px;
 	width: 102%;
   }
+  #wp-legalpages-main-admin-header .wp-legalpages-subsription-payment-failed-notice {
+	position: relative;
+	left: -20px;
+	width: 102%;
+	padding: 20px;
+	background-color: #ffa319;
+  }
+  #wp-legalpages-main-admin-header .wp-legalpages-subsription-payment-failed-notice p {
+	margin: 0;
+	color: #000;
+	font-family: "Roboto", sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+  }
   
   .gdpr-remaining-scans-content .gdpr-remaining-scans-container {
 	margin: auto 0;
