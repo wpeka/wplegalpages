@@ -931,30 +931,32 @@ if ( '1' === $lpterms ) {
 						<input type="hidden" ref="age_type_option" v-model="age_type_option" name="lp-age-type-option">
 						<input type="hidden" ref="age_type_option_mount" value="<?php echo esc_html( stripslashes( $age_type_option_value ) ); ?>">
 						<?php
-						$markup = $this->wplegalpages_fetch_age_verification_popup_markup();
+						$lp_obj = new WP_Legal_Pages();
+						if ( $lp_obj->wplegalpages_is_plan_pro() ) {
+							$markup = $this->wplegalpages_fetch_age_verification_popup_markup();
 
-						ob_start();
+							ob_start();
 
-						echo $markup['popup_markup1'];
+							echo $markup['popup_markup1'];
 
-						$popup_markup1 = ob_get_clean();
+							$popup_markup1 = ob_get_clean();
 
-						echo $popup_markup1;
-						
-						?>
+							echo $popup_markup1;
+							
+							?>
 
-						<input type="hidden" id="wplegalpages-age-form-nonce" name="lp-age-form-nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings_age_form_nonce' ) ); ?>"/>
+							<input type="hidden" id="wplegalpages-age-form-nonce" name="lp-age-form-nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings_age_form_nonce' ) ); ?>"/>
 
-						<?php
-						
-						ob_start();
+							<?php
+							
+							ob_start();
 
-						echo $markup['popup_markup2'];
+							echo $markup['popup_markup2'];
 
-						$popup_markup2 = ob_get_clean();
+							$popup_markup2 = ob_get_clean();
 
-						echo $popup_markup2;
-						
+							echo $popup_markup2;
+						}
 						?>
 
 						<input type="hidden" class="wplegalpages-popup-switch" name="lp-popup-enable" v-model="is_popup">
@@ -1031,7 +1033,6 @@ if ( '1' === $lpterms ) {
 								</c-row>
 
 								<?php
-								$lp_obj = new WP_Legal_Pages();
 								if ( ! $lp_obj->wplegalpages_is_plan_pro() ) {
 									?>
 								<c-row class="wplegal-support-text-row">
