@@ -1400,6 +1400,7 @@ body.toplevel_page_legal-pages #wpcontent {
 .wp-legalpages-admin-logo img {
 	height: 46px;
 	margin-top: 14px;
+	max-width: initial;
 }
 
 .wp-legalpages-admin-promotional-banner img {
