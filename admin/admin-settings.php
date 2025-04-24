@@ -935,27 +935,31 @@ if ( '1' === $lpterms ) {
 						if ( $lp_obj->wplegalpages_is_plan_pro() ) {
 							$markup = $this->wplegalpages_fetch_age_verification_popup_markup();
 
-							ob_start();
+							if ( ! empty( $markup) ) {
 
-							echo $markup['popup_markup1'];
+								ob_start();
 
-							$popup_markup1 = ob_get_clean();
+								echo $markup['popup_markup1'];
 
-							echo $popup_markup1;
-							
-							?>
+								$popup_markup1 = ob_get_clean();
 
-							<input type="hidden" id="wplegalpages-age-form-nonce" name="lp-age-form-nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings_age_form_nonce' ) ); ?>"/>
+								echo $popup_markup1;
+								
+								?>
 
-							<?php
-							
-							ob_start();
+								<input type="hidden" id="wplegalpages-age-form-nonce" name="lp-age-form-nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings_age_form_nonce' ) ); ?>"/>
 
-							echo $markup['popup_markup2'];
+								<?php
+								
+								ob_start();
 
-							$popup_markup2 = ob_get_clean();
+								echo $markup['popup_markup2'];
 
-							echo $popup_markup2;
+								$popup_markup2 = ob_get_clean();
+
+								echo $popup_markup2;
+
+							}
 						}
 						?>
 
@@ -1058,13 +1062,16 @@ if ( '1' === $lpterms ) {
 								</c-row>
 								<?php } else {
 
-									ob_start();
-									
-									echo $markup['setting_markup'];
-									
-									$setting_markup = ob_get_clean();
+									if ( ! empty( $markup) ) {
 
-									echo $setting_markup;
+										ob_start();
+										
+										echo $markup['setting_markup'];
+										
+										$setting_markup = ob_get_clean();
+
+										echo $setting_markup;
+									}
 
 								} ?>			
 								<c-row class="wplegal-support-text-row">
