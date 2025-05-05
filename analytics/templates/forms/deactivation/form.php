@@ -42,20 +42,16 @@ if ( $show_deactivation_feedback_form ) {
 		$reason_input_type        = ( ! empty( $reason['input_type'] ) ? $reason['input_type'] : '' );
 		$reason_input_placeholder = ( ! empty( $reason['input_placeholder'] ) ? $reason['input_placeholder'] : '' );
 
-		$reason_list_item_html = <<< HTML
-                <li class="{$list_item_classes}"
-                    data-input-type="{$reason_input_type}"
-                    data-input-placeholder="{$reason_input_placeholder}">
-                    <label>
-                        <span>
-                            <input type="radio" name="selected-reason" value="{$reason['id']}"/>
-                        </span>
-                        <span class="deactivation_reason">{$reason['text']}</span>
-                    </label>
-                    <div class="internal-message">{$reason_internal_message}</div>
-                </li>
-HTML;
-
+		$reason_list_item_html  = '<li class="' . esc_attr( $list_item_classes ) . '" ';
+		$reason_list_item_html .= 'data-input-type="' . esc_attr( $reason_input_type ) . '" ';
+		$reason_list_item_html .= 'data-input-placeholder="' . esc_attr( $reason_input_placeholder ) . '">';
+		$reason_list_item_html .= '<label>';
+		$reason_list_item_html .= '<span><input type="radio" name="selected-reason" value="' . esc_attr( $reason['id'] ) . '"/></span>';
+		$reason_list_item_html .= '<span class="deactivation_reason">' . esc_html( $reason['text'] ) . '</span>';
+		$reason_list_item_html .= '</label>';
+		$reason_list_item_html .= '<div class="internal-message">' . esc_html( $reason_internal_message ) . '</div>';
+		$reason_list_item_html .= '</li>';
+		
 		$reasons_list_items_html .= $reason_list_item_html;
 		$reasons_list_items_html .= '<input type="hidden" name="slug" value="' . $as->get_slug() . '">';
 	}

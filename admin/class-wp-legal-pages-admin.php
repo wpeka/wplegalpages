@@ -294,22 +294,40 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		global $wpdb;
 		$post_tbl     = $wpdb->prefix . 'posts';
 		$postmeta_tbl = $wpdb->prefix . 'postmeta';
-		$count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) 
-         FROM ' . $post_tbl . ' as ptbl, ' . $postmeta_tbl . ' as pmtbl 
-         WHERE ptbl.ID = pmtbl.post_id 
-         AND ptbl.post_status = %s 
-         AND pmtbl.meta_key = %s',
-        array('publish', 'is_legal')));
-		$pagesresult = $wpdb->get_results(
+		$post_tbl     = esc_sql( $post_tbl );
+		$postmeta_tbl = esc_sql( $postmeta_tbl );
+		
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$count = $wpdb->get_var(
 			$wpdb->prepare(
-				'SELECT ptbl.post_title FROM ' . $post_tbl . ' as ptbl, ' . $postmeta_tbl . ' as pmtbl 
+				"
+				SELECT COUNT(*) 
+				FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
 				WHERE ptbl.ID = pmtbl.post_id 
 				AND ptbl.post_status = %s 
-				AND pmtbl.meta_key = %s',
-				array('publish', 'is_legal')
+				AND pmtbl.meta_key = %s
+				",
+				'publish',
+				'is_legal'
+			)
+		);
+				
+		$pagesresult = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+				SELECT ptbl.post_title 
+				FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
+				WHERE ptbl.ID = pmtbl.post_id 
+				AND ptbl.post_status = %s 
+				AND pmtbl.meta_key = %s
+				",
+				'publish',
+				'is_legal'
 			),
-			ARRAY_A // Fetch results as an associative array
-		); 
+			ARRAY_A
+		);
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
 	$titles = array_column($pagesresult, 'post_title');
 
 		return rest_ensure_response(
@@ -1372,7 +1390,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			// Paginate browsing for large numbers of post objects.
 			$per_page = 50;
 			// the phpcs ignore comment is added after referring WordPress core code.
+			// phpcs:disable WordPress.Security.NonceVerification.Recommended	
 			$pagenum = isset( $_REQUEST[ $tab_name ] ) && isset( $_REQUEST['paged'] ) ? absint( $_REQUEST['paged'] ) : 1; // phpcs:ignore input var ok, CSRF ok, sanitization ok.
+			// phpcs:enable WordPress.Security.NonceVerification.Recommended	
 			$offset  = 0 < $pagenum ? $per_page * ( $pagenum - 1 ) : 0;
 
 			$args = array(
@@ -1592,6 +1612,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 				<div class="tabs-panel <?php echo ( 'search' === $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive' ); ?>" id="tabs-panel-posttype-<?php echo esc_attr( $post_type_name ); ?>-search" role="region" aria-label="<?php echo esc_attr( $post_type_name ); ?>" tabindex="0">
 					<?php
+					// phpcs:disable WordPress.Security.NonceVerification.Recommended	
 					if ( isset( $_REQUEST[ 'quick-search-posttype-' . $post_type_name ] ) ) { // phpcs:ignore CSRF ok
 						$searched       = sanitize_title( wp_unslash( $_REQUEST[ 'quick-search-posttype-' . $post_type_name ] ) ); // phpcs:ignore CSRF ok
 						$search_results = get_posts(
@@ -4638,6 +4659,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			// Call the is_connected() method from the instantiated object to check if the user is connected.
 			$is_user_connected = $this->settings->is_connected();
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		
 		// GDPR Plugin Installation code
 		public function wplp_gdpr_install_plugin_ajax_handler() {
@@ -4653,7 +4675,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 			}
 		
-			$plugin_slug = sanitize_text_field( $_POST['plugin_slug'] ); // Plugin slug from AJAX request
+			$plugin_slug = isset( $_POST['plugin_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin_slug'] ) ) : '';
 		
 			// Get plugin information
 			$api = plugins_api(
@@ -4692,14 +4714,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 	public function wplegalpages_support_request_handler() {
 		// Verify nonce for security
-		if (!isset($_POST['wplegalpages_nonce']) || !wp_verify_nonce($_POST['wplegalpages_nonce'], 'wplegalpages_support_request_nonce')) {
+		if (! isset( $_POST['wplegalpages_nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['wplegalpages_nonce'] ), 'wplegalpages_support_request_nonce' )) {
 			wp_send_json_error(['message' => 'Security check failed.']);
 		}
 
 		// Sanitize and validate input
-		$name = sanitize_text_field($_POST['name']);
-		$email = sanitize_email($_POST['email']);
-		$message = sanitize_textarea_field($_POST['message']);
+		$name = isset( $_POST['name'] ) ? sanitize_text_field(wp_unslash( $_POST['name'] )) : '';
+		$email = isset( $_POST['email'] ) ? sanitize_email(wp_unslash( $_POST['email'] )) : '';
+		$message = isset( $_POST['message'] ) ? sanitize_textarea_field(wp_unslash( $_POST['message'] )) : '';
 
 		// Support email details
 		$to = "hello@wpeka.com"; // Replace with your support email
