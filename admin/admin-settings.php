@@ -112,16 +112,16 @@ if ( '1' === $lpterms ) {
 	<div class="wplegalpages-settings-container">
 	<div class="wplegal-create-legal-settings">
 			<div class="wplegal-feature-icon" id="wplegal-settings-create-legal">
-				<img src="<?php echo WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/create_legal_blue.svg'; ?>" alt="create legal" class="wplegal-create-legal-icon">
+				<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/create_legal_blue.svg' ); ?>" alt="create legal" class="wplegal-create-legal-icon">
 				<div class="wplegal-create-legal-subtext">
 					<p class="wplegal-create-legal-page-subheading"><?php esc_attr_e( 'Create Your Legal Page', 'wplegalpages' ); ?></p>
 					<p class="wplegal-create-legal-page-content"><?php esc_attr_e( 'Secure your site in 3 easy steps and generate a personalized legal policy page for enhanced protection.', 'wplegalpages' ); ?></p>
 				</div>
 			</div>
 			<div class="wplegal-create-legal-link">
-				<a href=<?php echo admin_url( 'index.php?page=wplegal-wizard#/' ); ?> class="wplegal-create-legal-page-button">
+				<a href=<?php echo esc_url( admin_url( 'index.php?page=wplegal-wizard#/' ) ); ?> class="wplegal-create-legal-page-button">
 					<span><?php esc_attr_e( 'Create Page', 'wplegalpages' ); ?></span>
-					<img src="<?php echo WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/right_arrow.svg'; ?>" alt="right arrow">
+					<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/right_arrow.svg' ); ?>" alt="right arrow">
 				</a>
 			</div>
 		</div>
@@ -130,7 +130,7 @@ if ( '1' === $lpterms ) {
 		<c-form id="lp-save-settings-form" spellcheck="false" class="wplegalpages-settings-form">
 			<input type="hidden" name="settings_form_nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings-form-nonce' ) ); ?>"/>
 			<div class="wplegalpages-settings-content">
-				<div id="wplegalpages-save-settings-alert"><img src="<?php echo WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg'; ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_attr_e( 'Settings saved successfully', 'wplegalpages' ); ?></div>
+				<div id="wplegalpages-save-settings-alert"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg' ); ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_attr_e( 'Settings saved successfully', 'wplegalpages' ); ?></div>
 
 				<c-tabs variant="pills" ref="active_tab" class="wplegalpages-settings-nav">
 					<c-tab title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" href="#settings#general" id="wplegalpages-settings-general">
@@ -939,11 +939,11 @@ if ( '1' === $lpterms ) {
 
 								ob_start();
 
-								echo $markup['popup_markup1'];
+								echo wp_kses_post( $markup['popup_markup1'] );
 
 								$popup_markup1 = ob_get_clean();
 
-								echo $popup_markup1;
+								echo wp_kses_post( $popup_markup1 );
 								
 								?>
 
@@ -953,11 +953,11 @@ if ( '1' === $lpterms ) {
 								
 								ob_start();
 
-								echo $markup['popup_markup2'];
+								echo wp_kses_post( $markup['popup_markup2'] );
 
 								$popup_markup2 = ob_get_clean();
 
-								echo $popup_markup2;
+								echo wp_kses_post( $popup_markup2 );
 
 							}
 						}
@@ -1066,11 +1066,11 @@ if ( '1' === $lpterms ) {
 
 										ob_start();
 										
-										echo $markup['setting_markup'];
+										echo wp_kses_post( $markup['setting_markup'] );
 										
 										$setting_markup = ob_get_clean();
 
-										echo $setting_markup;
+										echo wp_kses_post( $setting_markup );
 									}
 
 								} ?>			
@@ -1118,9 +1118,9 @@ if ( '1' === $lpterms ) {
 
 										<h3><?php esc_html_e( 'Your website is connected to WP Legal Pages', 'wplegalpages' ); ?></h3>
 
-										<p class="gpdr-email-info"><span class="wplegal-info-title" ><?php esc_html_e( 'Email : ', 'wplegalpages' ); ?></span> <?php echo $api_user_email; ?>  </p>
-										<p><span class="wplegal-info-title" ><?php esc_html_e( 'Site Key : ', 'wplegalpages' ); ?></span> <?php echo $api_user_site_key; ?>  </p>
-										<p><span class="wplegal-info-title" ><?php esc_html_e( 'Plan : ', 'wplegalpages' ); ?></span> <?php echo $api_user_plan; ?>  </p>
+										<p class="gpdr-email-info"><span class="wplegal-info-title" ><?php esc_html_e( 'Email : ', 'wplegalpages' ); ?></span> <?php echo esc_html( $api_user_email ); ?>  </p>
+										<p><span class="wplegal-info-title" ><?php esc_html_e( 'Site Key : ', 'wplegalpages' ); ?></span> <?php echo esc_html( $api_user_site_key ); ?>  </p>
+										<p><span class="wplegal-info-title" ><?php esc_html_e( 'Plan : ', 'wplegalpages' ); ?></span> <?php echo esc_html( $api_user_plan ); ?>  </p>
 										<!-- API Disconnect Button  -->
 										<div class="wplegal-api-connection-disconnect-btn" ><?php esc_attr_e( 'Disconnect', 'wplegalpages' ); ?></div>
 

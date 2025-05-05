@@ -472,7 +472,7 @@ if ( ! function_exists( 'as_esc_html_echo_inline' ) ) {
  * @param string $slug Module slug for overrides.
  */
 function as_echo_inline( $text, $key = '', $slug = 'analytics' ) {
-	echo _as_text_inline( $text, $key, $slug );
+	echo esc_html( _as_text_inline( $text, $key, $slug ) );
 }
 
 if ( ! function_exists( 'as_apply_filter' ) ) {

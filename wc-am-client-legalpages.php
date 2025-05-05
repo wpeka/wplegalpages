@@ -281,7 +281,7 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 					<div class="notice notice-error">
 						<p><?php 
 						// translators: %s: Plugin name or feature to be activated.
-						printf( __( '<b>Warning!</b> You\'re blocking external requests which means you won\'t be able to get %1$s updates. Please add %2$s to %3$s.', $this->text_domain ), $this->software_title, '<strong>' . $host . '</strong>', '<code>WP_ACCESSIBLE_HOSTS</code>' ); 
+						printf( wp_kses_post( __( '<b>Warning!</b> You\'re blocking external requests which means you won\'t be able to get %1$s updates. Please add %2$s to %3$s.', $this->text_domain ), $this->software_title, '<strong>' . $host . '</strong>', '<code>WP_ACCESSIBLE_HOSTS</code>' ) ); 
 						?></p>
 					</div>
 					<?php

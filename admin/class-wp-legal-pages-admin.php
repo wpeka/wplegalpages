@@ -4484,7 +4484,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						}
 						break;
 				}
-			echo '<script>window.location.replace("' . admin_url( 'admin.php?page=legal-pages#all_legal_pages' ) . '");</script>';
+				echo '<script>window.location.replace("' . esc_js( esc_url( admin_url( 'admin.php?page=legal-pages#all_legal_pages' ) ) ) . '");</script>';
 			}
 		}
 
@@ -4536,10 +4536,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					
 					// Verify the nonce and stop execution if it is invalid.
 					if ( ! wp_verify_nonce( $nonce, 'lp-submit-create-popups' ) ) {
-						wp_die( __( 'Security check failed. Please try again.', 'wplegalpages' ) );
+						wp_die( esc_html__( 'Security check failed. Please try again.', 'wplegalpages' ) );
 					}
 				} else {
-					wp_die( __( 'Missing nonce. Please try again.', 'wplegalpages' ) );
+					wp_die( esc_html__( 'Missing nonce. Please try again.', 'wplegalpages' ) );
 				}
 
 				$lpid = isset( $_REQUEST['lpid'] ) ? intval( sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) ) : 0;
@@ -4736,11 +4736,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			<div style="display: flex; justify-content: space-between; align-items: center;padding: 5px;">
 			<div style="max-width: 80%;">
 				<p style="margin: 0;">
-					<strong><?php _e('WP Legal Pages: ','wplegalpages'); ?></strong>
-					<?php _e('We\'ve recently updated our DMCA, Professional Privacy Policy, COPPA, General Disclaimer, Earnings Disclaimer, Terms and Conditions Pro, and Cookies Policy templates. These updates include additional clauses related to AI-generated media usage to help you stay compliant with evolving standards. Kindly update your policies to stay compliant.', 'wplegalpages'); ?>
+					<strong><?php esc_html_e('WP Legal Pages: ','wplegalpages'); ?></strong>
+					<?php esc_html_e('We\'ve recently updated our DMCA, Professional Privacy Policy, COPPA, General Disclaimer, Earnings Disclaimer, Terms and Conditions Pro, and Cookies Policy templates. These updates include additional clauses related to AI-generated media usage to help you stay compliant with evolving standards. Kindly update your policies to stay compliant.', 'wplegalpages'); ?>
 				</p>
 			</div>
-				<a href="<?php echo esc_url(add_query_arg('wplp_template_dismiss_notice', '1')); ?>" class="button"><?php _e('Dismiss','wplegalpages'); ?></a>
+				<a href="<?php echo esc_url(add_query_arg('wplp_template_dismiss_notice', '1')); ?>" class="button"><?php esc_html_e('Dismiss','wplegalpages'); ?></a>
 			</div>
 		</div>
 

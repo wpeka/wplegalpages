@@ -83,30 +83,30 @@ as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 				'<div class="as-modal as-modal-deactivation-feedback<?php echo empty( $confirmation_message ) ? ' no-confirmation-message' : ''; ?>">'
 				+ '	<div class="as-modal-dialog">'
 				+ '		<div class="as-modal-header">'
-				+ '		    <h4><?php echo __( 'Quick Feedback', 'wplegalpages' ); ?></h4>'
+				+ '		    <h4><?php echo esc_html__( 'Quick Feedback', 'wplegalpages' ); ?></h4>'
 				+ '		</div>'
 				+ '		<div class="as-modal-body">'
-				+ '			<div class="as-modal-panel" data-panel-id="confirm"><p><?php echo $confirmation_message; ?></p></div>'
+				+ '			<div class="as-modal-panel" data-panel-id="confirm"><p><?php echo esc_html__( $confirmation_message, 'wplegalpages' ); ?></p></div>'
 				+ '			<div class="as-modal-panel active" data-panel-id="reasons"><h3><strong><?php
 							// translators: %s: Plugin name or feature to be activated.
 							 echo esc_js( sprintf( __( 'If you have a moment, please let us know why you are %s', 'wplegalpages' ), ( $as->is_plugin() ? __( 'deactivating', 'wplegalpages' ) : __( 'switching', 'wplegalpages' ) ) ) ); 
 							 ?>:</strong></h3><ul id="reasons-list">' + reasonsHtml + '</ul></div>'
 				+ '		</div>'
 				+ '		<div class="as-modal-footer">'
-				+ '         <?php echo $anonymous_feedback_checkbox_html; ?>'
+				+ '         <?php echo esc_html__( $anonymous_feedback_checkbox_html, 'wplegalpages' ); ?>'
 				+ '			<a href="#" class="button button-secondary button-deactivate"></a>'
-				+ '			<a href="#" class="button button-primary button-close"><?php echo __( 'Cancel', 'wplegalpages' ); ?></a>'
+				+ '			<a href="#" class="button button-primary button-close"><?php echo esc_html__( 'Cancel', 'wplegalpages' ); ?></a>'
 				+ '		</div>'
 				+ '	</div>'
 				+ '</div>',
 			$modal = $(modalHtml),
-			$deactivateLink = $('#the-list .deactivate > [data-module-slug=<?php echo $as->get_slug(); ?>].as-module-slug').prev(),
+			$deactivateLink = $('#the-list .deactivate > [data-module-slug=<?php echo esc_attr( $as->get_slug() ); ?>].as-module-slug').prev(),
 			selectedReasonID = false,
 			redirectLink = '',
 			$anonymousFeedback    = $modal.find( '.anonymous-feedback-label' ),
 			isAnonymous           = <?php echo ( $is_anonymous ? 'true' : 'false' ); ?>,
-			otherReasonID         = <?php echo Analytics::REASON_OTHER; ?>,
-			dontShareDataReasonID = <?php echo Analytics::REASON_DONT_LIKE_TO_SHARE_MY_INFORMATION; ?>,
+			otherReasonID         = <?php echo json_encode( Analytics::REASON_OTHER ); ?>,
+			dontShareDataReasonID = <?php echo json_encode( Analytics::REASON_DONT_LIKE_TO_SHARE_MY_INFORMATION ); ?>,
 			deleteThemeUpdateData = <?php echo $as->is_theme() ? 'true' : 'false'; ?>,
 			showDeactivationFeedbackForm = <?php echo ( $show_deactivation_feedback_form ? 'true' : 'false' ); ?>;
 
@@ -216,7 +216,7 @@ as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 							reason_info         : userReason,
 							is_anonymous        : isAnonymousFeedback(),
 							slug                : slug,
-							security            : '<?php echo $uninstall_reason_nonce; ?>',
+							security            : '<?php echo json_encode( $uninstall_reason_nonce ); ?>',
 						},
 						beforeSend: function () {
 							_parent.find('.as-modal-footer .button').addClass('disabled');

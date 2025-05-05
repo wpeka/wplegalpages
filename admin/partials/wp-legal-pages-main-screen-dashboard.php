@@ -41,7 +41,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 					</div>
 					
 				</div>
-				<!-- <div id="wplegalpages-save-settings-alert"><img src="<?php echo WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg'; ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_attr_e( 'Settings saved successfully', 'wplegalpages' ); ?></div> -->
+				<!-- <div id="wplegalpages-save-settings-alert"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg' ); ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_attr_e( 'Settings saved successfully', 'wplegalpages' ); ?></div> -->
 				<div class="wp-legalpages-admin-help-and-support">
 				<div class="wp-legalpages-admin-help">
 						<div class="wp-legalpages-admin-help-icon">
@@ -172,7 +172,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 					?>
 					<div class="gdpr-remaining-scans-content" >
 						<div class="gdpr-current-plan-container">
-							<p><span>Current Plan: </span><?php echo $api_user_plan; ?></p>
+							<p><span>Current Plan: </span><?php echo esc_html( $api_user_plan ); ?></p>
 							<?php
 							if ( $api_user_plan == 'free' ) {
 								?>
