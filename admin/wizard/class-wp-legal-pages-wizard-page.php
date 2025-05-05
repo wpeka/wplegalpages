@@ -459,7 +459,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'privacy_policy':
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
-						$page_preview .= __( 'Privacy Policy of '.$business, 'wplegalpages' );
+						// translators: %s: Business name.
+						$page_preview .= sprintf( __( 'Privacy Policy of %s', 'wplegalpages' ), $business );
 						$page_preview .= '</h1>';
 					}
 					break;

@@ -231,7 +231,7 @@ class WP_Legal_Pages_App_Auth {
 		check_ajax_referer( 'wp-legal-pages', '_ajax_nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( esc_html__( 'You do not have permission.', 'responsive-addons' ) );
+			wp_send_json_error( esc_html__( 'You do not have permission.', 'wplegalpages' ) );
 		}
 
 		$site_address = rawurlencode( get_site_url() );

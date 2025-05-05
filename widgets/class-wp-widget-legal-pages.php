@@ -28,10 +28,10 @@ class WP_Widget_Legal_Pages extends WP_Widget {
 	public function __construct() {
 		$widget_ops = array(
 			'classname'                   => 'widget_legal_pages',
-			'description'                 => __( 'A list of your site&#8217;s Legal Pages.' ),
+			'description'                 => __( 'A list of your site&#8217;s Legal Pages.', 'wplegalpages' ),
 			'customize_selective_refresh' => true,
 		);
-		parent::__construct( 'legal_pages', __( 'WPLegalPages' ), $widget_ops );
+		parent::__construct( 'legal_pages', __( 'WPLegalPages', 'wplegalpages' ), $widget_ops );
 	}
 
 	/**
@@ -44,7 +44,7 @@ class WP_Widget_Legal_Pages extends WP_Widget {
 	 * @param array $instance Settings for the current WPLegalPages widget instance.
 	 */
 	public function widget( $args, $instance ) {
-		$default_title = __( 'WPLegalPages' );
+		$default_title = __( 'WPLegalPages', 'wplegalpages' );
 		$title         = ! empty( $instance['title'] ) ? $instance['title'] : $default_title;
 
 		/**

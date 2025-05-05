@@ -1010,7 +1010,7 @@ if ( '1' === $lpterms ) {
 										<c-button class="wplegalpages-configure-button" @click="showFooterForm">
 											<span>
 												<img class="wplegalpages-configure-image" :src="configure_image_url.default">
-												<?php esc_attr_e( 'Configuration' ); ?>
+												<?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?>
 											</span>
 										</c-button>
 									</c-col>
@@ -1030,7 +1030,7 @@ if ( '1' === $lpterms ) {
 										<c-button class="wplegalpages-configure-button" @click="showBannerForm">
 											<span>
 												<img class="wplegalpages-configure-image" :src="configure_image_url.default">
-												<?php esc_attr_e( 'Configuration' ); ?>
+												<?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?>
 											</span>
 										</c-button>
 									</c-col>
@@ -1089,7 +1089,7 @@ if ( '1' === $lpterms ) {
 										<c-button class="wplegalpages-configure-button" @click="showPopupForm">
 											<span>
 												<img class="wplegalpages-configure-image" :src="configure_image_url.default">
-												<span class="wplegalpages-configure-text"><?php esc_attr_e( 'Configuration' ); ?></span>
+												<span class="wplegalpages-configure-text"><?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?></span>
 											</span>
 										</c-button>
 									</c-col>

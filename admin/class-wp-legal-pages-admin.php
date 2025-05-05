@@ -362,11 +362,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						',
 						esc_url( 'https://wordpress.org/support/plugin/wplegalpages/reviews/' ),
 						esc_url( get_admin_url() . '?already_done=1' ),
-						esc_html__( 'Love ', 'wplp' ),
-						esc_html__( ' Share your experience! Leave a review on WordPress.org and let others know how WP Legal Pages helps you in generating legal pages like privacy policy and other 25+ legal policies.', 'wplp' ),
-						esc_html__( 'Dismiss', 'wplp' ),
-						esc_html__( 'Rate Us', 'wplp' ),
-						esc_html__( 'I already did', 'wplp' )
+						esc_html__( 'Love ', 'wplegalpages' ),
+						esc_html__( ' Share your experience! Leave a review on WordPress.org and let others know how WP Legal Pages helps you in generating legal pages like privacy policy and other 25+ legal policies.', 'wplegalpages' ),
+						esc_html__( 'Dismiss', 'wplegalpages' ),
+						esc_html__( 'Rate Us', 'wplegalpages' ),
+						esc_html__( 'I already did', 'wplegalpages' )
 					);
 				}
 				break;
@@ -459,8 +459,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$callback_function = $is_gdpr_active  ? array( $this, 'gdpr_cookie_consent_new_admin_screen' ) : array( $this, 'gdpr_cookie_consent_install_activate_screen' );
 			if (empty($GLOBALS['admin_page_hooks']['wp-legal-pages'])) {
 				add_menu_page(
-				__( 'WP Legal Pages', 'wp-legal-pages' ), // Page title
-				__( 'WP Legal Pages', 'wp-legal-pages' ), // Menu title
+				__( 'WP Legal Pages', 'wplegalpages' ), // Page title
+				__( 'WP Legal Pages', 'wplegalpages' ), // Menu title
 				'manage_options', // Capability
 				'wp-legal-pages', // Menu slug
 				$callback_function , // Callback function
@@ -483,8 +483,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if(!$gdpr_installed || ($gdpr_installed && !$is_gdpr_active)){
 				add_submenu_page(
 					'wp-legal-pages', // Parent slug (same as main menu slug)
-					__( 'Dashboard', 'gdpr-cookie-consent' ),  // Page title
-					__( 'Dashboard', 'gdpr-cookie-consent' ),     // Dashboard page title
+					__( 'Dashboard', 'wplegalpages' ),  // Page title
+					__( 'Dashboard', 'wplegalpages' ),     // Dashboard page title
 					'manage_options',   // Capability
 					'wplp-dashboard', // Menu slug
 					array( $this, 'wp_legalpages_new_admin_screen_dashboard' ), // Callback function
@@ -504,8 +504,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if($is_legalpages_active && $is_gdpr_active){
 				add_submenu_page(
 					'wp-legal-pages', // Parent slug
-					__('WP Cookie Consent', 'gdpr-cookie-consent'),  // Page title
-					__('Cookie Consent', 'gdpr-cookie-consent'),    // Menu title
+					__('WP Cookie Consent', 'wplegalpages'),  // Page title
+					__('Cookie Consent', 'wplegalpages'),    // Menu title
 					'manage_options',   // Capability
 					'gdpr-cookie-consent', // Menu slug
 					function() {
@@ -518,8 +518,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if(!$gdpr_installed || ($gdpr_installed && !$is_gdpr_active)){
 				add_submenu_page(
 					'wp-legal-pages', // Parent slug (same as main menu slug)
-					__( 'WP Cookie Consent', 'gdpr-cookie-consent' ),  // Page title
-					__( 'Cookie Consent', 'gdpr-cookie-consent' ),     // Menu title
+					__( 'WP Cookie Consent', 'wplegalpages' ),  // Page title
+					__( 'Cookie Consent', 'wplegalpages' ),     // Menu title
 					'manage_options',   // Capability
 					'gdpr-cookie-consent', // Menu slug
 					array( $this, 'gdpr_cookie_consent_install_activate_screen' ), // Callback function
@@ -1417,7 +1417,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'post_content'  => '',
 						'post_excerpt'  => '',
 						'post_parent'   => '',
-						'post_title'    => _x( 'Home', 'nav menu home label' ),
+						'post_title'    => _x( 'Home', 'nav menu home label', 'wplegalpages' ),
 						'post_type'     => 'nav_menu_item',
 						'type'          => 'custom',
 						'url'           => home_url( '/' ),
@@ -4536,10 +4536,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					
 					// Verify the nonce and stop execution if it is invalid.
 					if ( ! wp_verify_nonce( $nonce, 'lp-submit-create-popups' ) ) {
-						wp_die( __( 'Security check failed. Please try again.', 'text-domain' ) );
+						wp_die( __( 'Security check failed. Please try again.', 'wplegalpages' ) );
 					}
 				} else {
-					wp_die( __( 'Missing nonce. Please try again.', 'text-domain' ) );
+					wp_die( __( 'Missing nonce. Please try again.', 'wplegalpages' ) );
 				}
 
 				$lpid = isset( $_REQUEST['lpid'] ) ? intval( sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) ) : 0;
@@ -4685,7 +4685,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 		
 			// Success response
-			wp_send_json_success( array( 'message' => __( 'Plugin installed and activated successfully.', 'your-textdomain' ) ) );
+			wp_send_json_success( array( 'message' => __( 'Plugin installed and activated successfully.', 'wplegalpages' ) ) );
 		}
 
 

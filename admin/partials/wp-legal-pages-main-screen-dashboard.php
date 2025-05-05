@@ -101,17 +101,17 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 						</p>
 					</div>
 				<div class="gdpr-api-connection-btns">
-					<button class="gdpr-start-auth gdpr-signup"><?php echo esc_html( 'Sign Up for Free', 'gdpr-cookie-consent' ); ?></button>
-					<p><?php echo esc_html( 'Already have an account?', 'gdpr-cookie-consent' ); ?><a class="gdpr-start-auth gdpr-login" href=""><?php esc_html_e( 'Connect your existing account', 'gdpr-cookie-consent' ); ?></a></p>
+					<button class="gdpr-start-auth gdpr-signup"><?php echo esc_html( 'Sign Up for Free', 'wplegalpages' ); ?></button>
+					<p><?php echo esc_html( 'Already have an account?', 'wplegalpages' ); ?><a class="gdpr-start-auth gdpr-login" href=""><?php esc_html_e( 'Connect your existing account', 'wplegalpages' ); ?></a></p>
 				</div>
 			</div>
 
 			<div class="gdpr-api-detailed-info-wrapper">
 					<div class="gdpr-api-detailed-info">
 						<h2>
-							<?php echo esc_html( 'Upgrade to Pro for Advanced Features', 'gdpr-cookie-consent' ); ?>
+							<?php echo esc_html( 'Upgrade to Pro for Advanced Features', 'wplegalpages' ); ?>
 						</h2>
-						<p><?php echo esc_html( 'Take your website compliance to the next level with Pro:', 'gdpr-cookie-consent' ); ?></p>
+						<p><?php echo esc_html( 'Take your website compliance to the next level with Pro:', 'wplegalpages' ); ?></p>
 						<p>
 							<span><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/bullet_point.svg'; ?>" alt="<?php echo esc_attr( 'API Connection Success Mark', 'wplegalpages' ); ?>"></span> <strong><?php echo esc_html( 'Advanced Dashboard:', 'wplegalpages' ); ?></strong> <?php echo esc_html( 'Gain detailed insights into cookie consent performance.', 'wplegalpages' ); ?>
 						</p>

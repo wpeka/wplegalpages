@@ -63,15 +63,16 @@ HTML;
 	if ( $is_anonymous ) {
 		$anonymous_feedback_checkbox_html = sprintf(
 			'<label class="anonymous-feedback-label"><input type="checkbox" class="anonymous-feedback-checkbox"> %s</label>',
-			__( 'Send contact details for help', 'analytics' )
+			__( 'Send contact details for help', 'wplegalpages' )
 		);
 	}
 }
 
 // Aliases.
-$deactivate_text = __( 'Deactivate', 'analytics' );
-$theme_text      = __( 'Theme', 'analytics' );
-$activate_x_text = __( 'Activate %s', 'analytics' );
+$deactivate_text = __( 'Deactivate', 'wplegalpages' );
+$theme_text      = __( 'Theme', 'wplegalpages' );
+// translators: %s: Plugin name or feature to be activated.
+$activate_x_text = __( 'Activate %s', 'wplegalpages' );
 
 as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 ?>
@@ -82,16 +83,19 @@ as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 				'<div class="as-modal as-modal-deactivation-feedback<?php echo empty( $confirmation_message ) ? ' no-confirmation-message' : ''; ?>">'
 				+ '	<div class="as-modal-dialog">'
 				+ '		<div class="as-modal-header">'
-				+ '		    <h4><?php echo __( 'Quick Feedback', 'analytics' ); ?></h4>'
+				+ '		    <h4><?php echo __( 'Quick Feedback', 'wplegalpages' ); ?></h4>'
 				+ '		</div>'
 				+ '		<div class="as-modal-body">'
 				+ '			<div class="as-modal-panel" data-panel-id="confirm"><p><?php echo $confirmation_message; ?></p></div>'
-				+ '			<div class="as-modal-panel active" data-panel-id="reasons"><h3><strong><?php echo esc_js( sprintf( __( 'If you have a moment, please let us know why you are %s', 'analytics' ), ( $as->is_plugin() ? __( 'deactivating', 'analytics' ) : __( 'switching', 'analytics' ) ) ) ); ?>:</strong></h3><ul id="reasons-list">' + reasonsHtml + '</ul></div>'
+				+ '			<div class="as-modal-panel active" data-panel-id="reasons"><h3><strong><?php
+							// translators: %s: Plugin name or feature to be activated.
+							 echo esc_js( sprintf( __( 'If you have a moment, please let us know why you are %s', 'wplegalpages' ), ( $as->is_plugin() ? __( 'deactivating', 'wplegalpages' ) : __( 'switching', 'wplegalpages' ) ) ) ); 
+							 ?>:</strong></h3><ul id="reasons-list">' + reasonsHtml + '</ul></div>'
 				+ '		</div>'
 				+ '		<div class="as-modal-footer">'
 				+ '         <?php echo $anonymous_feedback_checkbox_html; ?>'
 				+ '			<a href="#" class="button button-secondary button-deactivate"></a>'
-				+ '			<a href="#" class="button button-primary button-close"><?php echo __( 'Cancel', 'analytics' ); ?></a>'
+				+ '			<a href="#" class="button button-primary button-close"><?php echo __( 'Cancel', 'wplegalpages' ); ?></a>'
 				+ '		</div>'
 				+ '	</div>'
 				+ '</div>',
@@ -256,14 +260,9 @@ as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 
 				$modal.find('.reason-input').remove();
 				$modal.find( '.internal-message' ).hide();
-				$modal.find('.button-deactivate').html('<?php echo esc_js(
-					sprintf(
-						__( 'Submit & %s', 'analytics' ),
-						$as->is_plugin() ?
-						$deactivate_text :
-						sprintf( $activate_x_text, $theme_text )
-					)
-				) ?>');
+				// translators: %s: Plugin name or feature to be activated.
+				$text = sprintf( __( 'Submit & %s', 'wplegalpages' ), $some_var );
+				$modal.find('.button-deactivate').html( <?php echo esc_js( $text ); ?> );
 
 				enableDeactivateButton();
 
@@ -280,7 +279,7 @@ as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 					_parent.find('input, textarea').attr('placeholder', inputPlaceholder).focus();
 
 					if (isOtherReasonSelected()) {
-						showMessage('<?php echo esc_js( __( 'Kindly tell us the reason so we can improve.', 'analytics' ) ); ?>');
+						showMessage('<?php echo esc_js( __( 'Kindly tell us the reason so we can improve.', 'wplegalpages' ) ); ?>');
 						disableDeactivateButton();
 					}
 				}
@@ -406,9 +405,10 @@ as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 			if ( 'confirm' === getCurrentPanel() ) {
 				$deactivateButton.text(
 				<?php
+				// translators: %s: Plugin name or feature to be activated.
 				echo json_encode(
 					sprintf(
-						__( 'Yes - %s', 'analytics' ),
+						__( 'Yes - %s', 'wplegalpages' ),
 						$as->is_plugin() ?
 						$deactivate_text :
 						sprintf( $activate_x_text, $theme_text )
@@ -419,9 +419,10 @@ as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 			} else {
 				$deactivateButton.html(
 				<?php
+				// translators: %s: Plugin name or feature to be activated.
 				echo json_encode(
 					sprintf(
-						__( 'Skip & %s', 'analytics' ),
+						__( 'Skip & %s', 'wplegalpages' ),
 						$as->is_plugin() ?
 						$deactivate_text :
 						sprintf( $activate_x_text, $theme_text )
