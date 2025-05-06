@@ -4889,7 +4889,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 *
 		 * @return string|null Two-letter country code (e.g., 'US') or null on failure.
 		 */
-		public function get_user_country() {
+		public function wplegalpages_get_user_country() {
 			$geoData = wp_remote_get( "https://api.country.is/" );
 		
 			if ( is_wp_error( $geoData ) ) {
@@ -4943,7 +4943,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'os_name'          => $this->wplegalpages_get_user_os(),
 						'device_type'      => $this->wplegalpages_get_device_type(),
 						'ip'               => $this->wplegalpages_get_user_ip(),
-						'country'          => $this->get_user_country(),
+						'country'          => $this->wplegalpages_get_user_country(),
 						'time'             => time() * 1000,
 					)
 				)
