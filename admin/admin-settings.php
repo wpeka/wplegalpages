@@ -100,7 +100,7 @@ if ( '1' === $lpterms ) {
 		<div style="">
 			<div style="line-height: 2.4em;" class='wplegalpages-pro-promotion-settings-page'>
 				<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=settings-page&utm_content=upgrade-banner" target="_blank">
-					<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/wplegalpages-banner.png'; ?>">
+					<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/wplegalpages-banner.png'; ?>"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 				</a>
 			</div>
 		</div>
@@ -112,7 +112,7 @@ if ( '1' === $lpterms ) {
 	<div class="wplegalpages-settings-container">
 	<div class="wplegal-create-legal-settings">
 			<div class="wplegal-feature-icon" id="wplegal-settings-create-legal">
-				<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/create_legal_blue.svg' ); ?>" alt="create legal" class="wplegal-create-legal-icon">
+				<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/create_legal_blue.svg' ); ?>" alt="create legal" class="wplegal-create-legal-icon"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 				<div class="wplegal-create-legal-subtext">
 					<p class="wplegal-create-legal-page-subheading"><?php esc_attr_e( 'Create Your Legal Page', 'wplegalpages' ); ?></p>
 					<p class="wplegal-create-legal-page-content"><?php esc_attr_e( 'Secure your site in 3 easy steps and generate a personalized legal policy page for enhanced protection.', 'wplegalpages' ); ?></p>
@@ -121,7 +121,7 @@ if ( '1' === $lpterms ) {
 			<div class="wplegal-create-legal-link">
 				<a href=<?php echo esc_url( admin_url( 'index.php?page=wplegal-wizard#/' ) ); ?> class="wplegal-create-legal-page-button">
 					<span><?php esc_attr_e( 'Create Page', 'wplegalpages' ); ?></span>
-					<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/right_arrow.svg' ); ?>" alt="right arrow">
+					<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/right_arrow.svg' ); ?>" alt="right arrow"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 				</a>
 			</div>
 		</div>
@@ -130,7 +130,7 @@ if ( '1' === $lpterms ) {
 		<c-form id="lp-save-settings-form" spellcheck="false" class="wplegalpages-settings-form">
 			<input type="hidden" name="settings_form_nonce" value="<?php echo esc_attr( wp_create_nonce( 'settings-form-nonce' ) ); ?>"/>
 			<div class="wplegalpages-settings-content">
-				<div id="wplegalpages-save-settings-alert"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg' ); ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_attr_e( 'Settings saved successfully', 'wplegalpages' ); ?></div>
+				<div id="wplegalpages-save-settings-alert"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg' ); ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_attr_e( 'Settings saved successfully', 'wplegalpages' ); ?></div> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 
 				<c-tabs variant="pills" ref="active_tab" class="wplegalpages-settings-nav">
 					<c-tab title="<?php esc_attr_e( 'General', 'wplegalpages' ); ?>" href="#settings#general" id="wplegalpages-settings-general">
@@ -630,7 +630,7 @@ if ( '1' === $lpterms ) {
 									?>
 									<c-col class="col-sm-8">
 										<draggable id="wplegalpages-footer-order-links" v-model="footer_pages_drag" @change="onDragPages">
-											<p class="wplegalpages-draggable-item" v-for="footer_page in footer_pages_drag" :key="footer_page.code">{{footer_page.label}}<img src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/drag-icon.png'; ?>"/></p>
+											<p class="wplegalpages-draggable-item" v-for="footer_page in footer_pages_drag" :key="footer_page.code">{{footer_page.label}}<img src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/drag-icon.png'; ?>"/></p> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 										</draggable>
 									</c-col>
 								</c-row>
@@ -1009,7 +1009,7 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-3  wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showFooterForm">
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default">
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 												<?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?>
 											</span>
 										</c-button>
@@ -1029,7 +1029,7 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-3 wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showBannerForm">
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default">
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 												<?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?>
 											</span>
 										</c-button>
@@ -1053,7 +1053,7 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-3 wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button wplegalpages-not-pro-tooltip" disabled>
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default">
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 												<?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?>
 											</span>
 										</c-button>
@@ -1088,7 +1088,7 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-3 wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showPopupForm">
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default">
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?> 
 												<span class="wplegalpages-configure-text"><?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?></span>
 											</span>
 										</c-button>
@@ -1112,7 +1112,7 @@ if ( '1' === $lpterms ) {
 
 									<c-card-body class="wplegal-connection-card-body" >
 									<div class="wplegal-connection-success-tick">
-									<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ) . 'images/Check_ring.svg'; ?>" alt="API Connection Success Mark">
+									<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) ) . 'images/Check_ring.svg'; ?>" alt="API Connection Success Mark"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 									</div>
 									<div class="wplegal-connect-information">
 

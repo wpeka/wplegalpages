@@ -827,7 +827,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$is_gdpr_installed     = isset( $installed_plugins['gdpr-cookie-consent/gdpr-cookie-consent.php'] ) ? true : false;
 		?>
 		<div class="gdpr-install-activate-screen">
-			<img id="gdpr-install-activate-img"src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/cookie-consent-install-banner.jpg'; ?>" alt="WP Cookie Consent Logo">
+			<img id="gdpr-install-activate-img"src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/cookie-consent-install-banner.jpg'; ?>" alt="WP Cookie Consent Logo"><?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 			<div class="lp-popup-container">
 
 				<p class="lp-plugin-install-activation-text"><?php esc_html_e( 'WP Cookie Consent is currently inactive. Please install and activate the plugin to display the cookie banner and collect user consent.', 'wplegalpages' ); ?></p>
@@ -2027,7 +2027,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$facebook_url = isset( $lp_general['facebook-url'] ) ? $lp_general['facebook-url'] : '';
 
 			if ( $facebook_url ) {
-				$facebook = array( 'facebook' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $facebook_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/facebook.png"/></a>' );
+				$facebook = array( 'facebook' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $facebook_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/facebook.png"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 			}
 			$lp_find_facebook = array( '[facebook]' );
 			$content          = str_replace( $lp_find_facebook, $facebook, stripslashes( $content ) );
@@ -2036,7 +2036,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 			if ( $google_url ) {
 
-				$google = array( 'google' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $google_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/google.png"/></a>' );
+				$google = array( 'google' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $google_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/google.png"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 			}
 			$lp_find_google = array( '[google]' );
 			$content        = str_replace( $lp_find_google, $google, stripslashes( $content ) );
@@ -2044,14 +2044,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$twitter_url = isset( $lp_general['twitter-url'] ) ? $lp_general['twitter-url'] : '';
 			if ( $twitter_url ) {
 
-				$twitter = array( 'twitter' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $twitter_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/twitter.png"/></a>' );
+				$twitter = array( 'twitter' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $twitter_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/twitter.png"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 			}
 			$lp_find_twitter = array( '[twitter]' );
 			$content         = str_replace( $lp_find_twitter, $twitter, stripslashes( $content ) );
 
 			$linkedin_url = isset( $lp_general['linkedin-url'] ) ? $lp_general['linkedin-url'] : '';
 			if ( $linkedin_url ) {
-				$linkedin = array( 'linkedin' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $linkedin_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/linkedin.png"/></a>' );
+				$linkedin = array( 'linkedin' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $linkedin_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/linkedin.png"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 			}
 			$lp_find_linkedin = array( '[linkedin]' );
 			$content          = str_replace( $lp_find_linkedin, $linkedin, stripslashes( $content ) );
