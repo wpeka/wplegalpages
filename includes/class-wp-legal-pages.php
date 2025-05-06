@@ -286,6 +286,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 
 			$this->loader->add_action( 'admin_notices', $plugin_admin,'wplp_admin_new_clause_addition_notice',1);
 
+			$this->loader->add_action( 'wp_ajax_wplp_collect_data', $plugin_admin, 'wplegalpages_upgrade_to_pro_popup_clicked' );
 
 		}
 

@@ -4797,6 +4797,163 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 			return $body;
 		}
+
+		/**
+		 * Handles the click event when the user clicks the "Upgrade to Pro" popup.
+		 *
+		 * This function checks whether usage tracking is allowed. If not, it returns an error response.
+		 * If allowed, it logs the request, sanitizes the API key from the POST data, and sends tracking data to Amplitude.
+		 *
+		 * @return void Outputs a JSON success or error response and terminates execution.
+		 */
+		public function wplegalpages_upgrade_to_pro_popup_clicked() {
+			if ( ! get_option( 'wplegalpages-ask-for-usage-optin' ) ) {
+				wp_send_json_error(
+					array(
+						'message' => 'Usage Tracking is Not Allowed',
+					)
+				);
+			}
+
+			$api_key = sanitize_key( $_POST['api_key'] );
+			$this->wplegalpages_connect_amplitude( $api_key, site_url(), 'LP Upgrade Popup' );
+			wp_send_json_success(
+				array(
+					'message' => 'Data Sent Successfully',
+				)
+			);			
+		}
+
+		/**
+		 * Determines the operating system of the user based on the HTTP User-Agent string.
+		 *
+		 * @return string The detected operating system name or 'Unknown OS' if not identified.
+		 */
+		public function wplegalpages_get_user_os() {
+			$user_agent = $_SERVER['HTTP_USER_AGENT'];
+		
+			if ( stripos( $user_agent, 'Windows' ) !== false ) return 'Windows';
+			if ( stripos( $user_agent, 'Mac' ) !== false ) return 'Mac OS';
+			if ( stripos( $user_agent, 'Linux' ) !== false ) return 'Linux';
+			if ( stripos( $user_agent, 'Android' ) !== false ) return 'Android';
+			if ( stripos( $user_agent, 'iPhone' ) !== false || stripos( $user_agent, 'iPad' ) !== false ) return 'iOS';
+		
+			return 'Unknown OS';
+		}
+
+		/**
+		 * Determines the type of device based on the user agent.
+		 *
+		 * This function inspects the `HTTP_USER_AGENT` server variable to identify whether 
+		 * the device is a mobile, tablet, or desktop.
+		 *
+		 * @return string Returns 'Mobile' if a mobile device is detected, 'Tablet' if a tablet is detected, 
+		 *               and 'Desktop' otherwise.
+		 */
+		function wplegalpages_get_device_type() {
+			$user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+			if ( preg_match( '/mobile|android|iphone|ipod|blackberry|opera mini|windows phone|webos/i', $user_agent ) ) {
+				return 'Mobile';
+			}
+
+			if ( preg_match( '/tablet|ipad/i', $user_agent ) ) {
+				return 'Tablet';
+			}
+
+			return 'Desktop';
+		}
+
+		/**
+		 * Retrieves the user's IP address.
+		 *
+		 * This function checks various server variables to determine the user's IP address,
+		 * including `HTTP_CLIENT_IP`, `HTTP_X_FORWARDED_FOR`, and `REMOTE_ADDR`.
+		 *
+		 * @return string The detected IP address of the user.
+		 */
+		function wplegalpages_get_user_ip() {
+			if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+				return $_SERVER['HTTP_CLIENT_IP'];
+			} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+				return $_SERVER['HTTP_X_FORWARDED_FOR'];
+			} else {
+				return $_SERVER['REMOTE_ADDR'];
+			}
+		}
+
+		/**
+		 * Retrieves the user's country code based on their IP address using the country.is API.
+		 *
+		 * @return string|null Two-letter country code (e.g., 'US') or null on failure.
+		 */
+		public function get_user_country() {
+			$geoData = wp_remote_get( "https://api.country.is/" );
+		
+			if ( is_wp_error( $geoData ) ) {
+				return null;
+			}
+		
+			$body = wp_remote_retrieve_body( $geoData );
+			$data = json_decode( $body, true );
+			
+			return $data['country'];
+		}
+
+		/**
+		 * Sends an event to Amplitude with user and site details.
+		 *
+		 * @param string $api_key API Key of Amplitude.
+		 * @param string $site_url The URL of the site.
+		 * @param string $event The event name to track.
+		 */
+		public function wplegalpages_connect_amplitude( $api_key, $site_url, $event ) {
+
+			$url     = 'https://api2.amplitude.com/2/httpapi';
+			$user_id = get_current_user_id();
+			
+			if ( $user_id ) { 
+				$user       = get_userdata( $user_id );
+				$user_email = $user ? $user->user_email : null;
+			} else {
+				$user_email = null;
+			}
+		
+			$data = array(
+				'api_key' => $api_key,
+				'events'  => array(
+					array(
+						'user_id'          => strval( 'lp-' . wp_generate_uuid4() ),
+						'event_type'       => $event,
+						'event_properties' => array(
+							'site_url' => $site_url,
+						),
+						'user_properties'  => array(
+							'email'   => $user_email,
+						),
+						'platform'         => 'Web',
+						'os_name'          => $this->wplegalpages_get_user_os(),
+						'device_type'      => $this->wplegalpages_get_device_type(),
+						'ip'               => $this->wplegalpages_get_user_ip(),
+						'country'          => $this->get_user_country(),
+						'time'             => time() * 1000,
+					)
+				)
+			);
+
+			$response = wp_remote_post(
+				$url,
+				array(
+					'body'    => json_encode($data),
+					'headers' => array( 'Content-Type' => 'application/json' ),
+					'method'  => 'POST',
+				)
+			);
+
+			if ( 200 === (int) wp_remote_retrieve_response_code( $response ) ) {
+				return true;
+			}
+		}
 	}
 	
 	
