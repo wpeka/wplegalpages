@@ -351,7 +351,7 @@ if ( '1' === $lpterms ) {
 												'numberposts' => -1,
 												'orderby' => 'title',
 												'order'   => 'ASC',
-												'meta_query' => array( // phpcs:ignore slow query
+												'meta_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query	
 													array(
 														'key'     => 'is_legal',
 														'value'   => 'yes',

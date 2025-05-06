@@ -870,7 +870,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$this->enqueue_common_style_scripts();
 			$this->wplegalpages_mascot_enqueue();
 
-			wp_enqueue_script(
+			wp_enqueue_script( //phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
 				'wp-legalpages-admin-revamp',
 				WPL_LITE_PLUGIN_URL . 'admin/js/wp-legalpages-admin-revamp.js',
 				array( 'jquery' ),
@@ -914,7 +914,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$this->enqueue_common_style_scripts();
 			$this->wplegalpages_mascot_enqueue();
 
-			wp_enqueue_script(
+			wp_enqueue_script( //phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
 				'wp-legalpages-admin-revamp',
 				WPL_LITE_PLUGIN_URL . 'admin/js/wp-legalpages-admin-revamp.js',
 				array( 'jquery' ),
@@ -956,7 +956,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'numberposts' => -1,
 						'orderby'     => 'title',
 						'order'       => 'ASC',
-						'meta_query'  => array( // phpcs:ignore slow query
+						'meta_query'  => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query	
 							array(
 								'key'     => 'is_legal',
 								'value'   => 'yes',
@@ -1407,8 +1407,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
 				'post_status'            => 'publish',
-				'meta_key'               => 'is_legal', // phpcs:ignore slow query
-				'meta_value'             => 'yes', // phpcs:ignore slow query
+				'meta_key'               => 'is_legal', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				'meta_value'             => 'yes', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value	
 			);
 
 			/*
@@ -1474,7 +1474,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 				// Add suppression array to arguments for WP_Query.
 				if ( ! empty( $suppress_page_ids ) ) {
-					$args['post__not_in'] = $suppress_page_ids;
+					$args['post__not_in'] = $suppress_page_ids; // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in
 				}
 			}
 
