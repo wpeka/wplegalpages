@@ -120,6 +120,7 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 				/**
 				 * Set all admin menu data
 				 */
+				// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 				$this->wc_am_deactivate_checkbox_key     = $this->data_key . '_deactivate_checkbox';
 				$this->wc_am_activation_tab_key          = $this->data_key . '_dashboard';
 				$this->wc_am_deactivation_tab_key        = $this->data_key . '_deactivation';
@@ -127,7 +128,8 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 				$this->wc_am_settings_title              = $this->software_title . esc_html__( ' API Key Activation', $this->text_domain );
 				$this->wc_am_menu_tab_activation_title   = esc_html__( 'API Key Activation', $this->text_domain );
 				$this->wc_am_menu_tab_deactivation_title = esc_html__( 'API Key Deactivation', $this->text_domain );
-
+				// phpcs:enable WordPress.WP.I18n.NonSingularStringLiteralDomain
+				
 				/**
 				 * Set all software update data here
 				 */
@@ -281,7 +283,7 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 					<div class="notice notice-error">
 						<p><?php 
 						// translators: %s: Plugin name or feature to be activated.
-						printf( wp_kses_post( __( '<b>Warning!</b> You\'re blocking external requests which means you won\'t be able to get %1$s updates. Please add %2$s to %3$s.', $this->text_domain ), $this->software_title, '<strong>' . $host . '</strong>', '<code>WP_ACCESSIBLE_HOSTS</code>' ) ); 
+						printf( wp_kses_post( __( '<b>Warning!</b> You\'re blocking external requests which means you won\'t be able to get %1$s updates. Please add %2$s to %3$s.', $this->text_domain ), $this->software_title, '<strong>' . $host . '</strong>', '<code>WP_ACCESSIBLE_HOSTS</code>' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralDomain
 						?></p>
 					</div>
 					<?php

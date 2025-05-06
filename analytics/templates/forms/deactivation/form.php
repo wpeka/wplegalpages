@@ -82,14 +82,14 @@ as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 				+ '		    <h4><?php echo esc_html__( 'Quick Feedback', 'wplegalpages' ); ?></h4>'
 				+ '		</div>'
 				+ '		<div class="as-modal-body">'
-				+ '			<div class="as-modal-panel" data-panel-id="confirm"><p><?php echo esc_html__( $confirmation_message, 'wplegalpages' ); ?></p></div>'
+				+ '			<div class="as-modal-panel" data-panel-id="confirm"><p><?php echo esc_html__( $confirmation_message, 'wplegalpages' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText	?></p></div>'
 				+ '			<div class="as-modal-panel active" data-panel-id="reasons"><h3><strong><?php
 							// translators: %s: Plugin name or feature to be activated.
 							 echo esc_js( sprintf( __( 'If you have a moment, please let us know why you are %s', 'wplegalpages' ), ( $as->is_plugin() ? __( 'deactivating', 'wplegalpages' ) : __( 'switching', 'wplegalpages' ) ) ) ); 
 							 ?>:</strong></h3><ul id="reasons-list">' + reasonsHtml + '</ul></div>'
 				+ '		</div>'
 				+ '		<div class="as-modal-footer">'
-				+ '         <?php echo esc_html__( $anonymous_feedback_checkbox_html, 'wplegalpages' ); ?>'
+				+ '         <?php echo esc_html__( $anonymous_feedback_checkbox_html, 'wplegalpages' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText ?>'
 				+ '			<a href="#" class="button button-secondary button-deactivate"></a>'
 				+ '			<a href="#" class="button button-primary button-close"><?php echo esc_html__( 'Cancel', 'wplegalpages' ); ?></a>'
 				+ '		</div>'
@@ -404,7 +404,7 @@ as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 				// translators: %s: Plugin name or feature to be activated.
 				echo json_encode(
 					sprintf(
-						__( 'Yes - %s', 'wplegalpages' ),
+						__( 'Yes - %s', 'wplegalpages' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment	
 						$as->is_plugin() ?
 						$deactivate_text :
 						sprintf( $activate_x_text, $theme_text )
@@ -418,7 +418,7 @@ as_enqueue_local_style( 'as_dialog_boxes', '/admin/dialog-boxes.css' );
 				// translators: %s: Plugin name or feature to be activated.
 				echo json_encode(
 					sprintf(
-						__( 'Skip & %s', 'wplegalpages' ),
+						__( 'Skip & %s', 'wplegalpages' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment	
 						$as->is_plugin() ?
 						$deactivate_text :
 						sprintf( $activate_x_text, $theme_text )

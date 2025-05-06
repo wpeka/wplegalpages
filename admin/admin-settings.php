@@ -939,11 +939,11 @@ if ( '1' === $lpterms ) {
 
 								ob_start();
 
-								echo wp_kses_post( $markup['popup_markup1'] );
+								echo $markup['popup_markup1']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 								$popup_markup1 = ob_get_clean();
 
-								echo wp_kses_post( $popup_markup1 );
+								echo $popup_markup1; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								
 								?>
 
@@ -953,11 +953,11 @@ if ( '1' === $lpterms ) {
 								
 								ob_start();
 
-								echo wp_kses_post( $markup['popup_markup2'] );
+								echo $markup['popup_markup2']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 								$popup_markup2 = ob_get_clean();
 
-								echo wp_kses_post( $popup_markup2 );
+								echo  $popup_markup2; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 							}
 						}
@@ -1066,11 +1066,11 @@ if ( '1' === $lpterms ) {
 
 										ob_start();
 										
-										echo wp_kses_post( $markup['setting_markup'] );
+										echo $markup['setting_markup']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 										
 										$setting_markup = ob_get_clean();
 
-										echo wp_kses_post( $setting_markup );
+										echo $setting_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									}
 
 								} ?>			

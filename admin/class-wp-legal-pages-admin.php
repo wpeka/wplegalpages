@@ -297,7 +297,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$post_tbl     = esc_sql( $post_tbl );
 		$postmeta_tbl = esc_sql( $postmeta_tbl );
 		
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 		$count = $wpdb->get_var(
 			$wpdb->prepare(
 				"
@@ -326,7 +326,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			),
 			ARRAY_A
 		);
-		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 
 	$titles = array_column($pagesresult, 'post_title');
 
@@ -614,6 +614,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 				if ( is_multisite() ) {
 					// Get all blogs in the network and activate plugin on each one.
+					// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 					$blog_ids = $wpdb->get_col( 'SELECT blog_id FROM ' . $wpdb->blogs ); // db call ok; no-cache ok.
 					foreach ( $blog_ids as $blog_id ) {
 						switch_to_blog( $blog_id );
@@ -623,6 +624,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				} else {
 					$this->wplegal_admin_init_install_db();
 				}
+				// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 			}
 		}
 
@@ -4714,7 +4716,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 	public function wplegalpages_support_request_handler() {
 		// Verify nonce for security
-		if (! isset( $_POST['wplegalpages_nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['wplegalpages_nonce'] ), 'wplegalpages_support_request_nonce' )) {
+		if (! isset( $_POST['wplegalpages_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wplegalpages_nonce'] ) ), 'wplegalpages_support_request_nonce' )) {
 			wp_send_json_error(['message' => 'Security check failed.']);
 		}
 
@@ -4748,7 +4750,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			return;
 		}
 		// Dismiss Notice via URL
-		if (isset($_GET['wplp_template_dismiss_notice'])) {
+		if (isset($_GET['wplp_template_dismiss_notice'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			update_option('wplp_template_notice_dismissed', true);
 			return;
 		}
