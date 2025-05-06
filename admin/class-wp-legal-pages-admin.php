@@ -3995,6 +3995,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							delete_option( 'wplegal_custom_legal_page' );
 							break;
 					}
+					$api_key = isset( $_POST['api_key'] ) ? sanitize_text_field( wp_unslash( $_POST['api_key'] ) ) : '';
+					$args    = array(
+						'template' => $page,
+					);
+					$this->wplegalpages_connect_amplitude( $api_key, site_url(), 'LP Template Downloaded', $args );
 					$url               = str_replace( '&amp;', '&', $url );
 					$result['success'] = true;
 					$result['url']     = $url;
@@ -4799,29 +4804,26 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		/**
-		 * Handles the click event when the user clicks the "Upgrade to Pro" popup.
+		 * Handles AJAX request when the upgrade to Pro popup is clicked.
 		 *
-		 * This function checks whether usage tracking is allowed. If not, it returns an error response.
-		 * If allowed, it logs the request, sanitizes the API key from the POST data, and sends tracking data to Amplitude.
-		 *
-		 * @return void Outputs a JSON success or error response and terminates execution.
+		 * Sends event data to Amplitude and returns a JSON success response.
 		 */
 		public function wplegalpages_upgrade_to_pro_popup_clicked() {
-			if ( ! get_option( 'wplegalpages-ask-for-usage-optin' ) ) {
-				wp_send_json_error(
+			$api_key = isset( $_POST['api_key'] ) ? sanitize_text_field( wp_unslash( $_POST['api_key'] ) ) : '';
+			$result  = $this->wplegalpages_connect_amplitude( $api_key, site_url(), 'LP Upgrade Popup' );
+			if ( $result ) {
+				wp_send_json_success(
 					array(
-						'message' => 'Usage Tracking is Not Allowed',
+						'message' => 'Data Sent Successfully',
+					)
+				);
+			} else {
+				wp_send_json_success(
+					array(
+						'message' => 'Failed to Send Data',
 					)
 				);
 			}
-
-			$api_key = sanitize_key( $_POST['api_key'] );
-			$this->wplegalpages_connect_amplitude( $api_key, site_url(), 'LP Upgrade Popup' );
-			wp_send_json_success(
-				array(
-					'message' => 'Data Sent Successfully',
-				)
-			);			
 		}
 
 		/**
@@ -4906,8 +4908,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @param string $api_key API Key of Amplitude.
 		 * @param string $site_url The URL of the site.
 		 * @param string $event The event name to track.
+		 * @param array  $args Additional data.
 		 */
-		public function wplegalpages_connect_amplitude( $api_key, $site_url, $event ) {
+		public function wplegalpages_connect_amplitude( $api_key, $site_url, $event, $args = array() ) {
+
+			if ( ! get_option( 'wplegalpages-ask-for-usage-optin' ) ) {
+				return false;
+			}
 
 			$url     = 'https://api2.amplitude.com/2/httpapi';
 			$user_id = get_current_user_id();
@@ -4925,8 +4932,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					array(
 						'user_id'          => strval( 'lp-' . wp_generate_uuid4() ),
 						'event_type'       => $event,
-						'event_properties' => array(
-							'site_url' => $site_url,
+						'event_properties' => array_merge(
+							array( 'site_url' => $site_url ),
+							$args
 						),
 						'user_properties'  => array(
 							'email'   => $user_email,
@@ -4953,6 +4961,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( 200 === (int) wp_remote_retrieve_response_code( $response ) ) {
 				return true;
 			}
+			return false;
 		}
 	}
 	
