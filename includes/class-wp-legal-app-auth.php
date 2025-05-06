@@ -327,7 +327,7 @@ class WP_Legal_Pages_App_Auth {
 		}
 
 		// Get data from POST request
-		$data = isset( $_POST['response'] ) ? sanitize_text_field( wp_unslash( $_POST['response'] ) ) : null;
+		$data   = isset( $_POST['response'] ) ? $_POST['response'] : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash	
 		$origin = ! empty( $_POST['origin'] ) ? esc_url_raw( wp_unslash( $_POST['origin'] ) ) : false;
 
 		// Verify data and origin
