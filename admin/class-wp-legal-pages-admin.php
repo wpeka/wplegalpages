@@ -3995,11 +3995,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							delete_option( 'wplegal_custom_legal_page' );
 							break;
 					}
-					$api_key = isset( $_POST['api_key'] ) ? sanitize_text_field( wp_unslash( $_POST['api_key'] ) ) : '';
 					$args    = array(
 						'template' => $page,
 					);
-					$this->wplegalpages_connect_amplitude( $api_key, site_url(), 'LP Template Downloaded', $args );
+					$this->wplegalpages_send_shared_usage_data( 'LP Template Downloaded', $args );
 					$url               = str_replace( '&amp;', '&', $url );
 					$result['success'] = true;
 					$result['url']     = $url;
@@ -4806,12 +4805,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		/**
 		 * Handles AJAX request when the upgrade to Pro popup is clicked.
 		 *
-		 * Sends event data to Amplitude and returns a JSON success response.
+		 * Sends event data to server and returns a JSON success response.
 		 */
 		public function wplegalpages_upgrade_to_pro_popup_clicked() {
-			$api_key = isset( $_POST['api_key'] ) ? sanitize_text_field( wp_unslash( $_POST['api_key'] ) ) : '';
-			$result  = $this->wplegalpages_connect_amplitude( $api_key, site_url(), 'LP Upgrade Popup' );
-			if ( $result ) {
+
+			$response = $this->wplegalpages_send_shared_usage_data( 'LP Upgrade Popup' );
+			if ( $response ) {
 				wp_send_json_success(
 					array(
 						'message' => 'Data Sent Successfully',
@@ -4852,7 +4851,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @return string Returns 'Mobile' if a mobile device is detected, 'Tablet' if a tablet is detected, 
 		 *               and 'Desktop' otherwise.
 		 */
-		function wplegalpages_get_device_type() {
+		public function wplegalpages_get_device_type() {
 			$user_agent = $_SERVER['HTTP_USER_AGENT'];
 
 			if ( preg_match( '/mobile|android|iphone|ipod|blackberry|opera mini|windows phone|webos/i', $user_agent ) ) {
@@ -4874,7 +4873,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 *
 		 * @return string The detected IP address of the user.
 		 */
-		function wplegalpages_get_user_ip() {
+		public function wplegalpages_get_user_ip() {
 			if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
 				return $_SERVER['HTTP_CLIENT_IP'];
 			} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
@@ -4903,20 +4902,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		/**
-		 * Sends an event to Amplitude with user and site details.
+		 * Sends shared usage data if opt-in is allowed.
 		 *
-		 * @param string $api_key API Key of Amplitude.
-		 * @param string $site_url The URL of the site.
-		 * @param string $event The event name to track.
-		 * @param array  $args Additional data.
+		 * @param string $event Event name to be tracked.
+		 * @param array  $args  Optional. Additional event-specific data to send.
+		 *
+		 * @return bool True on successful request, false otherwise or if opt-in is not enabled.
 		 */
-		public function wplegalpages_connect_amplitude( $api_key, $site_url, $event, $args = array() ) {
+		public function wplegalpages_send_shared_usage_data( $event, $args = array() ) {
 
 			if ( ! get_option( 'wplegalpages-ask-for-usage-optin' ) ) {
 				return false;
 			}
-
-			$url     = 'https://api2.amplitude.com/2/httpapi';
+	
+			$url     = WPLEGAL_APP_URL . '/wp-json/api/v1/plugin/app_wplp_collect_shared_usage_data';
 			$user_id = get_current_user_id();
 			
 			if ( $user_id ) { 
@@ -4927,34 +4926,25 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 		
 			$data = array(
-				'api_key' => $api_key,
-				'events'  => array(
-					array(
-						'user_id'          => strval( 'lp-' . wp_generate_uuid4() ),
-						'event_type'       => $event,
-						'event_properties' => array_merge(
-							array( 'site_url' => $site_url ),
-							$args
-						),
-						'user_properties'  => array(
-							'email'   => $user_email,
-						),
-						'platform'         => 'Web',
-						'os_name'          => $this->wplegalpages_get_user_os(),
-						'device_type'      => $this->wplegalpages_get_device_type(),
-						'ip'               => $this->wplegalpages_get_user_ip(),
-						'country'          => $this->wplegalpages_get_user_country(),
-						'time'             => time() * 1000,
-					)
-				)
+				'event'       => $event,
+				'src'         => 'wplegalpages',
+				'site_url'    => site_url(),
+				'email'       => $user_email,
+				'os_name'     => $this->wplegalpages_get_user_os(),
+				'device_type' => $this->wplegalpages_get_device_type(),
+				'ip'          => $this->wplegalpages_get_user_ip(),
+				'country'     => $this->wplegalpages_get_user_country(),
+				'time'        => time() * 1000,
+				'args'        => $args,
 			);
-
-			$response = wp_remote_post(
+	
+			$response = wp_safe_remote_post(
 				$url,
 				array(
 					'body'    => json_encode($data),
 					'headers' => array( 'Content-Type' => 'application/json' ),
 					'method'  => 'POST',
+					'timeout' => 20,
 				)
 			);
 
