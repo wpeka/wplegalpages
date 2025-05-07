@@ -479,19 +479,27 @@ var gen = new Vue({
         },
         saveGeneralSettings() {
 			var that = this;
-            jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
-            var dataV = jQuery("#lp-save-settings-form").serialize();
-            jQuery.ajax({
-                type: 'POST',
-                url: obj.ajaxurl,
-                data: dataV + '&action=lp_save_admin_settings',
-            }).done(function (data) {
-                j("#wplegalpages-save-settings-alert").fadeOut(2500);
-				if(that.create_popup_clicked){
-                    that.create_popup_clicked = false;
-                    location.reload();
-                }
-            });
+	        const form = document.querySelector("#lp-save-settings-form");
+                
+	        // Check if form is valid
+	        if (!form.checkValidity()) {
+	        	form.reportValidity(); // Show validation errors in browser
+	        	return;
+	        }
+        
+	        jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
+	        var dataV = jQuery(form).serialize();
+	        jQuery.ajax({
+	        	type: 'POST',
+	        	url: obj.ajaxurl,
+	        	data: dataV + '&action=lp_save_admin_settings',
+	        }).done(function (data) {
+	        	j("#wplegalpages-save-settings-alert").fadeOut(2500);
+	        	if (that.create_popup_clicked) {
+	        		that.create_popup_clicked = false;
+	        		location.reload();
+	        	}
+	        });
         }
     },
     mounted() {
