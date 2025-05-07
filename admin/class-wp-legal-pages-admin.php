@@ -3771,7 +3771,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'name'     => $key,
 						'label'    => $setting['title'],
 						'value'    => $setting['value'],
-						'type'     => 'text',
+						'type'     => $setting['type'] ? $setting['type'] : 'text',
+						'pattern'  => $setting['pattern'],
+						'error_msg' => $setting['error_msg'],
 						'required' => $setting['required'],
 					);
 					$data[] = $field;
