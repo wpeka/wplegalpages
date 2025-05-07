@@ -615,6 +615,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @return array
 		 */
 		public function wplegal_plugin_action_links( $links ) {
+			$current_url = get_site_url();
+			$current_url = $current_url . '/wp-admin/index.php?page=wplegal-wizard#';
+
 			$lp_pro_installed = get_option( '_lp_pro_installed' );
 			if ( '1' !== $lp_pro_installed ) {
 				$links = array_merge(
@@ -624,6 +627,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$links
 				);
 			}
+			$links = array_merge(
+				array(
+					'<a href="' . esc_url( $current_url ) . '" target="_self" rel="noopener noreferrer"><strong style="color: #11967A; display: inline;">' . __( 'Create Legal Page', 'gdpr-cookie-consent' ) . '</strong></a>',
+				),
+				$links
+			);
 			return $links;
 		}
 
