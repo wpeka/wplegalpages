@@ -100,7 +100,7 @@ var gen = new Vue({
             age_no_button: obj.age_no_button ? obj.age_no_button : 'No, I am not',
             age_description: obj.age_description ? obj.age_description : `To proceed, we need to verify that you're {age} or older.\n<span>Please verify your age.</span>\n{form}`,
             invalid_age_description: obj.invalid_age_description ? obj.invalid_age_description : `We are Sorry. You are not of valid age.`,
-            age_verify_popup: 0,
+            age_verify_popup: 1,
             cookie_text_size_options: Array.from(obj.cookie_text_size_options),
 			create_popup_clicked: false,
         }
