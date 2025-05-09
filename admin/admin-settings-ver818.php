@@ -166,7 +166,7 @@ if ( '1' === $lpterms ) {
 				<td><b><?php esc_attr_e( 'Country:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-country" value="<?php echo ! empty( $lp_general['country'] ) ? esc_attr( $lp_general['country'] ) : ''; ?>" /></td><td>[Country]</td>
 			</tr>
 			<tr>
-				<td><b><?php esc_attr_e( 'Email:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-email" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" /></td><td>[Email]</td>
+				<td><b><?php esc_attr_e( 'Email:', 'wplegalpages' ); ?></b></td><td><input type="email" size="30" name="lp-email" title="Please enter a valid email address" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" /></td><td>[Email]</td>
 			</tr>
 			<tr>
 				<td><b><?php esc_attr_e( 'Address:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-address" value="<?php echo ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : ''; ?>" /></td><td>[Address]</td>

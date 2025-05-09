@@ -565,6 +565,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -584,11 +587,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Phone', 'wplegalpages' ),
 							'value'    => $phone,
 							'required' => true,
+							'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    						'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 						),
 						'lp-email'         => array(
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -638,6 +646,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -652,6 +663,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 								'title'    => __( 'Email', 'wplegalpages' ),
 								'value'    => $email,
 								'required' => true,
+								'type'        => 'email',
+								'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    							'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 							),
 						);
 						break;
@@ -767,6 +781,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Phone', 'wplegalpages' ),
 							'value'    => $phone,
 							'required' => true,
+							'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    						'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 						),
 						'lp-street'        => array(
 							'title'    => __( 'Street', 'wplegalpages' ),
@@ -787,6 +803,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 						'lp-facebook-url'  => array(
 							'title'    => __( 'Facebook URL', 'wplegalpages' ),
@@ -821,11 +840,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Phone', 'wplegalpages' ),
 							'value'    => $phone,
 							'required' => true,
+							'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    						'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 						),
 						'lp-email'         => array(
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -840,11 +864,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 								'title'    => __( 'Phone', 'wplegalpages' ),
 								'value'    => $phone,
 								'required' => true,
+								'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    							'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 							),
 							'lp-email'         => array(
 								'title'    => __( 'Email', 'wplegalpages' ),
 								'value'    => $email,
 								'required' => true,
+								'type'        => 'email',
+								'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    							'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 							),
 						);
 						break;
@@ -859,6 +888,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 						'lp-address'       => array(
 							'title'    => __( 'Address', 'wplegalpages' ),
@@ -883,11 +915,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Phone', 'wplegalpages' ),
 							'value'    => $phone,
 							'required' => true,
+							'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    						'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 						),
 						'lp-email'         => array(
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -907,11 +944,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Phone', 'wplegalpages' ),
 							'value'    => $phone,
 							'required' => true,
+							'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    						'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 						),
 						'lp-email'         => array(
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -926,11 +968,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Phone', 'wplegalpages' ),
 							'value'    => $phone,
 							'required' => true,
+							'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    						'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 						),
 						'lp-email'         => array(
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 						'lp-street'        => array(
 							'title'    => __( 'Street', 'wplegalpages' ),
@@ -960,6 +1007,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 						'lp-street'      => array(
 							'title'    => __( 'Street', 'wplegalpages' ),
@@ -997,6 +1047,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -1034,11 +1087,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 						'lp-phone'       => array(
 							'title'    => __( 'Phone', 'wplegalpages' ),
 							'value'    => $phone,
 							'required' => true,
+							'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    						'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -1067,11 +1125,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Phone', 'wplegalpages' ),
 							'value'    => $phone,
 							'required' => true,
+							'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    						'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 						),
 						'lp-email'         => array(
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -1091,11 +1154,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Phone', 'wplegalpages' ),
 							'value'    => $phone,
 							'required' => true,
+							'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    						'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 						),
 						'lp-email'         => array(
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -1115,11 +1183,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Phone', 'wplegalpages' ),
 							'value'    => $phone,
 							'required' => true,
+							'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    						'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 						),
 						'lp-email'         => array(
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 						'lp-address'         => array(
 							'title'    => __( 'Post Address', 'wplegalpages' ),
@@ -1164,11 +1237,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Phone', 'wplegalpages' ),
 							'value'    => $phone,
 							'required' => true,
+							'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    						'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 						),
 						'lp-email'         => array(
 							'title'    => __( 'Email', 'wplegalpages' ),
 							'value'    => $email,
 							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    						'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -1205,12 +1283,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 								'value'     => $phone,
 								'required'  => true,
 								'shortcode' => '[Phone]',
+								'pattern'     => '^\+?[0-9\s\-]{10,15}$',
+    							'error_msg'   => __( 'Please enter a valid phone number (10–15 digits).', 'wplegalpages' ),
 							),
 							'lp-email'         => array(
 								'title'     => __( 'Email', 'wplegalpages' ),
 								'value'     => $email,
 								'required'  => true,
 								'shortcode' => '[Email]',
+								'type'        => 'email',
+								'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+    							'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 							),
 						);
 					break;

@@ -283,6 +283,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 	/* Added endpoint to send dashboard data from plugin to the saas appwplp server */
 	public function wplp_send_data_to_dashboard_appwplp_server(WP_REST_Request $request  ){		
 		$current_user = wp_get_current_user();
+		$client_site_name = get_bloginfo('name');
 		
 		require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
 		$this->settings = new WP_Legal_Pages_Settings();
@@ -320,6 +321,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'user_email_id'					   => $user_email_id,
 				'legal_pages_published'			   => $count,
 				'page_results'					   => $titles,
+				'client_site_name'				   => $client_site_name,
 			)
 		);
 	}
@@ -615,6 +617,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @return array
 		 */
 		public function wplegal_plugin_action_links( $links ) {
+			$current_url = get_site_url();
+			$current_url = $current_url . '/wp-admin/index.php?page=wplegal-wizard#';
+
 			$lp_pro_installed = get_option( '_lp_pro_installed' );
 			if ( '1' !== $lp_pro_installed ) {
 				$links = array_merge(
@@ -624,6 +629,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$links
 				);
 			}
+			$links = array_merge(
+				array(
+					'<a href="' . esc_url( $current_url ) . '" target="_self" rel="noopener noreferrer"><strong style="color: #11967A; display: inline;">' . __( 'Create Legal Page', 'gdpr-cookie-consent' ) . '</strong></a>',
+				),
+				$links
+			);
 			return $links;
 		}
 
@@ -3762,7 +3773,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'name'     => $key,
 						'label'    => $setting['title'],
 						'value'    => $setting['value'],
-						'type'     => 'text',
+						'type'     => $setting['type'] ? $setting['type'] : 'text',
+						'pattern'  => $setting['pattern'],
+						'error_msg' => $setting['error_msg'],
 						'required' => $setting['required'],
 					);
 					$data[] = $field;
