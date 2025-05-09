@@ -283,6 +283,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 	/* Added endpoint to send dashboard data from plugin to the saas appwplp server */
 	public function wplp_send_data_to_dashboard_appwplp_server(WP_REST_Request $request  ){		
 		$current_user = wp_get_current_user();
+		$client_site_name = get_bloginfo('name');
 		
 		require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
 		$this->settings = new WP_Legal_Pages_Settings();
@@ -320,6 +321,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'user_email_id'					   => $user_email_id,
 				'legal_pages_published'			   => $count,
 				'page_results'					   => $titles,
+				'client_site_name'				   => $client_site_name,
 			)
 		);
 	}
