@@ -124,7 +124,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 
 			global $table_prefix;
 			$this->plugin_name = 'wp-legal-pages';
-			$this->version     = '3.3.5';
+			$this->version     = '3.3.7';
 			$this->tablename   = $table_prefix . 'legal_pages';
 			$this->popuptable  = $table_prefix . 'lp_popups';
 			$this->plugin_url  = plugin_dir_path( __DIR__ );
@@ -283,6 +283,10 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			//action to add review notice on the admin page
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'wplp_review_already_done', 5 );
 			$this->loader->add_action( 'admin_notices', $plugin_admin, 'wplp_admin_review_notice' );
+
+			$this->loader->add_action( 'admin_notices', $plugin_admin,'wplp_admin_new_clause_addition_notice',1);
+
+
 		}
 
 		/**
@@ -384,6 +388,22 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			wp_admin_css();
 			wp_enqueue_script( 'utils' );
 			do_action( 'admin_print_styles_post_php' );
+		}
+
+		/**
+		 * Determines whether the current WP Legal Pages plan is a Pro plan.
+		 *
+		 * Checks the stored app settings to see if the account plan is not 'free'.
+		 *
+		 * @return bool True if the plan is Pro (not free), false otherwise.
+		 */
+		public function wplegalpages_is_plan_pro() {
+			$is_pro_plan  = false;
+			$app_settings = get_option( 'wpeka_api_framework_app_settings');
+			if ( ! empty( $app_settings ) && $app_settings['account']['plan'] !== 'free' ) {
+				$is_pro_plan = true;
+			}
+			return $is_pro_plan;
 		}
 	}
 }
