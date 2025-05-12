@@ -450,7 +450,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 		 * @since 7.0
 		 */
 		public function wplegalpages_pro_get_display_option() {
-			error_log("DODODO here...");
 			if ( ( '0' === get_option( '_lp_age_popup_no', '1' ) ) || ( 0 === get_option( '_lp_age_popup_no', 1 ) ) ) {
 				include_once plugin_dir_path( __DIR__ ) . 'public/templates/wplegalpages-age-verify-form.php';
 			} else if( ( '1' === get_option( '_lp_age_popup_no', '1' ) ) || ( 1 === get_option( '_lp_age_popup_no', 1 ) ) ) {
