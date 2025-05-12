@@ -945,7 +945,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 
         							document.cookie = cookieName + "=" + encodeURIComponent(cookieValue) + expires + "; path=/";
     								}
-									setCookie("updateAt", <?php echo $updateAt ?> ,<?php echo $bar_num_of_days ?>);
+									setCookie("updateAt", <?php echo esc_html( $updateAt);  ?> ,<?php echo esc_html( $bar_num_of_days ) ?>);
 							}
 							
 						);
