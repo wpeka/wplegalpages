@@ -168,7 +168,7 @@ if ( '1' === $lpterms ) {
 									</c-row>
 									<c-row>
 										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Email', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Certain policies like CCPA require your contact details. Use [Email] as shortcode.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
-										<c-col class="col-sm-8"><c-input type="text"  name="lp-email" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" ></c-input></c-col>
+										<c-col class="col-sm-8"><c-input type="email"  name="lp-email" title="Please enter a valid email address" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" ></c-input></c-col>
 									</c-row>
 									<c-row>
 										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Address', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Certain policies like CCPA require your contact details. Use [Address] as shortcode.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
@@ -226,7 +226,7 @@ if ( '1' === $lpterms ) {
 								</c-row>
 								<c-row>
 									<c-col class="col-sm-6">
-										<c-input type="text"  name="lp-phone" placeholder=" Phone" value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>"></c-input>
+										<c-input type="text"  name="lp-phone" placeholder=" Phone" pattern="^\+?[0-9\s\-]{10,15}$" title="Please enter a valid phone number (10-15 digits, may include + or -)"  value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>"></c-input>
 									</c-col>
 									<c-col class="col-sm-6">
 										<c-input type="text" name="lp-street" placeholder=" Street" value="<?php echo ! empty( $lp_general['street'] ) ? esc_attr( $lp_general['street'] ) : ''; ?>"></c-input>
@@ -260,7 +260,7 @@ if ( '1' === $lpterms ) {
 									</c-col>
 								</c-row>
 								<c-row>
-									<c-col class="col-sm-4"><c-input type="text" placeholder=" Email" class="wplegalpages-full-width-input"  name="lp-email" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" ></c-input></c-col>
+									<c-col class="col-sm-4"><c-input type="email" placeholder=" Email" class="wplegalpages-full-width-input"  name="lp-email" title="Please enter a valid email address" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" ></c-input></c-col>
 									<c-col class="col-sm-4"><c-input type="text" placeholder=" Address" class="wplegalpages-full-width-input" name="lp-address" value="<?php echo ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : ''; ?>"></c-input></c-col>
 									<c-col class="col-sm-4"><c-input type="text" placeholder=" Niche" class="wplegalpages-full-width-input" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>"></c-input></c-col>
 								</c-row>

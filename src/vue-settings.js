@@ -101,7 +101,7 @@ var gen = new Vue({
             age_no_button: obj.age_no_button ? obj.age_no_button : 'No, I am not',
             age_description: obj.age_description ? obj.age_description : `To proceed, we need to verify that you're {age} or older.\n<span>Please verify your age.</span>\n{form}`,
             invalid_age_description: obj.invalid_age_description ? obj.invalid_age_description : `We are Sorry. You are not of valid age.`,
-            age_verify_popup: 0,
+            age_verify_popup: 1,
             cookie_text_size_options: Array.from(obj.cookie_text_size_options),
 			create_popup_clicked: false,
         }
@@ -485,19 +485,27 @@ var gen = new Vue({
         },
         saveGeneralSettings() {
 			var that = this;
-            jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
-            var dataV = jQuery("#lp-save-settings-form").serialize();
-            jQuery.ajax({
-                type: 'POST',
-                url: obj.ajaxurl,
-                data: dataV + '&action=lp_save_admin_settings',
-            }).done(function (data) {
-                j("#wplegalpages-save-settings-alert").fadeOut(2500);
-				if(that.create_popup_clicked){
-                    that.create_popup_clicked = false;
-                    location.reload();
-                }
-            });
+	        const form = document.querySelector("#lp-save-settings-form");
+                
+	        // Check if form is valid
+	        if (!form.checkValidity()) {
+	        	form.reportValidity(); // Show validation errors in browser
+	        	return;
+	        }
+        
+	        jQuery("#wplegalpages-save-settings-alert").fadeIn(400);
+	        var dataV = jQuery(form).serialize();
+	        jQuery.ajax({
+	        	type: 'POST',
+	        	url: obj.ajaxurl,
+	        	data: dataV + '&action=lp_save_admin_settings',
+	        }).done(function (data) {
+	        	j("#wplegalpages-save-settings-alert").fadeOut(2500);
+	        	if (that.create_popup_clicked) {
+	        		that.create_popup_clicked = false;
+	        		location.reload();
+	        	}
+	        });
         }
     },
     mounted() {

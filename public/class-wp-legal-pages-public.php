@@ -420,7 +420,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 						$this->wplegalpages_pro_get_display_option();
 					}
 					for ( $i; $i < $output_length; $i++ ) {
-						echo esc_html( $output_array[ $i ] );
+						echo wp_kses_post( $output_array[ $i ] );
 						if ( $i < $output_length - 1 ) {
 							$this->wplegalpages_pro_get_display_option();
 						}
