@@ -202,98 +202,98 @@ if ( '1' === $lpterms ) {
 									?>
 								<c-row class="wplegalpages-label-row">
 									<c-col class="col-sm-6">
-										<label><?php esc_attr_e( 'Domain Name', 'wplegalpages' ); ?></label>
+										<label for="lp-domain-name"><?php esc_attr_e( 'Domain Name', 'wplegalpages' ); ?></label>
 									</c-col>
 									<c-col class="col-sm-6">
-										<label><?php esc_attr_e( 'Business Name', 'wplegalpages' ); ?></label>
+										<label for="lp-business-name"><?php esc_attr_e( 'Business Name', 'wplegalpages' ); ?></label>
 									</c-col>
 								</c-row>
 								<c-row>
 									<c-col class="col-sm-6">
-										<c-input type="text" name="lp-domain-name" placeholder=" Domain Name" value="<?php echo ! empty( $lp_general['domain'] ) ? esc_attr( $lp_general['domain'] ) : esc_url_raw( get_bloginfo( 'url' ) ); ?>"></c-input>
+										<c-input id="lp-domain-name" type="text" name="lp-domain-name" placeholder=" Domain Name" value="<?php echo ! empty( $lp_general['domain'] ) ? esc_attr( $lp_general['domain'] ) : esc_url_raw( get_bloginfo( 'url' ) ); ?>"></c-input>
 									</c-col>
 									<c-col class="col-sm-6">
-										<c-input type="text" name="lp-business-name" placeholder=" Business Name" value="<?php echo ! empty( $lp_general['business'] ) ? esc_attr( $lp_general['business'] ) : ''; ?>"></c-input>
+										<c-input id="lp-business-name" type="text" name="lp-business-name" placeholder=" Business Name" value="<?php echo ! empty( $lp_general['business'] ) ? esc_attr( $lp_general['business'] ) : ''; ?>"></c-input>
 									</c-col>
 								</c-row>
 								<c-row class="wplegalpages-label-row">
 									<c-col class="col-sm-6">
-										<label><?php esc_attr_e( 'Phone', 'wplegalpages' ); ?></label>
+										<label for="lp-phone"><?php esc_attr_e( 'Phone', 'wplegalpages' ); ?></label>
 									</c-col>
 									<c-col class="col-sm-6">
-										<label><?php esc_attr_e( 'Street', 'wplegalpages' ); ?></label>
+										<label for="lp-street"><?php esc_attr_e( 'Street', 'wplegalpages' ); ?></label>
 									</c-col>
 								</c-row>
 								<c-row>
 									<c-col class="col-sm-6">
-										<c-input type="text"  name="lp-phone" placeholder=" Phone" pattern="^\+?[0-9\s\-]{10,15}$" title="Please enter a valid phone number (10-15 digits, may include + or -)"  value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>"></c-input>
+										<c-input id="lp-phone" type="text"  name="lp-phone" placeholder=" Phone" pattern="^\+?[0-9\s\-]{10,15}$" title="Please enter a valid phone number (10-15 digits, may include + or -)"  value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>"></c-input>
 									</c-col>
 									<c-col class="col-sm-6">
-										<c-input type="text" name="lp-street" placeholder=" Street" value="<?php echo ! empty( $lp_general['street'] ) ? esc_attr( $lp_general['street'] ) : ''; ?>"></c-input>
+										<c-input id="lp-street" type="text" name="lp-street" placeholder=" Street" value="<?php echo ! empty( $lp_general['street'] ) ? esc_attr( $lp_general['street'] ) : ''; ?>"></c-input>
 									</c-col>
 								</c-row>
 								<c-row class="wplegalpages-label-row">
 									<c-col class="col-sm-8">
-										<label><?php esc_attr_e( 'City, State, Zip code', 'wplegalpages' ); ?></label>
+										<label for="lp-city-state"><?php esc_attr_e( 'City, State, Zip code', 'wplegalpages' ); ?></label>
 									</c-col>
 									<c-col class="col-sm-4">
-										<label><?php esc_attr_e( 'Country', 'wplegalpages' ); ?></label>
+										<label for="lp-country"><?php esc_attr_e( 'Country', 'wplegalpages' ); ?></label>
 									</c-col>
 								</c-row>
 								<c-row>
 									<c-col class="col-sm-8">
-										<c-input type="text"  name="lp-city-state" placeholder=" City, State, Zip code" value="<?php echo ! empty( $lp_general['cityState'] ) ? esc_attr( $lp_general['cityState'] ) : ''; ?>">
+										<c-input id="lp-city-state" type="text"  name="lp-city-state" placeholder=" City, State, Zip code" value="<?php echo ! empty( $lp_general['cityState'] ) ? esc_attr( $lp_general['cityState'] ) : ''; ?>">
 									</c-col>
 									<c-col class="col-sm-4">
-										<c-input type="text" class="wplegalpages-full-width-input" placeholder=" Country" name="lp-country" value="<?php echo ! empty( $lp_general['country'] ) ? esc_attr( $lp_general['country'] ) : ''; ?>"></c-input>
+										<c-input id="lp-country" type="text" class="wplegalpages-full-width-input" placeholder=" Country" name="lp-country" value="<?php echo ! empty( $lp_general['country'] ) ? esc_attr( $lp_general['country'] ) : ''; ?>"></c-input>
 									</c-col>
 								</c-row>
 								<c-row class="wplegalpages-label-row">
 									<c-col class="col-sm-4">
-										<label><?php esc_attr_e( 'Email', 'wplegalpages' ); ?></label>
+										<label for="lp-email"><?php esc_attr_e( 'Email', 'wplegalpages' ); ?></label>
 									</c-col>
 									<c-col class="col-sm-4">
-										<label><?php esc_attr_e( 'Address', 'wplegalpages' ); ?></label>
+										<label for="lp-address"><?php esc_attr_e( 'Address', 'wplegalpages' ); ?></label>
 									</c-col>
 									<c-col class="col-sm-4">
-										<label><?php esc_attr_e( 'Niche', 'wplegalpages' ); ?></label>
+										<label for="lp-niche"><?php esc_attr_e( 'Niche', 'wplegalpages' ); ?></label>
 									</c-col>
 								</c-row>
 								<c-row>
-									<c-col class="col-sm-4"><c-input type="email" placeholder=" Email" class="wplegalpages-full-width-input"  name="lp-email" title="Please enter a valid email address" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" ></c-input></c-col>
-									<c-col class="col-sm-4"><c-input type="text" placeholder=" Address" class="wplegalpages-full-width-input" name="lp-address" value="<?php echo ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : ''; ?>"></c-input></c-col>
-									<c-col class="col-sm-4"><c-input type="text" placeholder=" Niche" class="wplegalpages-full-width-input" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>"></c-input></c-col>
+									<c-col class="col-sm-4"><c-input id="lp-email" type="email" placeholder=" Email" class="wplegalpages-full-width-input"  name="lp-email" title="Please enter a valid email address" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" ></c-input></c-col>
+									<c-col class="col-sm-4"><c-input id="lp-address" type="text" placeholder=" Address" class="wplegalpages-full-width-input" name="lp-address" value="<?php echo ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : ''; ?>"></c-input></c-col>
+									<c-col class="col-sm-4"><c-input id="lp-niche" type="text" placeholder=" Niche" class="wplegalpages-full-width-input" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>"></c-input></c-col>
 								</c-row>
 								<c-row class="wplegalpages-label-row">
 								<c-col class="col-sm-6">
-									<label><?php esc_attr_e( 'Facebook URL', 'wplegalpages' ); ?></label>
+									<label for="lp-facebook-url"><?php esc_attr_e( 'Facebook URL', 'wplegalpages' ); ?></label>
 								</c-col>
 								<c-col class="col-sm-6">
-									<label><?php esc_attr_e( 'Google URL', 'wplegalpages' ); ?></label>
+									<label for="lp-google-url"><?php esc_attr_e( 'Google URL', 'wplegalpages' ); ?></label>
 								</c-col>
 							</c-row>
 							<c-row>
 								<c-col class="col-sm-6">
-									<c-input type="text" name="lp-facebook-url" placeholder=" Facebook URL" value="<?php echo ! empty( $lp_general['facebook-url'] ) ? esc_attr( $lp_general['facebook-url'] ) : ''; ?>" ></c-input>
+									<c-input id="lp-facebook-url" type="text" name="lp-facebook-url" placeholder=" Facebook URL" value="<?php echo ! empty( $lp_general['facebook-url'] ) ? esc_attr( $lp_general['facebook-url'] ) : ''; ?>" ></c-input>
 								</c-col>
 								<c-col class="col-sm-6">
-									<c-input type="text" name="lp-google-url" placeholder=" Google URL" value="<?php echo ! empty( $lp_general['google-url'] ) ? esc_attr( $lp_general['google-url'] ) : ''; ?>" ></c-input>
+									<c-input id="lp-google-url" type="text" name="lp-google-url" placeholder=" Google URL" value="<?php echo ! empty( $lp_general['google-url'] ) ? esc_attr( $lp_general['google-url'] ) : ''; ?>" ></c-input>
 								</c-col>
 							</c-row>
 							<c-row class="wplegalpages-label-row">
 								<c-col class="col-sm-6">
-									<label><?php esc_attr_e( 'Twitter URL', 'wplegalpages' ); ?></label>
+									<label for="lp-twitter-url"><?php esc_attr_e( 'Twitter URL', 'wplegalpages' ); ?></label>
 								</c-col>
 								<c-col class="col-sm-6">
-									<label><?php esc_attr_e( 'LinkedIn URL', 'wplegalpages' ); ?> </label>
+									<label for="lp-linkedin-url"><?php esc_attr_e( 'LinkedIn URL', 'wplegalpages' ); ?> </label>
 								</c-col>
 							</c-row>
 							<c-row>
 								<c-col class="col-sm-6">
-									<c-input type="text" name="lp-twitter-url" placeholder=" Twitter URL" value="<?php echo ! empty( $lp_general['twitter-url'] ) ? esc_attr( $lp_general['twitter-url'] ) : ''; ?>" ></c-input>
+									<c-input id="lp-twitter-url" type="text" name="lp-twitter-url" placeholder=" Twitter URL" value="<?php echo ! empty( $lp_general['twitter-url'] ) ? esc_attr( $lp_general['twitter-url'] ) : ''; ?>" ></c-input>
 								</c-col>
 								<c-col class="col-sm-6">
-									<c-input type="text" name="lp-linkedin-url" placeholder=" LinkedIn URL" value="<?php echo ! empty( $lp_general['linkedin-url'] ) ? esc_attr( $lp_general['linkedin-url'] ) : ''; ?>" ></c-input>
+									<c-input id="lp-linkedin-url" type="text" name="lp-linkedin-url" placeholder=" LinkedIn URL" value="<?php echo ! empty( $lp_general['linkedin-url'] ) ? esc_attr( $lp_general['linkedin-url'] ) : ''; ?>" ></c-input>
 								</c-col>
 							</c-row>
 									<?php
@@ -327,7 +327,7 @@ if ( '1' === $lpterms ) {
 									</c-col>
 									<c-col class="col-sm-2">
 										<input type="hidden" name="lp-search" v-model="search">
-										<c-switch v-bind="labelIcon" ref="search"  id="inline-form-search" variant="3d" color="success" <?php checked( isset( $lp_general['search'] ) ? boolval( $lp_general['search'] ) : false ); ?> v-on:update:checked="onChangeSearch"></c-col>
+										<c-switch v-bind="labelIcon" ref="search"  id="inline-form-search"  variant="3d" color="success" aria-labelledby="label-search" <?php checked( isset( $lp_general['search'] ) ? boolval( $lp_general['search'] ) : false ); ?> v-on:update:checked="onChangeSearch"></c-switch>
 									</c-col>
 								</c-row>
 								<c-row class="wplegal-support-text-row">
@@ -1022,7 +1022,7 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-3  wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showFooterForm">
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default" :alt="configure_alt_text"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 												<?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?>
 											</span>
 										</c-button>
@@ -1042,7 +1042,7 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-3 wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showBannerForm">
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default" :alt="configure_alt_text"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 												<?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?>
 											</span>
 										</c-button>
@@ -1066,7 +1066,7 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-3 wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button wplegalpages-not-pro-tooltip" disabled>
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default" :alt="configure_alt_text"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 												<?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?>
 											</span>
 										</c-button>
@@ -1101,7 +1101,7 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-3 wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showPopupForm">
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?> 
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default" :alt="configure_alt_text"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?> 
 												<span class="wplegalpages-configure-text"><?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?></span>
 											</span>
 										</c-button>
