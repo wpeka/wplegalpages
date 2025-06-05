@@ -185,7 +185,22 @@ if ( '1' === $lpterms ) {
 										</c-col>
 										<c-col class="col-sm-8">
 											<input type="hidden" name="lp-generate" v-model="generate">
-											<c-switch v-bind="labelIcon" ref="generate"  id="inline-form-credits" variant="3d" color="success" <?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?> v-on:update:checked="onChangeCredit"></c-col>
+											<label for="inline-form-credits" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Give Credit toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="inline-form-credits" 
+												ref="generate"
+												value="1"
+												class="c-switch-input"
+												aria-label="Give credits toggle" 
+												<?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?>
+												@change="onChangeCredit(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+											</label>
 										</c-col>
 									</c-row>
 									<c-row>
@@ -327,7 +342,21 @@ if ( '1' === $lpterms ) {
 									</c-col>
 									<c-col class="col-sm-2">
 										<input type="hidden" name="lp-search" v-model="search">
-										<c-switch v-bind="labelIcon" ref="search"  id="inline-form-search"  variant="3d" color="success" aria-labelledby="label-search" <?php checked( isset( $lp_general['search'] ) ? boolval( $lp_general['search'] ) : false ); ?> v-on:update:checked="onChangeSearch"></c-switch>
+										<label for="inline-form-search" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Show Legal Pages in search toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="inline-form-search" 
+												ref="search"
+												value="1"
+												class="c-switch-input"
+												<?php checked( isset( $lp_general['search'] ) ? boolval( $lp_general['search'] ) : false ); ?>
+												@change="onChangeSearch(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 								</c-row>
 								<c-row class="wplegal-support-text-row">
@@ -339,7 +368,21 @@ if ( '1' === $lpterms ) {
 									</c-col>
 									<c-col class="col-sm-2">
 										<input type="hidden" name="lp-affiliate-disclosure" v-model="affiliate_disclosure">
-										<c-switch v-bind="labelIcon" ref="affiliate_disclosure"  id="inline-form-affiliate" variant="3d" color="success" <?php checked( isset( $lp_general['affiliate-disclosure'] ) ? boolval( $lp_general['affiliate-disclosure'] ) : false ); ?> v-on:update:checked="onChangeAffiliate"></c-col>
+										<label for="inline-form-affiliate" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Affiliate Disclosure toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="inline-form-affiliate" 
+												ref="affiliate_disclosure"
+												value="1"
+												class="c-switch-input"
+												<?php checked( isset( $lp_general['affiliate-disclosure'] ) ? boolval( $lp_general['affiliate-disclosure'] ) : false ); ?>
+												@change="onChangeAffiliate(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 								</c-row>
 								<c-row v-show= "privacy" id="privacy_page_section" class="wplegal-support-text-row">
@@ -386,7 +429,22 @@ if ( '1' === $lpterms ) {
 									</c-col>
 									<c-col class="col-sm-2">
 										<input type="hidden" name="lp-generate" v-model="generate">
-										<c-switch v-bind="labelIcon" ref="generate"  id="inline-form-credits" variant="3d" color="success" <?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?> v-on:update:checked="onChangeCredit"></c-col>
+										<label for="inline-form-credits" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+										<span class="screen-reader-text"><?php esc_attr_e( 'Give Credit section toggle', 'wplegalpages'); ?></span>
+
+										<input 
+											type="checkbox" 
+											id="inline-form-credits" 
+											ref="generate"
+											value="1"
+											class="c-switch-input"
+											<?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?>
+											@change="onChangeCredit(event)"
+										>
+										<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
+										
 									</c-col>
 								</c-row>
 								<c-row class="wplegal-support-text-row">
@@ -397,8 +455,22 @@ if ( '1' === $lpterms ) {
 										</span>
 									</c-col>
 									<c-col class="col-sm-2">
-										<c-switch v-bind="labelIcon" v-model="analytics_on" id="lp-analytics-on" variant="3d"  color="success" :checked="analytics_on" v-on:update:checked="onChangeAskForUsage"></c-switch>
 										<input type="hidden" name="lp-analytics-on" v-model="analytics_on">
+										<label for="lp-analytics-on" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Allow Usage Tracking toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="lp-analytics-on" 
+												v-model="analytics_on"
+												value="1"
+												class="c-switch-input"
+												:checked="analytics_on"
+												@change="onChangeAskForUsage(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 								</c-row>
 								<c-row class="wplegal-support-text-row">
@@ -410,7 +482,21 @@ if ( '1' === $lpterms ) {
 									</c-col>
 									<c-col class="col-sm-2">
 										<input type="hidden" name="lp-enable-block" v-model="enable_block">
-										<c-switch v-bind="labelIcon" ref="enable_block" id="lp-enable-block" variant="3d" color="success" <?php checked( isset( $is_blocked_enabled ) ? boolval( $is_blocked_enabled ) : false ); ?> v-on:update:checked="onChangeEnableBlock"></c-col>
+										<label for="lp-enable-block" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Show WPLP Block in Gutenberg toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="lp-enable-block" 
+												ref="enable_block"
+												value="1"
+												class="c-switch-input"
+												<?php checked( isset( $is_blocked_enabled ) ? boolval( $is_blocked_enabled ) : false ); ?>
+												@change="onChangeEnableBlock(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 								</c-row>
 							</c-card-body>
@@ -1016,8 +1102,22 @@ if ( '1' === $lpterms ) {
 										</span>
 									</c-col>
 									<c-col class="col-sm-2 wplegal-compliances-switch">
-										<c-switch v-bind="labelIcon" v-model="is_footer" variant="3d"  color="success" :checked="is_footer" v-on:update:checked="onClickFooter"></c-switch>
 										<input type="hidden" name="lp-footer" ref="footer" v-model="is_footer">
+										<label for="is_footer" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Is footer toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="is_footer" 
+												v-model="is_footer"
+												value="1"
+												class="c-switch-input"
+												:checked="is_footer"
+												@change="onClickFooter(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 									<c-col class="col-sm-3  wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showFooterForm">
@@ -1036,8 +1136,22 @@ if ( '1' === $lpterms ) {
 										</span>
 									</c-col>
 									<c-col class="col-sm-2 wplegal-compliances-switch">
-										<c-switch v-bind="labelIcon" v-model="is_banner" variant="3d"  color="success" :checked="is_banner" v-on:update:checked="onClickBanner"></c-switch>
 										<input type="hidden" name="lp-banner" ref="banner" v-model="is_banner">
+										<label for="is_banner" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Is Banner toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="is_banner" 
+												v-model="is_banner"
+												value="1"
+												class="c-switch-input"
+												:checked="is_banner"
+												@change="onClickBanner(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 									<c-col class="col-sm-3 wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showBannerForm">
@@ -1060,7 +1174,17 @@ if ( '1' === $lpterms ) {
 										</span>
 									</c-col>
 									<c-col class="col-sm-2 wplegal-compliances-switch">
-										<c-switch v-bind="labelIcon" variant="3d" color="success" class="wplegalpages-not-pro-tooltip" disabled></c-switch>
+										<label for="wplp-not-pro-tooltip" class="c-switch form-check-label c-switch-3d-success c-switch-label wplegalpages-not-pro-tooltip">
+											<span class="screen-reader-text"><?php esc_attr_e( 'variant toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="wplp-not-pro-tooltip"
+												class="c-switch-input" 
+												disabled
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+										</label>
 										<div class="wplegalpages-not-pro-tooltip-text"><?php echo esc_html_e( 'This feature is only available in the Pro version. Kindly', 'wplegalpages' );?> <a href="<?php echo esc_url( 'https://wplegalpages.com/pricing/?utm_source=wplegalpagesplugin&utm_medium=age-verification-tooltip' ); ?>" target="_blank"><?php echo esc_html_e( 'UPGRADE', 'wplegalpages' ); ?></a> <?php esc_html_e( 'to unlock and use it.', 'wplegalpages' ) ?></div>
 									</c-col>
 									<c-col class="col-sm-3 wplegalpages-configure-section">
@@ -1095,8 +1219,22 @@ if ( '1' === $lpterms ) {
 										</span>
 									</c-col>
 									<c-col class="col-sm-2 wplegal-compliances-switch">
-										<c-switch v-bind="labelIcon" v-model="is_popup" variant="3d"  color="success" :checked="is_popup" v-on:update:checked="onClickPopup"></c-switch>
 										<input type="hidden" name="lp-popup" ref="popup" v-model="is_popup">
+										<label for="is_popup" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Is Popup toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="is_popup" 
+												v-model="is_popup"
+												value="1"
+												class="c-switch-input"
+												:checked="is_popup"
+												@change="onClickPopup(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 									<c-col class="col-sm-3 wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showPopupForm">

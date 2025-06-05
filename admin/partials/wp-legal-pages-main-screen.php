@@ -152,7 +152,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 								esc_html('Need to activate on a new site? Manage your licenses in ', 'wplegalpages'); 
 								?>
 								<a href="<?php echo esc_url('https://app.wplegalpages.com/signup/api-keys/'); ?>" target="_blank">
-									<?php esc_html('My Account.', 'wplegalpages'); ?>
+									<?php echo esc_html('My Account.', 'wplegalpages'); ?>
 								</a>
 							</p>
 						</div>
