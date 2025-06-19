@@ -1885,6 +1885,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'generate'  => isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
 				'is_footer' => isset( $_POST['lp-footer'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-footer'] ) ) : '0',
 				'is_banner' => isset( $_POST['lp-banner'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-banner'] ) ) : '0',
+				'trading'   => isset( $_POST['lp-trading-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-trading-name'] ) ) : '',
 			);
 			$lp_general = apply_filters( 'wplegalpages_save_settings', $lp_general, $_POST );
 			update_option( 'lp_general', $lp_general );
@@ -3558,6 +3559,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$lp_general       = get_option( 'lp_general', array() );
 					$domain_name      = isset( $lp_general['domain'] ) ? $lp_general['domain'] : '';
 					$business         = isset( $lp_general['business'] ) ? $lp_general['business'] : '';
+					$trading          = isset( $lp_general['trading'] ) ? $lp_general['trading'] : '';
 					$phone            = isset( $lp_general['phone'] ) ? $lp_general['phone'] : '';
 					$street           = isset( $lp_general['street'] ) ? $lp_general['street'] : '';
 					$city_state       = isset( $lp_general['cityState'] ) ? $lp_general['cityState'] : '';
@@ -3586,6 +3588,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						$general['linkedin-url']         = isset( $_POST['data']['lp-linkedin-url'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-linkedin-url'] ) ) : $linkedin_url;
 						$general['domain']               = isset( $_POST['data']['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-domain-name'] ) ) : $domain_name;
 						$general['business']             = isset( $_POST['data']['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-business-name'] ) ) : $business;
+						$general['trading']				 = isset( $_POST['data']['lp-trading-name'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-trading-name'] ) ) : $trading;
 						$general['phone']                = isset( $_POST['data']['lp-phone'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-phone'] ) ) : $phone;
 						$general['email']                = isset( $_POST['data']['lp-email'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-email'] ) ) : $email;
 						$general['street']               = isset( $_POST['data']['lp-street'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-street'] ) ) : $street;
