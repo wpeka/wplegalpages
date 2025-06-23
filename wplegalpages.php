@@ -38,40 +38,6 @@ if ( ! defined( 'WPLEGAL_APP_URL' ) ) {
 	define( 'WPLEGAL_APP_URL', 'https://app.wplegalpages.com' );
 }
 
-if ( ! function_exists( 'wplp_fs' ) ) {
-	/**
-	 * Helper function to access SDK.
-	 *
-	 * @return Analytics
-	 */
-	function wplp_fs() {
-		global $wplp_fs;
-
-		if ( ! isset( $wplp_fs ) ) {
-			// Include Analytics SDK.
-			require_once __DIR__ . '/analytics/start.php';
-
-			$wplp_fs = ras_dynamic_init(
-				array(
-					'id'              => '4',
-					'slug'            => 'wplegalpages',
-					'product_name'    => 'WPLegalPages',
-					'module_type'     => 'plugin',
-					'version'         => '3.1.0',
-					'plugin_basename' => 'wplegalpages/wplegalpages.php',
-					'plugin_url'      => WPL_LITE_PLUGIN_URL,
-				)
-			);
-		}
-
-		return $wplp_fs;
-	}
-
-	// Init Analytics.
-	// wplp_fs();
-	// SDK initiated.
-	// do_action( 'wplp_fs_loaded' );
-}
 /**
  * Load WC_AM_Client class if it exists.
  */
