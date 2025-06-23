@@ -185,7 +185,22 @@ if ( '1' === $lpterms ) {
 										</c-col>
 										<c-col class="col-sm-8">
 											<input type="hidden" name="lp-generate" v-model="generate">
-											<c-switch v-bind="labelIcon" ref="generate"  id="inline-form-credits" variant="3d" color="success" <?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?> v-on:update:checked="onChangeCredit"></c-col>
+											<label for="inline-form-credits" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Give Credit toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="inline-form-credits" 
+												ref="generate"
+												value="1"
+												class="c-switch-input"
+												aria-label="Give credits toggle" 
+												<?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?>
+												@change="onChangeCredit(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+											</label>
 										</c-col>
 									</c-row>
 									<c-row>
@@ -202,98 +217,98 @@ if ( '1' === $lpterms ) {
 									?>
 								<c-row class="wplegalpages-label-row">
 									<c-col class="col-sm-6">
-										<label><?php esc_attr_e( 'Domain Name', 'wplegalpages' ); ?></label>
+										<label for="lp-domain-name"><?php esc_attr_e( 'Domain Name', 'wplegalpages' ); ?></label>
 									</c-col>
 									<c-col class="col-sm-6">
-										<label><?php esc_attr_e( 'Business Name', 'wplegalpages' ); ?></label>
+										<label for="lp-business-name"><?php esc_attr_e( 'Business Name', 'wplegalpages' ); ?></label>
 									</c-col>
 								</c-row>
 								<c-row>
 									<c-col class="col-sm-6">
-										<c-input type="text" name="lp-domain-name" placeholder=" Domain Name" value="<?php echo ! empty( $lp_general['domain'] ) ? esc_attr( $lp_general['domain'] ) : esc_url_raw( get_bloginfo( 'url' ) ); ?>"></c-input>
+										<c-input id="lp-domain-name" type="text" name="lp-domain-name" placeholder=" Domain Name" value="<?php echo ! empty( $lp_general['domain'] ) ? esc_attr( $lp_general['domain'] ) : esc_url_raw( get_bloginfo( 'url' ) ); ?>"></c-input>
 									</c-col>
 									<c-col class="col-sm-6">
-										<c-input type="text" name="lp-business-name" placeholder=" Business Name" value="<?php echo ! empty( $lp_general['business'] ) ? esc_attr( $lp_general['business'] ) : ''; ?>"></c-input>
+										<c-input id="lp-business-name" type="text" name="lp-business-name" placeholder=" Business Name" value="<?php echo ! empty( $lp_general['business'] ) ? esc_attr( $lp_general['business'] ) : ''; ?>"></c-input>
 									</c-col>
 								</c-row>
 								<c-row class="wplegalpages-label-row">
 									<c-col class="col-sm-6">
-										<label><?php esc_attr_e( 'Phone', 'wplegalpages' ); ?></label>
+										<label for="lp-phone"><?php esc_attr_e( 'Phone', 'wplegalpages' ); ?></label>
 									</c-col>
 									<c-col class="col-sm-6">
-										<label><?php esc_attr_e( 'Street', 'wplegalpages' ); ?></label>
+										<label for="lp-street"><?php esc_attr_e( 'Street', 'wplegalpages' ); ?></label>
 									</c-col>
 								</c-row>
 								<c-row>
 									<c-col class="col-sm-6">
-										<c-input type="text"  name="lp-phone" placeholder=" Phone" pattern="^\+?[0-9\s\-]{10,15}$" title="Please enter a valid phone number (10-15 digits, may include + or -)"  value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>"></c-input>
+										<c-input id="lp-phone" type="text"  name="lp-phone" placeholder=" Phone" pattern="^\+?[0-9\s\-]{10,15}$" title="Please enter a valid phone number (10-15 digits, may include + or -)"  value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>"></c-input>
 									</c-col>
 									<c-col class="col-sm-6">
-										<c-input type="text" name="lp-street" placeholder=" Street" value="<?php echo ! empty( $lp_general['street'] ) ? esc_attr( $lp_general['street'] ) : ''; ?>"></c-input>
+										<c-input id="lp-street" type="text" name="lp-street" placeholder=" Street" value="<?php echo ! empty( $lp_general['street'] ) ? esc_attr( $lp_general['street'] ) : ''; ?>"></c-input>
 									</c-col>
 								</c-row>
 								<c-row class="wplegalpages-label-row">
 									<c-col class="col-sm-8">
-										<label><?php esc_attr_e( 'City, State, Zip code', 'wplegalpages' ); ?></label>
+										<label for="lp-city-state"><?php esc_attr_e( 'City, State, Zip code', 'wplegalpages' ); ?></label>
 									</c-col>
 									<c-col class="col-sm-4">
-										<label><?php esc_attr_e( 'Country', 'wplegalpages' ); ?></label>
+										<label for="lp-country"><?php esc_attr_e( 'Country', 'wplegalpages' ); ?></label>
 									</c-col>
 								</c-row>
 								<c-row>
 									<c-col class="col-sm-8">
-										<c-input type="text"  name="lp-city-state" placeholder=" City, State, Zip code" value="<?php echo ! empty( $lp_general['cityState'] ) ? esc_attr( $lp_general['cityState'] ) : ''; ?>">
+										<c-input id="lp-city-state" type="text"  name="lp-city-state" placeholder=" City, State, Zip code" value="<?php echo ! empty( $lp_general['cityState'] ) ? esc_attr( $lp_general['cityState'] ) : ''; ?>">
 									</c-col>
 									<c-col class="col-sm-4">
-										<c-input type="text" class="wplegalpages-full-width-input" placeholder=" Country" name="lp-country" value="<?php echo ! empty( $lp_general['country'] ) ? esc_attr( $lp_general['country'] ) : ''; ?>"></c-input>
+										<c-input id="lp-country" type="text" class="wplegalpages-full-width-input" placeholder=" Country" name="lp-country" value="<?php echo ! empty( $lp_general['country'] ) ? esc_attr( $lp_general['country'] ) : ''; ?>"></c-input>
 									</c-col>
 								</c-row>
 								<c-row class="wplegalpages-label-row">
 									<c-col class="col-sm-4">
-										<label><?php esc_attr_e( 'Email', 'wplegalpages' ); ?></label>
+										<label for="lp-email"><?php esc_attr_e( 'Email', 'wplegalpages' ); ?></label>
 									</c-col>
 									<c-col class="col-sm-4">
-										<label><?php esc_attr_e( 'Address', 'wplegalpages' ); ?></label>
+										<label for="lp-address"><?php esc_attr_e( 'Address', 'wplegalpages' ); ?></label>
 									</c-col>
 									<c-col class="col-sm-4">
-										<label><?php esc_attr_e( 'Niche', 'wplegalpages' ); ?></label>
+										<label for="lp-niche"><?php esc_attr_e( 'Niche', 'wplegalpages' ); ?></label>
 									</c-col>
 								</c-row>
 								<c-row>
-									<c-col class="col-sm-4"><c-input type="email" placeholder=" Email" class="wplegalpages-full-width-input"  name="lp-email" title="Please enter a valid email address" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" ></c-input></c-col>
-									<c-col class="col-sm-4"><c-input type="text" placeholder=" Address" class="wplegalpages-full-width-input" name="lp-address" value="<?php echo ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : ''; ?>"></c-input></c-col>
-									<c-col class="col-sm-4"><c-input type="text" placeholder=" Niche" class="wplegalpages-full-width-input" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>"></c-input></c-col>
+									<c-col class="col-sm-4"><c-input id="lp-email" type="email" placeholder=" Email" class="wplegalpages-full-width-input"  name="lp-email" title="Please enter a valid email address" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" ></c-input></c-col>
+									<c-col class="col-sm-4"><c-input id="lp-address" type="text" placeholder=" Address" class="wplegalpages-full-width-input" name="lp-address" value="<?php echo ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : ''; ?>"></c-input></c-col>
+									<c-col class="col-sm-4"><c-input id="lp-niche" type="text" placeholder=" Niche" class="wplegalpages-full-width-input" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>"></c-input></c-col>
 								</c-row>
 								<c-row class="wplegalpages-label-row">
 								<c-col class="col-sm-6">
-									<label><?php esc_attr_e( 'Facebook URL', 'wplegalpages' ); ?></label>
+									<label for="lp-facebook-url"><?php esc_attr_e( 'Facebook URL', 'wplegalpages' ); ?></label>
 								</c-col>
 								<c-col class="col-sm-6">
-									<label><?php esc_attr_e( 'Google URL', 'wplegalpages' ); ?></label>
+									<label for="lp-google-url"><?php esc_attr_e( 'Google URL', 'wplegalpages' ); ?></label>
 								</c-col>
 							</c-row>
 							<c-row>
 								<c-col class="col-sm-6">
-									<c-input type="text" name="lp-facebook-url" placeholder=" Facebook URL" value="<?php echo ! empty( $lp_general['facebook-url'] ) ? esc_attr( $lp_general['facebook-url'] ) : ''; ?>" ></c-input>
+									<c-input id="lp-facebook-url" type="text" name="lp-facebook-url" placeholder=" Facebook URL" value="<?php echo ! empty( $lp_general['facebook-url'] ) ? esc_attr( $lp_general['facebook-url'] ) : ''; ?>" ></c-input>
 								</c-col>
 								<c-col class="col-sm-6">
-									<c-input type="text" name="lp-google-url" placeholder=" Google URL" value="<?php echo ! empty( $lp_general['google-url'] ) ? esc_attr( $lp_general['google-url'] ) : ''; ?>" ></c-input>
+									<c-input id="lp-google-url" type="text" name="lp-google-url" placeholder=" Google URL" value="<?php echo ! empty( $lp_general['google-url'] ) ? esc_attr( $lp_general['google-url'] ) : ''; ?>" ></c-input>
 								</c-col>
 							</c-row>
 							<c-row class="wplegalpages-label-row">
 								<c-col class="col-sm-6">
-									<label><?php esc_attr_e( 'Twitter URL', 'wplegalpages' ); ?></label>
+									<label for="lp-twitter-url"><?php esc_attr_e( 'Twitter URL', 'wplegalpages' ); ?></label>
 								</c-col>
 								<c-col class="col-sm-6">
-									<label><?php esc_attr_e( 'LinkedIn URL', 'wplegalpages' ); ?> </label>
+									<label for="lp-linkedin-url"><?php esc_attr_e( 'LinkedIn URL', 'wplegalpages' ); ?> </label>
 								</c-col>
 							</c-row>
 							<c-row>
 								<c-col class="col-sm-6">
-									<c-input type="text" name="lp-twitter-url" placeholder=" Twitter URL" value="<?php echo ! empty( $lp_general['twitter-url'] ) ? esc_attr( $lp_general['twitter-url'] ) : ''; ?>" ></c-input>
+									<c-input id="lp-twitter-url" type="text" name="lp-twitter-url" placeholder=" Twitter URL" value="<?php echo ! empty( $lp_general['twitter-url'] ) ? esc_attr( $lp_general['twitter-url'] ) : ''; ?>" ></c-input>
 								</c-col>
 								<c-col class="col-sm-6">
-									<c-input type="text" name="lp-linkedin-url" placeholder=" LinkedIn URL" value="<?php echo ! empty( $lp_general['linkedin-url'] ) ? esc_attr( $lp_general['linkedin-url'] ) : ''; ?>" ></c-input>
+									<c-input id="lp-linkedin-url" type="text" name="lp-linkedin-url" placeholder=" LinkedIn URL" value="<?php echo ! empty( $lp_general['linkedin-url'] ) ? esc_attr( $lp_general['linkedin-url'] ) : ''; ?>" ></c-input>
 								</c-col>
 							</c-row>
 									<?php
@@ -327,7 +342,21 @@ if ( '1' === $lpterms ) {
 									</c-col>
 									<c-col class="col-sm-2">
 										<input type="hidden" name="lp-search" v-model="search">
-										<c-switch v-bind="labelIcon" ref="search"  id="inline-form-search" variant="3d" color="success" <?php checked( isset( $lp_general['search'] ) ? boolval( $lp_general['search'] ) : false ); ?> v-on:update:checked="onChangeSearch"></c-col>
+										<label for="inline-form-search" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Show Legal Pages in search toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="inline-form-search" 
+												ref="search"
+												value="1"
+												class="c-switch-input"
+												<?php checked( isset( $lp_general['search'] ) ? boolval( $lp_general['search'] ) : false ); ?>
+												@change="onChangeSearch(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 								</c-row>
 								<c-row class="wplegal-support-text-row">
@@ -339,7 +368,21 @@ if ( '1' === $lpterms ) {
 									</c-col>
 									<c-col class="col-sm-2">
 										<input type="hidden" name="lp-affiliate-disclosure" v-model="affiliate_disclosure">
-										<c-switch v-bind="labelIcon" ref="affiliate_disclosure"  id="inline-form-affiliate" variant="3d" color="success" <?php checked( isset( $lp_general['affiliate-disclosure'] ) ? boolval( $lp_general['affiliate-disclosure'] ) : false ); ?> v-on:update:checked="onChangeAffiliate"></c-col>
+										<label for="inline-form-affiliate" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Affiliate Disclosure toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="inline-form-affiliate" 
+												ref="affiliate_disclosure"
+												value="1"
+												class="c-switch-input"
+												<?php checked( isset( $lp_general['affiliate-disclosure'] ) ? boolval( $lp_general['affiliate-disclosure'] ) : false ); ?>
+												@change="onChangeAffiliate(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 								</c-row>
 								<c-row v-show= "privacy" id="privacy_page_section" class="wplegal-support-text-row">
@@ -386,7 +429,22 @@ if ( '1' === $lpterms ) {
 									</c-col>
 									<c-col class="col-sm-2">
 										<input type="hidden" name="lp-generate" v-model="generate">
-										<c-switch v-bind="labelIcon" ref="generate"  id="inline-form-credits" variant="3d" color="success" <?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?> v-on:update:checked="onChangeCredit"></c-col>
+										<label for="inline-form-credits" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+										<span class="screen-reader-text"><?php esc_attr_e( 'Give Credit section toggle', 'wplegalpages'); ?></span>
+
+										<input 
+											type="checkbox" 
+											id="inline-form-credits" 
+											ref="generate"
+											value="1"
+											class="c-switch-input"
+											<?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?>
+											@change="onChangeCredit(event)"
+										>
+										<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
+										
 									</c-col>
 								</c-row>
 								<c-row class="wplegal-support-text-row">
@@ -397,8 +455,22 @@ if ( '1' === $lpterms ) {
 										</span>
 									</c-col>
 									<c-col class="col-sm-2">
-										<c-switch v-bind="labelIcon" v-model="analytics_on" id="lp-analytics-on" variant="3d"  color="success" :checked="analytics_on" v-on:update:checked="onChangeAskForUsage"></c-switch>
 										<input type="hidden" name="lp-analytics-on" v-model="analytics_on">
+										<label for="lp-analytics-on" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Allow Usage Tracking toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="lp-analytics-on" 
+												v-model="analytics_on"
+												value="1"
+												class="c-switch-input"
+												:checked="analytics_on"
+												@change="onChangeAskForUsage(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 								</c-row>
 								<c-row class="wplegal-support-text-row">
@@ -410,7 +482,21 @@ if ( '1' === $lpterms ) {
 									</c-col>
 									<c-col class="col-sm-2">
 										<input type="hidden" name="lp-enable-block" v-model="enable_block">
-										<c-switch v-bind="labelIcon" ref="enable_block" id="lp-enable-block" variant="3d" color="success" <?php checked( isset( $is_blocked_enabled ) ? boolval( $is_blocked_enabled ) : false ); ?> v-on:update:checked="onChangeEnableBlock"></c-col>
+										<label for="lp-enable-block" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Show WPLP Block in Gutenberg toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="lp-enable-block" 
+												ref="enable_block"
+												value="1"
+												class="c-switch-input"
+												<?php checked( isset( $is_blocked_enabled ) ? boolval( $is_blocked_enabled ) : false ); ?>
+												@change="onChangeEnableBlock(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 								</c-row>
 							</c-card-body>
@@ -1016,13 +1102,27 @@ if ( '1' === $lpterms ) {
 										</span>
 									</c-col>
 									<c-col class="col-sm-2 wplegal-compliances-switch">
-										<c-switch v-bind="labelIcon" v-model="is_footer" variant="3d"  color="success" :checked="is_footer" v-on:update:checked="onClickFooter"></c-switch>
 										<input type="hidden" name="lp-footer" ref="footer" v-model="is_footer">
+										<label for="is_footer" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Is footer toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="is_footer" 
+												v-model="is_footer"
+												value="1"
+												class="c-switch-input"
+												:checked="is_footer"
+												@change="onClickFooter(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 									<c-col class="col-sm-3  wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showFooterForm">
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default" :alt="configure_alt_text"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 												<?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?>
 											</span>
 										</c-button>
@@ -1036,13 +1136,27 @@ if ( '1' === $lpterms ) {
 										</span>
 									</c-col>
 									<c-col class="col-sm-2 wplegal-compliances-switch">
-										<c-switch v-bind="labelIcon" v-model="is_banner" variant="3d"  color="success" :checked="is_banner" v-on:update:checked="onClickBanner"></c-switch>
 										<input type="hidden" name="lp-banner" ref="banner" v-model="is_banner">
+										<label for="is_banner" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Is Banner toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="is_banner" 
+												v-model="is_banner"
+												value="1"
+												class="c-switch-input"
+												:checked="is_banner"
+												@change="onClickBanner(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 									<c-col class="col-sm-3 wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showBannerForm">
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default" :alt="configure_alt_text"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 												<?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?>
 											</span>
 										</c-button>
@@ -1060,13 +1174,23 @@ if ( '1' === $lpterms ) {
 										</span>
 									</c-col>
 									<c-col class="col-sm-2 wplegal-compliances-switch">
-										<c-switch v-bind="labelIcon" variant="3d" color="success" class="wplegalpages-not-pro-tooltip" disabled></c-switch>
+										<label for="wplp-not-pro-tooltip" class="c-switch form-check-label c-switch-3d-success c-switch-label wplegalpages-not-pro-tooltip">
+											<span class="screen-reader-text"><?php esc_attr_e( 'variant toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="wplp-not-pro-tooltip"
+												class="c-switch-input" 
+												disabled
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+										</label>
 										<div class="wplegalpages-not-pro-tooltip-text"><?php echo esc_html_e( 'This feature is only available in the Pro version. Kindly', 'wplegalpages' );?> <a href="<?php echo esc_url( 'https://wplegalpages.com/pricing/?utm_source=wplegalpagesplugin&utm_medium=age-verification-tooltip' ); ?>" target="_blank"><?php echo esc_html_e( 'UPGRADE', 'wplegalpages' ); ?></a> <?php esc_html_e( 'to unlock and use it.', 'wplegalpages' ) ?></div>
 									</c-col>
 									<c-col class="col-sm-3 wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button wplegalpages-not-pro-tooltip" disabled>
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default" :alt="configure_alt_text"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 												<?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?>
 											</span>
 										</c-button>
@@ -1095,13 +1219,27 @@ if ( '1' === $lpterms ) {
 										</span>
 									</c-col>
 									<c-col class="col-sm-2 wplegal-compliances-switch">
-										<c-switch v-bind="labelIcon" v-model="is_popup" variant="3d"  color="success" :checked="is_popup" v-on:update:checked="onClickPopup"></c-switch>
 										<input type="hidden" name="lp-popup" ref="popup" v-model="is_popup">
+										<label for="is_popup" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<span class="screen-reader-text"><?php esc_attr_e( 'Is Popup toggle', 'wplegalpages'); ?></span>
+
+											<input 
+												type="checkbox" 
+												id="is_popup" 
+												v-model="is_popup"
+												value="1"
+												class="c-switch-input"
+												:checked="is_popup"
+												@change="onClickPopup(event)"
+											>
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+
+										</label>
 									</c-col>
 									<c-col class="col-sm-3 wplegalpages-configure-section">
 										<c-button class="wplegalpages-configure-button" @click="showPopupForm">
 											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?> 
+												<img class="wplegalpages-configure-image" :src="configure_image_url.default" :alt="configure_alt_text"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?> 
 												<span class="wplegalpages-configure-text"><?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?></span>
 											</span>
 										</c-button>
