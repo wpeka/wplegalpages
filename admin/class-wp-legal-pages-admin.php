@@ -1247,46 +1247,55 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'title'       => __( 'Powerful yet simple', 'wplegalpages' ),
 							'description' => __( 'Add 25+ legal policy pages to your WordPress website in less than 5 minutes.', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/powerful_yet_simple.svg',
+							'alt_text'	  => '25+ legal policy pages icon',
 						),
 						'pre_built_template'   => array(
 							'title'       => __( 'Pre-built templates', 'wplegalpages' ),
 							'description' => __( 'Choose from 25+ lawyer approved, legal policy pages from GDPR policies to affiliate disclosures.', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/pre_built_template.svg',
+							'alt_text'	  => 'Pre-built templates icon',
 						),
 						'editable_templates'   => array(
 							'title'       => __( 'Editable templates', 'wplegalpages' ),
 							'description' => __( 'Edit or create your own legal policy templates using the WYSIWYG WordPress editor.', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/editable_templates.svg',
+							'alt_text'	  => 'Editable templates icon',
 						),
 						'gdpr_compliance'      => array(
 							'title'       => __( 'GDPR compliance', 'wplegalpages' ),
 							'description' => __( 'Easy to use shortcodes to display business information in legal policy pages.', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/gdpr_compliance.svg',
+							'alt_text'	  => 'GDPR compliance icon',
 						),
 						'forced_consent'       => array(
 							'title'       => __( 'Forced consent', 'wplegalpages' ),
 							'description' => __( 'Force website visitors to agree to your Terms, Privacy Policy, etc using post / page lock down features.', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/forced_consent.svg',
+							'alt_text'	  => 'Forced consent icon',
 						),
 						'easy_shortcodes'      => array(
 							'title'       => __( 'Easy shortcodes', 'wplegalpages' ),
 							'description' => __( 'Easy to use shortcodes to display business information in legal policy pages.', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/easy_shortcodes.svg',
+							'alt_text'	  => 'Easy shortcodes icon',
 						),
 						'easy_install'         => array(
 							'title'       => __( 'Easy to install', 'wplegalpages' ),
 							'description' => __( 'WP Legal Pages is super-easy to install. Download & install takes less than 2 minutes.', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/easy_to_install.svg',
+							'alt_text'	  => 'Easy to install icon',
 						),
 						'helpful_docs'         => array(
 							'title'       => __( 'Helpful docs & guides', 'wplegalpages' ),
 							'description' => __( 'Even if you get stuck using WP Legal Pages, you can use our easy to follow docs & guides.', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/helpful_docs.svg',
+							'alt_text'	  => 'Helpful docs & guides icon',
 						),
 						'multilingual_support' => array(
 							'title'       => __( 'Multilingual support', 'wplegalpages' ),
 							'description' => __( 'Supports multi-language translations for English, French, Spanish, German, Italian, Portuguese.', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/multilingual_support.svg',
+							'alt_text'	  => 'Multilingual support icon',
 						),
 
 					),
@@ -1297,6 +1306,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'link'        => 'https://club.wpeka.com/docs/wp-legal-pages',
 							'link_name'   => __( 'Learn More', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/help_center.svg',
+							'alt_text'	  => "Help Center Icon",
 						),
 						'video_guides' => array(
 							'title'       => __( 'Video Guides', 'wplegalpages' ),
@@ -1304,6 +1314,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'link'        => 'https://club.wpeka.com/docs/wp-legal-pages/video-guides/video-guides',
 							'link_name'   => __( 'Watch Now', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/video_guides.svg',
+							'alt_text'	  => 'Video Guides Icon',
 						),
 						'faq_answers'  => array(
 							'title'       => __( 'FAQ with Answers', 'wplegalpages' ),
@@ -1311,6 +1322,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'link'        => 'https://club.wpeka.com/docs/wp-legal-pages/faqs',
 							'link_name'   => __( 'Find Out', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/faq_answers.svg',
+							'alt_text'	  => 'FAQ with Answers Icon',
 						),
 						'settings'     => array(
 							'title'       => __( 'Settings', 'wplegalpages' ),
@@ -1318,6 +1330,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'link'        => admin_url( 'admin.php?page=legal-pages#settings' ),
 							'link_name'   => __( 'Go To Settings', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings.svg',
+							'alt_text'	  => 'Settings Icon',
 						),
 						'feedback'     => array(
 							'title'       => __( 'Feedback', 'wplegalpages' ),
@@ -1325,6 +1338,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							'link'        => 'https://club.wpeka.com/contact',
 							'link_name'   => __( 'Find Out', 'wplegalpages' ),
 							'image_src'   => WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/feedback.svg',
+							'alt_text'	  => 'Feedback Icon',
 						),
 					),
 
