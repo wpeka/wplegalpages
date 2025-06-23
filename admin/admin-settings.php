@@ -151,6 +151,10 @@ if ( '1' === $lpterms ) {
 										<c-col class="col-sm-8"><c-input type="text" name="lp-business-name" value="<?php echo ! empty( $lp_general['business'] ) ? esc_attr( $lp_general['business'] ) : ''; ?>"></c-input></c-col>
 									</c-row>
 									<c-row>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'DBA/Trading Name', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enter your "doing business as"/ trading name. Use [Trading Name] as shortcode.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-8"><c-input type="text" name="lp-trading-name" value="<?php echo ! empty( $lp_general['trading'] ) ? esc_attr( $lp_general['trading'] ) : ''; ?>"></c-input></c-col>
+									</c-row>
+									<c-row>
 										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Phone', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Certain policies like CCPA require your contact details. Use [Phone] as shortcode.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8"><c-input type="text"  name="lp-phone" value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>"></c-input></c-col>
 									</c-row>
@@ -215,22 +219,34 @@ if ( '1' === $lpterms ) {
 									<?php
 								} else {
 									?>
-								<c-row class="wplegalpages-label-row">
-									<c-col class="col-sm-6">
+								<c-row class="wplegalpages-label-row">							
+									<c-col class="col-sm-12">
 										<label for="lp-domain-name"><?php esc_attr_e( 'Domain Name', 'wplegalpages' ); ?></label>
 									</c-col>
+								</c-row>
+								<c-row>
+									<c-col class="col-sm-12">
+										<c-input type="text" name="lp-domain-name" placeholder=" Domain Name" value="<?php echo ! empty( $lp_general['domain'] ) ? esc_attr( $lp_general['domain'] ) : esc_url_raw( get_bloginfo( 'url' ) ); ?>"></c-input>
+									</c-col>
+								</c-row>
+
+								<c-row class="wplegalpages-label-row">
 									<c-col class="col-sm-6">
 										<label for="lp-business-name"><?php esc_attr_e( 'Business Name', 'wplegalpages' ); ?></label>
+									</c-col>
+									<c-col class="col-sm-6">
+										<label for="lp-trading-name"><?php esc_attr_e( 'DBA/Trading Name', 'wplegalpages' ); ?></label>
 									</c-col>
 								</c-row>
 								<c-row>
 									<c-col class="col-sm-6">
-										<c-input id="lp-domain-name" type="text" name="lp-domain-name" placeholder=" Domain Name" value="<?php echo ! empty( $lp_general['domain'] ) ? esc_attr( $lp_general['domain'] ) : esc_url_raw( get_bloginfo( 'url' ) ); ?>"></c-input>
-									</c-col>
-									<c-col class="col-sm-6">
 										<c-input id="lp-business-name" type="text" name="lp-business-name" placeholder=" Business Name" value="<?php echo ! empty( $lp_general['business'] ) ? esc_attr( $lp_general['business'] ) : ''; ?>"></c-input>
 									</c-col>
+									<c-col class="col-sm-6">
+										<c-input id="lp-trading-name" type="text" name="lp-trading-name" placeholder=" DBA/Trading Name" value="<?php echo ! empty( $lp_general['trading'] ) ? esc_attr( $lp_general['trading'] ) : ''; ?>"></c-input>
+									</c-col>
 								</c-row>
+
 								<c-row class="wplegalpages-label-row">
 									<c-col class="col-sm-6">
 										<label for="lp-phone"><?php esc_attr_e( 'Phone', 'wplegalpages' ); ?></label>
@@ -1294,6 +1310,7 @@ if ( '1' === $lpterms ) {
 									$shortcodes = array(
 										'Domain'        => '[Domain]',
 										'Business Name' => '[Business Name]',
+										'Trading Name'  => '[Trading Name]',
 										'Phone'         => '[Phone]',
 										'Street'        => '[Street]',
 										'City,State,Zip,Code' => '[City,State,Zip,Code]',
