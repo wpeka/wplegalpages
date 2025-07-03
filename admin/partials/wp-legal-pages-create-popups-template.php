@@ -336,23 +336,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 														<?php } else { ?>
 															value=""
 														<?php } ?>
-														/> </p>
+														/> 
+											</p>
 											<p>
 												<div id="poststuff">
 													<div id="<?php echo user_can_richedit() ? 'postdivrich' : 'postdiv'; ?>">
 														<?php wp_editor( $row ? $row->content : '', 'content' ); ?>
 													</div>
-													<script type="text/javascript">
-														function sp_content_save() {
-															var obj = document.getElementById('lp-content');
-															var content = document.getElementById('content');
-															tinyMCE.triggerSave(0, 1);
-															obj.value = content.value;
-														}
-
-													</script>
 													<label for="lp-content" class="screen-reader-text"><?php esc_attr_e( 'Generated Legal Page Content','wplegalpages'); ?></label>
-													<textarea v-model="formData.content" id="lp-content" name="lp-content" value="5" style="display:none" rows="10"></textarea>
+													<textarea id="lp-content" name="lp-content" value="5" style="display:none" rows="10"></textarea>
 												</div>
 											</p>
 											<p>
@@ -362,7 +354,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 												}
 												?>
 												<!-- <input type="submit" class="btn btn-primary mybtn" onclick="sp_content_save();" name="lp-submit" value="<?php esc_attr_e( 'Save', 'wplegalpages' );?>"/>  -->
-											<button type="button" class="btn btn-primary mybtn"  onclick="sp_content_save(); pop.savePopupData();">
+											<button type="button" class="btn btn-primary mybtn"  @click="savePopupData">
   												<?php esc_attr_e( 'Save', 'wplegalpages' ); ?>
 											</button>
 											</p>

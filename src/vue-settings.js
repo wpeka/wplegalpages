@@ -634,6 +634,16 @@ var pop = new Vue({
           if (data.success) {
             this.formData.title = data.data.title;
             this.formData.content = data.data.content;
+
+            // Inject the content into TinyMCE editor
+            setTimeout(() => {
+              if (typeof tinyMCE !== "undefined" && tinyMCE.get("content")) {
+                tinyMCE.get("content").setContent(data.data.content);
+              } else {
+                // Fallback if TinyMCE is not initialized yet
+                document.getElementById("content").value = data.data.content;
+              }
+            }, 100);
           } else {
             alert("Error: " + (data.data || "Unable to load popup data"));
           }
@@ -645,7 +655,7 @@ var pop = new Vue({
       });
     },
     savePopupData() {
-      // 1. Sync TinyMCE → hidden textarea → Vue
+      // Sync TinyMCE → hidden textarea → Vue
       if (typeof tinyMCE !== "undefined") {
         tinyMCE.triggerSave();
       }
@@ -657,14 +667,16 @@ var pop = new Vue({
         alert("Both title and content are required.");
         return;
       }
-
-      // 2. Send AJAX
+      console.log("Sending ID:", this.formData.id); // 👈 Add this
+      // Fallback for ID if missing 
+      const formId = this.formData.id != null ? this.formData.id : 0;
+      //  Send AJAX
       jQuery.ajax({
         type: "POST",
         url: obj.ajaxurl,
         data: {
-          action: "wplegalpages_update_popup", 
-          id: 0, // or send real ID if editing
+          action: "wplegalpages_update_popup",
+          id: formId, // or send real ID if editing
           title: title,
           content: content,
           _ajax_nonce:
@@ -685,100 +697,3 @@ var pop = new Vue({
     },
   },
 });
-// var pop = new Vue({
-//   el: ".wplegalpages-popup-app",
-//   data() {
-//     return {
-//       popupVisible: false,
-//       editMode: false, // ✅ NEW: to switch between create/edit
-//       formData: {
-//         id: null,
-//         title: "",
-//         content: "",
-//       },
-//     };
-//   },
-//   methods: {
-//     // ✅ Open modal to create new popup
-//     createPopup() {
-//       this.editMode = false;
-//       this.formData = {
-//         id: null,
-//         title: "",
-//         content: "",
-//       };
-//       this.popupVisible = true;
-//     },
-
-//     // ✅ Open modal and load data for editing
-//     editPopup(id) {
-//       this.editMode = true;
-//       this.popupVisible = true;
-//       this.formData = {
-//         id: id,
-//         title: "",
-//         content: "",
-//       };
-
-//       jQuery.ajax({
-//         type: "POST",
-//         url: obj.ajaxurl,
-//         data: {
-//           action: "wplegalpages_load_edit_form_data",
-//           page_id: id,
-//         },
-//         success: (data) => {
-//           if (data.success) {
-//             this.formData.title = data.data.title;
-//             this.formData.content = data.data.content;
-//           } else {
-//             alert("Error: " + (data.data || "Unable to load popup data"));
-//           }
-//         },
-//         error: (xhr, status, error) => {
-//           console.error("AJAX Error:", status, error);
-//           alert("Something went wrong while loading popup data.");
-//         },
-//       });
-//     },
-
-//     // ✅ Save logic for both Create and Edit
-//     savePopupData() {
-//       const action = "wplegalpages_create_popup"; 
-
-//       jQuery.ajax({
-//         type: "POST",
-//         url: obj.ajaxurl,
-//         data: {
-//           action: action,
-//           id: this.formData.id,
-//           title: this.formData.title,
-//           content: this.formData.content,
-//         },
-//         success: (response) => {
-//           if (response.success) {
-//             alert(
-//               this.editMode
-//                 ? "Popup updated successfully"
-//                 : "Popup created successfully"
-//             );
-//             this.popupVisible = false;
-//             location.reload();
-//           } else {
-//             alert("Failed to save popup: " + response.data);
-//           }
-//         },
-//         error: (xhr, status, error) => {
-//           console.error("Save error:", error);
-//           alert("An error occurred while saving.");
-//         },
-//       });
-//     },
-
-//     closePopup() {
-//       this.popupVisible = false;
-//     },
-//   },
-// });
-
-window.pop = pop;
