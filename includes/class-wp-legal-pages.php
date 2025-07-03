@@ -288,6 +288,16 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$this->loader->add_action( 'admin_notices', $plugin_admin,'wplp_admin_new_clause_addition_notice',1);
 
 			$this->loader->add_action( 'wp_ajax_wplp_collect_data', $plugin_admin, 'wplegalpages_upgrade_to_pro_popup_clicked' );
+			$this->loader->add_action('wp_ajax_wplegalpages_load_edit_form_data',$plugin_admin, 'wplegalpages_load_edit_form_data_callback');
+			$this->loader->add_action('wp_ajax_nopriv_wplegalpages_load_edit_form_data',$plugin_admin, 'wplegalpages_load_edit_form_data_callback');
+
+			$this->loader->add_action('wp_ajax_wplegalpages_update_popup',$plugin_admin, 'wplegalpages_update_popup_callback');
+			$this->loader->add_action('wp_ajax_nopriv_wplegalpages_update_popup',$plugin_admin, 'wplegalpages_update_popup_callback');
+
+
+			$this->loader->add_action('wp_ajax_wplegalpages_create_popup',$plugin_admin, 'wplegalpages_create_popup_callback');
+			$this->loader->add_action('wp_ajax_nopriv_wplegalpages_update_popup',$plugin_admin, 'wplegalpages_update_popup_callback');
+
 
 		}
 
@@ -407,5 +417,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			}
 			return $is_pro_plan;
 		}
+
+		
 	}
 }

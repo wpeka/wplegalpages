@@ -598,3 +598,187 @@ var gen = new Vue({
     },
     icons: { cilPencil, cilSettings, cilInfo, cibGoogleKeep }
 })
+var pop = new Vue({
+  el: ".wplegalpages-popup-app",
+  data() {
+    return {
+      popupVisible: false,
+      formData: {
+        id: null,
+        title: "",
+        content: "",
+      },
+    };
+  },
+  methods: {
+    closePopup() {
+      this.popupVisible = false;
+    },
+    editPopup(id) {
+      this.popupVisible = true;
+      this.editMode = true;
+      this.formData = {
+        id: id,
+        title: "",
+        content: "",
+      };
+
+      jQuery.ajax({
+        type: "POST",
+        url: obj.ajaxurl, // or obj.ajaxurl if you're using a localized object
+        data: {
+          action: "wplegalpages_load_edit_form_data",
+          page_id: id,
+        },
+        success: (data) => {
+          if (data.success) {
+            this.formData.title = data.data.title;
+            this.formData.content = data.data.content;
+          } else {
+            alert("Error: " + (data.data || "Unable to load popup data"));
+          }
+        },
+        error: (xhr, status, error) => {
+          console.error("AJAX Error:", status, error);
+          alert("Something went wrong while loading popup data.");
+        },
+      });
+    },
+    savePopupData() {
+      // 1. Sync TinyMCE → hidden textarea → Vue
+      if (typeof tinyMCE !== "undefined") {
+        tinyMCE.triggerSave();
+      }
+
+      var content = document.getElementById("content")?.value || "";
+      var title = document.getElementById("lp-name")?.value || "";
+
+      if (!title || !content) {
+        alert("Both title and content are required.");
+        return;
+      }
+
+      // 2. Send AJAX
+      jQuery.ajax({
+        type: "POST",
+        url: obj.ajaxurl,
+        data: {
+          action: "wplegalpages_update_popup", 
+          id: 0, // or send real ID if editing
+          title: title,
+          content: content,
+          _ajax_nonce:
+            "<?php echo wp_create_nonce('lp-submit-create-popups'); ?>",
+        },
+        success: function (response) {
+          if (response.success) {
+            alert("Saved successfully!");
+            location.reload();
+          } else {
+            alert("Save failed: " + response.data);
+          }
+        },
+        error: function (xhr, status, error) {
+          alert("AJAX error: " + error);
+        },
+      });
+    },
+  },
+});
+// var pop = new Vue({
+//   el: ".wplegalpages-popup-app",
+//   data() {
+//     return {
+//       popupVisible: false,
+//       editMode: false, // ✅ NEW: to switch between create/edit
+//       formData: {
+//         id: null,
+//         title: "",
+//         content: "",
+//       },
+//     };
+//   },
+//   methods: {
+//     // ✅ Open modal to create new popup
+//     createPopup() {
+//       this.editMode = false;
+//       this.formData = {
+//         id: null,
+//         title: "",
+//         content: "",
+//       };
+//       this.popupVisible = true;
+//     },
+
+//     // ✅ Open modal and load data for editing
+//     editPopup(id) {
+//       this.editMode = true;
+//       this.popupVisible = true;
+//       this.formData = {
+//         id: id,
+//         title: "",
+//         content: "",
+//       };
+
+//       jQuery.ajax({
+//         type: "POST",
+//         url: obj.ajaxurl,
+//         data: {
+//           action: "wplegalpages_load_edit_form_data",
+//           page_id: id,
+//         },
+//         success: (data) => {
+//           if (data.success) {
+//             this.formData.title = data.data.title;
+//             this.formData.content = data.data.content;
+//           } else {
+//             alert("Error: " + (data.data || "Unable to load popup data"));
+//           }
+//         },
+//         error: (xhr, status, error) => {
+//           console.error("AJAX Error:", status, error);
+//           alert("Something went wrong while loading popup data.");
+//         },
+//       });
+//     },
+
+//     // ✅ Save logic for both Create and Edit
+//     savePopupData() {
+//       const action = "wplegalpages_create_popup"; 
+
+//       jQuery.ajax({
+//         type: "POST",
+//         url: obj.ajaxurl,
+//         data: {
+//           action: action,
+//           id: this.formData.id,
+//           title: this.formData.title,
+//           content: this.formData.content,
+//         },
+//         success: (response) => {
+//           if (response.success) {
+//             alert(
+//               this.editMode
+//                 ? "Popup updated successfully"
+//                 : "Popup created successfully"
+//             );
+//             this.popupVisible = false;
+//             location.reload();
+//           } else {
+//             alert("Failed to save popup: " + response.data);
+//           }
+//         },
+//         error: (xhr, status, error) => {
+//           console.error("Save error:", error);
+//           alert("An error occurred while saving.");
+//         },
+//       });
+//     },
+
+//     closePopup() {
+//       this.popupVisible = false;
+//     },
+//   },
+// });
+
+window.pop = pop;

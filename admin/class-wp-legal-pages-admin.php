@@ -81,7 +81,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 			add_action('wp_ajax_gdpr_install_plugin', array($this, 'wplp_gdpr_install_plugin_ajax_handler'));
 			add_action('rest_api_init', array($this, 'register_wpl_dashboard_route'));
-			
+
 		}
 
 		/**
@@ -5094,6 +5094,115 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 			return false;
 		}
+
+		public function wplegalpages_load_edit_form_data_callback() {
+			global $wpdb;
+
+			$page_id = isset($_POST['page_id']) ? intval($_POST['page_id']) : 0;
+			error_log('$page_id==' . $page_id);
+
+			// Replace get_post() with custom DB query
+			$table_name = $wpdb->prefix . 'lp_popups';
+			$popup = $wpdb->get_row(
+				$wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $page_id)
+			);
+
+			if ($popup) {
+				wp_send_json_success([
+					'title' => $popup->popup_name,
+					'content' => $popup->content
+				]);
+			} else {
+				wp_send_json_error('Popup not found');
+			}
+
+			wp_die();
+		}
+
+		public function wplegalpages_update_popup_callback() {
+			global $wpdb;
+
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$title = isset($_POST['title']) ? sanitize_text_field($_POST['title']) : '';
+			$content = isset($_POST['content']) ? wp_kses_post($_POST['content']) : '';
+
+			if (empty($title) || empty($content)) {
+				wp_send_json_error('Missing required fields');
+				wp_die();
+			}
+
+			$table_name = $wpdb->prefix . 'lp_popups';
+
+			if ($id > 0) {
+				//  UPDATE
+				$updated = $wpdb->update(
+					$table_name,
+					[
+						'popup_name' => $title,
+						'content'     => $content,
+					],
+					[ 'id' => $id ],
+					[ '%s', '%s' ],
+					[ '%d' ]
+				);
+
+				if ($updated !== false) {
+					wp_send_json_success('Popup updated');
+				} else {
+					wp_send_json_error('Failed to update popup');
+				}
+			} else {
+				//  INSERT
+				$inserted = $wpdb->insert(
+					$table_name,
+					[
+						'popup_name' => $title,
+						'content'     => $content,
+					],
+					[ '%s', '%s' ]
+				);
+
+				if ($inserted !== false) {
+					wp_send_json_success('Popup created');
+				} else {
+					wp_send_json_error('Failed to create popup');
+				}
+			}
+
+			wp_die();
+		}
+
+		public function wplegalpages_create_popup_callback() {
+			global $wpdb;
+
+			$title = isset($_POST['title']) ? sanitize_text_field($_POST['title']) : '';
+			$content = isset($_POST['content']) ? wp_kses_post($_POST['content']) : '';
+
+			if (empty($title) || empty($content)) {
+				wp_send_json_error('Title and content are required');
+				wp_die();
+			}
+
+			$table = $wpdb->prefix . 'lp_popups';
+
+			$inserted = $wpdb->insert(
+				$table,
+				[
+					'popup_name' => $title,
+					'content' => $content
+				],
+				[ '%s', '%s' ]
+			);
+
+			if ($inserted !== false) {
+				wp_send_json_success('Popup created');
+			} else {
+				wp_send_json_error('Failed to create popup');
+			}
+
+			wp_die();
+		}
+
 	}
 	
 	
