@@ -670,7 +670,6 @@ var pop = new Vue({
       var title = document.getElementById("lp-name")?.value || "";
 
       if (!title || !content) {
-        console.log("Both title and content are required.");
         return;
       }
       // Fallback for ID if missing
