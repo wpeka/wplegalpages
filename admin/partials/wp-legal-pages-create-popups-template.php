@@ -33,7 +33,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 		
 		<div style="clear:both;"></div>
 		<div class="wplegalpages-popup-app">
+			
 		<div class="wplegal-create-legal-all-pages">
+
 			<div class="wplegal-feature-icon" id="wplegal-settings-create-legal">
 				<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/carbon_popup.svg' ); ?>" alt="create legal" class="wplegal-create-legal-icon"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 				<div class="wplegal-create-legal-subtext">
@@ -53,65 +55,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 				}
 				$lpid = isset( $_REQUEST['lpid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) : '';
 				$wpdb->delete( $lp_obj->popuptable, array( 'id' => $lpid ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				
 			}
-			if ( ! empty( $_POST ) && isset( $_POST['lp-submit'] ) ) :
-				check_admin_referer( 'lp-submit-create-popups' );
-				$lpid         = isset( $_REQUEST['lpid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) : '';
-				$lp_name      = isset( $_POST['lp-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-name'] ) ) : '';
-				$lp_title     = isset( $_POST['lp-title'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-title'] ) ) : '';
-				$content      = isset( $_POST['lp-content'] ) ? wp_kses_post( wp_unslash( $_POST['lp-content'] ) ) : '';
-				$update_id = is_object( $unserialized_object ) && isset( $unserialized_object->id ) ? $unserialized_object->id : 0;
-
-				$content      = stripslashes_deep( $content );
-
-				if ( get_option('wplegalpalges_flag_key') ) {
-					$update = $wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-						$lp_obj->popuptable,
-						array(
-							'popup_name' => $lp_name,
-							'content'    => $content,
-						),
-						array( 'id' => $update_id ),
-						array( '%s', '%s' )
-					);
-					// set the flag key to false once popup is updated
-					$option_key = 'wplegalpalges_flag_key';
-					$option_value = false;
-					update_option( $option_key, $option_value );
-
-					if ( $update ) {
-						?>
-				<div id="message">
-					<p><span class="label label-success myAlert"><?php esc_attr_e( 'Popup Successfully Updated.', 'wplegalpages' ); ?></span></p>
-				</div>
-							<?php
-					} else {
-						?>
-							<span class='label label-danger myAlert'> <?php esc_attr_e( 'Error Updating Template', 'wplegalpages' ); ?></span>
-						<?php
-					}
-				} else {
-					$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-						$lp_obj->popuptable,
-						array(
-							'popup_name' => $lp_name,
-							'content'    => $content,
-						),
-						array( '%s', '%s' )
-					);
-					if ( $wpdb->insert_id ) {
-						?>
-					<div id="message">
-						<p> <span class="label label-success myAlert"><?php esc_attr_e( 'Popup Successfully Created.', 'wplegalpages' ); ?></span></p>
-					</div>
-						<?php
-					} else {
-						?>
-						<span class='label label-danger myAlert'><?php esc_attr_e( 'Error Saving Popup', 'wplegalpages' ); ?></span>
-						<?php
-					}
-				}
-			endif;
+			
 			$current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) : '';
 
 			$checked      = 'checked="checked"';
@@ -184,7 +130,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 								if ( $result ) {
 									?>
-						<h2 class="hndle create-popup myLabel-head wplegalpages-popup-section-title"> <?php esc_attr_e( 'Available Popups', 'wplegalpages' ); ?></h2>
+									
+						<h2 class="popup-heading hndle create-popup myLabel-head wplegalpages-popup-section-title"> <?php esc_attr_e( 'Available Popups', 'wplegalpages' ); ?></h2>
+						<div v-if="successMessage" id="wplegalpages-save-popup-settings-alert">
+  		<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg' ); ?>" alt="create legal" class="wplegal-save-settings-icon">{{ successMessage }}
+</div>
+
 						<table class="widefat table table-bordered table-striped create-popup wplegalpages-popup-list-table">
 							<thead>
 								<tr>
@@ -212,7 +163,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 										<?php echo '[wp-legalpopup pid=' . esc_attr( $res->id ) . ']'; ?>
 											</td>
 											</td>
-											<td><div class="wplegalpages-popup-list-table-actions"><a href="#" @click.prevent="editPopup(<?php echo esc_attr($res->id); ?>)" class="wplegalpages-popup-list-table-action-link" href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=legal-pages&lpid=<?php echo esc_attr( $res->id ); ?>&mode=edit"><div class="wplegalpages-popup-list-table-action wplegalpages-popup-list-table-action-edit"><span class="dashicons dashicons-edit-page"></span><span class="wplegalpages-popup-list-table-action-title"><?php esc_attr_e( 'Edit', 'wplegalpages' ); ?></span></div></a><a class="wplegalpages-popup-list-table-action-link" href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=legal-pages&nonce=<?php echo esc_attr( wp_create_nonce( 'lp-submit-create-popups' ) ); ?>&lpid=<?php echo esc_attr( $res->id ); ?>&mode=deletepopup" onclick="return confirm('Popup will be permanently deleted. Are you sure you want to delete?')"><div class="wplegalpages-popup-list-table-action wplegalpages-popup-list-table-action-delete" ><span class="dashicons dashicons-trash"></span><span class="wplegalpages-popup-list-table-action-title"><?php esc_attr_e( 'Delete', 'wplegalpages' ); ?></span></div></a></div></td>
+											<td><div class="wplegalpages-popup-list-table-actions"><a href="#" @click.prevent="editPopup(<?php echo esc_attr($res->id); ?>)" class="wplegalpages-popup-list-table-action-link" href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=legal-pages&lpid=<?php echo esc_attr( $res->id ); ?>&mode=edit"><div class="wplegalpages-popup-list-table-action wplegalpages-popup-list-table-action-edit"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/edit_popup.svg'); ?>" alt="edit popup"><span class="wplegalpages-popup-list-table-action-title"><?php esc_attr_e( 'Edit', 'wplegalpages' ); ?></span></div></a><a class="wplegalpages-popup-list-table-action-link" href="<?php echo esc_url( $baseurl ); ?>/wp-admin/admin.php?page=legal-pages&nonce=<?php echo esc_attr( wp_create_nonce( 'lp-submit-create-popups' ) ); ?>&lpid=<?php echo esc_attr( $res->id ); ?>&mode=deletepopup" onclick="return confirm('Popup will be permanently deleted. Are you sure you want to delete?')"><div class="wplegalpages-popup-list-table-action wplegalpages-popup-list-table-action-delete" ><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/delete_popup.svg' ); ?>" alt="delete popup"/><span class="wplegalpages-popup-list-table-action-title"><?php esc_attr_e( 'Delete', 'wplegalpages' ); ?></span></div></a></div></td>
 											</tr>
 										<?php
 										$count++;
@@ -235,8 +186,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<v-modal v-model="popupVisible" title="Create New Popup">
 
 						<div class="wplegalpages-popup-shortcode-section create-popup">
-							<h3 class="wplegalpages-popup-shortcode-section-title"><?php esc_attr_e( 'Use Template Shortcode', 'wplegalpages' ); ?></h3>
-							<div class="wplegalpages-popup-shortcode-section-container"><p class="wplegalpages-popup-shortcode-section-desc"><?php esc_attr_e( 'Select the template from below drop down for which you need to have popup and copy paste the shortcodes to the editor.', 'wplegalpages' ); ?></p>
+							<div class="wplegalpages-popup-shortcode-section-container"><p class="wplegalpages-popup-shortcode-section-desc"><?php esc_attr_e( 'Select Template', 'wplegalpages' ); ?></p>
 								<?php
 								$all_page_options = ['wplegal_terms_of_use_page', 
 													'wplegal_terms_of_use_free_page', 
@@ -287,16 +237,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 								$id_list = implode( ',', $post_id_arr );
 
 								$res = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_content FROM {$wpdb->posts} WHERE ID IN ({$id_list}) AND post_type = %s AND post_status != %s", 'page', 'trash')); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared	
+								
 								?>
 									<script type="text/javascript">
 										function wplpfunc(selectObj) {
-											var idx = selectObj.value;
-											var which = selectObj.value;
-											document.getElementById('wplpcode').innerHTML = "[wp-legalpage tid=" + which + "]";
+											var selectedTemplateId = selectObj.value;
+											var textarea = document.getElementById('wplpcode');
+											
+											if (selectedTemplateId) {
+												textarea.style.display = 'block';
+												textarea.value = "[wp-legalpage tid=" + selectedTemplateId + "]";
+											} else {
+												textarea.style.display = 'none';
+											}
 										}
 									</script>
 									<form name="me" id="wplp-shortcode-select">
-										<select name="wplp" id="wplp" onChange="wplpfunc(this);" style="width:250px;">
+										<select v-model="formData.legalpage_id" class="selectpicker form-control" name="wplp" id="wplp" onChange="wplpfunc(this);" style="width:250px;">
 											<option value=""><?php esc_attr_e( 'Select', 'wplegalpages' ); ?></option>
 											<?php
 
@@ -311,7 +268,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 										</select>
 									</form>
 									<label for="wplpcode" class="screen-reader-text"><?php esc_attr_e( 'Generated Legal Page Code','wplegalpages'); ?></label>
-									<textarea id="wplpcode" onclick="document.getElementById('wplpcode').focus();document.getElementById('wplpcode').select();" readonly="readonly" style="width:250px;"></textarea>
+									<textarea id="wplpcode" onclick="document.getElementById('wplpcode').focus();document.getElementById('wplpcode').select();" readonly="readonly" style="width:250px;display:none;"></textarea>
 									<div style="clear:both;"></div>
 							</div>
 							
@@ -324,10 +281,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 									$row  = $unserialized_object; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 								}
 								?>
-									<h3 class="wplegalpages-create-popup-section-title"><?php esc_attr_e( 'Create Popups', 'wplegalpages' ); ?></h3>
+									<p class="wplegalpages-create-popup-section-title"><?php esc_attr_e( 'Name your Popup', 'wplegalpages' ); ?></p>
 									<p class="wplegalpages-create-popup-section-desc"><b><?php esc_attr_e( 'Note:', 'wplegalpages' ); ?> </b><?php esc_attr_e( 'You can use Available Template shortcodes inside the popup to display Legal Pages on Popup. Checkbox to agree for the legal pages is added at the end of every popup forcing the user to agree the legal contents to view the page.', 'wplegalpages' ); ?></p>
 									<div id="lp_generalid">
-										<form id="popup_form" name="popup" method="post" enctype="multipart/form-data">
+										<form @submit.prevent="savePopupData" id="popup_form" name="popup" method="post" enctype="multipart/form-data">
 											<p>
 												<label for="lp-name" class="screen-reader-text"><?php esc_attr_e( 'Name','wplegalpages'); ?></label>
 												<input v-model="formData.title" type="text" class="form-control myText" name="lp-name" id="lp-name"

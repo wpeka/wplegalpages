@@ -4691,6 +4691,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				// Proceed only if a valid ID is provided.
 				if ( $lpid > 0 ) {
 					$wpdb->delete( $lp_obj->popuptable, array( 'id' => $lpid ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					
+					$template_map = get_option('wplegalpages_popup_template_map', []);
+
+					if ( isset($template_map[$lpid]) ) {
+						unset($template_map[$lpid]);
+						update_option('wplegalpages_popup_template_map', $template_map);
+					}
 				}
 
 				wp_redirect( admin_url( 'admin.php?page=legal-pages#create_popup' ) );
@@ -5099,8 +5106,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			global $wpdb;
 
 			$page_id = isset($_POST['page_id']) ? intval($_POST['page_id']) : 0;
-			error_log('$page_id==' . $page_id);
 
+			// Get the full popup → template_id map
+			$template_map = get_option('wplegalpages_popup_template_map', []);
+			// Get the selected template ID for this popup
+			$selected_template_id = isset($template_map[$page_id]) ? intval($template_map[$page_id]) : '';
 			// Replace get_post() with custom DB query
 			$table_name = $wpdb->prefix . 'lp_popups';
 			$popup = $wpdb->get_row(
@@ -5110,7 +5120,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ($popup) {
 				wp_send_json_success([
 					'title' => $popup->popup_name,
-					'content' => $popup->content
+					'content' => $popup->content,
+					'legalpage_id' => $selected_template_id,
 				]);
 			} else {
 				wp_send_json_error('Popup not found');
@@ -5120,56 +5131,75 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		public function wplegalpages_update_popup_callback() {
-			global $wpdb;
+				global $wpdb;
 
-			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-			$title = isset($_POST['title']) ? sanitize_text_field($_POST['title']) : '';
-			$content = isset($_POST['content']) ? wp_kses_post($_POST['content']) : '';
+				$id          = isset($_POST['id']) ? intval($_POST['id']) : 0;
+				$title       = isset($_POST['title']) ? sanitize_text_field($_POST['title']) : '';
+				$content     = isset($_POST['content']) ? wp_kses_post($_POST['content']) : '';
+				$template_id = isset($_POST['legalpage_id']) ? intval($_POST['legalpage_id']) : 0;
 
-			if (empty($title) || empty($content)) {
-				wp_send_json_error('Missing required fields');
+				if (empty($title) || empty($content)) {
+					wp_send_json_error('Missing required fields');
+					wp_die();
+				}
+
+				$table_name = $wpdb->prefix . 'lp_popups';
+				$option_key = 'wplegalpages_popup_template_map';
+				$map        = get_option($option_key, []);
+
+				if (!is_array($map)) {
+					$map = [];
+				}
+
+				if ($id > 0) {
+					// UPDATE existing popup
+					$updated = $wpdb->update(
+						$table_name,
+						[
+							'popup_name' => $title,
+							'content'    => $content,
+						],
+						[ 'id' => $id ],
+						[ '%s', '%s' ],
+						[ '%d' ]
+					);
+
+					if ($updated !== false) {
+						// Update the option mapping
+						if ($template_id) {
+							$map[$id] = $template_id;
+							update_option($option_key, $map);// here Popup id is mapped to the legalpages(posts) ID
+						}
+						wp_send_json_success('Popup updated');
+					} else {
+						wp_send_json_error('Failed to update popup');
+					}
+				} else {
+					// INSERT new popup
+					$inserted = $wpdb->insert(
+						$table_name,
+						[
+							'popup_name' => $title,
+							'content'    => $content,
+						],
+						[ '%s', '%s' ]
+					);
+
+					if ($inserted !== false) {
+						$new_popup_id = $wpdb->insert_id;
+
+						// Store the mapping
+						if ($template_id) {
+							$map[$new_popup_id] = $template_id;
+							update_option($option_key, $map);
+						}
+						wp_send_json_success('Popup created');
+					} else {
+						wp_send_json_error('Failed to create popup');
+					}
+				}
+
 				wp_die();
-			}
-
-			$table_name = $wpdb->prefix . 'lp_popups';
-
-			if ($id > 0) {
-				//  UPDATE
-				$updated = $wpdb->update(
-					$table_name,
-					[
-						'popup_name' => $title,
-						'content'     => $content,
-					],
-					[ 'id' => $id ],
-					[ '%s', '%s' ],
-					[ '%d' ]
-				);
-
-				if ($updated !== false) {
-					wp_send_json_success('Popup updated');
-				} else {
-					wp_send_json_error('Failed to update popup');
-				}
-			} else {
-				//  INSERT
-				$inserted = $wpdb->insert(
-					$table_name,
-					[
-						'popup_name' => $title,
-						'content'     => $content,
-					],
-					[ '%s', '%s' ]
-				);
-
-				if ($inserted !== false) {
-					wp_send_json_success('Popup created');
-				} else {
-					wp_send_json_error('Failed to create popup');
-				}
-			}
-
-			wp_die();
 		}
 
 		public function wplegalpages_create_popup_callback() {

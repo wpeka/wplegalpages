@@ -603,6 +603,7 @@ var pop = new Vue({
   data() {
     return {
       popupVisible: false,
+      successMessage: "",
       formData: {
         id: null,
         title: "",
@@ -621,6 +622,7 @@ var pop = new Vue({
         id: id,
         title: "",
         content: "",
+        legalpage_id: "",
       };
 
       jQuery.ajax({
@@ -634,6 +636,7 @@ var pop = new Vue({
           if (data.success) {
             this.formData.title = data.data.title;
             this.formData.content = data.data.content;
+            this.formData.legalpage_id = data.data.legalpage_id;
 
             // Inject the content into TinyMCE editor
             setTimeout(() => {
@@ -644,13 +647,16 @@ var pop = new Vue({
                 document.getElementById("content").value = data.data.content;
               }
             }, 100);
+            
+
           } else {
-            alert("Error: " + (data.data || "Unable to load popup data"));
+            consoloe.log(
+              "Error: " + (data.data || "Unable to load popup data")
+            );
           }
         },
         error: (xhr, status, error) => {
           console.error("AJAX Error:", status, error);
-          alert("Something went wrong while loading popup data.");
         },
       });
     },
@@ -659,16 +665,15 @@ var pop = new Vue({
       if (typeof tinyMCE !== "undefined") {
         tinyMCE.triggerSave();
       }
-
+      var legalpage_id = document.getElementById("wplp")?.value || "";
       var content = document.getElementById("content")?.value || "";
       var title = document.getElementById("lp-name")?.value || "";
 
       if (!title || !content) {
-        alert("Both title and content are required.");
+        console.log("Both title and content are required.");
         return;
       }
-      console.log("Sending ID:", this.formData.id); // 👈 Add this
-      // Fallback for ID if missing 
+      // Fallback for ID if missing
       const formId = this.formData.id != null ? this.formData.id : 0;
       //  Send AJAX
       jQuery.ajax({
@@ -679,21 +684,33 @@ var pop = new Vue({
           id: formId, // or send real ID if editing
           title: title,
           content: content,
-          _ajax_nonce:
-            "<?php echo wp_create_nonce('lp-submit-create-popups'); ?>",
+          legalpage_id: legalpage_id,
         },
         success: function (response) {
           if (response.success) {
-            alert("Saved successfully!");
-            location.reload();
+           localStorage.setItem("popup_saved", "1");
+           window.location.reload();
           } else {
-            alert("Save failed: " + response.data);
+            console.log("Save failed: " + response.data);
           }
         },
         error: function (xhr, status, error) {
-          alert("AJAX error: " + error);
+          console.log("AJAX error: " + error);
         },
       });
     },
+  },
+  mounted() {
+     if (localStorage.getItem("popup_saved") === "1") {
+       this.successMessage = "Popup saved successfully!";
+
+       // Clear it so it doesn't show on every reload
+       localStorage.removeItem("popup_saved");
+
+       // Hide after 3 seconds
+       setTimeout(() => {
+         this.successMessage = "";
+       }, 8000);
+     }
   },
 });

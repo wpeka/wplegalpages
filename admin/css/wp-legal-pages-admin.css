@@ -27,14 +27,11 @@
 }
 
 #lp_generalid input[type="text"] {
-	width: 800px;
-	height: 30px;
-	color: #666;
-	font-size: 20px;
-	padding: 3px 4px;
+    border: 1px solid #D4D4D8 !important;
 }
 
-#lp_generalid input[type="submit"] {
+#lp_generalid input[type="submit"],
+#lp_generalid .mybtn{
 	width: 100px;
 	height: 30px;
 	color: #000;
@@ -151,7 +148,7 @@ a {
 	width: auto !important;
 }
 .create-popup{
-	margin-left: 210px !important;
+	margin: 10px 40px;
 	width: auto !important;
 }
 
@@ -837,24 +834,20 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 	grid-row-gap: 20px;
 }
 
-#wplegalpages-save-settings-alert {
-	position: fixed;
-	/* width: 250px; */
+#wplegalpages-save-settings-alert,
+#wplegalpages-save-popup-settings-alert {
 	max-width: 350px;
-	/* height: 43px; */
 	background-color: #72b85c;
 	padding: 10px;
 	font-size: 18px;
 	text-align: center;
-	display: none;
 	z-index: 1002;
 	background-color: #ecfdf3;
 	font-weight: 800;
 	color: #027a48;
 	border: 1px solid #027a4833;
 	border-radius: 5px;
-	left: 44%;
-    top: 35%;
+	margin-left: 240px;
 }
 
 div.ql-toolbar.ql-snow {
@@ -2335,6 +2328,7 @@ table tbody tr td .table-link-alert:hover {
 	line-height: 20px;
 	margin-bottom: 20px;
 	--bs-table-striped-bg: #EDEDF5;
+	margin-left: 240px;
 }
 
 .wplegalpages-popup-section .wplegalpages-popup-list-table th {
@@ -2403,7 +2397,7 @@ table tbody tr td .table-link-alert:hover {
 .wplegalpages-popup-section .wplegalpages-create-popup-section .wplegalpages-create-popup-section-desc {
 	margin-top: 24px;
 	margin-bottom: 24px;
-	color: #52525B;
+	color: #27272A;
 }
 
 .wplegalpages-popup-section .wplegalpages-create-popup-section .wplegalpages-create-popup-section-title {
@@ -2425,7 +2419,7 @@ table tbody tr td .table-link-alert:hover {
 }
 
 [aria-label="Create New Popup"] .vm {
-	max-width: 65% !important;
+	max-width: 60% !important;
 }
 .wplegalpages-list-tabs-container {
     display: flex;
@@ -2463,4 +2457,14 @@ table tbody tr td .table-link-alert:hover {
     border: unset;
     font-size: 16px;
     font-weight: 600;
+}
+.wplegalpages-popup-shortcode-section-desc,
+.wplegalpages-create-popup-section-title{
+	font-size: 15px !important;
+    font-weight: 600 !important;
+	color: #27272A;
+}
+
+.wplegalpages-popup-app .wplegalpages-popup-section .popup-heading{
+	margin-left: 240px;
 }
