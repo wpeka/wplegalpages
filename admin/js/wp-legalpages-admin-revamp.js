@@ -628,12 +628,14 @@ function alignSideBar(){
   var side_bar = document.querySelector(".wplp-sub-tabs");
 
   function updateTopBasedOnTab(tabList) {
-        if (tabList.includes("settings") || tabList.includes("all_legal_pages")) {
-            side_bar.style.top = "185px";
-        } 
-		else {
-            side_bar.style.top = "65px"; // Default value
-        }
+       if (
+         tabList.includes("settings") ||
+         tabList.includes("all_legal_pages") || tabList.includes("create_popup")
+       ) {
+         side_bar.style.top = "185px";
+       } else {
+         side_bar.style.top = "65px"; // Default value
+       }
     }
     // Get the hash (part after #)
     var urlParts = window.location.href.split("#");

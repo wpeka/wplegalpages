@@ -598,3 +598,118 @@ var gen = new Vue({
     },
     icons: { cilPencil, cilSettings, cilInfo, cibGoogleKeep }
 })
+var pop = new Vue({
+  el: ".wplegalpages-popup-app",
+  data() {
+    return {
+      popupVisible: false,
+      successMessage: "",
+      formData: {
+        id: null,
+        title: "",
+        content: "",
+      },
+    };
+  },
+  methods: {
+    closePopup() {
+      this.popupVisible = false;
+    },
+    editPopup(id) {
+      this.popupVisible = true;
+      this.editMode = true;
+      this.formData = {
+        id: id,
+        title: "",
+        content: "",
+        legalpage_id: "",
+      };
+
+      jQuery.ajax({
+        type: "POST",
+        url: obj.ajaxurl, // or obj.ajaxurl if you're using a localized object
+        data: {
+          action: "wplegalpages_load_edit_form_data",
+          page_id: id,
+        },
+        success: (data) => {
+          if (data.success) {
+            this.formData.title = data.data.title;
+            this.formData.content = data.data.content;
+            this.formData.legalpage_id = data.data.legalpage_id;
+
+            // Inject the content into TinyMCE editor
+            setTimeout(() => {
+              if (typeof tinyMCE !== "undefined" && tinyMCE.get("content")) {
+                tinyMCE.get("content").setContent(data.data.content);
+              } else {
+                // Fallback if TinyMCE is not initialized yet
+                document.getElementById("content").value = data.data.content;
+              }
+            }, 100);
+            
+
+          } else {
+            consoloe.log(
+              "Error: " + (data.data || "Unable to load popup data")
+            );
+          }
+        },
+        error: (xhr, status, error) => {
+          console.error("AJAX Error:", status, error);
+        },
+      });
+    },
+    savePopupData() {
+      // Sync TinyMCE → hidden textarea → Vue
+      if (typeof tinyMCE !== "undefined") {
+        tinyMCE.triggerSave();
+      }
+      var legalpage_id = document.getElementById("wplp")?.value || "";
+      var content = document.getElementById("content")?.value || "";
+      var title = document.getElementById("lp-name")?.value || "";
+
+      if (!title || !content) {
+        return;
+      }
+      // Fallback for ID if missing
+      const formId = this.formData.id != null ? this.formData.id : 0;
+      //  Send AJAX
+      jQuery.ajax({
+        type: "POST",
+        url: obj.ajaxurl,
+        data: {
+          action: "wplegalpages_update_popup",
+          id: formId, // or send real ID if editing
+          title: title,
+          content: content,
+          legalpage_id: legalpage_id,
+        },
+        success: function (response) {
+          if (response.success) {
+           localStorage.setItem("popup_saved", "1");
+           window.location.reload();
+          } else {
+            console.log("Save failed: " + response.data);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.log("AJAX error: " + error);
+        },
+      });
+    },
+  },
+  mounted() {
+     if (localStorage.getItem("popup_saved") === "1") {
+       this.successMessage = "Popup saved successfully!";
+
+       // Clear it so it doesn't show on every reload
+       localStorage.removeItem("popup_saved");
+
+       // Hide after 3 seconds
+       setTimeout(() => {
+         this.successMessage = "";
+       }, 8000);
+     }
+  },
+});
