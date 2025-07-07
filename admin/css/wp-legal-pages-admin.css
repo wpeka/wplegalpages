@@ -833,8 +833,26 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
 }
+#wplegalpages-save-settings-alert {
+	position: fixed;
+	/* width: 250px; */
+	max-width: 350px;
+	/* height: 43px; */
+	background-color: #72b85c;
+	padding: 10px;
+	font-size: 18px;
+	text-align: center;
+	display: none;
+	z-index: 1002;
+	background-color: #ecfdf3;
+	font-weight: 800;
+	color: #027a48;
+	border: 1px solid #027a4833;
+	border-radius: 5px;
+	left: 44%;
+    top: 35%;
+}
 
-#wplegalpages-save-settings-alert,
 #wplegalpages-save-popup-settings-alert {
 	max-width: 350px;
 	background-color: #72b85c;
