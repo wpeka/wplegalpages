@@ -5202,37 +5202,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				wp_die();
 		}
 
-		public function wplegalpages_create_popup_callback() {
-			global $wpdb;
-
-			$title = isset($_POST['title']) ? sanitize_text_field($_POST['title']) : '';
-			$content = isset($_POST['content']) ? wp_kses_post($_POST['content']) : '';
-
-			if (empty($title) || empty($content)) {
-				wp_send_json_error('Title and content are required');
-				wp_die();
-			}
-
-			$table = $wpdb->prefix . 'lp_popups';
-
-			$inserted = $wpdb->insert(
-				$table,
-				[
-					'popup_name' => $title,
-					'content' => $content
-				],
-				[ '%s', '%s' ]
-			);
-
-			if ($inserted !== false) {
-				wp_send_json_success('Popup created');
-			} else {
-				wp_send_json_error('Failed to create popup');
-			}
-
-			wp_die();
-		}
-
 	}
 	
 	

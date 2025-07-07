@@ -294,11 +294,6 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 			$this->loader->add_action('wp_ajax_wplegalpages_update_popup',$plugin_admin, 'wplegalpages_update_popup_callback');
 			$this->loader->add_action('wp_ajax_nopriv_wplegalpages_update_popup',$plugin_admin, 'wplegalpages_update_popup_callback');
 
-
-			$this->loader->add_action('wp_ajax_wplegalpages_create_popup',$plugin_admin, 'wplegalpages_create_popup_callback');
-			$this->loader->add_action('wp_ajax_nopriv_wplegalpages_update_popup',$plugin_admin, 'wplegalpages_update_popup_callback');
-
-
 		}
 
 		/**
