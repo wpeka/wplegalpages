@@ -1346,7 +1346,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			);
 
 			?>
-			<div id="gettingstartedapp"></div>
+			<div id="wplegal-loader"></div>
+
+			<div id="gettingstartedapp" v-cloak></div>
 			<div id="wplegal-mascot-app"></div>
 			<?php
 			$this->wplegalpages_mascot_enqueue();
@@ -5093,6 +5095,33 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				return true;
 			}
 			return false;
+		}
+
+		public function wplegalpages_inline_onload_admin_styles(){
+		?>
+			<style>
+				
+				[v-cloak] {
+					display: none !important;
+				}
+
+				#wplegal-loader {
+					background: #7f7f7f;
+					position: fixed;
+					z-index: 99999;
+					width: 100%;
+					height: 100%;
+					top: 4%;
+					left: 10%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					font-size: 16px;
+					color: #444;
+				}
+			
+			</style>
+	<?php
 		}
 	}
 	
