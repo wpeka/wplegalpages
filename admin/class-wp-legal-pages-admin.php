@@ -3902,9 +3902,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'name'     => $key,
 						'label'    => $setting['title'],
 						'value'    => $setting['value'],
-						'type'     => $setting['type'] ? $setting['type'] : 'text',
-						'pattern'  => $setting['pattern'],
-						'error_msg' => $setting['error_msg'],
+						'type'      => $setting['type'] ?? 'text',
+						'pattern'   => $setting['pattern'] ?? '.*', // Accepts any input
+						'error_msg' => $setting['error_msg'] ?? 'Invalid input',
 						'required' => $setting['required'],
 					);
 					$data[] = $field;
