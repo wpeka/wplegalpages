@@ -270,7 +270,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 										function wplpfunc(selectObj) {
 											var idx = selectObj.value;
 											var which = selectObj.value;
-											document.getElementById('wplpcode').innerHTML = "[wp-legalpage pid=" + which + "]";
+											document.getElementById('wplpcode').innerHTML = "[wp-legalpage tid=" + which + "]";
 										}
 									</script>
 									<form name="me" id="wplp-shortcode-select">
