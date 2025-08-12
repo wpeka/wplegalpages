@@ -2101,10 +2101,11 @@ table tbody tr td .table-link-alert:hover {
 }
 
 .legal-pages-upgrade-to-pro-banner {
-	width: 103%;
-	padding-right: 63px;
-	padding-left: 21px;
-	padding-top: 24px;
+	width: calc(102% - 80px);
+	margin-right: 63px;
+	margin-left: 21px;
+	margin-top: 24px;
+	cursor: pointer;
 }
 
 #gdpr-install-activate-img {
