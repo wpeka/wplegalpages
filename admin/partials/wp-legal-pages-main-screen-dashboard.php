@@ -294,7 +294,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 		<div class="wp-legalpages-admin-tabs-content">
 			<div class="wp-legalpages-admin-tabs-inner-content">
 				<!-- Getting Started content  -->
-				<div class="wp-legalpages-admin-getting-started-content wp-legalpages-admin-tab-content" id="getting_started">
+				<div class="wp-legalpages-admin-getting-started-content wp-legalpages-admin-tab-content wplp_dashboard_tab" id="getting_started">
 
 				<?php require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-getting-started-template.php'; ?>
 
