@@ -2463,6 +2463,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$plan_name         = $this->settings->get_plan();
 			$installed_plugins = get_plugins();
 			$pro_installed     = isset( $installed_plugins['wplegalpages-pro/wplegalpages-pro.php'] ) ? "Activated" : "Not Activated";
+
+			$privacy_templates = file_get_contents( plugin_dir_path( __DIR__ ) . 'includes/privacy_templates.json' );
+
 			wp_localize_script(
 				$this->plugin_name . '-vue-script',
 				'wizard_obj',
@@ -2511,6 +2514,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'title'    => __( 'Policy Template Preview', 'wplegalpages' ),
 						'subtitle' => __( 'Review your policy template and publish', 'wplegalpages' ),
 					),
+					'templates' => json_decode( $privacy_templates, true ),
 				)
 			);
 			wp_print_styles( $this->plugin_name . '-select2' );
