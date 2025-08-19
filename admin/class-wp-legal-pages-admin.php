@@ -3928,7 +3928,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			require_once plugin_dir_path( __DIR__ ) . 'admin/wizard/class-wp-legal-pages-wizard-page.php';
 			$lp          = new WP_Legal_Pages_Wizard_Page();
 			$lp_sections = (array) $lp->get_section_fields_by_page( $page );
-
 			if ( 'privacy_policy' === $page ) {
 				$lp_sections = self::wplegalpages_add_gdpr_options_to_remote_data( $lp_sections );
 			}
@@ -4297,7 +4296,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 */
 		public static function wplegalpages_add_gdpr_options_to_remote_data( $lp_sections ) {
 
-			if ( ! file_exists( WP_PLUGIN_DIR . '/wpl-cookie-consent' ) ) {
+			if ( ! file_exists( WP_PLUGIN_DIR . '/gdpr-cookie-consent' ) ) {
 
 				$gdpr_services = array(
 					'id'          => 'gdpr_third_party_services',
@@ -4316,7 +4315,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 			}
 
-			if ( ! is_plugin_active( 'wpl-cookie-consent/wpl-cookie-consent.php' ) ) {
+			if ( ! is_plugin_active( 'gdpr-cookie-consent/gdpr-cookie-consent.php' ) ) {
 
 				$gdpr_services = array(
 					'id'          => 'gdpr_third_party_services',
