@@ -4300,7 +4300,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 				$gdpr_services = array(
 					'id'          => 'gdpr_third_party_services',
-					'title'       => '<strong>To scan website for third-party services, install and activate plugin <a href="https://club.wpeka.com/product/wp-gdpr-cookie-consent/" target="_blank">GDPR Cookie Consent Pro</a>.</strong>',
+					'title'       => '<strong>To scan website for third-party services, install and activate plugin <a href="https://wordpress.org/plugins/gdpr-cookie-consent/" target="_blank">GDPR Cookie Consent</a>.</strong>',
 					'description' => '',
 					'type'        => 'section',
 					'position'    => 1,
@@ -4319,7 +4319,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 				$gdpr_services = array(
 					'id'          => 'gdpr_third_party_services',
-					'title'       => '<strong><a href="' . admin_url() . 'plugins.php" target="_blank">Activate</a> plugin GDPR Cookie Consent Pro, to scan for third-party services on your website.</strong>',
+					'title'       => '<strong><a href="' . admin_url() . 'plugins.php" target="_blank">Activate</a> plugin GDPR Cookie Consent, to scan for third-party services on your website.</strong>',
 					'description' => '',
 					'type'        => 'section',
 					'position'    => 1,
