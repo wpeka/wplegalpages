@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="wrap">
+<div class="wplp-wrap">
 <div id="wplegal-mascot-app"></div>
 <?php
 $lp_pro_active = get_option( '_lp_pro_active' );
