@@ -1640,7 +1640,7 @@ wp-legalpages-admin-tab-content {
 	background: var(--white, #fff);
 }
 
-.wp-legalpages-admin-tabs-content .wp-legalpages-admin-tabs-inner-content .wp-legalpages-admin-tab-content .wrap {
+.wp-legalpages-admin-tabs-content .wp-legalpages-admin-tabs-inner-content .wp-legalpages-admin-tab-content .wplp-wrap {
 	margin: 0;
 	padding: 30px;
 	padding-top: 0px;
