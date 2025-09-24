@@ -279,18 +279,16 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 								}
 							}
 						} ?>
-					<?php if ( $if_terms_are_accepted ) { ?>
-						<div class="legalpages-banner-div">
-						<?php
+					<?php if ( $if_terms_are_accepted ) { 
 						if ( $is_user_connected == true && $api_user_plan == 'free' ) { ?>
-							<!-- Legal pages banner for upgrade to pro -->
-							<div>
-								<img class="legal-pages-upgrade-to-pro-banner" src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/legal-pages-banner-upgrade-to-pro.png'; ?>" alt="Banner legal pages"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+							<div class="legalpages-banner-div">
+								<!-- Legal pages banner for upgrade to pro -->
+								<div >
+									<img class="legal-pages-upgrade-to-pro-banner" src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/legal-pages-banner-upgrade-to-pro.png'; ?>" alt="Banner legal pages"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+								</div>
 							</div> 
-						<?php
-						}
+						<?php } 
 					} ?>
-						</div>
 
 					<!-- tab content  -->
 
