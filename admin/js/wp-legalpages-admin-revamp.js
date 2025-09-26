@@ -9,23 +9,27 @@ jQuery(document).ready(function () {
 	const is_user_connected = wplp_localize_data.is_user_connected;
 
 	jQuery(document).ready(function ($) {
+	  // click handler (same as yours)
 	  $(".wplp-compliance-legalpages-tab-admin .wplp-admin-tab-link-content").on("click", function (e) {
 	    e.preventDefault();
 	    const parentTab = $(this).closest(".wplp-compliance-legalpages-tab-admin");
 	    parentTab.toggleClass("open-tab");
 	  });
+  
+	  // open-tab by default if #settings is in URL
+	  if (window.location.hash === "#settings") {
+	    $(".wplp-compliance-legalpages-tab-admin").addClass("open-tab");
+	  }
+  
+	  // active-tab toggle (your code)
+	  var currentPage = window.location.href;
+	  if (currentPage.includes("page=legal-pages")) {
+	    $(".wp-legalpages-admin-tab-link.legalpages-tab").addClass("active-tab");
+	  } else {
+	    $(".wp-legalpages-admin-tab-link.legalpages-tab").removeClass("active-tab");
+	  }
 	});
 
-	jQuery(document).ready(function($){
-	    var currentHash = window.location.hash;
-	    var currentPage = window.location.href;
-
-	    if (currentPage.includes('page=legal-pages')) {
-	        $('.wp-legalpages-admin-tab-link.legalpages-tab').addClass('active-tab');
-	    } else {
-	        $('.wp-legalpages-admin-tab-link.legalpages-tab').removeClass('active-tab');
-	    }
-	});
 
 
     if (isProActivated) {

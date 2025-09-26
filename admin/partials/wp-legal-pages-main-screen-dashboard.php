@@ -51,7 +51,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 									<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/wp_cookie_help.png'; ?>" alt="WP Cookie Consent Help"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 								</a>
 							</div>
-							<div class="wp-legalpages-admin-help-text"><a href="https://club.wpeka.com/docs/wp-legal-pages/" target="_blank">
+							<div class="wp-legalpages-admin-help-text"><a href="https://wplegalpages.com/docs/" target="_blank">
 								Help Guide</a>
 							</div>
 						</div>
