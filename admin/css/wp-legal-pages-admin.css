@@ -570,7 +570,7 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 	align-items: unset;
 	padding-left: 20px;
 	position: sticky;
-	top: 130px;
+	top: 30px;
 }
 
 #wplegalpages-settings-app .wplegalpages-settings-container .wplegalpages-settings-content .wplegalpages-settings-nav>div:nth-child(1),
@@ -2777,21 +2777,18 @@ table tbody tr td .table-link-alert:hover {
   border: none;
   border-radius: 6px;
   background-color: white;
-  position: sticky;
-  top: 255px;
 }
 
 .wplp-compliance-main
   .wplp-compliance-content-wrapper.legalpages-main
   .gdpr-remaining-scans-content {
-  top: 32px;
   box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
 }
 .wplp-compliance-main
   .wplp-compliance-content-wrapper
   .gdpr-remaining-scans-content-dashboard {
   position: sticky;
-  top: 53px;
+  top: 30px;
   box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
 }
 
