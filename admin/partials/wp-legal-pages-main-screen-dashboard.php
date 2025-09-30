@@ -51,7 +51,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 									<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/wp_cookie_help.png'; ?>" alt="WP Cookie Consent Help"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 								</a>
 							</div>
-							<div class="wp-legalpages-admin-help-text"><a href="https://club.wpeka.com/docs/wp-legal-pages/" target="_blank">
+							<div class="wp-legalpages-admin-help-text"><a href="https://wplegalpages.com/docs/" target="_blank">
 								Help Guide</a>
 							</div>
 						</div>
@@ -137,7 +137,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 						
 							?>
 							<!-- Legal Pages tab  -->
-							<a href="?page=legal-pages" class="wp-legalpages-admin-tab-link legalpages-tab">
+							<a href="?page=legal-pages#settings" class="wp-legalpages-admin-tab-link legalpages-tab">
 								<div class="wplp-admin-tab-link-content">
 									<div class="wp-legalpages-admin-wplp-tab wplp-admin-tab-link-left">
 										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -208,101 +208,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 				</div>
 
 				<div class="wplp-compliance-content-wrapper">
-					<div class="wplegalpages-connect-api-container">
-						<div class="gdpr-api-info-content">
-							<div class="wplp-compliance-banner-content">
-								<h1 class="wplp-compliance-banner-header"><?php echo esc_html( 'Welcome to WPLP Compliance Platform!', 'wplegalpages' ); ?></h1>
-								<p><?php echo esc_html('Complete Legal & Cookie Protection', 'wplegalpages'); ?></p>
-								<p><?php echo esc_html('Your complete compliance package for your website, from legal documents to cookie consent.', 'wplegalpages'); ?></p>
-								<div class="wplp-compliance-banner-tags">
-									<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'GDPR Compliant', 'wplegalpages' ); ?></span>
-									<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'CCPA Ready', 'wplegalpages' ); ?></span>
-									<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'Auto-Generated Policies', 'wplegalpages' ); ?></span>
-									<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'Real-Time Monitoring', 'wplegalpages' ); ?></span>
-								</div>
-							</div>
-						</div>
-
-						<div id="popup-site-excausted" class="popup-overlay">
-							<div class="popup-content">
-								<div class="popup-header">
-									<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/cancel.svg'; ?>" alt="Right Corner Image" class="popup-image"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
-								</div>
-								<div class="excausted-popup-body">
-									<h2><?php esc_html('Attention! Usage Limit Reached', 'wplegalpages'); ?></h2>
-									<p><?php esc_html('You\'ve reached your license limit. Please upgrade to continue using the plugin on this site.', 'wplegalpages'); ?></p>
-									<button class="wplegalpages-admin-upgrade-button upgrade-button"><?php echo esc_html('Upgrade Plan', 'wplegalpages'); ?></button>
-									<p>
-										<?php 
-										esc_html('Need to activate on a new site? Manage your licenses in ', 'wplegalpages'); 
-										?>
-										<a href="<?php echo esc_url('https://app.wplegalpages.com/signup/api-keys/'); ?>" target="_blank">
-											<?php echo esc_html('My Account.', 'wplegalpages'); ?>
-										</a>
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- WP Legal Pages Connection Status -->
-					<?php
-					if ( $if_terms_are_accepted ) { 
-							// if user is connected to the app.wplegalpages then show remaining scans
-							
-							if ( $is_user_connected == true ) { ?>
-								<div class="gdpr-remaining-scans-content gdpr-remaining-scans-content-dashboard" >
-									<div class="wplp-remaining-scan-header-left">
-									</div>	
-													
-									<div class="wplp-plan-details">
-										<p><?php echo esc_html('Current Plan: ', 'wplegalpages'); ?>
-										<?php if( $api_user_plan !== 'free' ) { ?>
-											<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr_pro_account.svg'; ?>" alt="Pro Account">
-										<?php } ?>
-										<span><?php echo esc_html( $api_user_plan ); ?></span></p>
-										<?php if( $api_user_plan !== '10sites' ) { ?>
-											<a class="wplp--scan-header-upgrade-plan" href="<?php echo esc_url( 'https://wplegalpages.com/pricing/' ); ?>" target="_blank"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr_header_upgrade_icon.svg'; ?>" alt=""><?php echo esc_html('Upgrade', 'wplegalpages'); ?></a>
-										<?php } else { ?>
-											<a class="wplp-scan-header-add-sites" href="<?php echo esc_url( 'https://wplegalpages.com/pricing/' ); ?>" target="_blank"><?php echo esc_html('Add More Sites', 'wplegalpages'); ?><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr_add_site.svg'; ?>" alt=""></a>
-										<?php } ?>
-									</div>
-								</div>
-
-								<?php
-								if ( get_transient( 'app_wplp_subscription_payment_status_failed' ) ) {
-									?>
-									<div class="wp-legalpages-subsription-payment-failed-notice">
-										<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your last payment attempt failed. Please update your payment details within 7 days to avoid service disruption.', 'wplegalpages' ); ?></p>
-									</div>
-									<?php
-								}
-								if ( get_option( 'app_wplp_subscription_status_pending_cancel' ) ) {
-									?>
-									<div class="wp-legalpages-subsription-payment-failed-notice">
-										<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your plan has been canceled to the Free Plan due to a failed payment or manual cancellation. Upgrade now to restore premium features.', 'wplegalpages' ); ?></p>
-									</div>
-									<?php
-								}
-							}
-						}
-							?>
-					<?php if ( $if_terms_are_accepted ) { ?>
-						<div class="legalpages-banner-div">
-						<?php
-						if ( $is_user_connected == true && $api_user_plan == 'free' ) {
-							?>
-						<!-- Legal pages banner for upgrade to pro -->
-						<div >
-							<img class="legal-pages-upgrade-to-pro-banner" src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/legal-pages-banner-upgrade-to-pro.png'; ?>" alt="Banner legal pages"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
-						</div> 
-							<?php
-						}
-					}
-					?>
-					</div>
-					
-						
+		
 					<!-- tab content  -->
 						
 					<div class="wp-legalpages-admin-tabs-content">
@@ -310,6 +216,96 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 							<!-- Getting Started content  -->
 							<div class="wp-legalpages-admin-getting-started-content wp-legalpages-admin-tab-content wplp_dashboard_tab" id="getting_started">
 						
+							<div class="wplegalpages-connect-api-container">
+								<div class="gdpr-api-info-content">
+									<div class="wplp-compliance-banner-content">
+										<h1 class="wplp-compliance-banner-header"><?php echo esc_html( 'Welcome to WPLP Compliance Platform!', 'wplegalpages' ); ?></h1>
+										<p><?php echo esc_html('Complete Legal & Cookie Protection', 'wplegalpages'); ?></p>
+										<p><?php echo esc_html('Your complete compliance package for your website, from legal documents to cookie consent.', 'wplegalpages'); ?></p>
+										<div class="wplp-compliance-banner-tags">
+											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'GDPR Compliant', 'wplegalpages' ); ?></span>
+											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'CCPA Ready', 'wplegalpages' ); ?></span>
+											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'Auto-Generated Policies', 'wplegalpages' ); ?></span>
+											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'Real-Time Monitoring', 'wplegalpages' ); ?></span>
+										</div>
+									</div>
+								</div>
+						
+								<div id="popup-site-excausted" class="popup-overlay">
+									<div class="popup-content">
+										<div class="popup-header">
+											<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/cancel.svg'; ?>" alt="Right Corner Image" class="popup-image"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+										</div>
+										<div class="excausted-popup-body">
+											<h2><?php esc_html('Attention! Usage Limit Reached', 'wplegalpages'); ?></h2>
+											<p><?php esc_html('You\'ve reached your license limit. Please upgrade to continue using the plugin on this site.', 'wplegalpages'); ?></p>
+											<button class="wplegalpages-admin-upgrade-button upgrade-button"><?php echo esc_html('Upgrade Plan', 'wplegalpages'); ?></button>
+											<p>
+												<?php 
+												esc_html('Need to activate on a new site? Manage your licenses in ', 'wplegalpages'); 
+												?>
+												<a href="<?php echo esc_url('https://app.wplegalpages.com/signup/api-keys/'); ?>" target="_blank">
+													<?php echo esc_html('My Account.', 'wplegalpages'); ?>
+												</a>
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+
+								<!-- WP Legal Pages Connection Status -->
+							<?php
+							if ( $if_terms_are_accepted ) { 
+									// if user is connected to the app.wplegalpages then show remaining scans
+									
+									if ( $is_user_connected == true ) { ?>
+										<div class="gdpr-remaining-scans-content gdpr-remaining-scans-content-dashboard" >
+											<div class="wplp-remaining-scan-header-left">
+											</div>	
+															
+											<div class="wplp-plan-details">
+												<p><?php echo esc_html('Current Plan: ', 'wplegalpages'); ?>
+												<?php if( $api_user_plan !== 'free' ) { ?>
+													<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr_pro_account.svg'; ?>" alt="Pro Account">
+												<?php } ?>
+												<span><?php echo esc_html( $api_user_plan ); ?></span></p>
+												<?php if( $api_user_plan !== '10sites' ) { ?>
+													<a class="wplp--scan-header-upgrade-plan" href="<?php echo esc_url( 'https://wplegalpages.com/pricing/' ); ?>" target="_blank"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr_header_upgrade_icon.svg'; ?>" alt=""><?php echo esc_html('Upgrade', 'wplegalpages'); ?></a>
+												<?php } else { ?>
+													<a class="wplp-scan-header-add-sites" href="<?php echo esc_url( 'https://wplegalpages.com/pricing/' ); ?>" target="_blank"><?php echo esc_html('Add More Sites', 'wplegalpages'); ?><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr_add_site.svg'; ?>" alt=""></a>
+												<?php } ?>
+											</div>
+										</div>
+												
+										<?php
+										if ( get_transient( 'app_wplp_subscription_payment_status_failed' ) ) {
+											?>
+											<div class="wp-legalpages-subsription-payment-failed-notice">
+												<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your last payment attempt failed. Please update your payment details within 7 days to avoid service disruption.', 'wplegalpages' ); ?></p>
+											</div>
+											<?php
+										}
+										if ( get_option( 'app_wplp_subscription_status_pending_cancel' ) ) {
+											?>
+											<div class="wp-legalpages-subsription-payment-failed-notice">
+												<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your plan has been canceled to the Free Plan due to a failed payment or manual cancellation. Upgrade now to restore premium features.', 'wplegalpages' ); ?></p>
+											</div>
+											<?php
+										}
+									}
+								}
+									?>
+							<?php if ( $if_terms_are_accepted ) { 
+								if ( $is_user_connected == true && $api_user_plan == 'free' ) { ?>
+									<div class="legalpages-banner-div">
+										<!-- Legal pages banner for upgrade to pro -->
+										<div >
+											<img class="legal-pages-upgrade-to-pro-banner" src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/legal-pages-banner-upgrade-to-pro.png'; ?>" alt="Banner legal pages"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+										</div>
+									</div> 
+								<?php } 
+							} ?>
+
 							<?php require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-getting-started-template.php'; ?>
 						
 							</div>
