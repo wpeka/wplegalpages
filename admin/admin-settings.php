@@ -91,7 +91,7 @@ if ( false === $lp_banner_options || empty( $lp_banner_options ) ) {
 		'banner_custom_css'       => '',
 		'banner_close_message'    => 'Close',
 		'banner_message'          => 'Our [wplegalpages_page_link] have been updated on [wplegalpages_last_updated].',
-		'banner_multiple_message' => 'Our [wplegalpages_page_link] pages have recently have recently been updated.',
+		'banner_multiple_message' => 'Our [wplegalpages_page_link] pages have recently been updated.',
 	);
 	update_option( 'lp_banner_options', $lp_banner_options );
 }
