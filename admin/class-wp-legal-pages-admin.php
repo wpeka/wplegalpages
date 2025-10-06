@@ -1598,7 +1598,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$get_posts = new WP_Query();
 					$posts     = $get_posts->query( $args );
 				} else {
-					echo '<p>' . esc_attr_e( 'No items.', 'wplegalpages' ) . '</p>';
+					echo '<p>' . esc_html__( 'No items.', 'wplegalpages' ) . '</p>';
 					return;
 				}
 			} elseif ( ! empty( $important_pages ) ) {
