@@ -935,7 +935,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 						var barDays  = <?php echo intval($bar_num_of_days); ?>;
 
 						if(!(getCookie('updateAt') === updateAt)) {
-							console.log("SHOW BANNER");
 							$('.wplegalpages_banner_content').css('display', 'block');
 						}
 
