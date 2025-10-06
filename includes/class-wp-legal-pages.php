@@ -369,7 +369,6 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 		public function enqueue_frontend_script() {
 			$this->loader->wplp_register_script_with_defer( $this->plugin_name . '-jquery-cookie', WPL_LITE_PLUGIN_URL . 'admin/js/jquery.cookie.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( $this->plugin_name . '-jquery-cookie' );
-			$this->loader->wplp_register_script_with_defer( $this->plugin_name . 'banner-cookie', WPL_LITE_PLUGIN_URL . 'public/js/wplegalpages-banner-cookie' . WPLPP_SUFFIX . '.js', array(), $this->version, true );
 			$this->loader->wplp_register_script_with_defer( $this->plugin_name . 'lp-eu-cookie', WPL_LITE_PLUGIN_URL . 'public/js/wplegalpages-eu-cookie' . WPLPP_SUFFIX . '.js', array(), $this->version, true );
 		}
 		/**
