@@ -16,10 +16,8 @@ jQuery(document).ready(function () {
 	    parentTab.toggleClass("open-tab");
 	  });
   
-	  // open-tab by default if #settings is in URL
-	  if (window.location.hash === "#settings") {
-	    $(".wplp-compliance-legalpages-tab-admin").addClass("open-tab");
-	  }
+	  // open-tab by default if is in URL
+		$(".wplp-compliance-legalpages-tab-admin").addClass("open-tab");
   
 	  // active-tab toggle (your code)
 	  var currentPage = window.location.href;

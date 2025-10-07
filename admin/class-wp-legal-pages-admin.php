@@ -947,6 +947,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 */
 		public function wp_legalpages_new_admin_screen() {
 
+			?>
+    		<script>
+    		document.addEventListener("DOMContentLoaded", function() {
+    		    if (window.location.hash === "") {
+    		        window.location.replace(window.location.href + "#settings");
+    		    }
+    		});
+    		</script>
+    		<?php
+
 			require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
 
 			// Instantiate a new object of the wplegal_Cookie_Consent_Settings class.

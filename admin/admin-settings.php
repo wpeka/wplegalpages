@@ -1183,12 +1183,7 @@ if ( '1' === $lpterms ) {
 										<input type="hidden" name="lp-popup" ref="popup" v-model="is_popup">
 									</c-col>
 									<c-col class="col-sm-3 wplegalpages-configure-section">
-										<c-button class="wplegalpages-configure-button" @click="showPopupForm">
-											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default" :alt="configure_alt_text"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?> 
-												<span class="wplegalpages-configure-text"><?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?></span>
-											</span>
-										</c-button>
+										
 									</c-col>
 								</c-row>
 							</c-card-body>
