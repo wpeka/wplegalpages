@@ -3992,7 +3992,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * Save page preview.
 		 */
 		public function wplegalpages_page_preview_save() {
-			error_log("DODODO inside preview save");
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_die( -1 );
 			}
@@ -4159,7 +4158,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$result['success'] = true;
 					$result['url']     = $url;
 				}
-				error_log("DODODO result: " . print_r($result, true));
 			}
 			return wp_send_json( $result );
 		}
