@@ -26,10 +26,10 @@ if ( ! defined( 'WPL_LITE_PLUGIN_BASENAME' ) ) {
 }
 
 if ( ! defined( 'WPLEGAL_API_URL' ) ) {
-	define( 'WPLEGAL_API_URL', 'https://api.wpeka.com/wp-json/wplegal/v2/' );
+	define( 'WPLEGAL_API_URL', 'https://staging.app.wplegalpages.com/wp-json/wplegal/v2/' );
 }
 if ( ! defined( 'WPLEGAL_API_ADMIN_URL' ) ) {
-	define( 'WPLEGAL_API_ADMIN_URL', 'https://api.wpeka.com/wp-content/plugins/wplegal-api/admin/' );
+	define( 'WPLEGAL_API_ADMIN_URL', 'https://staging.app.wplegalpages.com/wp-content/plugins/wplegal-api/admin/' );
 }
 /**
  * Check if the constant GDPR_APP_URL is not already defined.
@@ -81,7 +81,7 @@ add_action( 'admin_init', 'activation_redirect_wplegalpages' );
 function activation_redirect_wplegalpages() {
 	if ( get_option( 'redirect_after_activation_option_lp', false ) ) {
 		delete_option( 'redirect_after_activation_option_lp' );
-		exit( esc_html( wp_redirect( admin_url( 'admin.php?page=legal-pages#settings' ) ) ) );
+		exit( esc_html( wp_redirect( admin_url( 'admin.php?page=legal-pages' ) ) ) );
 	}
 }
 /**
