@@ -947,6 +947,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 */
 		public function wp_legalpages_new_admin_screen() {
 
+			?>
+    		<script>
+    		document.addEventListener("DOMContentLoaded", function() {
+    		    if (window.location.hash === "") {
+    		        window.location.replace(window.location.href + "#settings");
+    		    }
+    		});
+    		</script>
+    		<?php
+
 			require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
 
 			// Instantiate a new object of the wplegal_Cookie_Consent_Settings class.
@@ -3982,6 +3992,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * Save page preview.
 		 */
 		public function wplegalpages_page_preview_save() {
+			error_log("DODODO inside preview save");
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_die( -1 );
 			}
@@ -4148,6 +4159,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$result['success'] = true;
 					$result['url']     = $url;
 				}
+				error_log("DODODO result: " . print_r($result, true));
 			}
 			return wp_send_json( $result );
 		}

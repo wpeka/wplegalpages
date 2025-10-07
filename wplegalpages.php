@@ -81,7 +81,7 @@ add_action( 'admin_init', 'activation_redirect_wplegalpages' );
 function activation_redirect_wplegalpages() {
 	if ( get_option( 'redirect_after_activation_option_lp', false ) ) {
 		delete_option( 'redirect_after_activation_option_lp' );
-		exit( esc_html( wp_redirect( admin_url( 'admin.php?page=legal-pages' ) ) ) );
+		exit( esc_html( wp_redirect( admin_url( 'admin.php?page=legal-pages#settings' ) ) ) );
 	}
 }
 /**
