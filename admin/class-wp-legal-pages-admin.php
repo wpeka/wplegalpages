@@ -651,7 +651,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 			$links = array_merge(
 				array(
-					'<a href="' . esc_url( $current_url ) . '" target="_self" rel="noopener noreferrer"><strong style="color: #11967A; display: inline;">' . __( 'Create Legal Page', 'gdpr-cookie-consent' ) . '</strong></a>',
+					'<a href="' . esc_url( $current_url ) . '" target="_self" rel="noopener noreferrer"><strong style="color: #11967A; display: inline;">' . __( 'Create Legal Page', 'wplegalpages' ) . '</strong></a>',
 				),
 				$links
 			);
