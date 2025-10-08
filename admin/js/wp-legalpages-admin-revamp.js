@@ -28,6 +28,21 @@ jQuery(document).ready(function () {
 	  }
 	});
 
+	jQuery(document).ready(function ($) {
+	  $(document).on("click", ".wp-legalpages-admin-wplp-dashboard-tab", function () {
+	    setTimeout(function () {
+	      let url = window.location.href;
+	      if (url.includes("#getting_started")) {
+	        let cleanUrl = url.split("#")[0];
+	        history.replaceState(null, null, cleanUrl);
+	        window.location.reload();
+	      }
+	    });
+	  });
+	});
+
+
+
 
 
     if (isProActivated) {
