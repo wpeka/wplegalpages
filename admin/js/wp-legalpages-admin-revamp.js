@@ -33,7 +33,7 @@ jQuery(document).ready(function () {
 	    setTimeout(function () {
 	      var url = window.location.href;
 	      if (url.includes("#getting_started")) {
-	        let cleanUrl = url.split("#")[0];
+	        var cleanUrl = url.split("#")[0];
 	        history.replaceState(null, null, cleanUrl);
 	        window.location.reload();
 	      }
