@@ -28,6 +28,21 @@ jQuery(document).ready(function () {
 	  }
 	});
 
+	jQuery(document).ready(function ($) {
+	  $(document).on("click", ".wp-legalpages-admin-wplp-dashboard-tab", function () {
+	    setTimeout(function () {
+	      var url = window.location.href;
+	      if (url.includes("#getting_started")) {
+	        var cleanUrl = url.split("#")[0];
+	        history.replaceState(null, null, cleanUrl);
+	        window.location.reload();
+	      }
+	    });
+	  });
+	});
+
+
+
 
 
     if (isProActivated) {
@@ -555,6 +570,8 @@ jQuery(document).ready(function () {
         		jQuery('.wp-legalpages-admin-help-tab').addClass('active-tab');
 			}
 			jQuery('#help-page').show();
+
+			window.location.href = 'admin.php?page=wplp-dashboard#help-page'
 		 });
 		if (window.location.href.includes('#help-page')) {
 			// Select the "Help Page" link and its immediate parent <li>

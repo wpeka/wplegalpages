@@ -445,7 +445,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$current_version = $this->version;
 		
 			// Target version to hide the submenu
-			$target_version = '3.5.0';
+			$target_version = '3.5.1';
 		
 			// Check if the current version is below the target version
 			if (version_compare($current_version, $target_version, '<')) {
@@ -947,15 +947,19 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 */
 		public function wp_legalpages_new_admin_screen() {
 
-			?>
-    		<script>
-    		document.addEventListener("DOMContentLoaded", function() {
-    		    if (window.location.hash === "") {
-    		        window.location.replace(window.location.href + "#settings");
-    		    }
-    		});
-    		</script>
-    		<?php
+			$terms_accepted = get_option( 'lp_accept_terms' );
+
+			if ( $terms_accepted ) {
+				?>
+    			<script>
+    			document.addEventListener("DOMContentLoaded", function() {
+    			    if (window.location.hash === "") {
+    			        window.location.replace(window.location.href + "#settings");
+    			    }
+    			});
+    			</script>
+    			<?php
+			}
 
 			require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
 
