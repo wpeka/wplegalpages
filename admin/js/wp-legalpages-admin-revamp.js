@@ -570,6 +570,8 @@ jQuery(document).ready(function () {
         		jQuery('.wp-legalpages-admin-help-tab').addClass('active-tab');
 			}
 			jQuery('#help-page').show();
+
+			window.location.href = 'admin.php?page=wplp-dashboard#help-page'
 		 });
 		if (window.location.href.includes('#help-page')) {
 			// Select the "Help Page" link and its immediate parent <li>
