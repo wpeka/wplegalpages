@@ -362,6 +362,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 	/* Added endpoint to send dashboard data from plugin to the saas react dashboard */
 	public function wplp_send_data_to_dashboard_appwplp_react_app(WP_REST_Request $request  ){
+		ob_start();
 
 		require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
 
@@ -388,6 +389,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				
 		$policy_preview = get_option('policy_preview', array());
 		
+		ob_end_clean();
 		return rest_ensure_response(
 			array(
 				'success' => true,
