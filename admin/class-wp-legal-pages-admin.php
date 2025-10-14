@@ -368,7 +368,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		$this->settings = new WP_Legal_Pages_Settings();
 		$api_user_plan = $this->settings->get_plan();
-		$product_id = $settings->get( 'account', 'product_id' );
+		$product_id = $this->settings->get( 'account', 'product_id' );
 
 		global $wpdb;
 		$post_tbl     = $wpdb->prefix . 'posts';
