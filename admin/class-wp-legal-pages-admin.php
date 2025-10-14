@@ -366,6 +366,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
 
+		$this->settings = new WP_Legal_Pages_Settings();
+		$api_user_plan = $this->settings->get_plan();
+		$product_id = $settings->get( 'account', 'product_id' );
+
 		global $wpdb;
 		$post_tbl     = $wpdb->prefix . 'posts';
 		$postmeta_tbl = $wpdb->prefix . 'postmeta';
@@ -393,6 +397,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		return rest_ensure_response(
 			array(
 				'success' => true,
+				'user_plan'                		   => $api_user_plan,
+				'product_id' 					   => $product_id,
 				'legal_pages_published'			   => $count,
 				'policy_preview'				   => $policy_preview,
 			)
