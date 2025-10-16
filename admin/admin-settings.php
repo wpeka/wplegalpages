@@ -363,7 +363,7 @@ if ( '1' === $lpterms ) {
 								</c-row>
 								<c-row class="wplegal-support-text-row">
 									<c-col class="col-sm-10">
-										<label><?php esc_attr_e( 'Affiliate Disclosure', 'wplegalpages' ); ?></label>
+										<label><?php esc_attr_e( 'Affiliate Disclosure', 'wplegalpages' ); ?> <tooltip text="<?php esc_html_e( 'Enable this option to display an Affiliate Disclosure below each blog post, ensuring compliance with FTC guidelines.', 'wplegalpages' ); ?>"></tooltip></label>
 										<span class="wplegalpages-help-text">
 											<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>
 										</span>
