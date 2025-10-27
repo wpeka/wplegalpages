@@ -81,7 +81,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 			add_action('wp_ajax_gdpr_install_plugin', array($this, 'wplp_gdpr_install_plugin_ajax_handler'));
 			add_action('rest_api_init', array($this, 'register_wpl_dashboard_route'));
-			
+			add_action('rest_api_init', array($this, 'wplp_generate_api_secret'));
 		}
 
 		/**
@@ -132,17 +132,27 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		register_rest_route(
 			'wpl/v2', // Namespace
 			'/delete_activation', 
-			array(
-				'methods'  => 'POST',
-				'callback' => array($this, 'disconnect_account_request'), // Function to handle the request
-				'permission_callback' => function() use ($is_user_connected) {
-					// Check if user is connected and the API plan is valid
-					if ($is_user_connected) {
-						return true; // Allow access
-					}
-					return new WP_Error('rest_forbidden', 'Unauthorized access', array('status' => 401));
-				},
-			)
+					array(
+						'methods'  => 'POST',
+						'callback' => array($this, 'disconnect_account_request'), // Function to handle the request
+						'permission_callback' => function() {
+        				    
+        				    if (current_user_can('manage_options')) {
+        				        return true;
+        				    }
+						
+        				    $stored_secret = get_option('wplegalpages_api_secret');
+        				    $header_secret = isset($_SERVER['HTTP_X_WPLP_SECRET'])
+        				                        ? sanitize_text_field($_SERVER['HTTP_X_WPLP_SECRET'])
+        				                        : '';
+						
+        				    if ($stored_secret && $header_secret && $stored_secret === $header_secret) {
+        				        return true;
+        				    }
+						
+        				    return new WP_Error('rest_forbidden', 'Unauthorized access', array('status' => 403));
+        				},
+					)
 		);
 
 		$appwplp_namespace  = 'appwplp/v1';
@@ -192,6 +202,22 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			);
 		}
 	}
+
+	function wplp_generate_api_secret() {
+	    // Check if secret already exists
+	    if ( get_option('wplegalpages_api_secret') ) {
+	        return get_option('wplegalpages_api_secret');
+	    }
+
+	    // Generate a 32-character alphanumeric secret
+	    $secret = wp_generate_password(32, false);
+	
+	    // Store it in WP options
+	    update_option('wplegalpages_api_secret', $secret);
+
+	    return $secret;
+	}
+
 
 	/**
 	 * REST API callback to update and store the subscription payment status.
@@ -340,6 +366,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'legal_pages_published'			   => $count,
 				'page_results'					   => $titles,
 				'client_site_name'				   => $client_site_name,
+				'api_secret' 					   => get_option('wplegalpages_api_secret'),
 			)
 		);
 	}
