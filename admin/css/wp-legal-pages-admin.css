@@ -1660,6 +1660,12 @@ wp-legalpages-admin-tab-content {
 	min-height: 1450px;
 }
 
+#create_popup::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
 #create_popup .wrap .widefat.table-striped a {
 	color: #23527c;
 }
