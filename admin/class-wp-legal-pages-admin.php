@@ -81,7 +81,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 			add_action('wp_ajax_gdpr_install_plugin', array($this, 'wplp_gdpr_install_plugin_ajax_handler'));
 			add_action('rest_api_init', array($this, 'register_wpl_dashboard_route'));
-			
 		}
 
 		/**
@@ -113,6 +112,21 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		
 		$is_user_connected = $this->settings->is_connected();
 		
+		register_rest_route(
+			'wplp-react/v1', //New namespace for React dashboard
+			'/get_dashboard-data',
+			array(
+				'methods'  => 'POST',
+				'callback' => array($this, 'wplp_send_data_to_dashboard_appwplp_react_app'), // Function to handle the request
+				'permission_callback' => function() use ($is_user_connected) {
+					// Check if user is connected and the API plan is valid
+					if ($is_user_connected) {
+						return true; // Allow access
+					}
+					return new WP_Error('rest_forbidden', 'Unauthorized access', array('status' => 401));
+				},
+			)
+		);
 		
 		register_rest_route(
 			'wpl/v2', // Namespace
@@ -329,7 +343,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		);
 		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 
-	$titles = array_column($pagesresult, 'post_title');
+		$titles = array_column($pagesresult, 'post_title');
+		$policy_preview = get_option('policy_preview', array());
 
 		return rest_ensure_response(
 			array(
@@ -340,6 +355,52 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'legal_pages_published'			   => $count,
 				'page_results'					   => $titles,
 				'client_site_name'				   => $client_site_name,
+				'policy_preview'				   => $policy_preview,
+			)
+		);
+	}
+
+	/* Added endpoint to send dashboard data from plugin to the saas react dashboard */
+	public function wplp_send_data_to_dashboard_appwplp_react_app(WP_REST_Request $request  ){
+		ob_start();
+
+		require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
+
+		$this->settings = new WP_Legal_Pages_Settings();
+		$api_user_plan = $this->settings->get_plan();
+		$product_id = $this->settings->get( 'account', 'product_id' );
+
+		global $wpdb;
+		$post_tbl     = $wpdb->prefix . 'posts';
+		$postmeta_tbl = $wpdb->prefix . 'postmeta';
+		$post_tbl     = esc_sql( $post_tbl );
+		$postmeta_tbl = esc_sql( $postmeta_tbl );
+		
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
+		$count = $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT COUNT(*) 
+				FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
+				WHERE ptbl.ID = pmtbl.post_id 
+				AND ptbl.post_status = %s 
+				AND pmtbl.meta_key = %s
+				",
+				'publish',
+				'is_legal'
+			)
+		);
+				
+		$policy_preview = get_option('policy_preview', array());
+		
+		ob_end_clean();
+		return rest_ensure_response(
+			array(
+				'success' => true,
+				'user_plan'                		   => $api_user_plan,
+				'product_id' 					   => $product_id,
+				'legal_pages_published'			   => $count,
+				'policy_preview'				   => $policy_preview,
 			)
 		);
 	}
