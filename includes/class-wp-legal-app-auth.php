@@ -161,7 +161,7 @@ class WP_Legal_Pages_App_Auth {
 		$demo_type = isset( $_POST['demo_type'] ) ? sanitize_text_field( wp_unslash( $_POST['demo_type'] )) : '';
 
 		$response = $this->post(
-			'plugin/importcaps',
+			'plugin/legalpage_capability_check',
 			wp_json_encode(
 				array(
 					'id'                  => $settings->get_user_id(),
