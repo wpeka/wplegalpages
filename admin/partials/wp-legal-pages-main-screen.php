@@ -44,6 +44,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 					</div>
 					<!-- <div id="wplegalpages-save-settings-alert"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg' ); ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_attr_e( 'Settings saved successfully', 'wplegalpages' ); ?></div> --> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 					<div class="wp-legalpages-admin-help-and-support">
+						<div class="wp-legalpages-new-dashboard-btn"><a href="<?php echo esc_url( 'http://localhost:5173/' ); ?>"><?php esc_html_e( 'Try New Dashboard', 'wplegalpages' ); ?></a></div>
 						<div class="wp-legalpages-admin-help">
 							<div class="wp-legalpages-admin-help-icon">
 								<!-- //image  -->
