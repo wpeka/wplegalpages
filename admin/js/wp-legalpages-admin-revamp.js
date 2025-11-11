@@ -680,7 +680,9 @@ jQuery(document).ready(function () {
 document.addEventListener("DOMContentLoaded", alignSideBar);
 function alignSideBar(){
   var side_bar = document.querySelector(".wplp-sub-tabs");
-
+ if (!side_bar) {
+    return;
+  }
   function updateTopBasedOnTab(tabList) {
         if (tabList.includes("settings") || tabList.includes("all_legal_pages")) {
             side_bar.style.top = "110px";
