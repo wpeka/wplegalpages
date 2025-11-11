@@ -1179,7 +1179,9 @@ if ( '1' === $lpterms ) {
 										<label><?php esc_attr_e( 'Create Popups', 'wplegalpages' ); ?></label>
 										<span class="wplegalpages-help-text">
 											<?php esc_html_e( 'Enabling this setting will activate the Create Popup option in the WPLegalPages plugin menu.', 'wplegalpages' ); ?>
-											<a href="https://wplegalpages.com/docs/wp-legal-pages/configurations/configuring-the-settings/" target="_blank">Learn how you can add popups using WPLP Compliance Platform.</a>
+											<a href="<?php echo esc_url( 'https://wplegalpages.com/docs/wp-legal-pages/configurations/configuring-the-settings/' ); ?>" target="_blank" rel="noopener noreferrer">
+											    <?php esc_html_e( 'Learn how you can add popups using WPLP Compliance Platform.', 'wplegalpages' ); ?>
+											</a>
 										</span>
 									</c-col>
 									<c-col class="col-sm-2 wplegal-compliances-switch">
