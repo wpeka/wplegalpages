@@ -57,6 +57,7 @@ jQuery(document).ready(function () {
 		jQuery('.wp-legalpages-admin-help-and-support .wp-legalpages-admin-help-text').addClass('lp-terms-not-acpt');
 		jQuery('.wp-legalpages-admin-help-and-support .wp-legalpages-admin-support-text').addClass('lp-terms-not-acpt');
 	}
+
 	// Hide all tab contents initially except the first one
 	jQuery('.wp-legalpages-admin-tab-content').not(':first').hide();
 	jQuery('.wp-legalpages-admin-getting-started-tab').addClass('active-tab');
