@@ -467,20 +467,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_register_script( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'wizard/libraries/select2/select2.js', array( 'jquery' ), $this->version, false );
 		   
 		}
-		public function wplp_remove_dashboard_submenu() {
-			// Define the current version constant
-			$current_version = $this->version;
+		// public function wplp_remove_dashboard_submenu() {
+		// 	// Define the current version constant
+		// 	$current_version = $this->version;
 		
-			// Target version to hide the submenu
-			$target_version = '3.5.4';
+		// 	// Target version to hide the submenu
+		// 	$target_version = '3.5.4';
 		
 			// Check if the current version is below the target version
-			if (version_compare($current_version, $target_version, '<')) {
-				// Remove the 'Dashboard' submenu
-				remove_submenu_page('wp-legal-pages', 'wplp-dashboard');
-				remove_submenu_page('wp-legal-pages', 'wplp-dashboard#help-page');
-			}
-		}
+			// if (version_compare($current_version, $target_version, '<')) {
+			// 	// Remove the 'Dashboard' submenu
+			// 	remove_submenu_page('wp-legal-pages', 'wplp-dashboard');
+			// 	remove_submenu_page('wp-legal-pages', 'wplp-dashboard#help-page');
+			// }
+		// }
 		/**
 		 * This function is provided for WordPress dashbord menus.
 		 *
