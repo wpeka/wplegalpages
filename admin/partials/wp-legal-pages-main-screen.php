@@ -349,7 +349,9 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 									    const overlay = document.querySelector(".wplegal-api-overlay");
 									    const closeButton = document.querySelector(".wplegal-api-close-icon");
 									    const restrictedContent = document.querySelector(".postbox"); 
-										restrictedContent.style.cursor = 'not-allowed';
+										if(restrictedContent){
+											restrictedContent.style.cursor = 'not-allowed';
+										}
 									
 									    function showPopup() {
 									        popup.style.display = "block";

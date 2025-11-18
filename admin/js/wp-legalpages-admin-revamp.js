@@ -58,12 +58,11 @@ jQuery(document).ready(function () {
 		jQuery('.wp-legalpages-admin-help-and-support .wp-legalpages-admin-support-text').addClass('lp-terms-not-acpt');
 	}
 
-
-    // Hide all tab contents initially except the first one
-    jQuery('.wp-legalpages-admin-tab-content').not(':first').hide();
-    jQuery('.wp-legalpages-admin-getting-started-tab').addClass('active-tab');
+	// Hide all tab contents initially except the first one
+	jQuery('.wp-legalpages-admin-tab-content').not(':first').hide();
+	jQuery('.wp-legalpages-admin-getting-started-tab').addClass('active-tab');
 	jQuery('.wp-legalpages-admin-wplp-dashboard-tab').addClass('active-tab');
-    jQuery('#getting_started').show();
+	jQuery('#getting_started').show();
 
 	// Check if the "wp-legalpages-admin-getting-started-tab" is active
     if (jQuery('.wp-legalpages-admin-getting-started-tab').hasClass('active-tab')) {
@@ -680,7 +679,9 @@ jQuery(document).ready(function () {
 document.addEventListener("DOMContentLoaded", alignSideBar);
 function alignSideBar(){
   var side_bar = document.querySelector(".wplp-sub-tabs");
-
+ if (!side_bar) {
+    return;
+  }
   function updateTopBasedOnTab(tabList) {
         if (tabList.includes("settings") || tabList.includes("all_legal_pages")) {
             side_bar.style.top = "110px";

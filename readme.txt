@@ -7,7 +7,7 @@ Tags: CCPA, GDPR, Privacy Policy, Terms and conditions, Cookie Policy
 Requires at least: 5.0
 Requires PHP: 7.0
 Tested up to: 6.8.1
-Stable tag: 3.5.2
+Stable tag: 3.5.4
 
 == Description ==
 
@@ -180,6 +180,13 @@ For free users, support is available through the WordPress.org forums. Pro users
 Yes, WP Legal Pages integrates seamlessly with WPForms, Contact Form 7, Gravity Forms, and more.
 
 == Changelog ==
+
+= 3.5.4 =
+* **Bug Fixes**: We fixed some bugs that were causing minor issues in the plugin. Things should now run more smoothly.
+* **UI Update**: We made small design changes to the **Create Popup Page** to make it easier to use and look better.
+
+= 3.5.3 =
+* Bug fixes and improvements.
 
 = 3.5.2 =
 * Fix - Security related issues fixed.
