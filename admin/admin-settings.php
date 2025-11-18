@@ -365,7 +365,10 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-10">
 										<label><?php esc_attr_e( 'Affiliate Disclosure', 'wplegalpages' ); ?> <tooltip text="<?php esc_html_e( 'Enable this option to display an Affiliate Disclosure below each blog post, ensuring compliance with FTC guidelines.', 'wplegalpages' ); ?>"></tooltip></label>
 										<span class="wplegalpages-help-text">
-											<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>
+											<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must.', 'wplegalpages' ); ?>
+											<a href="<?php echo esc_url( 'https://wplegalpages.com/docs/wp-legal-pages/configurations/configuring-the-settings/' ); ?>" target="_blank" rel="noopener noreferrer">
+											    <?php esc_html_e( 'Learn here how to add an affiliate disclosure', 'wplegalpages' ); ?>
+											</a>
 										</span>
 									</c-col>
 									<c-col class="col-sm-2">
@@ -1176,6 +1179,9 @@ if ( '1' === $lpterms ) {
 										<label><?php esc_attr_e( 'Create Popups', 'wplegalpages' ); ?></label>
 										<span class="wplegalpages-help-text">
 											<?php esc_html_e( 'Enabling this setting will activate the Create Popup option in the WPLegalPages plugin menu.', 'wplegalpages' ); ?>
+											<a href="<?php echo esc_url( 'https://wplegalpages.com/docs/wp-legal-pages/configurations/configuring-the-settings/' ); ?>" target="_blank" rel="noopener noreferrer">
+											    <?php esc_html_e( 'Learn how you can add popups using WPLP Compliance Platform.', 'wplegalpages' ); ?>
+											</a>
 										</span>
 									</c-col>
 									<c-col class="col-sm-2 wplegal-compliances-switch">
