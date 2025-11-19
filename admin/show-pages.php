@@ -111,29 +111,6 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 				</tr>
 					<?php
 					$count++;
-					
-					$policy_preview[] = array(
-						'name'    		=> $res->post_title,
-						'last_update' 	=> gmdate( 'Y/m/d H:i:s', strtotime( $res->post_date ) ),
-						'image_key'   	=> $res->post_name,
-						'content' 		=> $res->post_content,
-					);
-			}
-		
-			// Sort the array by 'last_update' in descending order (newest first)
-			usort( $policy_preview, function( $a, $b ) {
-			    $dateA = strtotime( $a['last_update'] ?? '' );
-			    $dateB = strtotime( $b['last_update'] ?? '' );
-			    return $dateB <=> $dateA; // descending order
-			});
-		
-			// Keep only the 5 most recent entries
-			$policy_preview = array_slice( $policy_preview, 0, 5 );
-		
-			if ( get_option( 'policy_preview' ) === false ) {
-			    add_option( 'policy_preview', $policy_preview );
-			} else {
-			    update_option( 'policy_preview', $policy_preview );
 			}
 			?>
 
