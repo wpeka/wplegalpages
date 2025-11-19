@@ -80,6 +80,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				add_filter( 'the_content', array( $this, 'wplegalpages_pro_post_content' ) );
 			}
 			add_action('wp_ajax_gdpr_install_plugin', array($this, 'wplp_gdpr_install_plugin_ajax_handler'));
+			add_action( 'save_post', array($this, 'wplp_update_policy_preview'));
 			add_action( 'rest_api_init', array($this, 'allow_cors_for_react_app'));
 			add_action('rest_api_init', array($this, 'register_wpl_dashboard_route'));
 			add_action('rest_api_init', array($this, 'wplp_generate_api_secret'));
@@ -101,6 +102,46 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		    wp_enqueue_style( $this->plugin_name . '-review-notice' );
 		}
 		
+	/* Update Policy preview in the options table */
+	public function wplp_update_policy_preview() {
+		$policy_preview = array();
+
+		global $wpdb;
+		$post_tbl     = $wpdb->prefix . 'posts';
+		$postmeta_tbl = $wpdb->prefix . 'postmeta';
+		$pagesresult = $wpdb->get_results(
+    		$wpdb->prepare(
+    		    "
+    		    SELECT ptbl.*
+    		    FROM {$post_tbl} AS ptbl
+    		    INNER JOIN {$postmeta_tbl} AS pmtbl
+    		        ON ptbl.ID = pmtbl.post_id
+    		    WHERE ptbl.post_status = %s
+    		      AND pmtbl.meta_key = %s
+    		    ORDER BY ptbl.post_date DESC
+    		    LIMIT 5
+    		    ",
+    		    'publish',
+    		    'is_legal'
+    		)
+		); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		
+		foreach ( $pagesresult as $res ) {
+			$policy_preview[] = array(
+				'name'    		=> $res->post_title,
+				'last_update' 	=> gmdate( 'Y/m/d H:i:s', strtotime( $res->post_date ) ),
+				'image_key'   	=> $res->post_name,
+				'content' 		=> $res->post_content,
+			);
+		}
+
+		if ( get_option( 'policy_preview' ) === false ) {
+		    add_option( 'policy_preview', $policy_preview );
+		} else {
+		    update_option( 'policy_preview', $policy_preview );
+		}
+	}
+	
 	/**
 	 * Fucntion to allow cors for react app
 	 */
