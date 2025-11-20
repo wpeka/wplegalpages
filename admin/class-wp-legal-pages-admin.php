@@ -134,6 +134,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
 		global $is_user_connected, $api_user_plan; // Make global variables accessible
 		$this->settings = new WP_Legal_Pages_Settings();
+
+		$master_key = $this->settings->get('api','token');
 		
 		$is_user_connected = $this->settings->is_connected();
 		
