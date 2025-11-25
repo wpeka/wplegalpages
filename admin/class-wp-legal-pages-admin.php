@@ -150,7 +150,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		// Add our own permissive CORS headers
 		add_filter( 'rest_pre_serve_request', function( $value ) {
-			header( 'Access-Control-Allow-Origin: https://appstaging.wplegalpages.com' );
+			header( 'Access-Control-Allow-Origin: https://app.wplegalpages.com' );
 			header( 'Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS' );
 			header( 'Access-Control-Allow-Credentials: true' );
 			header( 'Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Nonce, Origin, X-Requested-With, Accept' );
@@ -197,7 +197,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 					// 2. Validate token with central WP site
 					$validate = wp_remote_post(
-						'https://appstaging.wplegalpages.com/wp-json/jwt-auth/v1/token/validate',
+						'https://app.wplegalpages.com/wp-json/jwt-auth/v1/token/validate',
 						[
 							'headers' => [
 								'Authorization' => 'Bearer ' . $token,
@@ -638,7 +638,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		// 	$current_version = $this->version;
 		
 		// 	// Target version to hide the submenu
-		// 	$target_version = '3.5.4';
+		// 	$target_version = '3.5.5';
 		
 			// Check if the current version is below the target version
 			// if (version_compare($current_version, $target_version, '<')) {
