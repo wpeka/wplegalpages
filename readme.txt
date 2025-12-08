@@ -182,7 +182,7 @@ Yes, WP Legal Pages integrates seamlessly with WPForms, Contact Form 7, Gravity 
 == Changelog ==
 
 = 3.5.6 =
-* Fixed issues related to an endpoint in plugin
+* Fixed issues related to a plugin endpoint.
 
 = 3.5.5 =
 * Improvement: Integrated updates to support the saas dashboard experience.
