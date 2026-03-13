@@ -718,14 +718,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		foreach ( $pagesresult as $res ) {
-			$popup_template_options[] = array(
+			$template_options[] = array(
 				'label' => $res->post_title,
 				'value' => $res->legal_page_type,
 			);
 		}
 
 		$created_popups = $wpdb->get_results(
-		    "SELECT id, popup_name FROM {$lp_obj->popuptable}"
+		    "SELECT id, popup_name, popup_template FROM {$lp_obj->popuptable}"
 		);
 		
 		$text_align_options = array(
@@ -862,7 +862,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		$create_popup_settings[] = array(
 			'popupCounter'				=> count( $created_popups ) ?? 0,
-			'popupTemplateOptions' 		=> $popup_template_options ?? [],
 			'createdPopups'				=> $created_popups ?? [],
 		);
 
@@ -901,6 +900,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'languages'						   => $lang_options ?? [],
 				'selected_lang'					   => $lp_general['language'] ?? 'en_US',
 				'createPopupSettings'			   => $create_popup_settings ?? [],
+				'templateOptions'				   => $template_options ?? [],
 				'userInfo'						   => $user_info ?? []
 			)
 		);
@@ -5824,6 +5824,41 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			wp_send_json_error(['message' => 'There was an error sending your message. Please try again later.']);
 		}
 	}
+
+	function lp_update_popup_table() {
+	    global $wpdb;
+
+		if ( class_exists( 'WP_Legal_Pages' ) ) {
+			$lp_obj = new WP_Legal_Pages();
+		}
+
+	    $installed_version = get_option('lp_db_version');
+	    $current_version   = '1.1';  //Update as per the new version of popup table structure
+
+	    if ($installed_version === $current_version) {
+	        return;
+	    }
+
+	    $table = $lp_obj->popuptable;
+
+	    if ($wpdb->get_var("SHOW TABLES LIKE '{$table}'") !== $table) {
+	        return;
+	    }
+
+	    $column = $wpdb->get_results(
+	        $wpdb->prepare("SHOW COLUMNS FROM $table LIKE %s", 'popup_template')
+	    );
+
+	    if (empty($column)) {
+	        $wpdb->query(
+	            "ALTER TABLE $table 
+	             ADD COLUMN popup_template VARCHAR(191) NOT NULL DEFAULT ''"
+	        );
+	    }
+
+	    update_option('lp_db_version', $current_version);
+	}
+
 	public function wplp_admin_new_clause_addition_notice(){
 		$screen = get_current_screen();
 		// Show notice only on Plugins page

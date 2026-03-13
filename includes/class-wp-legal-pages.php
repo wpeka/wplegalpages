@@ -289,6 +289,9 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 
 			$this->loader->add_action( 'wp_ajax_wplp_collect_data', $plugin_admin, 'wplegalpages_upgrade_to_pro_popup_clicked' );
 
+			// Update popup table schema if not already updated.
+			$this->loader->add_action( 'admin_init', $plugin_admin, 'lp_update_popup_table' );
+
 			//Added to prevent unstyled content flash on plugin activation
 			$this->loader->add_action( 'admin_head', $plugin_admin, 'wplegalpages_inline_onload_admin_styles' );
 
