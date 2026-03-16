@@ -159,7 +159,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		// Add our own permissive CORS headers
 		add_filter( 'rest_pre_serve_request', function( $value ) {
-			header( 'Access-Control-Allow-Origin: *' );
+			header( 'Access-Control-Allow-Origin: ' . WPLEGAL_APP_URL );
 			header( 'Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS' );
 			header( 'Access-Control-Allow-Credentials: true' );
 			header( 'Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Nonce, Origin, X-Requested-With, Accept' );
@@ -330,7 +330,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 	}
 
 	public function permission_callback_for_react_app(WP_REST_Request $request) {
-		return true;
 		$this->settings = new WP_Legal_Pages_Settings();
 
 		$master_key = $this->settings->get('api','token');		
@@ -366,8 +365,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		if ( $master_key !== $incoming_key ) {
 			return new WP_Error('invalid_master_key', 'Master key mismatch.', ['status' => 401]);
 		}
-		global $wplp_rest_authenticated;
-		$wplp_rest_authenticated = true;
+		
 		return true; // All good → allow callback
 	}
 
@@ -919,8 +917,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$page = $request->get_param( 'page' );
 		$pid = $request->get_param( 'pid' );
 
-		error_log("DODODO getting page_settings for page " . print_r($page, true) . " with PID value " . print_r($pid, true));
-
+		
 		if ( empty( $page ) ) {
 			return new WP_REST_Response(
 				array(
@@ -1049,7 +1046,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$last_updated = $request->get_param( 'last_updated' );
 		$business_info = $request->get_param( 'business' );
 
-		error_log( " saving info : " . print_r( $request->get_params(), true ) );
 		if ( empty( $page_slug ) || empty( $page_title ) || empty( $page_content ) ) {
 			return new WP_REST_Response(
 				array(
@@ -1078,8 +1074,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 		$pid = wp_insert_post( $post_args );
 
-		error_log( " post id : " . print_r( $pid, true ) );
-
+		
 		update_post_meta( $pid, 'is_legal', 'yes' );
 		update_post_meta( $pid, 'legal_page_type', $page_slug );
 
@@ -1247,8 +1242,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$url = $url = admin_url( 'post.php?post=' . $pid . '&action=edit' );
 		$url = str_replace( '&amp;', '&', $url );
 
-		error_log(" Page saved with ID: " . $pid . " and URL: " . $url );
-
+		
 		return new WP_REST_Response(
 			array(
 				'success' => true,
