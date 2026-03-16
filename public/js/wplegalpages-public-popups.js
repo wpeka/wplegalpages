@@ -57,9 +57,7 @@
 					// If age verification is active AND user hasn't verified, wait
 					if(isAgeVerificationActive && $.cookie("wplegalpages") != 1) {
 						count++;
-						console.log("in timeout ",count);
 						if(count>=10){
-							console.log("10 checks exceeded");
 							return;
 						}
 						setTimeout(showLegalPopup, 1000); //change to 10sec
