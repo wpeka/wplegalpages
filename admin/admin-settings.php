@@ -1013,7 +1013,16 @@ if ( '1' === $lpterms ) {
 						$redirect_url_text     = get_option( '_lp_redirect_url' );
 						$no_button_text        = get_option( 'lp_eu_button_text_no' );
 						$age_verify_for_value  = $age_verify_for ? 'all' === $age_verify_for ? 'All visitors' : 'Guests only' : 'Guests only';
-						$age_type_option_value = $age_type_option ? 'date' === $age_type_option ? 'Input Date of Birth' : 'Yes/No Buttons' : 'Yes/No Buttons';
+
+						$age_popup_no = get_option('_lp_age_popup_no');
+
+						if ($age_type_option === 'date') {
+						    $age_type_option_value = 'Input Date of Birth';
+						} elseif ($age_popup_no == 2) {
+						    $age_type_option_value = 'Yes/Leave Buttons';
+						} else {
+						    $age_type_option_value = 'Yes/No Buttons';
+						}
 						?>
 						<input type="hidden" name="lp-age-verify" v-model="is_age">
 						<input type="hidden" ref="age_verify_for" v-model="age_verify_for" name="lp-age-verify-for">

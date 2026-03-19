@@ -53,10 +53,14 @@ var gen = new Vue({
               ? true
               : false,
           is_footer: obj.lp_options.hasOwnProperty("is_footer")
-            ? Boolean(parseInt(obj.lp_options.is_footer))
+            ? (typeof obj.lp_options.is_footer === 'boolean' 
+                ? obj.lp_options.is_footer 
+                : Boolean(parseInt(obj.lp_options.is_footer)))
             : false,
           is_banner: obj.lp_options.hasOwnProperty("is_banner")
-            ? Boolean(parseInt(obj.lp_options["is_banner"]))
+            ? (typeof obj.lp_options.is_banner === 'boolean'
+                ? obj.lp_options.is_banner
+                : Boolean(parseInt(obj.lp_options.is_banner)))
             : false,
           is_age: obj.age_verify_enable ? obj.age_verify_enable : "content",
           age_button_content: this.is_age === "site" ? true : false,
@@ -101,7 +105,9 @@ var gen = new Vue({
             ? obj.lp_footer_options["footer_separator"]
             : "",
           footer_new_tab: obj.lp_footer_options.hasOwnProperty("footer_new_tab")
-            ? Boolean(parseInt(obj.lp_footer_options["footer_new_tab"]))
+            ? (typeof obj.lp_footer_options.footer_new_tab === 'boolean'
+                ? obj.lp_footer_options.footer_new_tab
+                : Boolean(parseInt(obj.lp_footer_options["footer_new_tab"])))
             : false,
           footer_custom_css: obj.lp_footer_options.hasOwnProperty(
             "footer_custom_css"

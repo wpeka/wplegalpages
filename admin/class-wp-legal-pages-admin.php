@@ -209,7 +209,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			)
 		);
 
-		//API endpooint for resyncing sites
+		//API endpoint for resyncing sites
 		register_rest_route( 
 			'wplp-react/v1',
 			'/resync-sites',
@@ -239,6 +239,35 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			)
 		);
 
+		register_rest_route(
+			'wplp-react/v1',
+			'/save_legal_settings',
+			array(
+				'methods' 	=> 'POST',
+				'callback' 	=> array($this, 'wplp_save_legal_settings_for_react_app'), // Function to handle the request
+				'permission_callback' => array($this, 'permission_callback_for_react_app'),
+			)
+		);
+
+		register_rest_route(
+			'wplp-react/v1',
+			'/save_popup_settings',
+			array(
+				'methods'  => 'POST',
+				'callback' => array($this, 'wplp_save_popup_settings_for_react_app'), // Function to handle the request
+				'permission_callback' => array($this, 'permission_callback_for_react_app'),
+			)
+		);
+
+		register_rest_route(
+			'wplp-react/v1',
+			'/delete_popup',
+			array(
+				'methods'  => 'POST',
+				'callback' => array($this, 'wplp_delete_popup_for_react_app'), // Function to handle the request
+				'permission_callback' => array($this, 'permission_callback_for_react_app'),
+			)
+		);
 
 		register_rest_route(
 			'wpl/v2', // Namespace
@@ -727,54 +756,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$created_popups = $wpdb->get_results(
 		    "SELECT id, popup_name, popup_template FROM {$lp_obj->popuptable}"
 		);
-		
-		$text_align_options = array(
-			array(
-				'label' => 'Left',
-				'code'  => 'left',
-			),
-			array(
-				'label' => 'Center',
-				'code'  => 'center',
-			),
-			array(
-				'label' => 'Right',
-				'code'  => 'right',
-			),
-		);
-
-		$bar_position_options = array(
-			array(
-				'label' => 'Top',
-				'code'  => 'top',
-			),
-			array(
-				'label' => 'Bottom',
-				'code'  => 'bottom',
-			),
-		);
-
-		$bar_type_options = array(
-			array(
-				'label' => 'Fixed',
-				'code'  => 'fixed',
-			),
-			array(
-				'label' => 'Static',
-				'code'  => 'static',
-			),
-		);
-
-		$age_verify_for_options = array(
-			array(
-				'label' => 'Guests Only',
-				'code'  => 'guests',
-			),
-			array(
-				'label' => 'All Visitors',
-				'code'  => 'all',
-			),
-		);
 
 		$lp_general = get_option("lp_general");
 		$lp_footer_options = get_option( 'lp_footer_options' );
@@ -810,7 +791,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			'search'				=> $lp_general['search'],
 			'affiliate_disclosure'	=> $lp_general['affiliate-disclosure'],
 			'show_credits'			=> $lp_general['generate'],
-			'analytics_on'			=> get_option('wplegalpages-ask-for-usage-optin'),
 			'block_enabled'			=> get_option( 'wplegalpages_is_block_enabled' ),
 		);
 
@@ -823,7 +803,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'footer_font'			=> $lp_footer_options['footer_font'],
 				'footer_font_size'		=> $lp_footer_options['footer_font_size'],
 				'footer_text_color'		=> $lp_footer_options['footer_text_color'],
-				'text_align_options'	=> $text_align_options ?? [],
 				'footer_text_align'		=> $lp_footer_options['footer_text_align'],
 				'footer_link_color'		=> $lp_footer_options['footer_link_color'],
 				'footer_separator'		=> $lp_footer_options['footer_separator'],
@@ -833,11 +812,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			'announcementBannerSettings'	=> array(
 				'is_banner'					=> $lp_general['is_banner'],
 				'bar_position'				=> $lp_banner_options['bar_position'],
-				'bar_position_options'		=> $bar_position_options ?? [],
 				'bar_type'					=> $lp_banner_options['bar_type'],
-				'bar_type_options'			=> $bar_type_options ?? [],
-				'banner_multiple_messages'	=> $lp_banner_options['banner_multiple_message'] ?? [],
-				'banner_close_message'		=> $lp_banner_options['banner_close_message'] ?? [],
+				'bar_num_of_days'			=> $lp_banner_options['bar_num_of_days'],
+				'banner_message'			=> $lp_banner_options['banner_message'] ?? '',
+				'banner_multiple_messages'	=> $lp_banner_options['banner_multiple_message'] ?? '',
+				'banner_close_message'		=> $lp_banner_options['banner_close_message'] ?? '',
 				'banner_bg_color'			=> $lp_banner_options['banner_bg_color'],
 				'banner_font'				=> $lp_banner_options['banner_font'],
 				'banner_font_size'			=> $lp_banner_options['banner_font_size'],
@@ -848,7 +827,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			'ageVerificationSettings'	=> array(
 				'is_age'					=> get_option( '_lp_require_for' ),
 				'age_verify_for'			=> get_option( '_lp_always_verify' ),
-				'age_verify_for_options'	=> $age_verify_for_options ?? [],
 				'minimum_age'				=> get_option( '_lp_minimum_age' ),
 				'age_type_option'			=> get_option( '_lp_display_option' ),
 				'age_popup_no'				=> get_option( '_lp_age_popup_no', '1' ),
@@ -910,8 +888,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		$page = $request->get_param( 'page' );
 		$pid = $request->get_param( 'pid' );
-
-		error_log("DODODO getting page_settings for page " . print_r($page, true) . " with PID value " . print_r($pid, true));
 
 		if ( empty( $page ) ) {
 			return new WP_REST_Response(
@@ -1041,7 +1017,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$last_updated = $request->get_param( 'last_updated' );
 		$business_info = $request->get_param( 'business' );
 
-		error_log( " saving info : " . print_r( $request->get_params(), true ) );
 		if ( empty( $page_slug ) || empty( $page_title ) || empty( $page_content ) ) {
 			return new WP_REST_Response(
 				array(
@@ -1069,8 +1044,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			);
 		}
 		$pid = wp_insert_post( $post_args );
-
-		error_log( " post id : " . print_r( $pid, true ) );
 
 		update_post_meta( $pid, 'is_legal', 'yes' );
 		update_post_meta( $pid, 'legal_page_type', $page_slug );
@@ -1217,8 +1190,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$url = $url = admin_url( 'post.php?post=' . $pid . '&action=edit' );
 		$url = str_replace( '&amp;', '&', $url );
 
-		error_log(" Page saved with ID: " . $pid . " and URL: " . $url );
-
 		return new WP_REST_Response(
 			array(
 				'success' => true,
@@ -1228,7 +1199,177 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			200
 		);
 	}
+	
+	public function wplp_save_legal_settings_for_react_app ( WP_REST_Request $request ) {
+		$lp_general = get_option( 'lp_general' );
+		$lp_footer_options = get_option( 'lp_footer_options' );
+		$lp_banner_options = get_option( 'lp_banner_options' );
+
+		$save_object = $request->get_param( 'save_object' ) ?: null;
+		$footer_object = $request->get_param( 'footer_object' ) ?: null;
+		$announcement_object = $request->get_param( 'announcement_object' ) ?: null;
+		$age_verification_object = $request->get_param( 'age_verification_object' ) ?: null;
+
+		if ( !empty( $save_object) && is_array( $save_object ) ) {
+			if ( isset( $save_object['block_enabled'] ) ) {
+				update_option( 'wplegalpages_is_block_enabled', $save_object['block_enabled'] );
+			}
+
+			if ( $save_object['is_footer'] && !empty( $footer_object ) && is_array( $footer_object ) ) {
+				$lp_footer_options = array_merge( $lp_footer_options, $footer_object );
+				update_option( 'lp_footer_options', $lp_footer_options );
+			}
+
+			if ( $save_object['is_banner'] && !empty( $announcement_object ) && is_array( $announcement_object ) ) {
+				$lp_banner_options = array_merge( $lp_banner_options, $announcement_object );
+				update_option( 'lp_banner_options', $lp_banner_options );
+			}
+
+			if( !empty( $age_verification_object ) && is_array( $age_verification_object ) ) {
+				update_option( '_lp_require_for', $age_verification_object['is_age'] );
+				update_option( '_lp_always_verify', $age_verification_object['age_verify_for'] );
+				update_option( '_lp_minimum_age', $age_verification_object['minimum_age'] );
+				update_option( '_lp_display_option', $age_verification_object['age_type_option'] );
+				update_option( '_lp_age_popup_no', $age_verification_object['age_popup_no'] );
+				update_option( 'lp_eu_button_text', $age_verification_object['age_yes_button'] );
+				update_option( 'lp_eu_button_text_no', $age_verification_object['age_no_button'] );
+				update_option( '_lp_redirect_url', $age_verification_object['redirect_url'] );
+				update_option( '_lp_description', $age_verification_object['age_description'] );
+				update_option( '_lp_invalid_description', $age_verification_object['invalid_age_description'] );
+			}
+
+			$lp_general = array_merge( $lp_general, $save_object );
+			update_option( 'lp_general', $lp_general );
+		}
 		
+		return [
+			'success' => true,
+			'accessed' => true
+		];
+	}
+
+	public function wplp_save_popup_settings_for_react_app( WP_REST_Request $request ) {
+
+		global $wpdb;
+		$lp_obj = new WP_Legal_Pages();
+
+		$popup_data = $request->get_param('popup');
+
+		$popup_id       = isset( $popup_data['id'] ) ? intval( $popup_data['id'] ) : 0;
+		$popup_name     = isset( $popup_data['name'] ) ? sanitize_text_field( $popup_data['name'] ) : '';
+		$popup_template = isset( $popup_data['template'] ) ? sanitize_text_field( $popup_data['template'] ) : '';
+
+		// UPDATE
+		if ( ! empty( $popup_id ) ) {
+
+			$popup_content = $this->wplegalpages_get_page_preview( $popup_template );
+
+			$updated = $wpdb->update(
+				$lp_obj->popuptable,
+				array(
+					'popup_name'     => $popup_name,
+					'content'        => $popup_content,
+					'popup_template' => $popup_template,
+				),
+				array( 'id' => $popup_id ),
+				array( '%s', '%s', '%s' ),
+				array( '%d' )
+			);
+
+			if ( $updated === false ) {
+				return new WP_REST_Response(
+					array(
+						'success' => false,
+						'message' => 'Failed to update popup.',
+					),
+					500
+				);
+			}
+
+			return new WP_REST_Response(
+				array(
+					'success' => true,
+					'popup' => array(
+						'id'              => $popup_id,
+						'popup_name'      => $popup_name,
+						'popup_template'  => $popup_template,
+					),
+				),
+				200
+			);
+		}
+
+		// CREATE
+		$popup_content = $this->wplegalpages_get_page_preview( $popup_template );
+
+		$inserted = $wpdb->insert(
+			$lp_obj->popuptable,
+			array(
+				'popup_name'     	=> $popup_name,
+				'content' 	  		=> $popup_content,
+				'popup_template'	=> $popup_template,
+			),
+			array( '%s', '%s', '%s' )
+		);
+
+		if ( ! $inserted ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => 'Failed to create popup.',
+				),
+				500
+			);
+		}
+
+		$new_id = $wpdb->insert_id;
+
+		return new WP_REST_Response(
+			array(
+				'success' => true,
+				'popup' => array(
+					'id'              => $new_id,
+					'popup_name'      => $popup_name,
+					'popup_template'  => $popup_template,
+				),
+			),
+			200
+		);
+	}
+
+	public function wplp_delete_popup_for_react_app ( WP_REST_Request $request ) {
+
+		global $wpdb;
+
+		$lp_obj = new WP_Legal_Pages();
+		$popup_id = $request->get_param( 'popupId' );
+
+		if ( empty( $popup_id ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => 'Popup ID is required.',
+				),
+				400
+			);
+		}
+
+		$wpdb->delete(
+			$lp_obj->popuptable,
+			array( 'id' => $popup_id ),
+			array( '%d' )
+		);
+
+		return new WP_REST_Response(
+			array(
+				'success' => true,
+				'popupId' => $popup_id,
+			),
+			200
+		);
+	}
+
+
 
 	/**
 	 * Recursively converts settings from keyed-object format to indexed-array format
@@ -2979,6 +3120,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$age_description         = get_option( '_lp_description' );
 			$invalid_age_description = get_option( '_lp_invalid_description' );
 			$popup_enabled           = get_option( 'lp_popup_enabled' );
+			$redirect_url_text       = get_option( '_lp_redirect_url' );
+
 			if ( ! $age_verify ) {
 				$age_verify = 'content';
 			}
@@ -3007,6 +3150,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$options_object['age_description']         = $age_description;
 			$options_object['invalid_age_description'] = $invalid_age_description;
 			$options_object['popup_enabled']           = $popup_enabled;
+			$options_object['redirect_url']    		   = $redirect_url_text;
 			return $options_object;
 		}
 		/**
