@@ -159,7 +159,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		// Add our own permissive CORS headers
 		add_filter( 'rest_pre_serve_request', function( $value ) {
-			header( 'Access-Control-Allow-Origin: *' );
+			header( 'Access-Control-Allow-Origin: ' . WPLEGAL_APP_URL );
 			header( 'Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS' );
 			header( 'Access-Control-Allow-Credentials: true' );
 			header( 'Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Nonce, Origin, X-Requested-With, Accept' );
@@ -359,7 +359,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 	}
 
 	public function permission_callback_for_react_app(WP_REST_Request $request) {
-		return true;
 		$this->settings = new WP_Legal_Pages_Settings();
 
 		$master_key = $this->settings->get('api','token');		
@@ -395,6 +394,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		if ( $master_key !== $incoming_key ) {
 			return new WP_Error('invalid_master_key', 'Master key mismatch.', ['status' => 401]);
 		}
+		
 		return true; // All good → allow callback
 	}
 
@@ -869,21 +869,163 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		return rest_ensure_response(
 			array(
 				'success' => true,
-				'plan'                		       => $api_user_plan,
-				'product_id' 					   => $product_id,
-				'createdPolicies'				   => $created_policies ?? [],
-				'businessInfo'					   => $business_info ?? [],
-				'compliancesInfo'				   => $compliances_info ?? [],
-				'advancedInfo'					   => $advanced_info ?? [],
-				'languages'						   => $lang_options ?? [],
-				'selected_lang'					   => $lp_general['language'] ?? 'en_US',
-				'createPopupSettings'			   => $create_popup_settings ?? [],
-				'templateOptions'				   => $template_options ?? [],
-				'userInfo'						   => $user_info ?? []
+				'plan'                		      			=> $api_user_plan,
+				'product_id' 					  			=> $product_id,
+				'createdPolicies'				   			=> $created_policies ?? [],
+				'businessInfo'					   			=> $business_info ?? [],
+				'compliancesInfo'				   			=> $compliances_info ?? [],
+				'advancedInfo'					   			=> $advanced_info ?? [],
+				'languages'						   			=> $lang_options ?? [],
+				'selected_lang'					   			=> $lp_general['language'] ?? 'en_US',
+				'createPopupSettings'			   			=> $create_popup_settings ?? [],
+				'templateOptions'				   			=> $template_options ?? [],
+				'userInfo'						   			=> $user_info ?? [],
+				'pro_privacy_policy_third_party_services' 	=> $this->wplegalpages_get_gdpr_sections(),
 			)
 		);
 	}
 
+	public static function wplegalpages_get_gdpr_sections() {
+
+		$sections = array();
+
+		// -------------------------------------------------
+		// Plugin not installed
+		// -------------------------------------------------
+		if ( ! file_exists( WP_PLUGIN_DIR . '/gdpr-cookie-consent' ) ) {
+
+			$sections[] = array(
+				'id'          => 'gdpr_third_party_services',
+				'title'       => '<strong>To scan website for third-party services, install and activate plugin <a href="https://wordpress.org/plugins/gdpr-cookie-consent/" target="_blank">GDPR Cookie Consent</a>.</strong>',
+				'description' => '',
+				'type'        => 'section',
+				'position'    => 1,
+				'parent'      => 'allow_third_party_yes',
+				'collapsible' => '',
+				'sub_fields'  => array(),
+			);
+
+			return $sections;
+		}
+
+		// -------------------------------------------------
+		// Plugin installed but not active
+		// -------------------------------------------------
+		if ( ! is_plugin_active( 'gdpr-cookie-consent/gdpr-cookie-consent.php' ) ) {
+
+			$sections[] = array(
+				'id'          => 'gdpr_third_party_services',
+				'title'       => '<strong><a href="' . admin_url( 'plugins.php' ) . '" target="_blank">Activate</a> plugin GDPR Cookie Consent, to scan for third-party services on your website.</strong>',
+				'description' => '',
+				'type'        => 'section',
+				'position'    => 1,
+				'parent'      => 'allow_third_party_yes',
+				'collapsible' => '',
+				'sub_fields'  => array(),
+			);
+
+			return $sections;
+		}
+
+		// -------------------------------------------------
+		// Check last scan
+		// -------------------------------------------------
+		global $wpdb;
+
+		$scan_table = $wpdb->prefix . 'wpl_cookie_scan';
+		$sql        = "SELECT * FROM `$scan_table` ORDER BY id_wpl_cookie_scan DESC LIMIT 1";
+		$last_scan  = $wpdb->get_row( $sql, ARRAY_A ); // phpcs:ignore
+
+		// -------------------------------------------------
+		// No scan yet
+		// -------------------------------------------------
+		if ( ! $last_scan ) {
+
+			$sections[] = array(
+				'id'          => 'gdpr_third_party_services',
+				'title'       => '<strong><a href="' . admin_url( 'admin.php?page=gdpr-cookie-consent#cookie_settings#cookie_list' ) . '" target="_blank">Scan now</a> to automatically detect third-party services on your website.</strong>',
+				'description' => '',
+				'type'        => 'section',
+				'position'    => 1,
+				'parent'      => 'allow_third_party_yes',
+				'collapsible' => '',
+				'sub_fields'  => array(),
+			);
+
+			return $sections;
+		}
+
+		// -------------------------------------------------
+		// Scan exists
+		// -------------------------------------------------
+		$last_scan_date = gmdate( 'F j, Y g:i a T', $last_scan['created_at'] );
+
+		$args = array(
+			'post_type'   => 'gdprpolicies',
+			'post_status' => 'publish',
+			'numberposts' => -1,
+		);
+
+		$gdpr_posts = get_posts( $args );
+
+		// -------------------------------------------------
+		// Services detected
+		// -------------------------------------------------
+		if ( ! empty( $gdpr_posts ) ) {
+
+			$sub_fields = array();
+			$position   = 1;
+
+			foreach ( $gdpr_posts as $post ) {
+
+				$service_name          = str_replace( ' ', '_', $post->post_title );
+				$service_name_prefixed = $post->ID . 'gdpr_scanned_' . $service_name;
+
+				$sub_fields[] = array(
+					'id'          => $service_name_prefixed,
+					'title'       => $post->post_title,
+					'description' => '',
+					'type'        => 'checkbox',
+					'position'    => $position,
+					'name'        => $service_name_prefixed,
+					'value'       => 1,
+					'checked'     => true,
+					'sub_fields'  => array(),
+				);
+
+				$position++;
+			}
+
+			$sections[] = array(
+				'id'          => 'gdpr_third_party_services',
+				'title'       => '<strong>Last scan:</strong> ' . $last_scan_date . '<br>Third-party services detected:',
+				'description' => '',
+				'type'        => 'section',
+				'position'    => 1,
+				'parent'      => 'allow_third_party_yes',
+				'collapsible' => '',
+				'sub_fields'  => $sub_fields,
+			);
+
+			return $sections;
+		}
+
+		// -------------------------------------------------
+		// No services detected
+		// -------------------------------------------------
+		$sections[] = array(
+			'id'          => 'gdpr_third_party_services',
+			'title'       => '<strong>Last scan:</strong> ' . $last_scan_date . '<br>No third-party services detected.',
+			'description' => '',
+			'type'        => 'section',
+			'position'    => 1,
+			'parent'      => 'allow_third_party_yes',
+			'collapsible' => '',
+			'sub_fields'  => array(),
+		);
+
+		return $sections;
+}
 	public function wplp_get_page_settings_for_react_app(WP_REST_Request $request){
 
 		$page = $request->get_param( 'page' );
@@ -1150,6 +1292,28 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				update_post_meta( $pid, 'legal_page_coppa_settings', $page_settings );
 				update_post_meta( $pid, 'legal_page_coppa_options', $page_options );
 				update_option( 'wplegal_coppa_policy_page', $pid );
+				break;
+
+			case "ccpa_free":
+			case "terms_forced":
+			case "gdpr_cookie_policy":
+			case "gdpr_privacy_policy":
+			case "blog_comments_policy":
+			case "linking_policy":
+			case "external_link_policy":
+			case "digital_goods_refund_policy":
+			case "affiliate_disclosure":
+			case "amazon_affiliate_disclosure":
+			case "testimonials_disclosure":
+			case "confidentiality_disclosure":
+			case "advertising_disclosure":
+			case "medical_disclaimer":
+			case "newsletters":
+			case "antispam":
+			case "ftc_statement":
+			case "double_dart":
+			case "cpra":
+			case "about_us":
 				break;
 
 			default:
@@ -5024,7 +5188,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 */
 		public function wplegalpages_get_page_sections( $page ) {
 			require_once plugin_dir_path( __DIR__ ) . 'admin/wizard/class-wp-legal-pages-wizard-page.php';
-			$lp          = new WP_Legal_Pages_Wizard_Page();
+			$lp          = new WP_Legal_Pages_Wizard_Page();   
 			$lp_sections = (array) $lp->get_section_fields_by_page( $page );
 			if ( 'privacy_policy' === $page ) {
 				$lp_sections = self::wplegalpages_add_gdpr_options_to_remote_data( $lp_sections );
