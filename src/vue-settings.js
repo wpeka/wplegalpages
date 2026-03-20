@@ -41,7 +41,7 @@ var gen = new Vue({
           appendField: ".wplegalpages-settings-container",
           customToolbarForm: [],
           domain: "",
-          generate: null,
+          generate: true,
           search: null,
           affiliate_disclosure: null,
           enable_block: null,
@@ -401,18 +401,6 @@ var gen = new Vue({
         },
         showPopupForm() {
             this.show_popup_form = !this.show_popup_form;
-        },
-        onClickPopup() {
-            this.is_popup = !this.is_popup;
-            this.$refs.popup= this.is_popup ? '1' : '0';
-            // Display/Hide the 'Create Popup' submenu according to the toggle button in modal of 'Create Popus' card of 'Compliances Tab'
-            if( this.is_popup ) {
-                jQuery('.wplegalpages-popup-submenu').css('display', 'block')
-            }
-            else {
-                jQuery('.wplegalpages-popup-submenu').css('display', 'none')
-            }
-			this.create_popup_clicked = true;
         },
         onSwitchPopup(){
             this.is_popup = !this.is_popup;

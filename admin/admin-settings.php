@@ -1182,25 +1182,7 @@ if ( '1' === $lpterms ) {
 										echo $setting_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									}
 
-								} ?>			
-								<c-row class="wplegal-support-text-row">
-									<c-col class="col-sm-7 wplegal-compliances-text">
-										<label><?php esc_attr_e( 'Create Popups', 'wplegalpages' ); ?></label>
-										<span class="wplegalpages-help-text">
-											<?php esc_html_e( 'Enabling this setting will activate the Create Popup option in the WPLP Legal Pages plugin menu.', 'wplegalpages' ); ?>
-											<a href="<?php echo esc_url( 'https://wplegalpages.com/docs/wp-legal-pages/configurations/configuring-the-settings/' ); ?>" target="_blank" rel="noopener noreferrer">
-											    <?php esc_html_e( 'Learn how you can add popups using WPLP Compliance Platform.', 'wplegalpages' ); ?>
-											</a>
-										</span>
-									</c-col>
-									<c-col class="col-sm-2 wplegal-compliances-switch">
-										<c-switch v-bind="labelIcon" v-model="is_popup" variant="3d"  color="success" :checked="is_popup" v-on:update:checked="onClickPopup"></c-switch>
-										<input type="hidden" name="lp-popup" ref="popup" v-model="is_popup">
-									</c-col>
-									<c-col class="col-sm-3 wplegalpages-configure-section">
-										
-									</c-col>
-								</c-row>
+								} ?>
 							</c-card-body>
 						</div>
 						<div class="wplegalpages-settings-bottom">
