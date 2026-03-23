@@ -526,7 +526,7 @@ Vue.component("Feature", {
                 staticClass: "wplegal-feature-img-icon",
                 domProps: {
                   src: obj.image_url + "pro_icon.svg",
-                  alt: "WPLegalPages featured Image Icon"
+                  alt: "WPLP Legal Pages featured Image Icon"
                 },
               }),
               createElement("p", {
@@ -640,7 +640,7 @@ Vue.component("TermsSection", {
         .then((response) => {
           if (response.success) {
             this.$parent.disabled = 1;
-            location.reload();
+            window.location.href = "admin.php?page=wplp-dashboard";
           }
         });
     },
