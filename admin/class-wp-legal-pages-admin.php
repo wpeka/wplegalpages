@@ -1889,6 +1889,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				}
 				// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 			}
+
+			// Set Create Popup to true
+			$lp_general = get_option( 'lp_general' );
+
+			if ( ! is_array( $lp_general ) ) {
+			    $lp_general = array();
+			}
+
+			$lp_general['is_popup'] = '1';
+			update_option( 'lp_general', $lp_general );
+			update_option('lp_popup_enabled', '1');
 		}
 
 		/**
