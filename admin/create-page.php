@@ -35,7 +35,7 @@ $lp_pro_active = get_option( '_lp_pro_active' );
 		?>
 		<div id="wplegalpages_settings_warning" class="notice notice-warning is-dismissible wplegalpages_settings_warning">
 			<div>
-				<p>Please make sure the website information is correct at the <a href="<?php echo esc_url_raw( admin_url() . 'admin.php?page=legal-pages' ); ?>">Settings page</a> before you create a legal page.</p>
+				<p><?php echo esc_attr_e( 'Please make sure the website information is correct at the', 'wplegalpages'); ?> <a href="<?php echo esc_url_raw( admin_url() . 'admin.php?page=legal-pages#settings' ); ?>"><?php echo esc_attr_e( 'Settings page', 'wplegalpages'); ?></a><?php echo esc_attr_e('before you create a legal page.', 'wplegalpages'); ?></p>
 			</div> 
 			<div>
 				<button id="wplegal_pages_settings_warning_disable" class="button-primary">Do not show again</button>
@@ -336,7 +336,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 		</div>
 
 		<div id="lp_generalid_right" class="postbox ">
-			<h3 class="hndle"  style="padding:0px 10px 12px 10px; font-size:20px;"> <?php esc_attr_e( 'WPLegalPages Pro Templates', 'wplegalpages' ); ?> </h3><br/>
+			<h3 class="hndle"  style="padding:0px 10px 12px 10px; font-size:20px;"> <?php esc_attr_e( 'WPLP Legal Pages Pro Templates', 'wplegalpages' ); ?> </h3><br/>
 			<ul class="wplegal-templates">
 				<li>Terms of use <strong>(forced agreement - don't allow your users to proceed without agreeing to your terms)</strong></li>
 				<li>Linking policy template</li>

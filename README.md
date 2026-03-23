@@ -7,14 +7,14 @@
 <a href="https://codecov.io/gh/wpeka/wplegalpages"><img src="https://codecov.io/gh/wpeka/wplegalpages/branch/master/graph/badge.svg?token=5YXL6K0ADF" alt="codecov"></a>
 </p>
 
-Welcome to the WPLegalPages repository on GitHub. Here you can browse the source, look at open issues and keep track of development.
+Welcome to the WPLP Legal Pages repository on GitHub. Here you can browse the source, look at open issues and keep track of development.
 
-If you are not a developer, please use the [WPLegalPages plugin](https://wordpress.org/plugins/wplegalpages/) page on WordPress.org.
+If you are not a developer, please use the [WPLP Legal Pages plugin](https://wordpress.org/plugins/wplegalpages/) page on WordPress.org.
 
 ## Documentation
-* [WPLegalPages Documentation](https://docs.wpeka.com/wp-legal-pages/)
+* [WPLP Legal Pages Documentation](https://docs.wpeka.com/wp-legal-pages/)
 
 ## Support
-Please don't use this repository or our issue tracker here for support requests. You can raise only core WPLegalPages issues here. Support can be accessible through the appropriate channels:
+Please don't use this repository or our issue tracker here for support requests. You can raise only core WPLP Legal Pages issues here. Support can be accessible through the appropriate channels:
 * The [WPeka Club Premium Support My-Account Area](https://club.wpeka.com/my-account/) for customers who have purchased WPEka plugins.
-* [Our community forum on wp.org](https://wordpress.org/support/plugin/wplegalpages/) which is available for all WPLegalPages users.
+* [Our community forum on wp.org](https://wordpress.org/support/plugin/wplegalpages/) which is available for all WPLP Legal Pages users.

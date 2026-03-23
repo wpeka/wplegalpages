@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	?>
 		
 		<div style="clear:both;"></div>
-		<div class="wrap wplegalpages-popup-section">
+		<div class="wplp-wrap wplegalpages-popup-section">
 			<?php
 			if ( isset( $_REQUEST['mode'] ) && 'delete' === $_REQUEST['mode'] && current_user_can( 'manage_options' ) ) {
 				if ( isset( $_REQUEST['nonce'] ) ) {
@@ -262,9 +262,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 									}
 								}
 
-								$id_list = implode( ',', $post_id_arr );
+								if (!empty($post_id_arr)) {
+								    $id_list = implode(',', $post_id_arr);
 
-								$res = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_content FROM {$wpdb->posts} WHERE ID IN ({$id_list}) AND post_type = %s AND post_status != %s", 'page', 'trash')); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared	
+								    $res = $wpdb->get_results(
+								        $wpdb->prepare(
+								            "SELECT ID, post_title, post_content FROM {$wpdb->posts} WHERE ID IN ($id_list) AND post_type = %s AND post_status != %s",
+								            'page',
+								            'trash'
+								        )
+								    );
+								} else {
+								    $res = []; // no pages to fetch
+								}
+
 								?>
 									<script type="text/javascript">
 										function wplpfunc(selectObj) {
@@ -342,5 +353,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 									</div>
 									<div class="clear"></div>
 						</div>
-
+					<script>
+						jQuery(document).ready(function($) {
+							setTimeout(function() {
+								$(".myAlert").fadeTo(500,0);
+							}, 1000);
+						});
+					</script>
 						<?php 

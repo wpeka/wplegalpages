@@ -91,7 +91,7 @@ if ( false === $lp_banner_options || empty( $lp_banner_options ) ) {
 		'banner_custom_css'       => '',
 		'banner_close_message'    => 'Close',
 		'banner_message'          => 'Our [wplegalpages_page_link] have been updated on [wplegalpages_last_updated].',
-		'banner_multiple_message' => 'Our [wplegalpages_page_link] pages have recently have recently been updated.',
+		'banner_multiple_message' => 'Our [wplegalpages_page_link] pages have recently been updated.',
 	);
 	update_option( 'lp_banner_options', $lp_banner_options );
 }
@@ -363,9 +363,12 @@ if ( '1' === $lpterms ) {
 								</c-row>
 								<c-row class="wplegal-support-text-row">
 									<c-col class="col-sm-10">
-										<label><?php esc_attr_e( 'Affiliate Disclosure', 'wplegalpages' ); ?></label>
+										<label><?php esc_attr_e( 'Affiliate Disclosure', 'wplegalpages' ); ?> <tooltip text="<?php esc_html_e( 'Enable this option to display an Affiliate Disclosure below each blog post, ensuring compliance with FTC guidelines.', 'wplegalpages' ); ?>"></tooltip></label>
 										<span class="wplegalpages-help-text">
-											<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must', 'wplegalpages' ); ?>
+											<?php esc_html_e( 'If you have an affiliate site, having an affiliate disclosure is must.', 'wplegalpages' ); ?>
+											<a href="<?php echo esc_url( 'https://wplegalpages.com/docs/wp-legal-pages/configurations/configuring-the-settings/' ); ?>" target="_blank" rel="noopener noreferrer">
+											    <?php esc_html_e( 'Learn here how to add an affiliate disclosure', 'wplegalpages' ); ?>
+											</a>
 										</span>
 									</c-col>
 									<c-col class="col-sm-2">
@@ -1058,11 +1061,11 @@ if ( '1' === $lpterms ) {
 										<?php
 										if ( ! $lp_show_improved_ui ) {
 											?>
-											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Enabled', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enabling this setting will activate the Create Popup option in the WPLegalPages plugin menu.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+											<c-col class="col-sm-4"><label><?php esc_attr_e( 'Enabled', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Enabling this setting will activate the Create Popup option in the WPLP Legal Pages plugin menu.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 											<?php
 										} else {
 											?>
-										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Enabled', 'wplegalpages' ); ?> <tooltip :bottom="true" text="<?php esc_html_e( 'Enabling this setting will activate the Create Popup option in the WPLegalPages plugin menu.', 'wplegalpages' ); ?>"></tooltip></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_attr_e( 'Enabled', 'wplegalpages' ); ?> <tooltip :bottom="true" text="<?php esc_html_e( 'Enabling this setting will activate the Create Popup option in the WPLP Legal Pages plugin menu.', 'wplegalpages' ); ?>"></tooltip></label></c-col>
 											<?php
 										}
 										?>
@@ -1175,7 +1178,10 @@ if ( '1' === $lpterms ) {
 									<c-col class="col-sm-7 wplegal-compliances-text">
 										<label><?php esc_attr_e( 'Create Popups', 'wplegalpages' ); ?></label>
 										<span class="wplegalpages-help-text">
-											<?php esc_html_e( 'Enabling this setting will activate the Create Popup option in the WPLegalPages plugin menu.', 'wplegalpages' ); ?>
+											<?php esc_html_e( 'Enabling this setting will activate the Create Popup option in the WPLP Legal Pages plugin menu.', 'wplegalpages' ); ?>
+											<a href="<?php echo esc_url( 'https://wplegalpages.com/docs/wp-legal-pages/configurations/configuring-the-settings/' ); ?>" target="_blank" rel="noopener noreferrer">
+											    <?php esc_html_e( 'Learn how you can add popups using WPLP Compliance Platform.', 'wplegalpages' ); ?>
+											</a>
 										</span>
 									</c-col>
 									<c-col class="col-sm-2 wplegal-compliances-switch">
@@ -1183,12 +1189,7 @@ if ( '1' === $lpterms ) {
 										<input type="hidden" name="lp-popup" ref="popup" v-model="is_popup">
 									</c-col>
 									<c-col class="col-sm-3 wplegalpages-configure-section">
-										<c-button class="wplegalpages-configure-button" @click="showPopupForm">
-											<span>
-												<img class="wplegalpages-configure-image" :src="configure_image_url.default" :alt="configure_alt_text"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?> 
-												<span class="wplegalpages-configure-text"><?php esc_attr_e( 'Configuration', 'wplegalpages' ); ?></span>
-											</span>
-										</c-button>
+										
 									</c-col>
 								</c-row>
 							</c-card-body>
@@ -1213,7 +1214,7 @@ if ( '1' === $lpterms ) {
 									</div>
 									<div class="wplegal-connect-information">
 
-										<h3><?php esc_html_e( 'Your website is connected to WP Legal Pages', 'wplegalpages' ); ?></h3>
+										<h3><?php esc_html_e( 'Your website is connected to WPLP Legal Pages', 'wplegalpages' ); ?></h3>
 
 										<p class="gpdr-email-info"><span class="wplegal-info-title" ><?php esc_html_e( 'Email : ', 'wplegalpages' ); ?></span> <?php echo esc_html( $api_user_email ); ?>  </p>
 										<p><span class="wplegal-info-title" ><?php esc_html_e( 'Site Key : ', 'wplegalpages' ); ?></span> <?php echo esc_html( $api_user_site_key ); ?>  </p>
@@ -1297,9 +1298,9 @@ if ( '1' === $lpterms ) {
 
 WPLegalPages.com is not a law firm, is not comprised of a law firm, and its employees are not lawyers.  We do not review your site and we will not review your site. We do not purport to act as your attorney and do not make any claims that would constitute legal advice. We do not practice law in any state, nor are any of the documents provided via our Site intended to be in lieu of receiving legal advice.  The information we may provide is general in nature, and may be different in your jurisdiction.  In other words, do not take these documents to be "bulletproof" or to give you protection from lawsuits.  They are not a substitute for legal advice and you should have an attorney review them.
 
-Accordingly, we disclaim any and all liability and make no warranties, including disclaimer of warranty for implied purpose, merchantability, or fitness for a particular purpose.  We provide these documents on an as is basis, and offer no express or implied warranties.  The use of our plugin and its related documents is not intended to create any representation or approval of the legality of your site and you may not represent it as such.  We will have no responsibility or liability for any claim of loss, injury, or damages related to your use or reliance on these documents, or any third parties use or reliance on these documents.  They are to be used at your own risk.  Your only remedy for any loss or dissatisfaction with WPLegalPages is to discontinue your use of the service and remove any documents you may have downloaded.
+Accordingly, we disclaim any and all liability and make no warranties, including disclaimer of warranty for implied purpose, merchantability, or fitness for a particular purpose.  We provide these documents on an as is basis, and offer no express or implied warranties.  The use of our plugin and its related documents is not intended to create any representation or approval of the legality of your site and you may not represent it as such.  We will have no responsibility or liability for any claim of loss, injury, or damages related to your use or reliance on these documents, or any third parties use or reliance on these documents.  They are to be used at your own risk.  Your only remedy for any loss or dissatisfaction with WPLP Legal Pages is to discontinue your use of the service and remove any documents you may have downloaded.
 
-To the degree that we have had a licensed attorney review these documents it is for our own internal purposes and you may not rely on this as legal advice.  Since the law is different in every state, you should have these documents reviewed by an attorney in your jurisdiction.  As stated below, we disclaim any and all liability and warranties, including damages or loss that may result from your use or misuse of the documents.  Unless prohibited or limited by law, our damages in any matter are limited to the amount you paid for the WPLegalPages plugin.</textarea><br/><br/>
+To the degree that we have had a licensed attorney review these documents it is for our own internal purposes and you may not rely on this as legal advice.  Since the law is different in every state, you should have these documents reviewed by an attorney in your jurisdiction.  As stated below, we disclaim any and all liability and warranties, including damages or loss that may result from your use or misuse of the documents.  Unless prohibited or limited by law, our damages in any matter are limited to the amount you paid for the WPLP Legal Pages plugin.</textarea><br/><br/>
 	Please Tick this checkbox to accept our Terms and Policy <input type="checkbox" name="lp_accept_terms" value="1"
 	<?php
 	if ( '1' === $lpterms ) {

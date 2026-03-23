@@ -8,6 +8,43 @@ jQuery(document).ready(function () {
 	const lpTerms  = wplp_localize_data.lp_terms;
 	const is_user_connected = wplp_localize_data.is_user_connected;
 
+	jQuery(document).ready(function ($) {
+	  // click handler (same as yours)
+	  $(".wplp-compliance-legalpages-tab-admin .wplp-admin-tab-link-content").on("click", function (e) {
+	    e.preventDefault();
+	    const parentTab = $(this).closest(".wplp-compliance-legalpages-tab-admin");
+	    parentTab.toggleClass("open-tab");
+	  });
+  
+	  // open-tab by default if is in URL
+		$(".wplp-compliance-legalpages-tab-admin").addClass("open-tab");
+  
+	  // active-tab toggle (your code)
+	  var currentPage = window.location.href;
+	  if (currentPage.includes("page=legal-pages")) {
+	    $(".wp-legalpages-admin-tab-link.legalpages-tab").addClass("active-tab");
+	  } else {
+	    $(".wp-legalpages-admin-tab-link.legalpages-tab").removeClass("active-tab");
+	  }
+	});
+
+	jQuery(document).ready(function ($) {
+	  $(document).on("click", ".wp-legalpages-admin-wplp-dashboard-tab", function () {
+	    setTimeout(function () {
+	      var url = window.location.href;
+	      if (url.includes("#getting_started")) {
+	        var cleanUrl = url.split("#")[0];
+	        history.replaceState(null, null, cleanUrl);
+	        window.location.reload();
+	      }
+	    });
+	  });
+	});
+
+
+
+
+
     if (isProActivated) {
         jQuery('.wp-legalpages-admin-tabs-section').addClass('pro-is-activated');
         jQuery('.wp-legalpages-admin-tab').addClass('pro-is-activated');
@@ -21,12 +58,11 @@ jQuery(document).ready(function () {
 		jQuery('.wp-legalpages-admin-help-and-support .wp-legalpages-admin-support-text').addClass('lp-terms-not-acpt');
 	}
 
-
-    // Hide all tab contents initially except the first one
-    jQuery('.wp-legalpages-admin-tab-content').not(':first').hide();
-    jQuery('.wp-legalpages-admin-getting-started-tab').addClass('active-tab');
+	// Hide all tab contents initially except the first one
+	jQuery('.wp-legalpages-admin-tab-content').not(':first').hide();
+	jQuery('.wp-legalpages-admin-getting-started-tab').addClass('active-tab');
 	jQuery('.wp-legalpages-admin-wplp-dashboard-tab').addClass('active-tab');
-    jQuery('#getting_started').show();
+	jQuery('#getting_started').show();
 
 	// Check if the "wp-legalpages-admin-getting-started-tab" is active
     if (jQuery('.wp-legalpages-admin-getting-started-tab').hasClass('active-tab')) {
@@ -37,6 +73,13 @@ jQuery(document).ready(function () {
         jQuery('.legalpages-tab').removeClass('active-tab');
     }
 
+	jQuery(document).on('click', '.wp-legalpages-admin-create_legalpages-tab', function (event) {
+	    event.preventDefault();
+
+	    window.location.href = adminUrl + 'index.php?page=wplegal-wizard';
+	});
+
+
     // On tab click, redirect to the specified URL for create_legalpages tab
     jQuery('.wp-legalpages-admin-create_legalpages-tab').on('click', function () {
         // Redirect to the specified URL when the tab is clicked
@@ -46,8 +89,16 @@ jQuery(document).ready(function () {
     // On tab click, show the corresponding content and update URL hash for other tabs
     jQuery('.wp-legalpages-admin-tabs').on('click', '.wp-legalpages-admin-tab:not(.wp-legalpages-admin-create_legalpages-tab)', function (event) {
         event.preventDefault();
+
+		var redirectUrl = jQuery(this).data('redirect-url');
+    	if (redirectUrl) {
+    	    window.location.href = wplp_localize_data.admin_url + redirectUrl;
+    	    return;
+    	}
+
         var tabId = jQuery(this).data('tab');
 
+		if( tabId ){
         // Remove active class from all tabs
         jQuery('.wp-legalpages-admin-tab').removeClass('active-tab');
 
@@ -60,7 +111,7 @@ jQuery(document).ready(function () {
 
         // Update URL hash with the tab ID
         history.pushState({}, '', '#' + tabId);
-    });
+    }});
 
     // Retrieve the active tab from URL hash on page load
     var hash = window.location.hash;
@@ -177,7 +228,7 @@ jQuery(document).ready(function () {
 	jQuery('.api-connect-to-account-btn').on('click', startAuth );
 	jQuery('.wplegal-api-connect-existing').on('click', startAuth );
 	jQuery(".gdpr-cookie-consent-admin-upgrade-button").on("click", paidAuth);
-
+	jQuery(".legal-pages-upgrade-to-pro-banner").on("click", paidAuth);
 	/**
 	 * Function to Start the Authentication Process.
 	 *
@@ -518,6 +569,8 @@ jQuery(document).ready(function () {
         		jQuery('.wp-legalpages-admin-help-tab').addClass('active-tab');
 			}
 			jQuery('#help-page').show();
+
+			window.location.href = 'admin.php?page=wplp-dashboard#help-page'
 		 });
 		if (window.location.href.includes('#help-page')) {
 			// Select the "Help Page" link and its immediate parent <li>
@@ -626,13 +679,15 @@ jQuery(document).ready(function () {
 document.addEventListener("DOMContentLoaded", alignSideBar);
 function alignSideBar(){
   var side_bar = document.querySelector(".wplp-sub-tabs");
-
+ if (!side_bar) {
+    return;
+  }
   function updateTopBasedOnTab(tabList) {
         if (tabList.includes("settings") || tabList.includes("all_legal_pages")) {
-            side_bar.style.top = "185px";
+            side_bar.style.top = "110px";
         } 
 		else {
-            side_bar.style.top = "65px"; // Default value
+            side_bar.style.top = "110px"; // Default value
         }
     }
     // Get the hash (part after #)

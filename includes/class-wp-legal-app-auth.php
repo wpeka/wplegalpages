@@ -161,7 +161,7 @@ class WP_Legal_Pages_App_Auth {
 		$demo_type = isset( $_POST['demo_type'] ) ? sanitize_text_field( wp_unslash( $_POST['demo_type'] )) : '';
 
 		$response = $this->post(
-			'plugin/importcaps',
+			'plugin/legalpage_capability_check',
 			wp_json_encode(
 				array(
 					'id'                  => $settings->get_user_id(),
@@ -212,6 +212,7 @@ class WP_Legal_Pages_App_Auth {
 			wp_send_json_success(
 				array(
 					'connection_status' => $response_body->current_instance,
+					'plan'              => $response_body->plan,
 					'error'             => false,
 				),
 			);
@@ -248,8 +249,14 @@ class WP_Legal_Pages_App_Auth {
 		$instance_id      = $wcam_lib_legalpages->wc_am_instance_id;
 		$object           = $wcam_lib_legalpages->wc_am_domain;
 		$software_version = $wcam_lib_legalpages->wc_am_software_version;
-		$api_auth_url     = $this->get_api_url( 'pricing' );
+		$is_user_connected = $settings->is_connected();
+		$api_user_plan = $settings->get_plan();
 
+		if ( ! $is_user_connected || $api_user_plan === 'free' ) {
+			$api_auth_url     = $this->get_api_url( 'pricing' );
+		}else{
+			$api_auth_url     = $this->get_api_url( 'my-account/active-plans/' );
+		}
 		if($is_user_from_connection_popup){
 			$auth_url = add_query_arg(
 				array(
@@ -537,7 +544,6 @@ class WP_Legal_Pages_App_Auth {
 		$this->make_auth_request();
 
 		$args = array(
-			'headers' => $this->headers,
 			'method'  => strtoupper( $method ),
 			'timeout' => $this->timeout,
 			'body'    => $data,
