@@ -167,7 +167,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			];
 
 			$route = $request->get_route();
-			error_log("route" .print_r($route, true));
 
 			if (
 				strpos($route, '/wplp-react-gdpr/') !== 0 &&
