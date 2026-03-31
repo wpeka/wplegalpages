@@ -3070,7 +3070,8 @@ table tbody tr td .table-link-alert:hover {
   line-height: 100%;
   text-align: center;
 }
-.gdpr-remaining-scans-progress {
+.gdpr-remaining-scans-progress,
+.gdpr-pageviews-progress {
   display: flex;
   justify-content: center;
   align-items: center;
