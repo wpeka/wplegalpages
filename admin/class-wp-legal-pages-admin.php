@@ -2833,20 +2833,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 			?>
 			<div id="wplegal-loader">
-				<div style="text-align:center;">
-    			  <div style="
-    			    width:40px;
-    			    height:40px;
-    			    border:4px solid #e5e5e5;
-    			    border-top:4px solid #2271b1;
-    			    border-radius:50%;
-    			    animation: wpl-spin 0.8s linear infinite;
-    			  "></div>
-    			  <p style="margin-top:10px;font-size:13px;color:#50575e;">
+				<div class="wplegal-loader-wrapper">
+    			  <div class="wplegal-loader-content"></div>
+    			  <p class="wplegal-loader-text">
     			    Loading...
     			  </p>
     			</div>
-				<style> @keyframes wpl-spin { to { transform: rotate(360deg); } } </style>
 			</div>
 
 			<div id="gettingstartedapp" v-cloak></div>
