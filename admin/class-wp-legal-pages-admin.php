@@ -1231,6 +1231,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		update_post_meta( $pid, 'is_legal', 'yes' );
 		update_post_meta( $pid, 'legal_page_type', $page_slug );
 
+		$page_settings = $this->populate_settings_with_options( $page_settings, $page_options );
+
 		switch ( $page_slug ) {
 
 			case 'terms_of_use':
@@ -1336,25 +1338,83 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				break;
 
 			case "ccpa_free":
+				update_option( 'wplegal_ccpa_free_page', $pid );
+				break;
+
 			case "terms_forced":
+				update_option( 'wplegal_terms_forced_policy_page', $pid );
+				break;
+
 			case "gdpr_cookie_policy":
+				update_option( 'wplegal_gdpr_cookie_policy_page', $pid );
+				break;
+
 			case "gdpr_privacy_policy":
+				update_option( 'wplegal_gdpr_privacy_policy_page', $pid );
+				break;
+
 			case "blog_comments_policy":
+				update_option( 'wplegal_blog_comments_policy_page', $pid );
+				break;
+
 			case "linking_policy":
+				update_option( 'wplegal_linking_policy_page', $pid );
+				break;
+
 			case "external_link_policy":
+				update_option( 'wplegal_external_link_policy_page' , $pid );
+				break;
+
 			case "digital_goods_refund_policy":
+				update_option( 'wplegal_digital_goods_refund_policy_page', $pid );
+				break;
+
 			case "affiliate_disclosure":
+				update_option( 'wplegal_affiliate_disclosure_page', $pid );
+				break;
+
 			case "amazon_affiliate_disclosure":
+				update_option( 'wplegal_amazon_affiliate_disclosure_page', $pid );
+				break;
+
 			case "testimonials_disclosure":
+				update_option( 'wplegal_testimonials_disclosure_page', $pid );
+				break;
+
 			case "confidentiality_disclosure":
+				update_option( 'wplegal_confidentiality_disclosure_page', $pid );
+				break;
+
 			case "advertising_disclosure":
+				update_option( 'wplegal_advertising_disclosure_page', $pid );
+				break;
+
 			case "medical_disclaimer":
+				update_option( 'wplegal_medical_disclaimer_page', $pid );
+				break;
+
 			case "newsletters":
+				update_option( 'wplegal_newsletters_page', $pid );
+				break;
+			
 			case "antispam":
+				update_option( 'wplegal_antispam_page', $pid );
+				break;
+
 			case "ftc_statement":
+				update_option( 'wplegal_ftc_statement_page', $pid );
+				break;
+
 			case "double_dart":
+				update_option( 'wplegal_double_dart_page', $pid );
+				break;
+
 			case "cpra":
+				update_option( 'wplegal_cpra_page', $pid );
+				break;
+
 			case "about_us":
+				update_option( 'wplegal_about_us_page', $pid ); 
 				break;
 
 			default:
@@ -1403,6 +1463,43 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			),
 			200
 		);
+	}
+
+	public function populate_settings_with_options( $settings, $options ) {
+		if ( ! is_array( $settings ) ) {
+			return $settings;
+		}
+	
+		foreach ( $settings as $index => $item ) {
+			$item = (array) $item;
+		
+			if (
+				isset( $item['type'], $item['id'] ) &&
+				in_array( $item['type'], ['input', 'checkbox', 'radio', 'textarea', 'toggle'], true )
+			) {
+				$id = $item['id'];
+			
+				if ( isset( $options[ $id ] ) ) {
+					if ( in_array( $item['type'], ['input', 'textarea'], true ) ) {
+						$settings[$index]['value'] = $options[$id];
+					} else {
+						$settings[$index]['checked'] = $options[$id];
+					}
+				}
+			}
+		
+			// recurse fields
+			if ( !empty( $item['fields'] ) && is_array( $item['fields'] ) ) {
+				$settings[$index]['fields'] = $this->populate_settings_with_options( $item['fields'], $options );
+			}
+		
+			// recurse sub_fields
+			if ( !empty( $item['sub_fields'] ) && is_array( $item['sub_fields'] ) ) {
+				$settings[$index]['sub_fields'] = $this->populate_settings_with_options( $item['sub_fields'], $options );
+			}
+		}
+	
+		return $settings;
 	}
 	
 	public function wplp_save_legal_settings_for_react_app ( WP_REST_Request $request ) {
@@ -2735,7 +2832,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			);
 
 			?>
-			<div id="wplegal-loader"></div>
+			<div id="wplegal-loader">
+				<div class="wplegal-loader-wrapper">
+    			  <div class="wplegal-loader-content"></div>
+    			  <p class="wplegal-loader-text">
+    			    Loading...
+    			  </p>
+    			</div>
+			</div>
 
 			<div id="gettingstartedapp" v-cloak></div>
 			<div id="wplegal-mascot-app"></div>
@@ -6613,7 +6717,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				}
 
 				#wplegal-loader {
-					background: #7f7f7f;
+					background: #fff;
 					position: fixed;
 					z-index: 99999;
 					width: 100%;
