@@ -825,7 +825,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			'duration'			=> $lp_general['duration'],
 			'disclosingParty'	=> $lp_general['disclosing-party'],
 			'recipientParty'	=> $lp_general['recipient-party'],
-			'last_updated'	    => $lp_general['last_updated'],
+			'last_updated'	    => $lp_general['last_updated'] ?? '',
 		);
 
 		$advanced_info[] = array(
