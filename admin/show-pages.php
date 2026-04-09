@@ -109,6 +109,8 @@ $current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( wp_unslash( $_
 
 						if (!empty($author) && isset($author[0]) && isset($author[0]->user_login)) {
 						    $username = ucfirst($author[0]->user_login);
+						} else {
+							$username = esc_attr__( '--', 'wplegalpages' );
 						}
 
 						echo esc_attr($username);
