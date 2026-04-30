@@ -5702,6 +5702,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'template' => $page,
 					);
 					$this->wplegalpages_send_shared_usage_data( 'LP Template Downloaded', $args );
+					
+					wp_update_post( array(
+						'ID'          => $pid,
+						'post_status' => 'draft',
+					) );
+
 					$url               = str_replace( '&amp;', '&', $url );
 					$result['success'] = true;
 					$result['url']     = $url;
