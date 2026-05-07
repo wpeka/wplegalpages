@@ -1216,10 +1216,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 		$post_args = array();
 		if($post_id){
+			$current_status = get_post_status( $post_id );
 			$post_args = array(
 				'ID'           => $post_id,
 				'post_title'   => apply_filters( 'the_title', $page_title ),
 				'post_content' => $page_content,
+				'post_status'  => $current_status ?: 'draft',
 			);
 		}
 		else {
