@@ -714,8 +714,8 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 .wplegalpages-save-button input[type="submit"]:active {
   background-color: #0059b3;
   color: #ffffff;
-  outline: none !important;
-  box-shadow: none !important;
+  outline: none;
+  box-shadow: none;
 }
 
 /* form elements css */
