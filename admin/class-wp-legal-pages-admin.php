@@ -2271,6 +2271,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( ! function_exists( 'register_block_type' ) ) {
 				return;
 			}
+			$lp_general = get_option("lp_general");
+			$affiliate_block_enabled = $lp_general['affiliate-disclosure'];
+			if ( ! $affiliate_block_enabled ) {
+				return;
+			}
 			wp_register_script(
 				$this->plugin_name . '-block',
 				plugin_dir_url( __FILE__ ) . 'js/blocks/wplegalpages-pro-admin-block.js',
