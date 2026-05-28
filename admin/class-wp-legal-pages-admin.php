@@ -2272,7 +2272,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				return;
 			}
 			$lp_general = get_option("lp_general");
-			$affiliate_block_enabled = $lp_general['affiliate-disclosure'];
+			if ( ! is_array( $lp_general ) ) {
+				$lp_general = array();
+			}
+		
+			$affiliate_block_enabled = ! empty( $lp_general['affiliate-disclosure'] );
+		
 			if ( ! $affiliate_block_enabled ) {
 				return;
 			}
