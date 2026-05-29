@@ -6730,11 +6730,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			return false;
 		}
 		/**
-		 * Sends LP template downloaded event in ampltiude
+		 * Sends LP template downloaded event in amplitude
 		 *
 		 * @param string $event Event name to be tracked.
 		 * @param array  $args  Optional. Additional event-specific data to send.
-		 * @return bool True on successful request, false otherwise or if opt-in is not enabled.
 		 */
 		public function app_wplp_track_lp_downloaded( $event, $args = array() ) {
 
