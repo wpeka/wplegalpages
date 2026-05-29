@@ -1461,7 +1461,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		$url = $url = admin_url( 'post.php?post=' . $pid . '&action=edit' );
 		$url = str_replace( '&amp;', '&', $url );
-
+		$user_email = sanitize_email( $request->get_param('user_email') ?? '' );
+		$this->app_wplp_track_lp_downloaded( 'LP Template Downloaded from SaaS', array(
+				'user_email' => $user_email,
+				'template'   => $page_slug,
+				'title'      => $page_title,
+			));
 		return new WP_REST_Response(
 			array(
 				'success' => true,
@@ -5713,7 +5718,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$args    = array(
 						'template' => $page,
 					);
-					$this->wplegalpages_send_shared_usage_data( 'LP Template Downloaded', $args );
+					$this->app_wplp_track_lp_downloaded( 'LP Template Downloaded from plugin', $args );
 					$url               = str_replace( '&amp;', '&', $url );
 					$result['success'] = true;
 					$result['url']     = $url;
@@ -6724,7 +6729,61 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 			return false;
 		}
+		/**
+		 * Sends LP template downloaded event in ampltiude
+		 *
+		 * @param string $event Event name to be tracked.
+		 * @param array  $args  Optional. Additional event-specific data to send.
+		 * @return bool True on successful request, false otherwise or if opt-in is not enabled.
+		 */
+		public function app_wplp_track_lp_downloaded( $event, $args = array() ) {
 
+			$url = WPLEGAL_APP_URL . '/wp-json/api/v1/plugin/app_wplp_track_lp_downloaded';
+			$user_id    = get_current_user_id();
+			$user_email = '';
+
+			if ( ! empty( $args['user_email'] ) ) {
+				$user_email = sanitize_email( $args['user_email'] );
+			} else {
+				if ( $user_id ) { 
+					$user       = get_userdata( $user_id );
+					$user_email = $user ? $user->user_email : null;
+				} else {
+					$user_email = null;
+				}
+			}
+
+			$data = array(
+				'event'       => $event,
+				'src'         => 'wplegalpages',
+				'site_url'    => site_url(),
+				'email'       => $user_email,
+				'os_name'     => $this->wplegalpages_get_user_os(),
+				'device_type' => $this->wplegalpages_get_device_type(),
+				'ip'          => $this->wplegalpages_get_user_ip(),
+				'country'     => $this->wplegalpages_get_user_country(),
+				'time'        => time() * 1000,
+				'args'        => $args,
+			);
+
+			$response = wp_safe_remote_post(
+				$url,
+				array(
+					'body'    => wp_json_encode( $data ),
+					'headers' => array(
+						'Content-Type' => 'application/json',
+					),
+					'method'  => 'POST',
+					'timeout' => 20,
+				)
+			);
+
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
+
+			return 200 === (int) wp_remote_retrieve_response_code( $response );
+		}
 		public function wplegalpages_inline_onload_admin_styles(){
 		?>
 			<style>
