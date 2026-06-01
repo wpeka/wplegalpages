@@ -320,24 +320,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					array(
 						'methods'  => 'POST',
 						'callback' => array($this, 'disconnect_account_request'), // Function to handle the request
-						'permission_callback' => function() {
-        				    
-        				    if (current_user_can('manage_options')) {
-        				        return true;
-        				    }
-						
-        				    $stored_secret = get_option('wplegalpages_api_secret');
-        				    $header_secret = isset($_SERVER['HTTP_X_WPLP_SECRET'])
-        				                        ? sanitize_text_field($_SERVER['HTTP_X_WPLP_SECRET'])
-        				                        : '';
-						
-        				    if ($stored_secret && $header_secret && $stored_secret === $header_secret) {
-        				        return true;
-        				    }
-						
-        				    return new WP_Error('rest_forbidden', 'Unauthorized access', array('status' => 403));
-        				},
+						'permission_callback' => array($this, 'permission_callback_for_react_app'),
 					)
+		);
+		register_rest_route(
+			'wpl/v2', // Namespace
+			'/delete_activation_for_auto_disconnect', 
+			array(
+				'methods'  => 'POST',
+				'callback' => array($this, 'disconnect_account_request'), // Function to handle the request
+				'permission_callback' => array($this, 'permission_callback_for_delete_activation'),
+			)
 		);
 
 		$appwplp_namespace  = 'appwplp/v1';
@@ -425,6 +418,24 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			return new WP_Error('invalid_master_key', 'Master key mismatch.', ['status' => 401]);
 		}
 		
+		return true; // All good → allow callback
+	}
+
+	/** new permission callback function for auto disconnection of connected sites from plugin */
+	public function permission_callback_for_delete_activation( WP_REST_Request $request ) {
+		$this->settings = new WP_Legal_Pages_Settings();
+
+		$master_key = $this->settings->get('api','token');		
+		// 1. Extract master_key from the request body
+		$body = $request->get_json_params();
+		$incoming_key = isset($body['master_key']) ? sanitize_text_field($body['master_key']) : '';
+		if ( empty($incoming_key) ) {
+			return new WP_Error('master_key_missing', 'Master key not provided.', ['status' => 401]);
+		}
+		if ( $master_key !== $incoming_key ) {
+			return new WP_Error('invalid_master_key', 'Master key mismatch.', ['status' => 401]);
+		}
+
 		return true; // All good → allow callback
 	}
 
