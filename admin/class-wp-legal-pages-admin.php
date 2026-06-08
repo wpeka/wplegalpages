@@ -310,6 +310,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		);
 
 		register_rest_route(
+			'wplp-react/v1',
+			'/delete_legal_page',
+			array(
+				'methods'  => 'POST',
+				'callback' => array($this, 'wplp_delete_legal_page_for_react_app'), // Function to handle the request
+				'permission_callback' => array($this, 'permission_callback_for_react_app'),
+			)
+		);
+
+		register_rest_route(
 			'wpl/v2', // Namespace
 			'/get_user_dashboard_data', 
 			array(
@@ -1768,7 +1778,39 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		);
 	}
 
+	public function wplp_delete_legal_page_for_react_app ( WP_REST_Request $request ) {
+		if ( empty( $request->get_param( 'postID' ) ) ) {
+			return new WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => 'Post ID is required.',
+				),
+				400
+			);
+		}
 
+		ob_start();
+    	$result = wp_trash_post( $request->get_param( 'postID' ) );
+    	ob_end_clean();
+
+    	if ( $result ) {
+    	    return new WP_REST_Response(
+    	        array(
+    	            'success' => true,
+    	            'postID'  => $request->get_param( 'postID' ),
+    	        ),
+    	        200
+    	    );
+    	} else {
+    	    return new WP_REST_Response(
+    	        array(
+    	            'success' => false,
+    	            'message' => 'Failed to delete legal page.',
+    	        ),
+    	        500
+    	    );
+    	}
+	}
 	public function wplp_connect_plugin_to_wplp_compliance( WP_REST_Request $request ) {
 		
 		global $wcam_lib_gdpr;
