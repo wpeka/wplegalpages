@@ -320,6 +320,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		);
 
 		register_rest_route(
+            'wplp-react/v1',
+            'save_compliance_wizard',
+            array(
+                'methods' => 'POST',
+                'callback' => array($this, 'wplp_save_business_settings_for_compliance_wizard'),
+                'permission_callback' => array($this, 'permission_callback_for_react_app'),
+            )
+        );
+
+		register_rest_route(
 			'wpl/v2', // Namespace
 			'/get_user_dashboard_data', 
 			array(
@@ -1811,6 +1821,47 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
     	    );
     	}
 	}
+
+	public function wplp_save_business_settings_for_compliance_wizard( WP_REST_Request $request ){
+        
+        $business_info = $request->get_param( 'business' );
+        $lp_general                 = get_option( 'lp_general' );
+
+        if ( ! is_array( $lp_general ) ) {
+            $lp_general = array();
+        }
+        
+        $lp_general['domain']       = $business_info['domain'] ?? '';
+        $lp_general['business']     = $business_info['business'] ?? '';
+        $lp_general['trading']      = $business_info['trading'] ?? '';
+        $lp_general['phone']        = $business_info['phone'] ?? '';
+        $lp_general['street']       = $business_info['street'] ?? '';
+        $lp_general['cityState']    = $business_info['cityState'] ?? '';
+        $lp_general['country']      = $business_info['country'] ?? '';
+        $lp_general['email']        = $business_info['email'] ?? '';
+        $lp_general['address']      = $business_info['address'] ?? '';
+        $lp_general['facebook-url'] = $business_info['facebookUrl'] ?? '';
+        $lp_general['google-url']   = $business_info['googleUrl'] ?? '';
+        $lp_general['twitter-url']  = $business_info['twitterUrl'] ?? '';
+        $lp_general['linkedin-url'] = $business_info['linkedinUrl'] ?? '';
+        $lp_general['date']         = $business_info['date'] ?? '';
+        $lp_general['days']         = $business_info['days'] ?? '';
+        $lp_general['duration']     = $business_info['duration'] ?? '';
+        $lp_general['disclosing-party'] = $business_info['disclosingParty'] ?? '';
+        $lp_general['recipient-party']  = $business_info['recipientParty'] ?? '';
+
+        update_option( 'lp_general', $lp_general );
+
+		$compliance_wizard_completed = $request->get_param( 'complianceWizardCompleted' );
+
+		if ( null !== $compliance_wizard_completed ) {
+			update_option(
+				'wplp_compliance_wizard_completed',
+				$compliance_wizard_completed
+			);
+		}
+    }
+
 	public function wplp_connect_plugin_to_wplp_compliance( WP_REST_Request $request ) {
 		
 		global $wcam_lib_gdpr;
