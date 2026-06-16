@@ -63,6 +63,7 @@ class WP_Legal_Pages_App_Auth {
 			add_action( 'wp_ajax_wp_legal_pages_app_paid_start_auth', array( $this, 'legal_page_upgrade_user_plan' ) );
 			add_action( 'wp_ajax_wp_legal_pages_app_store_auth', array( $this, 'store_auth_key' ) );
 			add_action( 'wp_ajax_wp_legal_pages_app_delete_auth', array( $this, 'delete_app_auth' ) );
+			add_action( 'wp_ajax_lp_save_free_trial_data', array( $this, 'save_free_trial_data' ) );
 		}
 	}
 
@@ -388,6 +389,36 @@ class WP_Legal_Pages_App_Auth {
 		);
 	}
 
+	/**
+	 * AJAX handler to save free trial data
+	 */
+	public function save_free_trial_data() {		// check_ajax_referer( 'gdpr-cookie-consent', '_ajax_nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'Unauthorized' );
+		}
+
+		$raw        = sanitize_text_field( wp_unslash( $_POST['free_trial'] ?? '' ) );
+		$free_trial = json_decode( $raw, true );
+
+		if ( ! is_array( $free_trial ) ) {
+			wp_send_json_error( 'Invalid data' );
+		}
+
+		if ( ! empty( $free_trial['isTrialActive'] ) && $free_trial['isTrialActive'] === true ) {
+			// Store with a local expiry so the plugin can self-expire it
+			$free_trial['localExpiry'] = ! empty( $free_trial['trialEndDate'] )
+				? strtotime( $free_trial['trialEndDate'] )
+				: ( time() + 7 * DAY_IN_SECONDS );
+
+			update_option( 'wplp_free_trial_data', $free_trial );
+		} else {
+			// isTrialActive false means user has an active paid sub — clear it
+			delete_option( 'wplp_free_trial_data' );
+		}
+
+		wp_send_json_success();
+	}
 
 	/**
 	 * Ajax handler to delete the auth data and disconnect the site from the WPCode Library.
