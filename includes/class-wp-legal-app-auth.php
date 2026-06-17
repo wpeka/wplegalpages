@@ -392,26 +392,38 @@ class WP_Legal_Pages_App_Auth {
 	/**
 	 * AJAX handler to save free trial data
 	 */
-	public function save_free_trial_data() {		// check_ajax_referer( 'gdpr-cookie-consent', '_ajax_nonce' );
+	public function save_free_trial_data() {		
+		check_ajax_referer( 'wp-legal-pages', '_ajax_nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( 'Unauthorized' );
 		}
 
-		$raw        = sanitize_text_field( wp_unslash( $_POST['free_trial'] ?? '' ) );
+		$raw = wp_unslash( $_POST['free_trial'] ?? '' );
+
 		$free_trial = json_decode( $raw, true );
 
-		if ( ! is_array( $free_trial ) ) {
-			wp_send_json_error( 'Invalid data' );
+		if ( JSON_ERROR_NONE !== json_last_error() || ! is_array( $free_trial ) ) {
+			wp_send_json_error( 'Invalid free trial data' );
 		}
 
-		if ( ! empty( $free_trial['isTrialActive'] ) && $free_trial['isTrialActive'] === true ) {
+		$free_trial_data = [
+			'isTrialActive' => ! empty( $free_trial['isTrialActive'] ),
+			'trialStartDate' => sanitize_text_field( $free_trial['trialStartDate'] ?? '' ),
+			'trialEndDate'   => sanitize_text_field( $free_trial['trialEndDate'] ?? '' ),
+			'trialEndsIn'    => absint( $free_trial['trialEndsIn'] ?? 0 ),
+			'localExpiry'    => (int) ( $free_trial['localExpiry'] ?? 0 ),
+		];
+
+		if ( ! empty( $free_trial_data['isTrialActive'] ) && $free_trial_data['isTrialActive'] === true ) {
 			// Store with a local expiry so the plugin can self-expire it
-			$free_trial['localExpiry'] = ! empty( $free_trial['trialEndDate'] )
-				? strtotime( $free_trial['trialEndDate'] )
+			$expiry = strtotime( $free_trial_data['trialEndDate'] );
+
+			$free_trial_data['localExpiry'] = $expiry !== false
+				? $expiry
 				: ( time() + 7 * DAY_IN_SECONDS );
 
-			update_option( 'wplp_free_trial_data', $free_trial );
+			update_option( 'wplp_free_trial_data', $free_trial_data );
 		} else {
 			// isTrialActive false means user has an active paid sub — clear it
 			delete_option( 'wplp_free_trial_data' );
