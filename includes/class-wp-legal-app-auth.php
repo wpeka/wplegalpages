@@ -393,8 +393,6 @@ class WP_Legal_Pages_App_Auth {
 	 * AJAX handler to save free trial data
 	 */
 	public function save_free_trial_data() {		
-		check_ajax_referer( 'wp-legal-pages', '_ajax_nonce' );
-
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( 'Unauthorized' );
 		}
