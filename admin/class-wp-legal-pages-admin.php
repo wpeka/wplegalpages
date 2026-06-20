@@ -787,6 +787,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'product_id' 					   => $product_id,
 				'legal_pages_published'			   => $count,
 				'policy_preview'				   => $policy_preview,
+				'complianceWizardCompleted'	 	   => get_option('wplp_compliance_wizard_completed') ?? false,
 			)
 		);
 	}
@@ -1860,6 +1861,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$compliance_wizard_completed
 			);
 		}
+
+		return [
+			'success' => true,
+			'accessed' => true
+		];
     }
 
 	public function wplp_connect_plugin_to_wplp_compliance( WP_REST_Request $request ) {
