@@ -756,6 +756,33 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$api_user_plan = $this->settings->get_plan();
 		$product_id = $this->settings->get( 'account', 'product_id' );
 
+		$api_key    = $this->settings->get( 'api', 'token' );
+		$id = $this->settings->get_user_id();
+
+		$args = array(
+			'api_key' => $api_key,
+		);
+
+		global $wcam_lib_legalpages;
+
+		update_option( $wcam_lib_legalpages->wc_am_product_id, $product_id );
+		update_option(
+			$wcam_lib_legalpages->data_key,
+			array(
+				$wcam_lib_legalpages->data_key . '_api_key' => $api_key,
+			),
+		);
+
+		$activate_args = $wcam_lib_legalpages->activate( $args, $product_id );
+		$status_args   = $wcam_lib_legalpages->status( $args, $product_id );
+
+		$user_info[] = array(
+			'id'			=> $id,
+			'status_args'	=> $status_args,
+			'activate_args'	=> $activate_args,
+			'wc_am_activated_key' => $wcam_lib_legalpages->data
+		);
+
 		global $wpdb;
 		$post_tbl     = $wpdb->prefix . 'posts';
 		$postmeta_tbl = $wpdb->prefix . 'postmeta';
@@ -787,6 +814,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'product_id' 					   => $product_id,
 				'legal_pages_published'			   => $count,
 				'policy_preview'				   => $policy_preview,
+				'userInfo'						   => $user_info ?? [],
 				'complianceWizardCompleted'	 	   => get_option('wplp_compliance_wizard_completed') ?? false,
 			)
 		);
@@ -1028,6 +1056,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'templateOptions'				   			=> $template_options ?? [],
 				'userInfo'						   			=> $user_info ?? [],
 				'pro_privacy_policy_third_party_services' 	=> $this->wplegalpages_get_gdpr_sections(),
+				'recommendedPolicyMap'						=> get_option( 'wplp_ai_recommended_policy_map' ) ?? [],
 			)
 		);
 	}
@@ -1826,11 +1855,16 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 	public function wplp_save_business_settings_for_compliance_wizard( WP_REST_Request $request ){
         
         $business_info = $request->get_param( 'business' );
+		$recommendedPolicyMap = $request->get_param( 'recommendedPolicyMap' );
         $lp_general                 = get_option( 'lp_general' );
 
         if ( ! is_array( $lp_general ) ) {
-            $lp_general = array();
-        }
+			$lp_general = array();
+		}
+
+		if ( ! is_array( $business_info ) ) {
+			$business_info = array();
+		}
         
         $lp_general['domain']       = $business_info['domain'] ?? '';
         $lp_general['business']     = $business_info['business'] ?? '';
@@ -1852,6 +1886,25 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
         $lp_general['recipient-party']  = $business_info['recipientParty'] ?? '';
 
         update_option( 'lp_general', $lp_general );
+
+		if ( ! empty( $recommendedPolicyMap ) && is_array( $recommendedPolicyMap ) ) {
+			$sanitized_map = array();
+			foreach ( $recommendedPolicyMap as $icon_key => $entry ) {
+				if ( ! is_array( $entry ) ) {
+					continue;
+				}
+				$sanitized_icon_key = sanitize_key( $icon_key );
+				$confidence = sanitize_text_field( $entry['confidence'] ?? '' );
+				if ( ! in_array( $confidence, array( 'high', 'medium', 'low' ), true ) ) {
+					$confidence = '';
+				}
+				$sanitized_map[ $sanitized_icon_key ] = array(
+					'confidence' => $confidence,
+					'reason'     => sanitize_text_field( $entry['reason'] ?? '' ),
+				);
+			}
+			update_option( 'wplp_ai_recommended_policy_map', $sanitized_map );
+		}
 
 		$compliance_wizard_completed = $request->get_param( 'complianceWizardCompleted' );
 
