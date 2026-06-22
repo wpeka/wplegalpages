@@ -84,6 +84,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			add_action( 'rest_api_init', array($this, 'allow_cors_for_react_app'));
 			add_action('rest_api_init', array($this, 'register_wpl_dashboard_route'));
 			add_action('rest_api_init', array($this, 'wplp_generate_api_secret'));
+			add_action('admin_init', array($this, 'handle_compliance_wizard_for_old_users'));
 		}
 
 		/**
@@ -205,6 +206,46 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		}, 10, 4);
 	}
+
+	/**
+	 * Handle Compliance wizard for existing users
+	 */
+	public function handle_compliance_wizard_for_old_users() {
+
+		$installed_version = get_option( 'wplp_legal_pages_version', '0.0.0' );
+
+		if ( version_compare( $installed_version, '3.6.8', '<' ) ) {
+
+			global $wpdb;
+			$post_tbl     = $wpdb->prefix . 'posts';
+			$postmeta_tbl = $wpdb->prefix . 'postmeta';
+			$post_tbl     = esc_sql( $post_tbl );
+			$postmeta_tbl = esc_sql( $postmeta_tbl );
+			
+			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
+			$count = $wpdb->get_var(
+				$wpdb->prepare(
+					"
+					SELECT COUNT(*) 
+					FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
+					WHERE ptbl.ID = pmtbl.post_id 
+					AND ptbl.post_status = %s 
+					AND pmtbl.meta_key = %s
+					",
+					'publish',
+					'is_legal'
+				)
+			);
+
+			if ($count > 0 ) {
+				update_option( 'wplp_compliance_wizard_completed', true );
+			}
+
+			$plugin_version = defined( 'GDPR_COOKIE_CONSENT_VERSION' ) ? GDPR_COOKIE_CONSENT_VERSION : '';
+			update_option( 'wplp_legal_pages_version', $plugin_version );
+		}
+	}
+
 		/**
 		 * Register REST Route to send data to saas server
 		 *
