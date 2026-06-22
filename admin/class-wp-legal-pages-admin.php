@@ -6991,12 +6991,19 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		public function app_wplp_track_lp_downloaded( $event, $args = array() ) {
 
 			$url = WPLEGAL_APP_URL . '/wp-json/api/v1/plugin/app_wplp_track_lp_downloaded';
+			// Get connected account email
+			$settings    = get_option( 'wpeka_api_framework_app_settings' );
+			$connected_email = isset( $settings['account']['email'] )
+								? sanitize_email( $settings['account']['email'] )
+								: '';
 			$user_id    = get_current_user_id();
 			$user_email = '';
 
-			if ( ! empty( $args['user_email'] ) ) {
+			if ( ! empty( $args['user_email'] ) ) {  //from saas
 				$user_email = sanitize_email( $args['user_email'] );
-			} else {
+			} elseif ( ! empty( $connected_email ) ) {
+        		$user_email = $connected_email; // from connected account in plugin
+    	    } else {
 				if ( $user_id ) { 
 					$user       = get_userdata( $user_id );
 					$user_email = $user ? $user->user_email : null;
