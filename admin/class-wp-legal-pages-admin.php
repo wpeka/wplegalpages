@@ -902,7 +902,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		$business_info[] = array(
-			'domain'			=> $lp_general['domain'],
+			'domain' => !empty($lp_general['domain']) ? $lp_general['domain'] : get_bloginfo('url'),
 			'business'			=> $lp_general['business'],
 			'trading'			=> $lp_general['trading'],
 			'phone'				=> $lp_general['phone'],
@@ -926,7 +926,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$advanced_info[] = array(
 			'search'				=> $lp_general['search'],
 			'affiliate_disclosure'	=> $lp_general['affiliate-disclosure'],
-			'show_credits'			=> $lp_general['generate'],
+			'show_credits'          => isset($lp_general['generate']) ? !boolval($lp_general['generate']) : true,
 			'block_enabled'			=> get_option( 'wplegalpages_is_block_enabled' ),
 		);
 
@@ -1000,7 +1000,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				);
 			}
 		}
-
+		error_log(
+			'LP GENERAL DOMAIN: ' .
+			print_r($lp_general['domain'] ?? 'NOT_SET', true)
+		);
 		ob_end_clean();
 		return rest_ensure_response(
 			array(
@@ -3594,7 +3597,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$lp_general['return_period']        = isset( $data['lp-return-period'] ) ? sanitize_text_field( esc_attr( $data['lp-return-period'] ) ) : '';
 			$lp_general['duration']             = isset( $data['lp-duration'] ) ? sanitize_text_field( esc_attr( $data['lp-duration'] ) ) : '';
 			$lp_general['search']               = isset( $data['lp-search'] ) ? sanitize_text_field( esc_attr( $data['lp-search'] ) ) : 0;
-			$lp_general['generate']             = isset( $data['lp-generate'] ) ? sanitize_text_field( esc_attr( $data['lp-generate'] ) ) : 1;
+			$lp_general['generate']             = isset( $data['lp-generate'] ) ? sanitize_text_field( esc_attr( $data['lp-generate'] ) ) : 0;
 			$lp_general['is_adult']             = isset( $data['lp-is_adult'] ) ? sanitize_text_field( esc_attr( $data['lp-is_adult'] ) ) : 0;
 			$lp_general['is_popup']             = '1';
 			$lp_general['disable_comments']     = 1;
