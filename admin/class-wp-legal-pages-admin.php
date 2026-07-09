@@ -765,6 +765,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		//get option first
 		$existing_data = get_option( 'wpeka_api_framework_app_settings', [] );
 		$data = array_replace_recursive( $existing_data, $data );
+
+		$is_free_trial 	= $payload['is_free_trial'] ?? 0;
+
+
+		if ( $is_free_trial === 0 || $is_free_trial === '0' || $is_free_trial === false || $is_free_trial === 'false' ) {
+			delete_option( 'wplp_free_trial_data' );
+		}
 		//update option
 		update_option( 'wpeka_api_framework_app_settings', $data );
 
