@@ -391,23 +391,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					array(
 						'methods'  => 'POST',
 						'callback' => array($this, 'disconnect_account_request'), // Function to handle the request
-						'permission_callback' => function() {
-        				    
-        				    if (current_user_can('manage_options')) {
-        				        return true;
-        				    }
-						
-        				    $stored_secret = get_option('wplegalpages_api_secret');
-        				    $header_secret = isset($_SERVER['HTTP_X_WPLP_SECRET'])
-        				                        ? sanitize_text_field($_SERVER['HTTP_X_WPLP_SECRET'])
-        				                        : '';
-						
-        				    if ($stored_secret && $header_secret && $stored_secret === $header_secret) {
-        				        return true;
-        				    }
-						
-        				    return new WP_Error('rest_forbidden', 'Unauthorized access', array('status' => 403));
-        				},
+						'permission_callback' => array($this, 'permission_callback_for_react_app'),
 					)
 		);
 
