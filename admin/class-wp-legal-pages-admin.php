@@ -1071,10 +1071,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				);
 			}
 		}
-		error_log(
-			'LP GENERAL DOMAIN: ' .
-			print_r($lp_general['domain'] ?? 'NOT_SET', true)
-		);
 		ob_end_clean();
 		return rest_ensure_response(
 			array(
