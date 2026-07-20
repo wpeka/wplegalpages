@@ -41,7 +41,7 @@ var gen = new Vue({
           appendField: ".wplegalpages-settings-container",
           customToolbarForm: [],
           domain: "",
-          generate: null,
+          generate: false,
           search: null,
           affiliate_disclosure: null,
           enable_block: null,
@@ -53,10 +53,14 @@ var gen = new Vue({
               ? true
               : false,
           is_footer: obj.lp_options.hasOwnProperty("is_footer")
-            ? Boolean(parseInt(obj.lp_options.is_footer))
+            ? (typeof obj.lp_options.is_footer === 'boolean' 
+                ? obj.lp_options.is_footer 
+                : Boolean(parseInt(obj.lp_options.is_footer)))
             : false,
           is_banner: obj.lp_options.hasOwnProperty("is_banner")
-            ? Boolean(parseInt(obj.lp_options["is_banner"]))
+            ? (typeof obj.lp_options.is_banner === 'boolean'
+                ? obj.lp_options.is_banner
+                : Boolean(parseInt(obj.lp_options.is_banner)))
             : false,
           is_age: obj.age_verify_enable ? obj.age_verify_enable : "content",
           age_button_content: this.is_age === "site" ? true : false,
@@ -101,7 +105,9 @@ var gen = new Vue({
             ? obj.lp_footer_options["footer_separator"]
             : "",
           footer_new_tab: obj.lp_footer_options.hasOwnProperty("footer_new_tab")
-            ? Boolean(parseInt(obj.lp_footer_options["footer_new_tab"]))
+            ? (typeof obj.lp_footer_options.footer_new_tab === 'boolean'
+                ? obj.lp_footer_options.footer_new_tab
+                : Boolean(parseInt(obj.lp_footer_options["footer_new_tab"])))
             : false,
           footer_custom_css: obj.lp_footer_options.hasOwnProperty(
             "footer_custom_css"
@@ -197,7 +203,6 @@ var gen = new Vue({
             this.footer_text_align = this.$refs.footer_text_align_mount.value ? this.$refs.footer_text_align_mount.value : 'center';
             this.bar_position = this.$refs.hasOwnProperty('bar_position_mount') && this.$refs.bar_position_mount.value ? this.$refs.bar_position_mount.value : '';
             this.bar_type = this.$refs.hasOwnProperty('bar_type_mount') && this.$refs.bar_type_mount.value ? this.$refs.bar_type_mount.value : '';
-            this.footer_font = this.$refs.banner_font_family_mount.value ? this.$refs.banner_font_family_mount.value : 'Open Sans';
             this.bar_num_of_days = this.$refs.hasOwnProperty('bar_num_of_days_mount') && this.$refs.bar_num_of_days_mount.value ? this.$refs.bar_num_of_days_mount.value : '';
             this.banner_font_size = this.$refs.hasOwnProperty('banner_font_size_mount') && this.$refs.banner_font_size_mount.value ? this.$refs.banner_font_size_mount.value : '';
             this.age_verify_for = this.$refs.hasOwnProperty('age_verify_for_mount') ? this.$refs.age_verify_for_mount.value : 'Guests only';
@@ -228,7 +233,7 @@ var gen = new Vue({
         },
         onChangeCredit(){
             this.generate= !this.generate;
-            this.$refs.generate.value = this.generate ? '1' : '0';
+            this.generate = this.$refs.hasOwnProperty('generate') ? this.$refs.generate.checked : false;
         },
         onChangeSearch(){
             this.search= !this.search;
@@ -395,18 +400,6 @@ var gen = new Vue({
         },
         showPopupForm() {
             this.show_popup_form = !this.show_popup_form;
-        },
-        onClickPopup() {
-            this.is_popup = !this.is_popup;
-            this.$refs.popup= this.is_popup ? '1' : '0';
-            // Display/Hide the 'Create Popup' submenu according to the toggle button in modal of 'Create Popus' card of 'Compliances Tab'
-            if( this.is_popup ) {
-                jQuery('.wplegalpages-popup-submenu').css('display', 'block')
-            }
-            else {
-                jQuery('.wplegalpages-popup-submenu').css('display', 'none')
-            }
-			this.create_popup_clicked = true;
         },
         onSwitchPopup(){
             this.is_popup = !this.is_popup;

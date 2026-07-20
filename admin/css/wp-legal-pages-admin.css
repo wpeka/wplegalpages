@@ -709,9 +709,13 @@ body.toplevel_page_wplegalpages-settings-page #wpbody-content {
 .wplegalpages-save-button button:hover,
 .wplegalpages-save-button button:focus,
 .wplegalpages-save-button input[type="submit"]:hover,
-.wplegalpages-save-button input[type="submit"]:focus {
-	background-color: #0059b3;
-	color: #ffffff;
+.wplegalpages-save-button input[type="submit"]:focus,
+.wplegalpages-save-button button:active,
+.wplegalpages-save-button input[type="submit"]:active {
+  background-color: #0059b3;
+  color: #ffffff;
+  outline: none;
+  box-shadow: none;
 }
 
 /* form elements css */
@@ -1056,6 +1060,37 @@ div.ql-toolbar.ql-snow {
 	color: #52525b;
 	line-height: 20px;
 	margin-left: 1px;
+}
+
+.probadge {
+	background-color: #0d6efd;
+	display: inline-block;
+    padding: .35em .65em;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+}
+
+#wplegalpages-settings-app .wplegalpages-settings-container .row .col>label:hover p.wplp-hide-credit-message {
+	display: block;
+}
+
+#wplegalpages-settings-app .wplegalpages-settings-container .row .col>label p.wplp-hide-credit-message {
+	display: none;
+	position: absolute;
+    text-wrap: nowrap;
+    width: fit-content;
+    background: black;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    z-index: 99;
+	right: 2%;
 }
 
 .wplegal-tooltip-image {
@@ -1921,20 +1956,6 @@ table tbody tr td .table-link-alert:hover {
 	background-color: #14873E;
 	position: relative;
 	z-index: 99;
-  }
-  #wp-legalpages-main-admin-header .wp-legalpages-subsription-payment-failed-notice {
-	position: relative;
-	left: -20px;
-	width: 102%;
-	padding: 20px;
-	background-color: #ffa319;
-  }
-  #wp-legalpages-main-admin-header .wp-legalpages-subsription-payment-failed-notice p {
-	margin: 0;
-	color: #000;
-	font-family: "Roboto", sans-serif;
-	font-weight: 400;
-	font-size: 14px;
   }
   
   .gdpr-remaining-scans-content .gdpr-remaining-scans-container {
@@ -3009,4 +3030,434 @@ table tbody tr td .table-link-alert:hover {
   .wp-legalpages-admin-tab:hover {
   border-left-color: #5988C5;
   color: #5988C5;
+}
+
+.gdpr-progress-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.gdpr-progress-wrapper
+  .gdpr-progress-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gdpr-progress-wrapper
+  .gdpr-progress-content h3,
+.gdpr-progress-wrapper
+  .gdpr-progress-content p {
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #3A3A41;
+}
+
+.gdpr-progress-wrapper
+  .gdpr-progress-content p {
+  font-weight: 400;
+  color: #52525B;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.gdpr-progress-wrapper
+  .gdpr-progress-content p span img {
+    vertical-align: baseline;
+}
+
+.gdpr-monthly-scans-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+
+.gdpr-monthly-scans-progress span,
+.gdpr-remaining-scans-progress span,
+.gdpr-pageviews-progress span {
+  font-weight: 700;;
+  font-size: 14px;
+  line-height: 100%;
+  text-align: center;
+}
+.gdpr-remaining-scans-progress,
+.gdpr-pageviews-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+#wplegal-loader .wplegal-loader-wrapper {
+	text-align: center;
+}
+
+#wplegal-loader .wplegal-loader-content {
+	width:40px;
+    height:40px;
+    border:4px solid #e5e5e5;
+    border-top:4px solid #2271b1;
+    border-radius:50%;
+    animation: wpl-spin 0.8s linear infinite;
+}
+
+#wplegal-loader .wplegal-loader-text {
+	margin-top: 10px;
+	font-size: 13px;
+	color: #50575e;
+}
+
+@keyframes wpl-spin { 
+	to { transform: rotate(360deg); } 
+}
+
+  #wp-legalpages-main-admin-header .wp-legalpages-subsription-payment-failed-notice {
+	display: flex;
+	align-items: start;
+	background: #fdf3f5;
+  	border: 1px solid #ef4744;
+  	color: #000;
+	padding: 20px;
+	border-radius: 6px;
+	font-family: Arial, sans-serif;
+  	font-size: 14px;
+	gap: 12px;
+  	padding: 16px 16px 16px 20px;
+  }
+
+#wp-legalpages-main-admin-header 
+  	.wp-legalpages-subsription-payment-failed-notice
+	.wpl-payment-fail-icon-wrapper {
+	width: 40px;
+  	height: 40px;
+  	color: #ef4744;
+  	flex-shrink: 0;
+  	padding: 8px;
+  	border-radius: 50%;
+  	display: flex;
+  	align-items: center;
+  	justify-content: center;
+  	background-color: #fbdee3;
+}
+
+#wp-legalpages-main-admin-header 
+  	.wp-legalpages-subsription-payment-failed-notice
+	.wpl-payment-fail-right-wrapper {
+	display: flex;
+  	flex-direction: row;
+  	gap: 20px;
+  	flex: 1;
+  	justify-content: space-between;
+  	align-items: center;
+}
+
+#wp-legalpages-main-admin-header 
+  	.wp-legalpages-subsription-payment-failed-notice
+	.wpl-payment-fail-right-wrapper
+	.wpl-payment-fail-content-wrapper {
+	display: flex;
+  	flex-direction: column;
+  	gap: 8px;
+  	color: #ef4744;
+}
+
+#wp-legalpages-main-admin-header 
+  	.wp-legalpages-subsription-payment-failed-notice
+	.wpl-payment-fail-right-wrapper
+	.wpl-payment-fail-content-wrapper h1{
+	font-size: 16px;
+  	font-weight: 600;
+  	color: #000;
+  	line-height: 100%;
+  	margin-bottom: 0;
+}
+
+#wp-legalpages-main-admin-header 
+  	.wp-legalpages-subsription-payment-failed-notice
+	.wpl-payment-fail-right-wrapper
+	.wpl-payment-fail-content-wrapper p{
+	font-size: 14px;
+  	color: #64748B;
+  	font-weight: 500;
+  	line-height: 100%;
+  	margin-bottom: 0;
+}
+
+#wp-legalpages-main-admin-header 
+  	.wp-legalpages-subsription-payment-failed-notice
+	.wpl-payment-fail-right-wrapper
+	.wpl-payment-fail-upgrade-button {
+  	font-size: 14px;
+  	color: #FFF;
+  	background-color: #ef4744;
+  	padding: 8px 12px 8px 12px;
+  	display: flex;
+  	align-items: center;
+  	justify-content: center;
+  	border-radius: 6px;
+  	font-weight: 600;
+}
+
+#wp-legalpages-main-admin-header 
+  	.wp-legalpages-subsription-payment-failed-notice
+	.wpl-payment-fail-right-wrapper
+	.wpl-payment-fail-upgrade-button:hover {
+    text-decoration: none;
+    scale: 1.02;
+    transition: all 0.2s ease;
+}
+
+/* Free Trial Banner */
+
+.wplp-trial-banner {
+    position: relative;
+    width: 100%;
+    padding: 24px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    border-radius: 0.5rem;
+    background-color: white;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.1);
+    border: 1px solid;
+    box-sizing: border-box;
+}
+
+.wplp-trial-banner::after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff24;
+    border-radius: 0.5rem;
+    z-index: -1;
+}
+
+.wplp-trial-banner.wplp-trial-active {
+    border-color: #074EA8;
+}
+
+.wplp-trial-banner.wplp-trial-expired {
+    background-color: #fef2f2 !important;
+    border-color: #f87171;
+}
+
+.wplp-trial-banner-left {
+    display: flex;
+    gap: 10px;
+}
+
+.wplp-trial-emoji {
+    font-size: 30px;
+    line-height: 1;
+}
+
+.wplp-trial-banner-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.wplp-trial-banner-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.wplp-trial-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.wplp-trial-banner .wplp-trial-title.wplp-trial-title-active {
+    color: #074EA8;
+}
+
+.wplp-trial-banner .wplp-trial-title.wplp-trial-title-expired {
+    color: #3A3A41;
+}
+
+.wplp-trial-desc {
+    font-size: 14px;
+    color: #737373;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.wplp-trial-days-remaining {
+    font-weight: 700;
+}
+
+.wplp-trial-close-btn {
+    background: none;
+    border: none;
+    outline: none !important;
+    cursor: pointer;
+    padding: 0;
+    color: #737373;
+    transition: color 0.2s ease;
+}
+
+.wplp-trial-close-btn:hover {
+    color: #074EA8;
+}
+
+.primary-button {
+    display: flex;
+    padding: 0.75rem 3rem;
+    height: fit-content;
+    min-width: 10rem;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    color: white;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    background-color: #074EA8;
+    transition: all 0.3s ease-in-out;
+}
+
+.primary-button:hover {
+    background-color: #053777;
+    box-shadow: 0 4px 14px rgba(7, 78, 168, 0.3);
+    transform: scale(1.02);
+}
+
+/* Free Trial Floating Widget */
+
+.wplp-trial-widget {
+    position: fixed;
+    bottom: 25px;
+    transition: all 0.3s ease-in-out;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 17rem;
+    overflow: hidden;
+    z-index: 10;
+    border-radius: 0.5rem;
+    border: 1px solid;
+    box-sizing: border-box;
+}
+
+.wplp-trial-widget-active {
+    background-color: #eff6ff;
+    border-color: #074EA8;
+}
+
+.wplp-trial-widget-ended {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.wplp-trial-widget-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.wplp-trial-widget-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.wplp-trial-widget-title-active {
+    color: #074EA8;
+}
+
+.wplp-trial-widget-title-ended {
+    color: #64748b;
+}
+
+.wplp-trial-widget-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 9999px;
+    color: #eff6ff;
+    font-size: 0.75rem;
+}
+
+.wplp-trial-widget-badge-active {
+    background-color: #074EA8;
+}
+
+.wplp-trial-widget-badge-ended {
+    background-color: #94a3b8;
+}
+
+.wplp-trial-widget-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    width: 100%;
+}
+
+.wplp-trial-widget-status {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.wplp-trial-widget-remaining {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.wplp-trial-widget-remaining-active {
+    color: #074EA8;
+}
+
+.wplp-trial-widget-remaining-ended {
+    color: #64748b;
+}
+
+.wplp-trial-widget-dates {
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+.wplp-trial-widget-dates-active {
+    color: #737373;
+}
+
+.wplp-trial-widget-dates-ended {
+    color: #94a3b8;
+}
+
+.wplp-trial-widget-progress-track {
+    width: 100%;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background-color: #cbd5e1;
+}
+
+.wplp-trial-widget-progress-fill {
+    height: 100%;
+    border-radius: 9999px;
+    background-color: #053777;
 }

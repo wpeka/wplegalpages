@@ -7,7 +7,7 @@ Tags: privacy policy generator, terms and conditions, legal pages, GDPR, disclai
 Requires at least: 5.0
 Requires PHP: 7.0
 Tested up to: 7.0.2
-Stable tag: 3.6.0
+Stable tag: 3.6.8
 
 Trusted by 10,000+ WordPress sites · 30+ ready-made legal templates · Set up your privacy policy in minutes, no coding or legal writing required.
 
@@ -221,6 +221,41 @@ The free version is limited to one site. Pro plans are available based on the nu
 Yes. Amazon Affiliate Disclosure and Earnings Disclaimer templates are available.
 
 == Changelog ==
+
+= 3.6.8 =
+* Introduced an AI-Powered Compliance Setup Wizard that helps users configure legal pages and cookie compliance settings based on their business type, website purpose, visitor locations, and applicable privacy laws.
+* AI now provides personalized compliance recommendations and automatically assists with setting up legal policies and cookie consent requirements for regulations such as GDPR and CCPA.
+
+= 3.6.7 =
+* **New:** Added an option in the WPLP SaaS dashboard to directly connect your WordPress website with WP Legal Pages for faster onboarding and centralized compliance management.
+
+= 3.6.6 =
+* Minor bugfixes and improvements.
+
+= 3.6.5 =
+* Fixed minor UI issues related to Terms and Conditions Legalpage fields and Age Verification popup button.
+
+= 3.6.4 =
+* Fixed issue where plan cancellation banner was not displaying correctly.
+* Fixed footer font changes not persisting after saving settings. 
+
+= 3.6.3 =
+* Fixed infinite loading issue when editing a generated legal page from the plugin after creating it via SaaS.
+* Fixed an issue where sidebar widgets were not saving properly.
+
+= 3.6.2 =
+* Resolved an issue in the Legal Pages Generation Wizard where user progress was not being saved properly.
+* Fixed a bug that caused the wizard state to reset unexpectedly, ensuring a smoother and more reliable page creation experience.
+
+    This update makes the setup flow more stable, so users can generate legal pages without interruptions or lost progress.
+
+= 3.6.1 =
+* **New Features & Improvements**
+* We’ve rolled out some powerful additions to make compliance easier, faster, and more flexible inside your SaaS dashboard:
+    * 🟢 **Announcement Banner**: You can now display custom announcement banners across your website. Perfect for sharing updates, promotions, or important compliance notices without touching your code.
+    * 🔞 **Age Verification Popup**: Add an age verification layer to your site in minutes. Ideal for businesses that need to restrict access based on age and stay compliant with regulations.
+    * 📄 **Legal Pages as Popup (Agreement Mode)**: Show your legal pages (like Terms & Conditions or Privacy Policy) as a popup and require users to agree before proceeding. This helps you capture explicit user consent seamlessly.
+    * 🤝 **Affiliate Disclosure**: Easily generate and display affiliate disclosures directly from the dashboard. Stay transparent with your audience and compliant with advertising guidelines.
 
 = 3.6.0 =
 * New: Legal pages can now be generated directly from our SaaS platform. Users can log in to their account at app.wplegalpages.com to create and manage legal pages through the new WPLP Compliance Platform experience.

@@ -185,26 +185,51 @@ if ( '1' === $lpterms ) {
 									<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
 									<c-row>
 										<c-col class="col-sm-4">
-											<label><?php esc_attr_e( 'Give Credit', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Display credits at bottom of your legal pages.', 'wplegalpages' ); ?>'"></c-icon></label>
+											<label>
+												<?php esc_attr_e( 'Hide Credit', 'wplegalpages' ); ?> 
+												<c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Hide credits at bottom of your legal pages.', 'wplegalpages' ); ?>'"></c-icon>
+												<span class="probadge bg-badge">
+													<?php esc_attr_e( 'Pro', 'wplegalpages' ); ?>
+												</span>
+											</label>
 										</c-col>
 										<c-col class="col-sm-8">
-											<input type="hidden" name="lp-generate" v-model="generate">
-											<label for="inline-form-credits" class="c-switch form-check-label c-switch-3d-success c-switch-label">
-											<span class="screen-reader-text"><?php esc_attr_e( 'Give Credit toggle', 'wplegalpages'); ?></span>
+											<div class="wplp-disabled-hide-credit">
+												<?php 
+													$is_disabled = (!$is_user_connected || $api_user_plan === 'free');
+												?>
 
-											<input 
-												type="checkbox" 
-												id="inline-form-credits" 
-												ref="generate"
-												value="1"
-												class="c-switch-input"
-												aria-label="Give credits toggle" 
-												<?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?>
-												@change="onChangeCredit(event)"
-											>
-											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+												<input type="hidden" name="lp-generate" :value="generate ? 'true' : 'false'">
 
-											</label>
+												<label for="inline-form-credits" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+													<span class="screen-reader-text">
+														<?php esc_attr_e( 'Hide Credit toggle', 'wplegalpages'); ?>
+													</span>
+
+													<input 
+														type="checkbox" 
+														id="inline-form-credits" 
+														ref="generate"
+														value="1"
+														class="c-switch-input"
+														aria-label="Hide credits toggle"
+
+														<?php checked( ( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ) ); ?>
+
+														<?php echo $is_disabled ? 'disabled' : ''; ?>
+
+														@change="onChangeCredit(event)"
+													>
+
+													<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+												</label>
+
+												<?php if ($is_disabled): ?>
+													<p class="wplp-hide-credit-message">
+														<?php esc_attr_e( 'To enable this feature, connect to your pro account', 'wplegalpages' ); ?>
+													</p>
+												<?php endif; ?>
+											</div>
 										</c-col>
 									</c-row>
 									<c-row>
@@ -427,29 +452,51 @@ if ( '1' === $lpterms ) {
 								</c-row>
 								<c-row class="wplegal-support-text-row">
 									<c-col class="col-sm-10">
-										<label><?php esc_attr_e( 'Give Credit', 'wplegalpages' ); ?></label>
-										<span class="wplegalpages-help-text">
-										<?php esc_html_e( 'Display credits at bottom of your legal pages.', 'wplegalpages' ); ?>
-										</span>
-									</c-col>
-									<c-col class="col-sm-2">
-										<input type="hidden" name="lp-generate" v-model="generate">
-										<label for="inline-form-credits" class="c-switch form-check-label c-switch-3d-success c-switch-label">
-										<span class="screen-reader-text"><?php esc_attr_e( 'Give Credit section toggle', 'wplegalpages'); ?></span>
-
-										<input 
-											type="checkbox" 
-											id="inline-form-credits" 
-											ref="generate"
-											value="1"
-											class="c-switch-input"
-											<?php checked( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ); ?>
-											@change="onChangeCredit(event)"
-										>
-										<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
-
+										<label>
+											<?php esc_attr_e( 'Hide Credit', 'wplegalpages' ); ?>
+											<span class="probadge bg-badge">
+												<?php esc_attr_e( 'Pro', 'wplegalpages' ); ?>
+											</span>
 										</label>
+
+										<span class="wplegalpages-help-text">
+											<?php esc_html_e( 'Hide credits at bottom of your legal pages.', 'wplegalpages' ); ?>
+										</span>
+
+										<?php 
+											$is_disabled = (!$is_user_connected || $api_user_plan === 'free');
+										?>
+									</c-col>
 										
+									<c-col class="col-sm-2">
+										<input type="hidden" name="lp-generate" :value="generate ? 'true' : 'false'">
+										<label for="inline-form-credits" class="c-switch form-check-label c-switch-3d-success c-switch-label">
+											<?php if ($is_disabled): ?>
+												<p class="wplp-hide-credit-message">
+													<?php esc_attr_e( 'To enable this feature, connect to your pro account', 'wplegalpages' ); ?>
+												</p>
+											<?php endif; ?>
+
+											<span class="screen-reader-text">
+												<?php esc_attr_e( 'Hide Credit section toggle', 'wplegalpages'); ?>
+											</span>
+										
+											<input 
+												type="checkbox" 
+												id="inline-form-credits" 
+												ref="generate"
+												value="1"
+												class="c-switch-input"
+										
+												<?php checked( ( isset( $lp_general['generate'] ) ? boolval( $lp_general['generate'] ) : false ) ); ?>
+										
+												<?php echo $is_disabled ? 'disabled' : ''; ?>
+										
+												@change="onChangeCredit(event)"
+											>
+										
+											<span data-checked="✓" data-unchecked="✕" class="c-switch-slider"></span>
+										</label>
 									</c-col>
 								</c-row>
 								<c-row class="wplegal-support-text-row">
@@ -1013,7 +1060,16 @@ if ( '1' === $lpterms ) {
 						$redirect_url_text     = get_option( '_lp_redirect_url' );
 						$no_button_text        = get_option( 'lp_eu_button_text_no' );
 						$age_verify_for_value  = $age_verify_for ? 'all' === $age_verify_for ? 'All visitors' : 'Guests only' : 'Guests only';
-						$age_type_option_value = $age_type_option ? 'date' === $age_type_option ? 'Input Date of Birth' : 'Yes/No Buttons' : 'Yes/No Buttons';
+
+						$age_popup_no = get_option('_lp_age_popup_no');
+
+						if ($age_type_option === 'date') {
+						    $age_type_option_value = 'Input Date of Birth';
+						} elseif ($age_popup_no == 2) {
+						    $age_type_option_value = 'Yes/Leave Buttons';
+						} else {
+						    $age_type_option_value = 'Yes/No Buttons';
+						}
 						?>
 						<input type="hidden" name="lp-age-verify" v-model="is_age">
 						<input type="hidden" ref="age_verify_for" v-model="age_verify_for" name="lp-age-verify-for">
@@ -1173,25 +1229,7 @@ if ( '1' === $lpterms ) {
 										echo $setting_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									}
 
-								} ?>			
-								<c-row class="wplegal-support-text-row">
-									<c-col class="col-sm-7 wplegal-compliances-text">
-										<label><?php esc_attr_e( 'Create Popups', 'wplegalpages' ); ?></label>
-										<span class="wplegalpages-help-text">
-											<?php esc_html_e( 'Enabling this setting will activate the Create Popup option in the WPLP Legal Pages plugin menu.', 'wplegalpages' ); ?>
-											<a href="<?php echo esc_url( 'https://wplegalpages.com/docs/wp-legal-pages/configurations/configuring-the-settings/' ); ?>" target="_blank" rel="noopener noreferrer">
-											    <?php esc_html_e( 'Learn how you can add popups using WPLP Compliance Platform.', 'wplegalpages' ); ?>
-											</a>
-										</span>
-									</c-col>
-									<c-col class="col-sm-2 wplegal-compliances-switch">
-										<c-switch v-bind="labelIcon" v-model="is_popup" variant="3d"  color="success" :checked="is_popup" v-on:update:checked="onClickPopup"></c-switch>
-										<input type="hidden" name="lp-popup" ref="popup" v-model="is_popup">
-									</c-col>
-									<c-col class="col-sm-3 wplegalpages-configure-section">
-										
-									</c-col>
-								</c-row>
+								} ?>
 							</c-card-body>
 						</div>
 						<div class="wplegalpages-settings-bottom">

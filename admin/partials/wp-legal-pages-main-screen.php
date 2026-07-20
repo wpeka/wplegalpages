@@ -27,7 +27,54 @@ $plugin_name                   = 'gdpr-cookie-consent/gdpr-cookie-consent.php';
 $is_gdpr_active = is_plugin_active( $plugin_name );
 $plugin_name_lp                   = 'wplegalpages/wplegalpages.php';
 $is_legalpages_active = is_plugin_active( $plugin_name_lp );
+/*
+* Number of scans on the basis of user's plan
+*/
+if ( $api_user_plan == 'free' ) {
+	$total_no_of_free_scans = 100;
+} else {
+	$total_no_of_free_scans = 20000; // actual 50000.
+}
 
+$gdpr_pages_scanned 			 = get_option('gdpr_no_of_page_scan', 0);
+$gdpr_no_of_page_scan            = $total_no_of_free_scans - get_option( 'gdpr_no_of_page_scan' );
+$remaining_percentage_scan_limit = round( ( get_option( 'gdpr_no_of_page_scan' ) / $total_no_of_free_scans ) * 100 );
+
+//Monthly scan
+$gdpr_monthly_scan_percent = 0;
+if ( 'free' === $api_user_plan ) { 
+	$scan_limit     = get_transient( 'gdpr_monthly_scan_limit_exhausted' );
+	$scan_limit_int = (int) $scan_limit; 
+	$gdpr_monthly_scan_percent = ( ( $scan_limit_int ) / 5 ) * 100;
+}
+
+$gdpr_monthly_page_views = get_option('wpl_monthly_page_views', 0);
+$gdpr_monthly_page_views_limit = 0;
+$gdpr_monthly_page_views_percent = 0;
+if ( 'free' === $api_user_plan ) { 
+	$gdpr_monthly_page_views_limit = 20000;
+	$gdpr_monthly_page_views_percent = ( ( $gdpr_monthly_page_views ) / 20000 ) * 100;
+} else if ( '3sites' === $api_user_plan ) {
+	$gdpr_monthly_page_views_limit = 100000;
+	$gdpr_monthly_page_views_percent = ( ( $gdpr_monthly_page_views ) / 100000 ) * 100;
+}
+
+$gdpr_remaining_page_views = $gdpr_monthly_page_views_limit - $gdpr_monthly_page_views;
+
+$gdpr_plan_warning = false;
+
+if( $gdpr_monthly_page_views_percent === 100 || $remaining_percentage_scan_limit === 100 || $gdpr_monthly_scan_percent === 100 ) {
+	$gdpr_plan_warning = true;
+}
+
+$free_trial_data = get_option( 'wplp_free_trial_data', [] );
+
+$local_expiry = (int) ( $free_trial_data['localExpiry'] ?? 0 );
+
+$is_free_trial_active = ! empty( $free_trial_data['isTrialActive'] ) && time() < $local_expiry;
+$trialEndsIn          = $is_free_trial_active ? ceil( ( $local_expiry - time() ) / DAY_IN_SECONDS ) : 0;
+$trialStartDate       = $free_trial_data['trialStartDate'] ?? '';
+$trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 ?>
 
 <div id="wp-legalpages-main-admin-structure" class="wp-legalpages-main-admin-structure">
@@ -238,6 +285,32 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 							<?php } ?>
 						<?php } ?>
 					</div>
+
+					<?php if($is_user_connected == true && $is_free_trial_active == true) { ?>
+						<div class="wplp-trial-widget <?php echo ($trialEndsIn > 0) ? 'wplp-trial-widget-active' : 'wplp-trial-widget-ended'; ?>">
+							<div class="wplp-trial-widget-header">
+								<h5 class="wplp-trial-widget-title <?php echo ($trialEndsIn > 0) ? 'wplp-trial-widget-title-active' : 'wplp-trial-widget-title-ended'; ?>">Free Trial</h5>
+								<span class="wplp-trial-widget-badge <?php echo ($trialEndsIn > 0) ? 'wplp-trial-widget-badge-active' : 'wplp-trial-widget-badge-ended'; ?>">
+									<?php echo ($trialEndsIn > 0) ? 'Active' : 'Ended'; ?>
+								</span>
+							</div>
+
+							<div class="wplp-trial-widget-body">
+								<div class="wplp-trial-widget-status">
+									<h6 class="wplp-trial-widget-remaining <?php echo ($trialEndsIn > 0) ? 'wplp-trial-widget-remaining-active' : 'wplp-trial-widget-remaining-ended'; ?>">
+										<?php echo ($trialEndsIn > 0) ? esc_html($trialEndsIn) . ' days remaining' : 'Trial period ended'; ?>
+									</h6>
+									<p class="wplp-trial-widget-dates <?php echo ($trialEndsIn > 0) ? 'wplp-trial-widget-dates-active' : 'wplp-trial-widget-dates-ended'; ?>">
+										<?php echo esc_html($trialStartDate); ?> - <?php echo esc_html($trialEndDate); ?>
+									</p>
+								</div>
+
+								<div class="wplp-trial-widget-progress-track">
+									<div class="wplp-trial-widget-progress-fill" style="width: <?php echo esc_attr(((7 - $trialEndsIn) / 7) * 100); ?>%;"></div>
+								</div>
+							</div>
+						</div>
+					<?php } ?>
 				</div>
 
 				<div class="wplp-compliance-content-wrapper legalpages-main">
@@ -250,7 +323,129 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 								?>
 								<div class="gdpr-remaining-scans-content" >
 									<div class="wplp-remaining-scan-header-left">
+										<div class="wplp-scan-label" style="<?php if( $gdpr_plan_warning === true ) {
+											echo 'flex-direction: row;';
+										} ?>">
+											<p><?php echo esc_html( 'Remaining Scans', 'wplegalpages' ); ?></p>
+											<p><?php echo esc_html( '& Usage:', 'wplegalpages' ); ?></p>
+										</div>
+
+										<?php if( $gdpr_plan_warning === true ) { ?>
+											<div class="wplp-plan-limit-warning">
+												<span><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/plan_limit_exceeded.svg'; ?>" alt="Plan Limit Exceeded"></span>
+												<p><?php echo esc_html( 'You have exhausted your current plan.', 'wplegalpages' ); ?><br><?php echo esc_html( 'Upgrade to Continue', 'wplegalpages'); ?></p>
+											</div>
+										<?php } ?>
 									</div>	
+									<div class="gdpr-progress-wrapper">
+											<div class="gdpr-monthly-scans-progress" style="
+												background: 
+													radial-gradient(closest-side, white 90%, transparent 80% 100%), 
+													conic-gradient( <?php echo ( $gdpr_monthly_scan_percent < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $gdpr_monthly_scan_percent < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?> <?php echo esc_html( $gdpr_monthly_scan_percent ); ?>%, <?php echo ( $gdpr_monthly_scan_percent < 35 ) ? esc_html('#e6f5ee', 'wplegalpages') : ( ( $gdpr_monthly_scan_percent < 75 ) ? esc_html('#fef7c3', 'wplegalpages') : esc_html('#f8e6e6', 'wplegalpages') ); ?> 0);"
+											>
+												<?php if ( 'free' === $api_user_plan ) { ?>
+													<span style="color: <?php echo ( $gdpr_monthly_scan_percent < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $gdpr_monthly_scan_percent < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?>;"><?php echo esc_attr( ceil( $gdpr_monthly_scan_percent ) ); ?>%</span>
+													<progress value="<?php echo esc_attr( ceil( $gdpr_monthly_scan_percent ) ); ?>" min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
+												<?php } else { ?>
+													<span><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/Unlimited_scan.svg'; ?>" alt="Unlimited Monthly Scans"></span>
+													<progress value="<?php echo esc_attr( ceil( $gdpr_monthly_scan_percent ) ); ?>" min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
+												<?php } ?>
+												
+											</div>
+
+											<div class="gdpr-progress-content">
+												<h3><?php echo esc_html( 'Scans / Month', 'wplegalpages' ); ?></h3>
+												<?php if ( 'free' === $api_user_plan ) { ?>
+														<p><?php echo esc_html( $scan_limit_int . ' / 5', 'wplegalpages' ) ?>
+															<span>
+																<?php if ( $gdpr_monthly_scan_percent >= 75 ) {
+																	echo '<img src="' . esc_url( WPL_LITE_PLUGIN_URL . 'admin/images/limit_warning.svg' ) . '" alt="">'; 
+																} ?>
+															</span>
+														<p><?php echo esc_html( ( 5 - $scan_limit_int ) . ' Remaining', 'wplegalpages' ); ?></p>
+												<?php } else { ?>
+														<p><?php echo esc_html( 'Unlimited', 'wplegalpages' ) ?></p>
+												<?php } ?>
+											</div>
+										</div>
+
+										<div class="gdpr-progress-wrapper">
+											<?php if ( '10Sites' === $api_user_plan || '25Sites' === $api_user_plan || '50Sites' === $api_user_plan || '100Sites' === $api_user_plan || '10sites' === $api_user_plan || '25sites' === $api_user_plan || '50sites' === $api_user_plan || '100sites' === $api_user_plan) { ?>
+												<div class="gdpr-remaining-scans-progress" style="
+													background: 
+														radial-gradient(closest-side, white 90%, transparent 80% 100%),
+														conic-gradient(#469955 0%, #e6f5ee 0);"
+												>
+													<span><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/Unlimited_scan.svg'; ?>" alt="Unlimited Monthly Scans"></span>
+													<progress value="<?php echo esc_attr( ceil( $remaining_percentage_scan_limit ) ); ?>" min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
+												</div>
+
+												<div class="gdpr-progress-content">
+													<h3><?php echo esc_html( 'Pages / Scan', 'wplegalpages' ); ?></h3>
+													<p><?php echo esc_html( 'Unlimited', 'wplegalpages' ) ?></p>
+												</div>
+											<?php } else { ?>
+												<div class="gdpr-remaining-scans-progress" style="
+													background: 
+														radial-gradient(closest-side, white 90%, transparent 80% 100%),
+														conic-gradient( <?php echo ( $remaining_percentage_scan_limit < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $remaining_percentage_scan_limit < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?> <?php echo esc_html( $remaining_percentage_scan_limit ); ?>%, <?php echo ( $remaining_percentage_scan_limit < 35 ) ? esc_html('#e6f5ee', 'wplegalpages') : ( ( $remaining_percentage_scan_limit < 75 ) ? esc_html('#fef7c3', 'wplegalpages') : esc_html('#f8e6e6', 'wplegalpages') ); ?> 0);"
+												>
+													<span style="color: <?php echo ( $remaining_percentage_scan_limit < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $remaining_percentage_scan_limit < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?>;"><?php echo esc_attr( ceil( $remaining_percentage_scan_limit ) ); ?>%</span>
+													<progress value="<?php echo esc_attr( ceil( $remaining_percentage_scan_limit ) ); ?>" min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
+												</div>
+
+												<div class="gdpr-progress-content">
+													<h3><?php echo esc_html( 'Pages / Scan', 'wplegalpages' ); ?></h3>
+													<p><?php echo esc_html( $gdpr_pages_scanned . ' / ' . $total_no_of_free_scans, 'wplegalpages' ) ?>
+														<span>
+															<?php if ( $remaining_percentage_scan_limit >= 75 ) {
+																echo '<img src="' . esc_url( WPL_LITE_PLUGIN_URL . 'admin/images/limit_warning.svg' ) . '" alt="">'; 
+															} ?>
+														</span>
+													</p>
+													<p><?php echo esc_html( $gdpr_no_of_page_scan . ' Remaining', 'wplegalpages' ); ?></p>
+												</div>
+											<?php } ?>
+										</div>
+
+										<div class="gdpr-progress-wrapper">
+											<?php if ( '10Sites' === $api_user_plan || '10sites' === $api_user_plan || '25Sites' === $api_user_plan || '25sites' === $api_user_plan || '50Sites' === $api_user_plan || '50sites' === $api_user_plan || '100Sites' === $api_user_plan || '100sites' === $api_user_plan) { ?>
+												<div class="gdpr-pageviews-progress" style="
+													background: 
+														radial-gradient(closest-side, white 90%, transparent 80% 100%),
+														conic-gradient(#469955 0%, #e6f5ee 0);"
+												>
+													<span><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/Unlimited_scan.svg'; ?>" alt="Unlimited Pageviews"></span>
+													<progress value="<?php echo esc_attr( ceil( $gdpr_monthly_page_views_percent ) ); ?>" min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
+												</div>
+
+												<div class="gdpr-progress-content">
+													<h3><?php echo esc_html( 'Page Views / Month', 'wplegalpages' ); ?></h3>
+													<p><?php echo esc_html( 'Unlimited', 'wplegalpages' ) ?></p>
+												</div>
+											<?php } else { ?>
+												<div class="gdpr-remaining-scans-progress" style="
+													background: 
+														radial-gradient(closest-side, white 90%, transparent 80% 100%),
+														conic-gradient( <?php echo ( $gdpr_monthly_page_views_percent < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $gdpr_monthly_page_views_percent < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?> <?php echo esc_html( $gdpr_monthly_page_views_percent ); ?>%, <?php echo ( $gdpr_monthly_page_views_percent < 35 ) ? esc_html('#e6f5ee', 'wplegalpages') : ( ( $gdpr_monthly_page_views_percent < 75 ) ? esc_html('#fef7c3', 'wplegalpages') : esc_html('#f8e6e6', 'wplegalpages') ); ?> 0);"
+												>
+													<span style="color: <?php echo ( $gdpr_monthly_page_views_percent < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $gdpr_monthly_page_views_percent < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?>;"><?php echo esc_attr( floor( $gdpr_monthly_page_views_percent ) ); ?>%</span>
+													<progress value="<?php echo esc_attr( floor( $gdpr_monthly_page_views_percent ) ); ?>" min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
+												</div>
+
+												<div class="gdpr-progress-content">
+													<h3><?php echo esc_html( 'Page Views / Month', 'wplegalpages' ); ?></h3>
+													<p><?php echo esc_html( $gdpr_monthly_page_views . ' / ' . $gdpr_monthly_page_views_limit, 'wplegalpages' ) ?>
+														<span>
+															<?php if ( $gdpr_monthly_page_views_percent >= 75 ) {
+																echo '<img src="' . esc_url( WPL_LITE_PLUGIN_URL . 'admin/images/limit_warning.svg' ) . '" alt="">'; 
+															} ?>
+														</span>
+													</p>
+													<p><?php echo esc_html( $gdpr_remaining_page_views . ' Remaining', 'wplegalpages' ); ?></p>
+												</div>
+											<?php } ?>
+										</div>	
 
 									<div class="wplp-plan-details">
 										<p><?php echo esc_html('Current Plan: ', 'wplegalpages'); ?>
@@ -269,14 +464,41 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 								if ( get_transient( 'app_wplp_subscription_payment_status_failed' ) ) {
 									?>
 									<div class="wp-legalpages-subsription-payment-failed-notice">
-										<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your last payment attempt failed. Please update your payment details within 7 days to avoid service disruption.', 'wplegalpages' ); ?></p>
+											<div class="wpl-payment-fail-icon-wrapper">
+												<svg viewBox="0 0 24 24">
+  												  <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none" stroke-width="2"/>
+  												  <line x1="12" y1="8" x2="12" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  												  <line x1="12" y1="12" x2="12" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  												</svg>
+											</div>
+											<div class="wpl-payment-fail-right-wrapper">
+												<div class="wpl-payment-fail-content-wrapper">
+													<h1><?php esc_html_e( 'Your last payment attempt failed.', 'wplegalpages' ); ?></h1>
+													<p><?php esc_html_e( 'Please update your payment details within 7 days to avoid service disruption.', 'wplegalpages' ); ?></p>
+												</div>
+
+												<a href="<?php echo esc_url( 'https://www.wplegalpages.com/pricing/' ) ?>" target="_blank" class="wpl-payment-fail-upgrade-button"><?php echo esc_html('Restore Plan', 'wplegalpages'); ?></a>
+											</div>
 									</div>
 									<?php
 								}
 								if ( get_option( 'app_wplp_subscription_status_pending_cancel' ) ) {
 									?>
 									<div class="wp-legalpages-subsription-payment-failed-notice">
-										<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your plan has been canceled to the Free Plan due to a failed payment or manual cancellation. Upgrade now to restore premium features.', 'wplegalpages' ); ?></p>
+										<div class="wpl-payment-fail-icon-wrapper">
+											<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					 							<path d="M11.9998 8.99999V13M11.9998 17H12.0098M10.6151 3.89171L2.39019 18.0983C1.93398 18.8863 1.70588 19.2803 1.73959 19.6037C1.769 19.8857 1.91677 20.142 2.14613 20.3088C2.40908 20.5 2.86435 20.5 3.77487 20.5H20.2246C21.1352 20.5 21.5904 20.5 21.8534 20.3088C22.0827 20.142 22.2305 19.8857 22.2599 19.6037C22.2936 19.2803 22.0655 18.8863 21.6093 18.0983L13.3844 3.89171C12.9299 3.10654 12.7026 2.71396 12.4061 2.58211C12.1474 2.4671 11.8521 2.4671 11.5935 2.58211C11.2969 2.71396 11.0696 3.10655 10.6151 3.89171Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					 						</svg>
+										</div>
+
+										<div class="wpl-payment-fail-right-wrapper">
+											<div class="wpl-payment-fail-content-wrapper">
+												<h1><?php esc_html_e( 'Your plan has been cancelled.', 'wplegalpages' ); ?></h1>
+												<p><?php esc_html_e( 'You\'ll lose access to premium features soon. Upgrade now to avoid interruption.', 'wplegalpages' ); ?></p>
+											</div>
+
+											<a href="<?php echo esc_url( 'https://www.wplegalpages.com/pricing/' ) ?>" target="_blank" class="wpl-payment-fail-upgrade-button"><?php echo esc_html('Restore Plan', 'wplegalpages'); ?></a>
+										</div>
 									</div>
 									<?php
 								}

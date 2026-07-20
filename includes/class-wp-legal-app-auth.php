@@ -63,6 +63,7 @@ class WP_Legal_Pages_App_Auth {
 			add_action( 'wp_ajax_wp_legal_pages_app_paid_start_auth', array( $this, 'legal_page_upgrade_user_plan' ) );
 			add_action( 'wp_ajax_wp_legal_pages_app_store_auth', array( $this, 'store_auth_key' ) );
 			add_action( 'wp_ajax_wp_legal_pages_app_delete_auth', array( $this, 'delete_app_auth' ) );
+			add_action( 'wp_ajax_lp_save_free_trial_data', array( $this, 'save_free_trial_data' ) );
 		}
 	}
 
@@ -337,6 +338,12 @@ class WP_Legal_Pages_App_Auth {
 		$data   = isset( $_POST['response'] ) ? $_POST['response'] : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash	
 		$origin = ! empty( $_POST['origin'] ) ? esc_url_raw( wp_unslash( $_POST['origin'] ) ) : false;
 
+		if ( get_option('app_wplp_subscription_status_pending_cancel') === 1 || get_option('app_wplp_subscription_status_pending_cancel') === '1' || get_option('app_wplp_subscription_status_pending_cancel') === true ) {
+			if (!empty($data['account']['plan']) && strtolower($data['account']['plan']) !== 'free' ) {
+				delete_option('app_wplp_subscription_status_pending_cancel');
+			}
+		}
+		
 		// Verify data and origin
 		if ( empty( $data ) || WPLEGAL_APP_URL !== $origin ) {
 			ob_end_clean();
@@ -382,6 +389,46 @@ class WP_Legal_Pages_App_Auth {
 		);
 	}
 
+	/**
+	 * AJAX handler to save free trial data
+	 */
+	public function save_free_trial_data() {		
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'Unauthorized' );
+		}
+
+		$raw = wp_unslash( $_POST['free_trial'] ?? '' );
+
+		$free_trial = json_decode( $raw, true );
+
+		if ( JSON_ERROR_NONE !== json_last_error() || ! is_array( $free_trial ) ) {
+			wp_send_json_error( 'Invalid free trial data' );
+		}
+
+		$free_trial_data = [
+			'isTrialActive' => ! empty( $free_trial['isTrialActive'] ),
+			'trialStartDate' => sanitize_text_field( $free_trial['trialStartDate'] ?? '' ),
+			'trialEndDate'   => sanitize_text_field( $free_trial['trialEndDate'] ?? '' ),
+			'trialEndsIn'    => absint( $free_trial['trialEndsIn'] ?? 0 ),
+			'localExpiry'    => (int) ( $free_trial['localExpiry'] ?? 0 ),
+		];
+
+		if ( ! empty( $free_trial_data['isTrialActive'] ) && $free_trial_data['isTrialActive'] === true ) {
+			// Store with a local expiry so the plugin can self-expire it
+			$expiry = strtotime( $free_trial_data['trialEndDate'] );
+
+			$free_trial_data['localExpiry'] = $expiry !== false
+				? $expiry
+				: ( time() + 7 * DAY_IN_SECONDS );
+
+			update_option( 'wplp_free_trial_data', $free_trial_data );
+		} else {
+			// isTrialActive false means user has an active paid sub — clear it
+			delete_option( 'wplp_free_trial_data' );
+		}
+
+		wp_send_json_success();
+	}
 
 	/**
 	 * Ajax handler to delete the auth data and disconnect the site from the WPCode Library.
@@ -395,6 +442,47 @@ class WP_Legal_Pages_App_Auth {
 			wp_send_json_error( esc_html__( 'You do not have permissions to disconnect  to App Wpeka Responsive Domain.', 'wplegalpages' ) );
 		}
 
+		$result = $this->perform_disconnect();
+
+		if ( true === $result['success'] && true === $result['deactivated'] ) {
+			if ( ! empty( $wcam_lib_legalpages->wc_am_activated_key ) ) {
+					update_option( $wcam_lib_legalpages->wc_am_activated_key, 'Deactivated' );
+			}
+
+				wp_send_json_success(
+					array(
+						'deactivate_results' => $result,
+						'error'              => false,
+						'message'            => $result['activations_remaining'],
+					)
+				);
+		}
+
+		if ( isset( $result['data']['error_code'] ) && ! empty( $wcam_lib_legalpages->data ) && ! empty( $wcam_lib_legalpages->wc_am_activated_key ) ) {
+			if ( isset( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ] ) ) {
+					update_option( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ], 'Deactivated' );
+			}
+				wp_send_json_error(
+					array(
+						'deactivate_results' => $result,
+						'error'              => true,
+						'message'            => $result['data']['error'],
+					)
+				);
+		}
+			wp_send_json_error(
+				array(
+					'deactivate_results' => false,
+					'error'              => true,
+					'message'            => 'Connection Already Deactivated',
+				)
+			);
+	}
+
+	/**
+	 * Disconnection Logic
+	 */
+	public function perform_disconnect() {
 		require_once plugin_dir_path( __DIR__ ) . 'includes/settings/class-wp-legal-pages-settings.php';
 		$settings   = new WP_Legal_Pages_Settings();
 		$options    = $settings->get_defaults();
@@ -412,41 +500,9 @@ class WP_Legal_Pages_App_Auth {
 			update_option( 'gdpr_api_framework_app_settings', $options );
 		}
 
-			$deactivate_results = json_decode( $wcam_lib_legalpages->deactivate( $args, $product_id ), true );
+		$deactivate_results = json_decode( $wcam_lib_legalpages->deactivate( $args, $product_id ), true );
 
-		if ( true === $deactivate_results['success'] && true === $deactivate_results['deactivated'] ) {
-			if ( ! empty( $wcam_lib_legalpages->wc_am_activated_key ) ) {
-					update_option( $wcam_lib_legalpages->wc_am_activated_key, 'Deactivated' );
-			}
-
-				wp_send_json_success(
-					array(
-						'deactivate_results' => $deactivate_results,
-						'error'              => false,
-						'message'            => $deactivate_results['activations_remaining'],
-					)
-				);
-		}
-
-		if ( isset( $deactivate_results['data']['error_code'] ) && ! empty( $wcam_lib_legalpages->data ) && ! empty( $wcam_lib_legalpages->wc_am_activated_key ) ) {
-			if ( isset( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ] ) ) {
-					update_option( $wcam_lib_legalpages->data[ $wcam_lib_legalpages->wc_am_activated_key ], 'Deactivated' );
-			}
-				wp_send_json_error(
-					array(
-						'deactivate_results' => $deactivate_results,
-						'error'              => true,
-						'message'            => $deactivate_results['data']['error'],
-					)
-				);
-		}
-			wp_send_json_error(
-				array(
-					'deactivate_results' => false,
-					'error'              => true,
-					'message'            => 'Connection Already Deactivated',
-				)
-			);
+		return $deactivate_results;
 	}
 
 
