@@ -11,7 +11,11 @@ Stable tag: 3.6.9
 
 Trusted by 10,000+ WordPress sites · 30+ ready-made legal templates · Set up your privacy policy in minutes, no coding or legal writing required.
 
-[WPLP Legal Pages](https://wplegalpages.com/?utm_source=wordpress.org&utm_medium=wplegalpageplugin&utm_campaign=readme) helps WordPress website owners create, publish, and manage the legal pages most websites are expected to have - privacy disclosures, terms, and related policies - using structured, ready-made templates instead of starting from a blank page or hiring a lawyer for routine documents.
+== Description ==
+
+Trusted by 10,000+ WordPress sites · 30+ ready-made legal templates · Set up your privacy policy in minutes, no coding or legal writing required.
+
+[WPLP Legal Pages](https://wplegalpages.com/legal-pages/?utm_source=+wordpress.org&utm_medium=referral+&utm_campaign=wplegalpage) helps WordPress website owners create, publish, and manage the legal pages most websites are expected to have - privacy disclosures, terms, and related policies - using structured, ready-made templates instead of starting from a blank page or hiring a lawyer for routine documents.
 
 The plugin is built for blogs, business websites, eCommerce stores, and SaaS platforms, and provides configuration options designed to support a range of privacy and consumer protection laws.
 
@@ -19,7 +23,7 @@ WPLP Legal Pages is a core module of the [WPLP Compliance Platform](https://wple
 
 [youtube https://www.youtube.com/watch?v=93LIh4ARMN8]
 
-== Why Choose WPLP Legal Pages ==
+== ✅ Why Choose WPLP Legal Pages ==
 
 - **30+ ready-made legal templates** - privacy policy, terms & conditions, disclaimer, cookie policy, and more, generated from a simple questionnaire
 
@@ -33,13 +37,13 @@ WPLP Legal Pages is a core module of the [WPLP Compliance Platform](https://wple
 
 - **Part of the WPLP Compliance Platform** - works with WPLP Cookie Consent so your policies and cookie banner stay aligned
 
-== Why Choose WPLP Legal Pages Over a SaaS Legal Generator ==
+== ⚖️ Why Choose WPLP Legal Pages Over a SaaS Legal Generator ==
 
 Many privacy policy and terms generators are hosted SaaS tools that charge a monthly fee, cap how many pages or visitors you get, and host your policies on their domain. WPLP Legal Pages works differently: it runs entirely inside WordPress, generates complete policy pages from a simple questionnaire, and publishes them on your own site with no per-page or per-visitor limits.
 
 You keep full control of your content, edit it any time in the WordPress editor, and — through the WPLP Compliance Platform — keep your policies aligned with your cookie banner instead of juggling separate tools.
 
-== Features ==
+== 📄 Features ==
 
 = Legal Policy Templates =
 
@@ -111,7 +115,7 @@ A built-in **age verification popup** for websites with age-related access requi
 
 This helps ensure affiliate disclosures are visible in the right places without manual copy-and-paste.
 
-== Premium Features ==
+== ⭐ Premium Features ==
 
 Unlock more templates and advanced legal tooling by upgrading to a WPLP premium plan:
 
@@ -127,7 +131,7 @@ Unlock more templates and advanced legal tooling by upgrading to a WPLP premium 
 
 - **Priority premium support** - faster help from the WPLP team
 
-== Free vs Premium ==
+== 🆓 Free vs Premium ==
 
 The free plugin covers the core legal pages most websites need - there is no crippled "lite" version.
 
@@ -135,7 +139,7 @@ Free plugin includes: 4 legal templates (Standard privacy policy, terms of use, 
 
 Premium adds: 25+ additional templates (GDPR Privacy Policy, Refund Policy, Earnings/Medical Disclaimer, EULA, and more), announcement banners and custom popups, advanced age verification, automatic policy updates, and priority support.
 
-== Supported Privacy and Consumer Protection Laws ==
+== 🛡️ Supported Privacy and Consumer Protection Laws ==
 
 WPLP Legal Pages is designed to support disclosures related to multiple privacy and data protection frameworks, including:
 
@@ -151,11 +155,11 @@ WPLP Legal Pages is designed to support disclosures related to multiple privacy 
 
 - Other regional privacy and consumer protection requirements
 
-== Works With WPLP Cookie Consent ==
+== 🔗 Works With WPLP Cookie Consent ==
 
-When used together with WPLP Cookie Consent, WPLP Legal Pages can link your cookie policy with your consent banner and consent categories - keeping disclosures across both plugins consistent as your site changes.
+When used together with [WPLP Cookie Consent](https://wordpress.org/plugins/gdpr-cookie-consent), WPLP Legal Pages can link your cookie policy with your consent banner and consent categories - keeping disclosures across both plugins consistent as your site changes.
 
-== Who Uses WPLP Legal Pages ==
+== 👥 Who Uses WPLP Legal Pages ==
 
 - **Bloggers and content creators:** adding privacy policy, disclaimers, and affiliate disclosures required for AdSense and affiliate programs
 
@@ -165,7 +169,7 @@ When used together with WPLP Cookie Consent, WPLP Legal Pages can link your cook
 
 - **SaaS and membership sites:** managing terms of service, EULA, and age-verification for gated content
 
-== Setup and Compatibility ==
+== ⚙️ Setup and Compatibility ==
 
 - Works with popular themes and page builders (Elementor, Divi, Gutenberg)
 
@@ -175,7 +179,7 @@ When used together with WPLP Cookie Consent, WPLP Legal Pages can link your cook
 
 Additional templates and features are available on premium plans. See the [pricing page](https://wplegalpages.com/pricing/?utm_source=wordpress.org&utm_medium=wplegalpageplugin&utm_campaign=readme) for details.
 
-== Documentation & Support ==
+== 📚 Documentation & Support ==
 
 Need help getting started? Our documentation covers everything from setup to troubleshooting.
 
@@ -190,15 +194,15 @@ Need help getting started? Our documentation covers everything from setup to tro
 For questions related to features or compatibility, you can [contact the WPLP Legal Pages support team](https://wplegalpages.com/contact-us/?utm_source=+wordpress.org&utm_medium=referral+&utm_campaign=wplegalpage).
 
 == Screenshots ==
-1. WPLP Legal Pages Wizard
-2. WPLP Legal Pages Step Wise Policy Settings
+1. WPLP Legal Pages Policies
+2. WPLP Legal Pages Business Details
 3. WPLP Legal Pages Policy Template Preview
 4. WPLP Legal Pages Getting Started
-5. WPLP Legal Pages General Settings
-6. WPLP Legal Pages Advanced Settings
-7. WPLP Legal Pages Compliance Settings
-8. WPLP Legal Pages Templates
-9. WPLP Legal Pages Features
+5. WPLP Legal Pages Policy Settings
+6. WPLP Legal Pages Popups
+7. WPLP Legal Pages Verify age popup
+8. WPLP Legal Pages Recent Policies Preview
+9. WPLP Legal Pages Advanced Settings
 
 == Frequently Asked Questions ==
 
