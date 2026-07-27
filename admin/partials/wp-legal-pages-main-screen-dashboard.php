@@ -263,32 +263,6 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 							<?php } ?>
 					
 					</div>
-
-					<!-- <?php if($is_user_connected == true && $is_free_trial_active == true) { ?>
-						<div class="wplp-trial-widget <?php echo ($trialEndsIn > 0) ? 'wplp-trial-widget-active' : 'wplp-trial-widget-ended'; ?>">
-						    <div class="wplp-trial-widget-header">
-						        <h5 class="wplp-trial-widget-title <?php echo ($trialEndsIn > 0) ? 'wplp-trial-widget-title-active' : 'wplp-trial-widget-title-ended'; ?>">Free Trial</h5>
-						        <span class="wplp-trial-widget-badge <?php echo ($trialEndsIn > 0) ? 'wplp-trial-widget-badge-active' : 'wplp-trial-widget-badge-ended'; ?>">
-						            <?php echo ($trialEndsIn > 0) ? 'Active' : 'Ended'; ?>
-						        </span>
-						    </div>
-
-						    <div class="wplp-trial-widget-body">
-						        <div class="wplp-trial-widget-status">
-						            <h6 class="wplp-trial-widget-remaining <?php echo ($trialEndsIn > 0) ? 'wplp-trial-widget-remaining-active' : 'wplp-trial-widget-remaining-ended'; ?>">
-						                <?php echo ($trialEndsIn > 0) ? esc_html($trialEndsIn) . ' days remaining' : 'Trial period ended'; ?>
-						            </h6>
-						            <p class="wplp-trial-widget-dates <?php echo ($trialEndsIn > 0) ? 'wplp-trial-widget-dates-active' : 'wplp-trial-widget-dates-ended'; ?>">
-						                <?php echo esc_html($trialStartDate); ?> - <?php echo esc_html($trialEndDate); ?>
-						            </p>
-						        </div>
-
-						        <div class="wplp-trial-widget-progress-track">
-						            <div class="wplp-trial-widget-progress-fill" style="width: <?php echo esc_attr(((7 - $trialEndsIn) / 7) * 100); ?>%;"></div>
-						        </div>
-						    </div>
-						</div>
-					<?php } ?> -->
 				</div>
 
 				<div class="wplp-compliance-content-wrapper">
@@ -299,22 +273,6 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 						<div class="wp-legalpages-admin-tabs-inner-content">
 							<!-- Getting Started content  -->
 							<div class="wp-legalpages-admin-getting-started-content wp-legalpages-admin-tab-content wplp_dashboard_tab" id="getting_started">
-						
-							<!-- <div class="wplegalpages-connect-api-container">
-								<div class="gdpr-api-info-content">
-									<div class="wplp-compliance-banner-content">
-										<h1 class="wplp-compliance-banner-header"><?php echo esc_html( 'Welcome to WPLP Compliance Platform!', 'wplegalpages' ); ?></h1>
-										<p><?php echo esc_html('Complete Legal & Cookie Protection', 'wplegalpages'); ?></p>
-										<p><?php echo esc_html('Your complete compliance package for your website, from legal documents to cookie consent.', 'wplegalpages'); ?></p>
-										<div class="wplp-compliance-banner-tags">
-											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'GDPR Compliant', 'wplegalpages' ); ?></span>
-											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'CCPA Ready', 'wplegalpages' ); ?></span>
-											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'Auto-Generated Policies', 'wplegalpages' ); ?></span>
-											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'Real-Time Monitoring', 'wplegalpages' ); ?></span>
-										</div>
-									</div>
-								</div> -->
-						
 								<div id="popup-site-excausted" class="popup-overlay">
 									<div class="popup-content">
 										<div class="popup-header">
@@ -359,7 +317,6 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 										</div>
 										<?php
 										}
-										// update_option('app_wplp_subscription_status_pending_cancel', false);
 										if ( get_option( 'app_wplp_subscription_status_pending_cancel' ) ) {
 											?>
 												<div class="wp-legalpages-subsription-payment-failed-notice">
@@ -791,7 +748,6 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 									</div>
 									<div class="lp-card">
 										<div style="display:flex; gap:14px; flex: 1">
-											<!-- <?php if ( $is_legalpages_active ) : ?> -->
 											<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<rect width="40" height="40" rx="10" fill="#F3E8FF"/>
 												<path d="M21.3389 10H16.5714C14.4164 10 13.3389 10 12.6695 10.6509C12 11.3017 12 12.3493 12 14.4444V25.5556C12 27.6507 12 28.6983 12.6695 29.3491C13.3389 30 14.4164 30 16.5714 30H23.4286C25.5836 30 26.6611 30 27.3305 29.3491C28 28.6983 28 27.6507 28 25.5556V16.476C28 16.0219 28 15.7948 27.913 15.5906C27.826 15.3864 27.6609 15.2258 27.3305 14.9047L22.9552 10.6509C22.6249 10.3297 22.4597 10.1692 22.2497 10.0846C22.0397 10 21.8061 10 21.3389 10Z" stroke="#7E22CE" stroke-width="2"/>
@@ -799,15 +755,6 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 												<path d="M17 26L21 26" stroke="#7E22CE" stroke-width="2" stroke-linecap="round"/>
 												<path d="M21 10V14.6667C21 15.7666 21 16.3166 21.3417 16.6583C21.6834 17 22.2334 17 23.3333 17H28" stroke="#7E22CE" stroke-width="2"/>
 											</svg>
-											<!-- <?php else: ?>
-												<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<rect width="40" height="40" rx="10" fill="#e5e5e5"/>
-													<path d="M21.3389 10H16.5714C14.4164 10 13.3389 10 12.6695 10.6509C12 11.3017 12 12.3493 12 14.4444V25.5556C12 27.6507 12 28.6983 12.6695 29.3491C13.3389 30 14.4164 30 16.5714 30H23.4286C25.5836 30 26.6611 30 27.3305 29.3491C28 28.6983 28 27.6507 28 25.5556V16.476C28 16.0219 28 15.7948 27.913 15.5906C27.826 15.3864 27.6609 15.2258 27.3305 14.9047L22.9552 10.6509C22.6249 10.3297 22.4597 10.1692 22.2497 10.0846C22.0397 10 21.8061 10 21.3389 10Z" stroke="#3A3A41" stroke-width="2"/>
-													<path d="M17 21L23 21" stroke="#3A3A41" stroke-width="2" stroke-linecap="round"/>
-													<path d="M17 26L21 26" stroke="#3A3A41" stroke-width="2" stroke-linecap="round"/>
-													<path d="M21 10V14.6667C21 15.7666 21 16.3166 21.3417 16.6583C21.6834 17 22.2334 17 23.3333 17H28" stroke="#3A3A41" stroke-width="2"/>
-												</svg>
-											<?php endif ?> -->
 											<div style="display:flex; justify-content:space-between;" class="compliance-card-header">
 												<div style="display:flex; flex-direction:column;gap:8px">
 													<h3 class=""><?php esc_html_e("Legal Pages", 'wplegalpages')?>
