@@ -24,6 +24,7 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 
 $installed_plugins = get_plugins();
 $plugin_name                   = 'gdpr-cookie-consent/gdpr-cookie-consent.php';
+$gdpr_installed     = isset( $installed_plugins['gdpr-cookie-consent/gdpr-cookie-consent.php'] ) ? true : false;
 $is_gdpr_active = is_plugin_active( $plugin_name );
 $plugin_name_lp                   = 'wplegalpages/wplegalpages.php';
 $is_legalpages_active = is_plugin_active( $plugin_name_lp );
@@ -236,7 +237,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 								// Get the version
 								$gdpr_version = $plugin_data['Version'];
 								if($gdpr_version >= '3.7.0') {  ?>
-									<a class="wp-legalpages-admin-tab wp-legalpages-admin-help-tab wp-legalpages-admin-tab-link" data-tab="help-page">
+									<a href="?page=wplp-dashboard#help-page" class="wp-legalpages-admin-tab wp-legalpages-admin-help-tab wp-legalpages-admin-tab-link" data-tab="help-page">
 										<div class="wplp-admin-tab-link-content">
 											<div class="wplp-admin-tab-link-left">
 												<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -248,7 +249,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 										</div>
 									</a>
 							 	<?php } } else{ ?>
-									<div class="wp-legalpages-admin-tab wp-legalpages-admin-help-tab wp-legalpages-admin-tab-link" data-tab="help-page">
+									<a href="?page=wplp-dashboard#help-page" class="wp-legalpages-admin-tab wp-legalpages-admin-help-tab wp-legalpages-admin-tab-link" data-tab="help-page">
 										<div class="wplp-admin-tab-link-content">
 											<div class="wplp-admin-tab-link-left">
 												<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -258,7 +259,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 												<?php echo esc_html('Help','wplegalpages'); ?>
 											</div>
 										</div>
-									</div>
+									</a>
 								<?php } ?>
 							<?php } ?>
 					
@@ -401,9 +402,9 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 													</span>
 												</div>
 											</div>
-											<?php if(!$gdpr_installed && !$is_user_connected) : ?>
+											<?php if((!$gdpr_installed || !$is_gdpr_active) && !$is_user_connected) : ?>
 											<div class="step-line"></div>
-											<?php elseif(!$gdpr_installed && $is_user_connected) : ?>
+											<?php elseif((!$gdpr_installed || !$is_gdpr_active) && $is_user_connected) : ?>
 												<div class="step-line" style="height:240px"></div>
 												<?php endif?>
 											<div class="step-row">
@@ -422,7 +423,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 										</div>
 										<div class="compliance-cards">
 											
-												<?php if(!$gdpr_installed && !$is_user_connected) : ?>
+												<?php if((!$gdpr_installed || !$is_gdpr_active) && !$is_user_connected) : ?>
 													<div class="compliance-banner-active-card">
 														<div style="display:flex;gap:14px;">
 															<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -496,7 +497,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 															</div>
 														</div>
 													</div>
-													<?php elseif(!$gdpr_installed && $is_user_connected) : ?>
+												<?php elseif((!$gdpr_installed || !$is_gdpr_active) && $is_user_connected) : ?>
 														<div class="compliance-connect-card first-step">
 															<div class="compliance-card-header">
 																<h3><?php esc_html_e( 'Connect and scan your website for cookies', 'wplegalpages' ); ?></h3>
@@ -541,7 +542,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 														</div>
 												<?php endif; ?>
 											
-											<?php if ( !$gdpr_installed && !$is_user_connected) : ?>
+											<?php if ( (!$gdpr_installed || !$is_gdpr_active) && !$is_user_connected) : ?>
 												<div class="compliance-connect-card disabled">
 													<div class="compliance-card-header disabled">
 														<h3><?php esc_html_e( 'Connect and scan your website for cookies', 'wplegalpages' ); ?></h3>
@@ -577,7 +578,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 													
 												</div>
 												</div>
-												<?php elseif ( !$gdpr_installed && $is_user_connected) : ?>
+											<?php elseif ( (!$gdpr_installed || !$is_gdpr_active) && $is_user_connected) : ?>
 													<div class="compliance-banner-active-card">
 														<div style="display:flex;gap:14px;">
 															<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -587,7 +588,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 															</svg>
 															<div>
 																<div class="compliance-card-header">
-																	<h3><?php esc_html_e( 'Install WP Cookie Consent', 'wplegalpages' ); ?></h3>
+																	<h3><?php $gdpr_installed ? esc_html_e( 'Activate WP Cookie Consent', 'wplegalpages' ) : esc_html_e( 'Install WP Cookie Consent', 'wplegalpages' ); ?></h3>
 																</div>
 																<p><?php esc_html_e( 'Protect your website with a cookie consent banner and unlock advanced compliance features.', 'wplegalpages' ); ?></p>
 															</div>
@@ -601,8 +602,8 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 																				<path d="M29.381 18.4762H27.8095V14.2857C27.8095 13.73 27.5888 13.1971 27.1958 12.8042C26.8029 12.4112 26.27 12.1905 25.7143 12.1905H21.5238V10.619C21.5238 9.92443 21.2479 9.25827 20.7567 8.7671C20.2655 8.27593 19.5994 8 18.9048 8C18.2101 8 17.544 8.27593 17.0528 8.7671C16.5616 9.25827 16.2857 9.92443 16.2857 10.619V12.1905H12.0952C11.5395 12.1905 11.0066 12.4112 10.6137 12.8042C10.2207 13.1971 10 13.73 10 14.2857V18.2667H11.5714C13.1429 18.2667 14.4 19.5238 14.4 21.0952C14.4 22.6667 13.1429 23.9238 11.5714 23.9238H10V27.9048C10 28.4605 10.2207 28.9934 10.6137 29.3863C11.0066 29.7793 11.5395 30 12.0952 30H16.0762V28.4286C16.0762 26.8571 17.3333 25.6 18.9048 25.6C20.4762 25.6 21.7333 26.8571 21.7333 28.4286V30H25.7143C26.27 30 26.8029 29.7793 27.1958 29.3863C27.5888 28.9934 27.8095 28.4605 27.8095 27.9048V23.7143H29.381C30.0756 23.7143 30.7417 23.4384 31.2329 22.9472C31.7241 22.456 32 21.7899 32 21.0952C32 20.4006 31.7241 19.7345 31.2329 19.2433C30.7417 18.7521 30.0756 18.4762 29.381 18.4762Z" fill="#074EA8"/>
 																			</svg>
 																			<div>
-																				<p><strong><?php esc_html_e("WP Cookie Consent Plugin is not installed", "wplegalpages")?></strong></p>
-																				<p><?php esc_html_e("Install WPLP Cookie Consent plugin to continue with the next step.", "wplegalpages")?></p>
+																				<p><strong><?php $gdpr_installed ? esc_html_e("WP Cookie Consent Plugin is not activated", "wplegalpages") : esc_html_e("WP Cookie Consent Plugin is not installed", "wplegalpages")?></strong></p>
+																				<p><?php $gdpr_installed ? esc_html_e("Activate WPLP Cookie Consent plugin to continue with the next step.", "wplegalpages") : esc_html_e("Install WPLP Cookie Consent plugin to continue with the next step.", "wplegalpages")?></p>
 																			</div>
 																		</div>
 																	</div>
@@ -615,7 +616,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 																				<path d="M4.16663 17.5L15.8333 17.5" stroke="white"/>
 																			</svg>
 																		</span>
-																		<?php esc_html_e('Install Cookie Consent', 'wplegalpages');
+																		<?php $gdpr_installed ? esc_html_e('Activate Cookie Consent', 'wplegalpages') : esc_html_e('Install Cookie Consent', 'wplegalpages');
 																		?>
 																	</button>
 																</div>
