@@ -2612,6 +2612,7 @@ table tbody tr td .table-link-alert:hover {
 /* Plugin Dashboard Revamp - Sep25 */
 .wplp-compliance-main-wrapper {
   padding-right: 20px;
+  position: relative;
 }
 
 @media (max-width: 1111px) {
@@ -2728,21 +2729,7 @@ table tbody tr td .table-link-alert:hover {
   height: auto; 
 }
 
-.wplp-compliance-main
-  .wp-legalpages-admin-tabs-section
-  .wp-legalpages-admin-tabs
-  > *:first-child .wplp-admin-tab-link-content {
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-}
 
-.wplp-compliance-main
-  .wp-legalpages-admin-tabs-section
-  .wp-legalpages-admin-tabs
-  > *:last-child .wplp-admin-tab-link-content {
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
 
 .wplp-compliance-main
   .wp-legalpages-admin-tabs-section 
