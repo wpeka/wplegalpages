@@ -2220,9 +2220,11 @@ table tbody tr td .table-link-alert:hover {
 }
 
 #gdpr-install-activate-img {
-	max-width: 100%;
-	position: relative;
-	right: 19px;
+	width: calc(100% - 183px);
+    position: fixed;
+    right: 10px;
+    left: 173px;
+    top: 25px;
 }
 
 .lp-popup-container {
