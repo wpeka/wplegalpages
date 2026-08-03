@@ -826,14 +826,14 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 													<?php if ( $is_legalpages_active ) : ?>
 														<button
 															type="button"
-															class="install-gdpr-button gdpr-lp-card"
+															class="manage-wplp-button gdpr-lp-card"
 															onclick="window.location.href='<?php echo esc_url( admin_url( 'index.php?page=wplegal-wizard#/' ) ); ?>';">
 															<?php esc_html_e( 'Manage Legal pages', 'wplegalpages' ); ?>
 														</button>
 													<?php else : ?>
 														<button
 															type="button"
-															class="install-gdpr-button gdpr-lp-card"
+															class="install-wplp-button gdpr-lp-card"
 															onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=legal-pages' ) ); ?>';">
 															<?php esc_html_e( 'Install WP Legal Pages', 'wplegalpages' ); ?>
 														</button>
