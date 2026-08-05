@@ -1032,7 +1032,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
                 'banner_custom_css'            => $lp_banner_options['banner_custom_css'] ?? "",
             ),
 			'ageVerificationSettings'	=> array(
-				'is_age'					=> $this->lp_get_option( '_lp_require_for', 'site' ),
+				'is_age'					=> $this->lp_get_option( '_lp_require_for', 'content' ),
 				'age_verify_for'			=> $this->lp_get_option( '_lp_always_verify', 'all' ),
 				'minimum_age'				=> $this->lp_get_option( '_lp_minimum_age', 18 ),
 				'age_type_option'			=> $this->lp_get_option( '_lp_display_option', 'button' ),
