@@ -110,6 +110,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'confidentiality_disclosure':
 					$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
 					break;
+				case 'cvd_policy':
+					$pid = get_option( 'wplegal_cvd_page' );
+					break;
 				case 'earnings_disclaimer':
 					$pid = get_option( 'wplegal_earnings_disclaimer_page' );
 					break;
@@ -299,6 +302,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					if ( ! empty( $preview_text ) ) {
 						$page_preview .= '<h1>';
 						$page_preview .= __( 'Confidentiality Disclosure', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
+					break;
+				case 'cvd_policy':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'Coordinated Vulnerability Disclosure (CVD) Policy', 'wplegalpages' );
 						$page_preview .= '</h1>';
 					}
 					break;
@@ -727,6 +737,23 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							'title'    => __( 'Country', 'wplegalpages' ),
 							'value'    => $country,
 							'required' => false,
+						),
+					);
+					break;
+				case 'cvd_policy':
+					$fields = array(
+						'lp-business-name' => array(
+							'title'    => __( 'Company or Developer Name', 'wplegalpages' ),
+							'value'    => $business_name,
+							'required' => true,
+						),
+						'lp-email'         => array(
+							'title'    => __( 'Security Email Address', 'wplegalpages' ),
+							'value'    => $email,
+							'required' => true,
+							'type'        => 'email',
+							'pattern'     => '^[\w\.-]+@[\w\.-]+\.\w{2,}$',
+							'error_msg'   => __( 'Please enter a valid email address.', 'wplegalpages' ),
 						),
 					);
 					break;
@@ -1761,6 +1788,24 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 									}
 											
 							break;
+							case 'cvd_policy':
+								if ( empty( $pid ) ) {
+									$pid = $this->get_pid_by_insert_page( $page, 'Coordinated Vulnerability Disclosure (CVD) Policy' );
+									update_post_meta( $pid, 'is_legal', 'yes' );
+									update_post_meta( $pid, 'legal_page_type', $page );
+									$fields = $this->get_remote_data( 'get_cvd_policy_settings' );
+									update_post_meta( $pid, 'legal_page_cvd_settings', $fields );
+									update_option( 'wplegal_cvd_page', $pid );
+								} else {
+									$cvd_options = get_post_meta( $pid, 'legal_page_cvd_settings', true );
+									if ( ! $cvd_options || empty( $cvd_options ) ) {
+										$fields = $this->get_remote_data( 'get_cvd_policy_settings' );
+										update_post_meta( $pid, 'legal_page_cvd_settings', $fields );
+									} else {
+										$fields = $cvd_options;
+									}
+								}
+								break;
 			}
 			return $fields;
 		}
@@ -2209,7 +2254,48 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
 
 					break;
+				case 'cvd_policy':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'Coordinated Vulnerability Disclosure (CVD) Policy' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						$cvd_settings = $this->get_remote_data( 'get_cvd_policy_settings' );
+						$cvd_options  = array();
+						foreach ( $cvd_settings as $key => $option ) {
+							if ( isset( $option->checked ) && true === $option->checked ) {
+								$cvd_options[ $key ] = true;
+								$fields               = $option->fields;
+								foreach ( $fields as $field_key => $field ) {
+									if ( isset( $field->checked ) && true === $field->checked ) {
+										$cvd_options[ $field_key ] = true;
+										if ( isset( $field->sub_fields ) && ! empty( $field->sub_fields ) ) {
+											foreach ( $field->sub_fields as $key => $sub_field ) {
+												if ( isset( $field->checked ) && true === $field->checked ) {
+													$cvd_options[ $key ] = true;
+												} else {
+													$cvd_options[ $key ] = false;
+												}
+											}
+										}
+									} else {
+										$cvd_options[ $field_key ] = false;
+									}
+								}
+							} else {
+								$cvd_options[ $key ] = false;
+							}
+						}
 
+						update_post_meta( $pid, 'legal_page_cvd_settings', $cvd_settings );
+						update_post_meta( $pid, 'legal_page_cvd_options', $cvd_options );
+						update_option( 'wplegal_cvd_page', $pid );
+					} else {
+						$cvd_settings = get_post_meta( $pid, 'legal_page_cvd_options', true );
+						$cvd_options  = $cvd_settings;
+					}
+					$options      = $cvd_options;
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
+					break;
 				case 'general_disclaimer':
 					if ( empty( $pid ) ) {
 						$pid = $this->get_pid_by_insert_page( $page, 'General Disclaimer' );
