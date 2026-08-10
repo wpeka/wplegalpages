@@ -535,7 +535,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
     	return true;
 	}
 	public function permission_callback_with_master_key_validation_only( WP_REST_Request $request ) {
-		$this->settings  = new GDPR_Cookie_Consent_Settings();
+		$this->settings = new WP_Legal_Pages_Settings();
 		$master_key      = $this->settings->get( 'api', 'token' );
 		// 1.Extract master_key from the request body
 		$body = $request->get_json_params();
