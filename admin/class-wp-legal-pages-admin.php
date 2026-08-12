@@ -484,7 +484,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 	}
 
 	public function permission_callback_for_wplp_connect_site(WP_REST_Request $request) {
-		return true;
+		
 		$auth_header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
 
     	if ( ! preg_match( '/Bearer\s(\S+)/', $auth_header, $matches ) ) {
