@@ -161,7 +161,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$origin      = isset( $_SERVER['HTTP_ORIGIN'] ) ? $_SERVER['HTTP_ORIGIN'] : '';
 			$site_origin = site_url();
 
-			$app_origin = rtrim('http://localhost:5173/', '/');
+			$app_origin = rtrim(WPLEGAL_APP_URL, '/');
 			$allowed_origins = [
 				$app_origin,
 				$site_origin,
