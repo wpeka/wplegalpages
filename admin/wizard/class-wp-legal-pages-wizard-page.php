@@ -113,6 +113,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 				case 'cvd_policy':
 					$pid = get_option( 'wplegal_cvd_page' );
 					break;
+				case 'doc_policy':
+					$pid = get_option( 'wplegal_doc_page' );
+					break;
 				case 'earnings_disclaimer':
 					$pid = get_option( 'wplegal_earnings_disclaimer_page' );
 					break;
@@ -505,6 +508,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						'ID'           => $pid,
 					);
 					wp_update_post( $post_args );
+					break;
+				case 'doc_policy':
+					if ( ! empty( $preview_text ) ) {
+						$page_preview .= '<h1>';
+						$page_preview .= __( 'EU Declaration of Conformity (DoC)', 'wplegalpages' );
+						$page_preview .= '</h1>';
+					}
 					break;
 			}
 			$page_preview .= $preview_text;
@@ -1437,6 +1447,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 							),
 						);
 					break;
+					case 'doc_policy':
+						$fields = array(
+							'lp-business-name' => array(
+								'title'    => __( 'Company Name', 'wplegalpages' ),
+								'value'    => $business_name,
+								'required' => true,
+							),
+							'lp-address'        => array(
+								'title'    => __( 'Company Address', 'wplegalpages' ),
+								'value'    => $address,
+								'required' => true,
+							),
+						);
+						break;
 			}
 
 			return $fields;
@@ -1803,6 +1827,24 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 										update_post_meta( $pid, 'legal_page_cvd_settings', $fields );
 									} else {
 										$fields = $cvd_options;
+									}
+								}
+								break;
+							case 'doc_policy':
+								if ( empty( $pid ) ) {
+									$pid = $this->get_pid_by_insert_page( $page, 'EU Declaration of Conformity (DoC)' );
+									update_post_meta( $pid, 'is_legal', 'yes' );
+									update_post_meta( $pid, 'legal_page_type', $page );
+									$fields = $this->get_remote_data( 'get_doc_policy_settings' );
+									update_post_meta( $pid, 'legal_page_doc_settings', $fields );
+									update_option( 'wplegal_doc_page', $pid );
+								} else {
+									$doc_options = get_post_meta( $pid, 'legal_page_doc_settings', true );
+									if ( ! $doc_options || empty( $doc_options ) ) {
+										$fields = $this->get_remote_data( 'get_doc_policy_settings' );
+										update_post_meta( $pid, 'legal_page_doc_settings', $fields );
+									} else {
+										$fields = $doc_options;
 									}
 								}
 								break;
@@ -2742,6 +2784,48 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 					$lp_find      = array( '[Domain]', '[Business Name]', '[Trading Name]', '[Phone]', '[Street]', '[City, State, Zip code]', '[Country]', '[Email]', '[Address]', '[Niche]' );
 					$lp_general   = get_option( 'lp_general' );
 					$preview_text = str_replace( $lp_find, $lp_general, stripslashes( $preview_text ) );
+					break;
+				case 'doc_policy':
+					if ( empty( $pid ) ) {
+						$pid = $this->get_pid_by_insert_page( $page, 'EU Declaration of Conformity (DoC)' );
+						update_post_meta( $pid, 'is_legal', 'yes' );
+						update_post_meta( $pid, 'legal_page_type', $page );
+						$doc_settings = $this->get_remote_data( 'get_doc_policy_settings' );
+						$doc_options  = array();
+						foreach ( $doc_settings as $key => $option ) {
+							if ( isset( $option->checked ) && true === $option->checked ) {
+								$doc_options[ $key ] = true;
+								$fields              = $option->fields;
+								foreach ( $fields as $field_key => $field ) {
+									if ( isset( $field->checked ) && true === $field->checked ) {
+										$doc_options[ $field_key ] = true;
+										if ( isset( $field->sub_fields ) && ! empty( $field->sub_fields ) ) {
+											foreach ( $field->sub_fields as $key => $sub_field ) {
+												if ( isset( $field->checked ) && true === $field->checked ) {
+													$doc_options[ $key ] = true;
+												} else {
+													$doc_options[ $key ] = false;
+												}
+											}
+										}
+									} else {
+										$doc_options[ $field_key ] = false;
+									}
+								}
+							} else {
+								$doc_options[ $key ] = false;
+							}
+						}
+
+						update_post_meta( $pid, 'legal_page_doc_settings', $doc_settings );
+						update_post_meta( $pid, 'legal_page_doc_options', $doc_options );
+						update_option( 'wplegal_doc_page', $pid );
+					} else {
+						$doc_settings = get_post_meta( $pid, 'legal_page_doc_options', true );
+						$doc_options  = $doc_settings;
+					}
+					$options      = $doc_options;
+					$preview_text = $this->get_preview_from_remote( $page, $options, $lp_general, $lp_general['language'] );
 					break;
 			}
 			return $preview_text;
