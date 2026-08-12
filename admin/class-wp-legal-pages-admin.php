@@ -444,7 +444,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 	}
 
 	public function permission_callback_for_react_app(WP_REST_Request $request) {
-		return true;
 		$this->settings = new WP_Legal_Pages_Settings();
 
 		$master_key = $this->settings->get('api','token');		
