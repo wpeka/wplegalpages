@@ -376,13 +376,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			array(
 				'methods'  => 'POST',
 				'callback' => array($this, 'wplp_send_data_to_dashboard_appwplp_server'), // Function to handle the request
-				'permission_callback' => function() use ($is_user_connected) {
-					// Check if user is connected and the API plan is valid
-					if ($is_user_connected) {
-						return true; // Allow access
-					}
-					return new WP_Error('rest_forbidden', 'Unauthorized access', array('status' => 401));
-				},
+				'permission_callback' => array($this, 'permission_callback_for_react_app'),
 			)
 		);
 		register_rest_route(
@@ -413,13 +407,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				array(
 					'methods'  => 'POST',
 					'callback' => array( $this, 'wplegalpages_get_wplp_payment_status' ),
-					'permission_callback' => function() use ( $is_user_connected ) {
-						// Check if user is connected and the API plan is valid
-						if ( $is_user_connected ) {
-							return true; // Allow access
-						}
-						return new WP_Error( 'rest_forbidden', 'Unauthorized access', array( 'status' => 401 ) );
-					},
+					'permission_callback' => array($this, 'permission_callback_with_master_key_validation_only'),
 				)
 			);
 		}
@@ -431,13 +419,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				array(
 					'methods'  => 'POST',
 					'callback' => array( $this, 'wplegalpages_set_subscription_payment_pending_cancel' ),
-					'permission_callback' => function() use ( $is_user_connected ) {
-						// Check if user is connected and the API plan is valid
-						if ( $is_user_connected ) {
-							return true; // Allow access
-						}
-						return new WP_Error('rest_forbidden', 'Unauthorized access', array( 'status' => 401 ) );
-					},
+					'permission_callback' => array($this, 'permission_callback_with_master_key_validation_only'),
 				)
 			);
 		}
@@ -552,7 +534,21 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
     	return true;
 	}
+	public function permission_callback_with_master_key_validation_only( WP_REST_Request $request ) {
+		$this->settings = new WP_Legal_Pages_Settings();
+		$master_key      = $this->settings->get( 'api', 'token' );
+		// 1.Extract master_key from the request body
+		$body = $request->get_json_params();
+		$incoming_key = isset($body['master_key']) ? sanitize_text_field($body['master_key']) : '';
+		if ( empty($incoming_key) ) {
+			return new WP_Error('master_key_missing', 'Master key not provided.', ['status' => 401]);
+		}
+		if ( $master_key !== $incoming_key ) {
+			return new WP_Error('invalid_master_key', 'Master key mismatch.', ['status' => 401]);
+		}
 
+		return true;
+	}
 	function wplp_generate_api_secret() {
 	    // Check if secret already exists
 	    if ( get_option('wplegalpages_api_secret') ) {
