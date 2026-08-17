@@ -1338,7 +1338,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$settings = get_post_meta( $pid, 'legal_page_coppa_settings', true );
 				$options  = get_post_meta( $pid, 'legal_page_coppa_options', true );
 				break;
+			
+			case 'cvd_policy':
+				$settings = get_post_meta( $pid, 'legal_page_cvd_settings', true );
+				$options  = get_post_meta( $pid, 'legal_page_cvd_options', true );
+				break;
 
+			case 'doc_policy':
+				$settings = get_post_meta( $pid, 'legal_page_doc_settings', true );
+				$options  = get_post_meta( $pid, 'legal_page_doc_options', true );
+				break;
+			
 			default:
 				return array(
 					'settings' => array(),
@@ -1580,7 +1590,19 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			case "about_us":
 				update_option( 'wplegal_about_us_page', $pid ); 
 				break;
-
+			
+			case 'cvd_policy':
+				update_post_meta( $pid, 'legal_page_cvd_settings', $page_settings );
+				update_post_meta( $pid, 'legal_page_cvd_options', $page_options );
+				update_option( 'wplegal_cvd_page', $pid );
+				break;
+			
+			case 'doc_policy':
+				update_post_meta( $pid, 'legal_page_doc_settings', $page_settings );
+				update_post_meta( $pid, 'legal_page_doc_options', $page_options );
+				update_option( 'wplegal_doc_page', $pid );
+				break;
+			
 			default:
 				return new WP_REST_Response(
 					array( 'message' => 'Invalid page type' ),
@@ -5387,6 +5409,106 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							}
 							update_post_meta( $pid, 'legal_page_custom_legal_options', $data );
 							break;
+						case 'cvd_policy':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Coordinated Vulnerability Disclosure (CVD) Policy' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$cvd_options = $this->wplegalpages_get_remote_data( 'get_cvd_policy_settings' );
+
+								$cvd_options = $this->normalize_settings( $cvd_options );
+
+								update_post_meta( $pid, 'legal_page_cvd_settings', $cvd_options );
+								update_option( 'wplegal_cvd_page', $pid );
+							} else {
+								$cvd_settings = get_post_meta( $pid, 'legal_page_cvd_settings', true );
+								$cvd_options  = $this->normalize_settings( $cvd_settings );
+							}
+							$data = array();
+							foreach ( $cvd_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_cvd_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_cvd_options', $data );
+							break;
+						case 'doc_policy':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'EU Declaration of Conformity (DoC)' );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$doc_options = $this->wplegalpages_get_remote_data( 'get_doc_policy_settings' );
+
+								$doc_options = $this->normalize_settings( $doc_options );
+
+								update_post_meta( $pid, 'legal_page_doc_settings', $doc_options );
+								update_option( 'wplegal_doc_page', $pid );
+							} else {
+								$doc_settings = get_post_meta( $pid, 'legal_page_doc_settings', true );
+								$doc_options  = $this->normalize_settings( $doc_settings );
+							}
+							$data = array();
+							foreach ( $doc_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_doc_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_doc_options', $data );
+							break;
 					}
 					$result['success'] = true;
 
@@ -5638,6 +5760,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						case 'custom_legal':
 							$pid = get_option( 'wplegal_custom_legal_page' );
 							break;
+						case 'cvd_policy':
+							$pid = get_option( 'wplegal_cvd_page' );
+							break;
+						case 'doc_policy':
+							$pid = get_option( 'wplegal_doc_page' );
+							break;
 					}
 
 					$field  = array(
@@ -5885,6 +6013,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							$pid = get_option( 'wplegal_confidentiality_disclosure_page' );
 							$url = get_edit_post_link( $pid );
 							break;
+						case 'cvd_policy':
+							$pid = get_option( 'wplegal_cvd_page' );
+							$url = get_edit_post_link( $pid );
+							break;
+						case 'doc_policy':
+							$pid = get_option( 'wplegal_doc_page' );
+							$url = get_edit_post_link( $pid );
+							break;
 						case 'general_disclaimer':
 							$pid = get_option( 'wplegal_general_disclaimer_page' );
 							$url = get_edit_post_link( $pid );
@@ -6130,6 +6266,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					break;
 				case 'dmca':
 					$pid = get_option( 'wplegal_dmca_page' );
+					break;
+				case 'cvd_policy':
+					$pid = get_option( 'wplegal_cvd_page' );
+					break;
+				case 'doc_policy':
+					$pid = get_option( 'wplegal_doc_page' );
 					break;
 			}
 			return $pid;
@@ -6492,6 +6634,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						if ( intval( get_option( 'wplegal_custom_legal_page' ) ) === intval( $post_id ) ) {
 							delete_option( 'wplegal_custom_legal_page' );
 						}
+						break;
+					case 'cvd_policy':
+						delete_option( 'wplegal_cvd_page' );
+						break;
+					case 'doc_policy':
+						delete_option( 'wplegal_doc_page' );
 						break;
 				}
 				echo '<script>window.location.replace("' . esc_js( esc_url( admin_url( 'admin.php?page=legal-pages#all_legal_pages' ) ) ) . '");</script>';
