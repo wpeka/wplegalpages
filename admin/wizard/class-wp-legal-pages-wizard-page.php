@@ -1492,6 +1492,29 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 		}
 
 		/**
+		 * Detect and repair the corrupted "wrapped" shape that some existing
+		 * sites may have persisted (single general_information key with empty
+		 * fields), caused by a since-fixed double-merge bug. Falls back to a
+		 * fresh rebuild if corruption is detected.
+		 */
+		private function wplegalpages_is_corrupted_privacy_settings( $settings ) {
+			if ( empty( $settings ) ) {
+				return false;
+			}
+			$arr = (array) $settings;
+			$keys = array_keys( $arr );
+
+			// Corrupted shape: exactly one key, "general_information", whose "fields" property is empty.
+			if ( count( $keys ) === 1 && 'general_information' === $keys[0] ) {
+				$gi = (object) $arr['general_information'];
+				if ( empty( (array) ( $gi->fields ?? array() ) ) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/**
 		 * Get wizard page sections.
 		 *
 		 * @param string $page Wizard page.
@@ -1621,7 +1644,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Wizard_Page' ) ) {
 						update_option( 'wplegal_privacy_policy_page', $pid );
 					} else {
 						$privacy_options = get_post_meta( $pid, 'legal_page_privacy_settings', true );
-						if ( ! $privacy_options || empty( $privacy_options ) ) {
+						if ( ! $privacy_options || empty( $privacy_options ) || $this->wplegalpages_is_corrupted_privacy_settings( $privacy_options ) ) {
 							$fields = $this->get_remote_data( 'get_privacy_settings' );
 							$fields = WP_Legal_Pages_Admin::wplegalpages_add_gdpr_options_to_remote_data( $fields );
 							update_post_meta( $pid, 'legal_page_privacy_settings', $fields );

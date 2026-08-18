@@ -5895,10 +5895,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$lp          = new WP_Legal_Pages_Wizard_Page();   
 			$lp_sections = (array) $lp->get_section_fields_by_page( $page );
 
-			if ( 'privacy_policy' === $page ) {
-				$lp_sections = self::wplegalpages_add_gdpr_options_to_remote_data( $lp_sections );
-			}
-
 			$lp_sections = $this->normalize_settings( $lp_sections );
 
 			foreach ( $lp_sections as $key => $lp_section ) {
@@ -6445,9 +6441,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		        return $lp_sections;
 		    }
 		
-		    if ( !isset($lp_sections['general_information']->fields) || !is_object($lp_sections['general_information']->fields) ) {
-		        $lp_sections['general_information']->fields = (object) [];
-		    }
+		    if ( !isset($lp_sections['general_information']->fields) ) {
+				$lp_sections['general_information']->fields = (object) [];
+			} elseif ( is_array($lp_sections['general_information']->fields) ) {
+				$lp_sections['general_information']->fields = (object) $lp_sections['general_information']->fields;
+			}
 		
 		    $stored_third_party_services = self::wplegalpages_get_to_path( $lp_sections, array( 'general_information', 'fields', 'allow_third_party', 'sub_fields', 'allow_third_party_yes', 'sub_fields', 'third_party_services' ) );
 		
