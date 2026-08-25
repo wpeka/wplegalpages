@@ -37,6 +37,19 @@ if ( ! defined( 'WPLEGAL_API_ADMIN_URL' ) ) {
 if ( ! defined( 'WPLEGAL_APP_URL' ) ) {
 	define( 'WPLEGAL_APP_URL', 'https://app.wplegalpages.com' );
 }
+ 
+if ( ! defined( 'APPWPLP_SECRET_KEY_FEATURE_VERSION' ) ) {
+	define( 'APPWPLP_SECRET_KEY_FEATURE_VERSION', '3.7.1' );
+}
+
+if ( ! defined( 'APPWPLP_SECRET_KEY_OPTION' ) ) {
+	define( 'APPWPLP_SECRET_KEY_OPTION', 'appwplp_shared_secret_key' );
+}
+ 
+if ( ! defined( 'APPWPLP_SECRET_KEY_STATUS_OPTION' ) ) {
+	define( 'APPWPLP_SECRET_KEY_STATUS_OPTION', 'appwplp_shared_secret_key_status' ); // 'pending' | 'confirmed'
+}
+add_action('admin_init', 'wplp_appwplp_maybe_retry_secret_key_registration');
 
 /**
  * Load WC_AM_Client class if it exists.
@@ -72,6 +85,66 @@ if ( ! function_exists( 'activate_wp_legal_pages' ) ) {
 }
 
 add_action( 'admin_init', 'activation_redirect_wplegalpages' );
+
+/**
+ * Generates a cryptographically strong 32-character secret key.
+ *
+ * @return string
+ */
+if ( ! function_exists( 'appwplp_generate_secret_key' ) ) {
+	function appwplp_generate_secret_key() {
+		// random_bytes(16) -> 32 hex characters. Cryptographically secure.
+		return bin2hex( random_bytes( 16 ) );
+	}
+}
+/**
+ * Generates and stores a local secret key for this site, if one doesn't
+ * already exist. Does NOT register it with the server - that happens in
+ * step 3, triggered separately after this runs.
+ */
+if ( ! function_exists( 'appwplp_maybe_generate_secret_key' ) ) {
+	function appwplp_maybe_generate_secret_key() {
+		$existing_key    = get_option( APPWPLP_SECRET_KEY_OPTION );
+		$existing_status = get_option( APPWPLP_SECRET_KEY_STATUS_OPTION );
+
+		if ( ! empty( $existing_key ) && 'confirmed' === $existing_status ) {
+			// Already confirmed - nothing to do.
+			return;
+		}
+
+		if ( ! empty( $existing_key ) ) {
+			update_option( APPWPLP_SECRET_KEY_STATUS_OPTION, 'pending', false );
+			do_action( 'appwplp_secret_key_generated', $existing_key );
+			return;
+		}
+
+		// No key - first-time generation.
+		$new_key = wplp_appwplp_generate_secret_key();
+
+		update_option( APPWPLP_SECRET_KEY_OPTION, $new_key, false );
+		update_option( APPWPLP_SECRET_KEY_STATUS_OPTION, 'pending', false );
+
+		do_action( 'appwplp_secret_key_generated', $new_key );
+	}
+}
+if ( ! function_exists( 'wplp_appwplp_maybe_retry_secret_key_registration' ) ) {
+	function wplp_appwplp_maybe_retry_secret_key_registration() {
+		$existing_status = get_option( APPWPLP_SECRET_KEY_STATUS_OPTION );
+
+		if ( 'confirmed' === $existing_status || empty( get_option( APPWPLP_SECRET_KEY_OPTION ) ) ) {
+			return;
+		}
+
+		$last_attempt = get_option( 'appwplp_secret_key_last_retry', 0 );
+		if ( ( time() - (int) $last_attempt ) < 15 * MINUTE_IN_SECONDS ) {
+			return; 
+		}
+
+		update_option( 'appwplp_secret_key_last_retry', time(), false );
+
+		appwplp_maybe_generate_secret_key(); 
+	}
+}
 
 /**
  * It will redirect to the wizard page after plugin activation.
@@ -111,7 +184,7 @@ if ( ! function_exists( 'delete_wp_legal_pages' ) ) {
 register_activation_hook( __FILE__, 'activate_wp_legal_pages' );
 register_deactivation_hook( __FILE__, 'deactivate_wp_legal_pages' );
 register_uninstall_hook( __FILE__, 'delete_wp_legal_pages' );
-
+register_activation_hook( __FILE__, 'appwplp_maybe_generate_secret_key' );
 
 
 
