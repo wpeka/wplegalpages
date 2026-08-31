@@ -250,7 +250,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		$expected_signature = hash_hmac(
 			'sha256',
-			$timestamp . '|' . $request->get_body(),
+			'wplc-req-v1|' . $timestamp . '|' . $request->get_body(),
 			$secret_key
 		);
 		if ( ! hash_equals( $expected_signature, $signature ) ) {
@@ -496,13 +496,13 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			return new WP_Error( 'invalid_request', 'Missing parameters.', array( 'status' => 400 ) );
 		}
 	
-		$response_hash = hash_hmac( 'sha256', $challenge, $secret );
+		$response_hash = hash_hmac( 'sha256', 'wplc-pair-v1|' . $challenge, $secret );
 		return rest_ensure_response( array( 'response' => $response_hash ) );
 	}
 	function appwplp_register_secret_key_with_server( $site_key ) {
 		$site_url = site_url();
 		$response = wp_remote_post(
-			'https://app.wplegalpages.com/wp-json/appwplp/v1/register_secret_key',
+			WPLEGAL_APP_URL . '/wp-json/appwplp/v1/register_secret_key',
 			array(
 				'timeout' => 15,
 				'headers' => array(

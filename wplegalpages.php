@@ -38,8 +38,8 @@ if ( ! defined( 'WPLEGAL_APP_URL' ) ) {
 	define( 'WPLEGAL_APP_URL', 'https://app.wplegalpages.com' );
 }
  
-if ( ! defined( 'APPWPLP_SECRET_KEY_FEATURE_VERSION' ) ) {
-	define( 'APPWPLP_SECRET_KEY_FEATURE_VERSION', '3.7.1' );
+if ( ! defined( 'APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION' ) ) {
+	define( 'APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION', '3.7.1' );
 }
 
 if ( ! defined( 'APPWPLP_SECRET_KEY_OPTION' ) ) {
@@ -49,7 +49,10 @@ if ( ! defined( 'APPWPLP_SECRET_KEY_OPTION' ) ) {
 if ( ! defined( 'APPWPLP_SECRET_KEY_STATUS_OPTION' ) ) {
 	define( 'APPWPLP_SECRET_KEY_STATUS_OPTION', 'appwplp_shared_secret_key_status' ); // 'pending' | 'confirmed'
 }
-add_action('admin_init', 'wplp_appwplp_maybe_retry_secret_key_registration');
+if ( ! defined( 'APPWPLP_WPLP_SECRET_KEY_VERSION_OPTION' ) ) {
+	define( 'APPWPLP_WPLP_SECRET_KEY_VERSION_OPTION', 'APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION' );
+}
+
 
 /**
  * Load WC_AM_Client class if it exists.
@@ -108,41 +111,75 @@ if ( ! function_exists( 'appwplp_maybe_generate_secret_key' ) ) {
 		$existing_status = get_option( APPWPLP_SECRET_KEY_STATUS_OPTION );
 
 		if ( ! empty( $existing_key ) && 'confirmed' === $existing_status ) {
-			// Already confirmed - nothing to do.
+			$timestamp = wp_next_scheduled( 'appwplp_secret_key_retry_event' );
+			if ( $timestamp ) {
+				wp_clear_scheduled_hook( 'appwplp_secret_key_retry_event' );
+			}
 			return;
 		}
 
 		if ( ! empty( $existing_key ) ) {
 			update_option( APPWPLP_SECRET_KEY_STATUS_OPTION, 'pending', false );
 			do_action( 'appwplp_secret_key_generated', $existing_key );
-			return;
+		} else {
+			/*
+			* First installation - generate the key.
+			*/
+			$new_key = appwplp_generate_secret_key();
+			update_option( APPWPLP_SECRET_KEY_OPTION, $new_key, false );
+			update_option( APPWPLP_SECRET_KEY_STATUS_OPTION, 'pending', false );
+
+			do_action( 'appwplp_secret_key_generated', $new_key );
+			
 		}
-
-		// No key - first-time generation.
-		$new_key = wplp_appwplp_generate_secret_key();
-
-		update_option( APPWPLP_SECRET_KEY_OPTION, $new_key, false );
-		update_option( APPWPLP_SECRET_KEY_STATUS_OPTION, 'pending', false );
-
-		do_action( 'appwplp_secret_key_generated', $new_key );
+		if ( ! wp_next_scheduled( 'appwplp_secret_key_retry_event' ) ) {
+			wp_schedule_event( time() + ( 15 * MINUTE_IN_SECONDS ), 'appwplp_fifteen_minutes', 'appwplp_secret_key_retry_event' );
+		}
 	}
 }
-if ( ! function_exists( 'wplp_appwplp_maybe_retry_secret_key_registration' ) ) {
-	function wplp_appwplp_maybe_retry_secret_key_registration() {
-		$existing_status = get_option( APPWPLP_SECRET_KEY_STATUS_OPTION );
 
-		if ( 'confirmed' === $existing_status || empty( get_option( APPWPLP_SECRET_KEY_OPTION ) ) ) {
+/**
+ * Custom 15-minute cron schedule, used by the retry mechanism below.
+ */
+add_filter( 'cron_schedules', function ( $schedules ) {
+	$schedules['appwplp_fifteen_minutes'] = array(
+		'interval' => 15 * MINUTE_IN_SECONDS,
+		'display'  => 'Every 15 Minutes',
+	);
+	return $schedules;
+} );
+
+add_action( 'appwplp_secret_key_retry_event', 'appwplp_maybe_generate_secret_key' );
+/**
+ * Runs the secret key routine once on existing installs.
+ *
+ * register_activation_hook() does not fire when WordPress updates a plugin
+ * in place, so sites upgrading from a version without this feature would
+ * never get a key. A stored feature version is compared against the current
+ * one so this runs exactly once per site after the update.
+ *
+ * @return void
+ */
+if ( ! function_exists( 'wplp_appwplp_secret_key_version_check' ) ) {
+	function wplp_appwplp_secret_key_version_check() {
+		if ( APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION === get_option( APPWPLP_WPLP_SECRET_KEY_VERSION_OPTION ) ) {
 			return;
 		}
-
-		$last_attempt = get_option( 'appwplp_secret_key_last_retry', 0 );
-		if ( ( time() - (int) $last_attempt ) < 15 * MINUTE_IN_SECONDS ) {
-			return; 
-		}
-
-		update_option( 'appwplp_secret_key_last_retry', time(), false );
-
-		appwplp_maybe_generate_secret_key(); 
+		appwplp_maybe_generate_secret_key();
+		update_option( APPWPLP_WPLP_SECRET_KEY_VERSION_OPTION, APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION, false );
+	}
+}
+add_action( 'admin_init', 'wplp_appwplp_secret_key_version_check' );
+/**
+ * Generates the secret key on activation and stamps the feature version so
+ * the upgrade check above does not repeat the work on the next admin load.
+ *
+ * @return void
+ */
+if ( ! function_exists( 'wplp_appwplp_secret_key_activate' ) ) {
+	function wplp_appwplp_secret_key_activate() {
+		appwplp_maybe_generate_secret_key();
+		update_option( APPWPLP_WPLP_SECRET_KEY_VERSION_OPTION, APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION, false );
 	}
 }
 
@@ -184,7 +221,7 @@ if ( ! function_exists( 'delete_wp_legal_pages' ) ) {
 register_activation_hook( __FILE__, 'activate_wp_legal_pages' );
 register_deactivation_hook( __FILE__, 'deactivate_wp_legal_pages' );
 register_uninstall_hook( __FILE__, 'delete_wp_legal_pages' );
-register_activation_hook( __FILE__, 'appwplp_maybe_generate_secret_key' );
+register_activation_hook( __FILE__, 'wplp_appwplp_secret_key_activate' );
 
 
 
