@@ -1811,6 +1811,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$lp_footer_options = get_option( 'lp_footer_options' );
 		$lp_banner_options = get_option( 'lp_banner_options' );
 
+		$lp_general = is_array( $lp_general ) ? $lp_general : array();
+		$lp_footer_options = is_array( $lp_footer_options ) ? $lp_footer_options : array();
+		$lp_banner_options = is_array( $lp_banner_options ) ? $lp_banner_options : array();
+
 		$save_object = $request->get_param( 'save_object' ) ?: null;
 		$footer_object = $request->get_param( 'footer_object' ) ?: null;
 		$announcement_object = $request->get_param( 'announcement_object' ) ?: null;
