@@ -5,6 +5,7 @@
   "author": "WPeka",
   "devDependencies": {
     "@wordpress/scripts": "^18.0.1",
+    "cross-env": "^10.1.0",
     "grunt": "~0.4.5",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^1.5.0",
@@ -47,9 +48,9 @@
     "webpack-cli": "^4.8.0"
   },
   "scripts": {
-    "start": "wp-scripts start --config webpack.config.js --progress",
-    "build": "wp-scripts build --config webpack.config.js",
-    "watch": "wp-scripts start --config webpack.config.js --watch",
+    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider wp-scripts start --config webpack.config.js --progress",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider wp-scripts build --config webpack.config.js",
+    "watch": "cross-env NODE_OPTIONS=--openssl-legacy-provider wp-scripts start --config webpack.config.js --watch",
     "test": "jest --coverage",
     "jest": "jest"
   }
