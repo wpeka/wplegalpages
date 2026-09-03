@@ -500,7 +500,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		return rest_ensure_response( array( 'response' => $response_hash ) );
 	}
 	function appwplp_register_secret_key_with_server( $site_key ) {
-		error_log("Calling WPLP appwplp_register_secret_key_with_server");
 
 		/*
 		 * WP Cookie Consent and WPLegalPages both hook this action and post the
@@ -510,9 +509,25 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		if ( function_exists( 'appwplp_claim_secret_key_registration' ) && ! appwplp_claim_secret_key_registration() ) {
 			return;
 		}
+
+		/*
+		 * Spend an attempt. Counted here rather than in the caller so the plugin
+		 * that stood down on the claim above does not burn one, and counted
+		 * before the post rather than after so a request that dies inside the 15
+		 * second timeout still spends it - otherwise a site that always dies
+		 * there would never exhaust the cap.
+		 */
+		if ( defined( 'APPWPLP_SECRET_KEY_ATTEMPTS_OPTION' ) ) {
+			update_option(
+				APPWPLP_SECRET_KEY_ATTEMPTS_OPTION,
+				(int) get_option( APPWPLP_SECRET_KEY_ATTEMPTS_OPTION, 0 ) + 1,
+				false
+			);
+		}
+
 		$site_url = site_url();
 		$response = wp_remote_post(
-			WPLEGAL_APP_URL . '/wp-json/appwplp/v1/register_secret_key',
+			WPLEGAL_APP_URL . '/wp-json/appwplp/v1/signed_key_registration',
 			array(
 				'timeout' => 15,
 				'headers' => array(
@@ -524,12 +539,10 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				) ),
 			)
 		);
-		error_log("RESPONSE WPLP: " . print_r(wp_remote_retrieve_response_code( $response ), true));
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			update_option( APPWPLP_SECRET_KEY_STATUS_OPTION, 'registration_failed', false );
 			return;
 		}
-		error_log("Confirming key WPLP");
 		update_option( APPWPLP_SECRET_KEY_STATUS_OPTION, 'confirmed', false );
 	}
 
@@ -555,7 +568,6 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		if ( false !== $cached_user_id ) {
 			return $cached_user_id;
 		}
-		error_log("Validating token WPLP");
 
 		$validate = wp_remote_post(
 			WPLEGAL_APP_URL . '/wp-json/jwt-auth/v1/token/validate',

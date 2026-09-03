@@ -39,7 +39,7 @@ if ( ! defined( 'WPLEGAL_APP_URL' ) ) {
 }
  
 if ( ! defined( 'APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION' ) ) {
-	define( 'APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION', '3.7.2' );
+	define( 'APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION', '3.7.3' );
 }
 
 /**
@@ -63,6 +63,27 @@ if ( ! defined( 'APPWPLP_SECRET_KEY_STATUS_OPTION' ) ) {
 if ( ! defined( 'APPWPLP_WPLP_SECRET_KEY_VERSION_OPTION' ) ) {
 	define( 'APPWPLP_WPLP_SECRET_KEY_VERSION_OPTION', 'APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION' );
 }
+
+if ( ! defined( 'APPWPLP_SECRET_KEY_ATTEMPTS_OPTION' ) ) {
+	define( 'APPWPLP_SECRET_KEY_ATTEMPTS_OPTION', 'appwplp_secret_key_retry_attempts' );
+}
+
+/**
+ * Total number of registration posts a site will make before giving up.
+ *
+ * Counted as posts, not as retries on top of a first try, so eight means eight
+ * requests and then silence. On a 15 minute loop that is a two hour window.
+ *
+ * Verification runs inside the registration request on the server, so a post
+ * from a site the server cannot reach holds a php-fpm worker there for the full
+ * timeout. Without a cap an unreachable site pays that cost every 15 minutes
+ * forever; with one, each site's total cost is bounded and the traffic stops on
+ * its own.
+ */
+if ( ! defined( 'APPWPLP_SECRET_KEY_MAX_ATTEMPTS' ) ) {
+	define( 'APPWPLP_SECRET_KEY_MAX_ATTEMPTS', 8 );
+}
+
 
 
 /**
@@ -158,11 +179,28 @@ if ( ! function_exists( 'appwplp_claim_secret_key_registration' ) ) {
  */
 if ( ! function_exists( 'appwplp_maybe_generate_secret_key' ) ) {
 	function appwplp_maybe_generate_secret_key() {
-		error_log("Running wplp appwplp_maybe_generate_secret_key");
 		$existing_key    = get_option( APPWPLP_SECRET_KEY_OPTION );
 		$existing_status = get_option( APPWPLP_SECRET_KEY_STATUS_OPTION );
 
 		if ( ! empty( $existing_key ) && 'confirmed' === $existing_status ) {
+			$timestamp = wp_next_scheduled( 'appwplp_secret_key_retry_event' );
+			if ( $timestamp ) {
+				wp_clear_scheduled_hook( 'appwplp_secret_key_retry_event' );
+			}
+			delete_option( APPWPLP_SECRET_KEY_ATTEMPTS_OPTION );
+			return;
+		}
+
+		/*
+		 * Out of attempts - stop the loop for good.
+		 *
+		 * The counter is raised by the listener that actually posts, so an
+		 * attempt is never spent by the second plugin standing down on the
+		 * shared claim. Reactivating either plugin clears it and allows a fresh
+		 * set, which is the only way back for a site that was unreachable while
+		 * these ran out.
+		 */
+		if ( (int) get_option( APPWPLP_SECRET_KEY_ATTEMPTS_OPTION, 0 ) >= APPWPLP_SECRET_KEY_MAX_ATTEMPTS ) {
 			$timestamp = wp_next_scheduled( 'appwplp_secret_key_retry_event' );
 			if ( $timestamp ) {
 				wp_clear_scheduled_hook( 'appwplp_secret_key_retry_event' );
@@ -172,13 +210,11 @@ if ( ! function_exists( 'appwplp_maybe_generate_secret_key' ) ) {
 
 		if ( ! empty( $existing_key ) ) {
 			update_option( APPWPLP_SECRET_KEY_STATUS_OPTION, 'pending', false );
-			error_log("key exists WPLP");
 			do_action( 'appwplp_secret_key_generated', $existing_key );
 		} else {
 			/*
 			* First installation - generate the key.
 			*/
-			error_log("key doesnot exist WPLP");
 			$new_key = appwplp_generate_secret_key();
 			update_option( APPWPLP_SECRET_KEY_OPTION, $new_key, false );
 			update_option( APPWPLP_SECRET_KEY_STATUS_OPTION, 'pending', false );
@@ -216,29 +252,16 @@ add_action( 'appwplp_secret_key_retry_event', 'appwplp_maybe_generate_secret_key
  */
 if ( ! function_exists( 'wplp_appwplp_secret_key_version_check' ) ) {
 	function wplp_appwplp_secret_key_version_check() {
-		error_log("Running appwplp_secret_key_version_check WPLP");
 		if ( APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION === get_option( APPWPLP_WPLP_SECRET_KEY_VERSION_OPTION ) ) {
 			return;
 		}
-		error_log("Version mismatch WPLP");
+		delete_option( APPWPLP_SECRET_KEY_ATTEMPTS_OPTION );
 		appwplp_maybe_generate_secret_key();
 		update_option( APPWPLP_WPLP_SECRET_KEY_VERSION_OPTION, APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION, false );
 	}
 }
 add_action( 'admin_init', 'wplp_appwplp_secret_key_version_check' );
-/**
- * Generates the secret key on activation and stamps the feature version so
- * the upgrade check above does not repeat the work on the next admin load.
- *
- * @return void
- */
-if ( ! function_exists( 'wplp_appwplp_secret_key_activate' ) ) {
-	function wplp_appwplp_secret_key_activate() {
-		error_log("Running appwplp_secret_key_activate WPLP");
-		appwplp_maybe_generate_secret_key();
-		update_option( APPWPLP_WPLP_SECRET_KEY_VERSION_OPTION, APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION, false );
-	}
-}
+
 
 /**
  * It will redirect to the wizard page after plugin activation.
@@ -278,7 +301,6 @@ if ( ! function_exists( 'delete_wp_legal_pages' ) ) {
 register_activation_hook( __FILE__, 'activate_wp_legal_pages' );
 register_deactivation_hook( __FILE__, 'deactivate_wp_legal_pages' );
 register_uninstall_hook( __FILE__, 'delete_wp_legal_pages' );
-register_activation_hook( __FILE__, 'wplp_appwplp_secret_key_activate' );
 
 
 
