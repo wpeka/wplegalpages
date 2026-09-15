@@ -85,6 +85,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			add_action('rest_api_init', array($this, 'register_wpl_dashboard_route'));
 			add_action('rest_api_init', array($this, 'wplp_generate_api_secret'));
 			add_action('admin_init', array($this, 'handle_compliance_wizard_for_old_users'));
+			add_action('admin_init', array($this, 'wplp_add_version_to_existing_legal_pages'));
 			add_action( 'appwplp_secret_key_generated', array($this, 'appwplp_register_secret_key_with_server'));
 		}
 
@@ -300,6 +301,52 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$plugin_version = defined( 'GDPR_COOKIE_CONSENT_VERSION' ) ? GDPR_COOKIE_CONSENT_VERSION : '';
 			update_option( 'wplp_legal_pages_version', $plugin_version );
 		}
+	}
+
+	/**
+	 * Stamp every legal page that already exists with the initial page version.
+	 *
+	 * Legal pages saved from now on carry a version of their own, but pages
+	 * created before this release have no version stored against them. This
+	 * runs once on update and back-fills those pages with version 1.0 so that
+	 * every legal page on the site has a version to compare against..
+	 */
+	public function wplp_add_version_to_existing_legal_pages() {
+
+		$migrated_version = get_option( 'wplp_legal_pages_version_migration', '0.0.0' );
+
+		if ( version_compare( $migrated_version, APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION, '>=' ) ) {
+			return;
+		}
+
+		$legal_pages = get_posts(
+			array(
+				'post_type'        => 'page',
+				'post_status'      => 'any',
+				'numberposts'      => -1,
+				'fields'           => 'ids',
+				'suppress_filters' => false,
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'meta_query'       => array(
+					'relation' => 'AND',
+					array(
+						'key'     => 'is_legal',
+						'compare' => 'EXISTS',
+					),
+					array(
+						'key'     => '_wplp_legal_page_version',
+						'compare' => 'NOT EXISTS',
+					),
+				),
+			)
+		);
+		error_log(print_r($legal_pages, true));
+
+		foreach ( $legal_pages as $pid ) {
+			update_post_meta( $pid, '_wplp_legal_page_version', '1.0' );
+		}
+
+		update_option( 'wplp_legal_pages_version_migration', APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION );
 	}
 
 		/**
