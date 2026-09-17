@@ -340,10 +340,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				),
 			)
 		);
-		error_log(print_r($legal_pages, true));
 
 		foreach ( $legal_pages as $pid ) {
-			update_post_meta( $pid, '_wplp_legal_page_version', '1.0' );
+			update_post_meta( $pid, '_wplp_legal_page_version', '1' );
 		}
 
 		update_option( 'wplp_legal_pages_version_migration', APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION );
@@ -1205,10 +1204,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		        INNER JOIN {$postmeta_tbl} AS lpt
 		            ON ptbl.ID = lpt.post_id
 		            AND lpt.meta_key = %s
+				LEFT JOIN {$postmeta_tbl} AS lpv
+					ON ptbl.ID = lpv.post_id
+					AND lpv.meta_key = %s
 		        WHERE ptbl.post_status = %s
 		        ",
 		        'is_legal',
 		        'legal_page_type',
+				'_wplp_legal_page_version',
 		        'publish'
 		    )
 		);
@@ -1223,6 +1226,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'description' 	=> "",
 				'content'		=> $res->post_content,
 				'postID'		=> $res->ID,
+				'version'		=> $res->legal_page_version ?? '1',
 			);
 		}
 
