@@ -1929,11 +1929,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$url = $url = admin_url( 'post.php?post=' . $pid . '&action=edit' );
 		$url = str_replace( '&amp;', '&', $url );
 		$user_email = sanitize_email( $request->get_param('user_email') ?? '' );
-		$this->app_wplp_track_lp_downloaded( 'LP Template Downloaded from SaaS', array(
-				'user_email' => $user_email,
-				'template'   => $page_slug,
-				'title'      => $page_title,
-			));
+		$is_version_update = $request->get_param( 'is_version_update' ) === true;
+		$this->app_wplp_track_lp_downloaded( 
+			$is_version_update ? 'LP Template Updated from SaaS' : 'LP Template Downloaded from SaaS'
+			, array(
+					'user_email' => $user_email,
+					'template'   => $page_slug,
+					'title'      => $page_title,
+				));
 		return new WP_REST_Response(
 			array(
 				'success' => true,
