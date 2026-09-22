@@ -1196,7 +1196,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		            ptbl.post_modified,
 		            ptbl.guid,
 					ptbl.post_content,
-		            lpt.meta_value AS legal_page_type
+		            lpt.meta_value AS legal_page_type,
+		            lpv.meta_value AS legal_page_version
 		        FROM {$post_tbl} AS ptbl
 		        INNER JOIN {$postmeta_tbl} AS islegal
 		            ON ptbl.ID = islegal.post_id
@@ -1226,7 +1227,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'description' 	=> "",
 				'content'		=> $res->post_content,
 				'postID'		=> $res->ID,
-				'version'		=> $res->legal_page_version ?? '1',
+				'version'		=> ! empty( $res->legal_page_version ) ? $res->legal_page_version : '1',
 			);
 		}
 
@@ -1656,6 +1657,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$page_slug    = $request->get_param( 'slug' );
 		$page_settings = $request->get_param( 'settings' );
 		$page_options = $request->get_param( 'options' );
+		$policy_version = $request->get_param( 'policy_version' );
 		$post_id	  = $request->get_param( 'post_id' ) ?? null;
 		$last_updated = $request->get_param( 'last_updated' );
 		$business_info = $request->get_param( 'business' );
@@ -1692,6 +1694,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		update_post_meta( $pid, 'is_legal', 'yes' );
 		update_post_meta( $pid, 'legal_page_type', $page_slug );
+
+		$policy_version = is_scalar( $policy_version ) ? sanitize_text_field( (string) $policy_version ) : '';
+		if ( '' === $policy_version ) {
+			$policy_version = get_post_meta( $pid, '_wplp_legal_page_version', true ) ?: '1';
+		}
+		update_post_meta( $pid, '_wplp_legal_page_version', $policy_version );
 
 		$page_settings = $this->populate_settings_with_options( $page_settings, $page_options );
 
