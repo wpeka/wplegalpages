@@ -7309,13 +7309,73 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @return string The detected IP address of the user.
 		 */
 		public function wplegalpages_get_user_ip() {
-			if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
-				return $_SERVER['HTTP_CLIENT_IP'];
-			} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-				return $_SERVER['HTTP_X_FORWARDED_FOR'];
-			} else {
-				return $_SERVER['REMOTE_ADDR'];
+			$ipaddress = 'UNKNOWN';
+
+			if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
+				$remote = filter_var( wp_unslash( $_SERVER['REMOTE_ADDR'] ), FILTER_VALIDATE_IP );
+
+				if ( $remote ) {
+					$ipaddress = $remote;
+
+					$trusted_proxies = (array) apply_filters( 'gdpr_cookie_consent_trusted_proxies', array() );
+
+					if (
+						! empty( $trusted_proxies )
+						&& isset( $_SERVER['HTTP_X_FORWARDED_FOR'] )
+						&& $this->wplegalpages_ip_matches( $remote, $trusted_proxies )
+					) {
+						$ip_list = array_reverse( array_map( 'trim', explode( ',', wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) ) );
+
+						foreach ( $ip_list as $candidate ) {
+							$candidate = filter_var( $candidate, FILTER_VALIDATE_IP );
+							if ( ! $candidate ) {
+								break;
+							}
+							$ipaddress = $candidate;
+							if ( ! $this->wplegalpages_ip_matches( $candidate, $trusted_proxies ) ) {
+								break;
+							}
+						}
+					}
+				}
 			}
+
+			return $ipaddress;
+		}
+
+		private function wplegalpages_ip_matches( $ip, array $list ) {
+			$ip_bin = inet_pton( $ip );
+			if ( false === $ip_bin ) {
+				return false;
+			}
+			foreach ( $list as $entry ) {
+				$parts = explode( '/', trim( (string) $entry ), 2 );
+				if ( ! filter_var( $parts[0], FILTER_VALIDATE_IP ) ) {
+					continue;
+				}
+				$net   = inet_pton( $parts[0] );
+				if ( false === $net || strlen( $net ) !== strlen( $ip_bin ) ) {
+					continue;
+				}
+				$max_bits = strlen( $net ) * 8;
+				$bits     = isset( $parts[1] ) ? (int) $parts[1] : $max_bits;
+				if ( $bits < 0 || $bits > $max_bits ) {
+					continue;
+				}
+				$bytes = intdiv( $bits, 8 );
+				if ( substr( $ip_bin, 0, $bytes ) !== substr( $net, 0, $bytes ) ) {
+					continue;
+				}
+				$rem = $bits % 8;
+				if ( 0 === $rem ) {
+					return true;
+				}
+				$mask = ( 0xFF << ( 8 - $rem ) ) & 0xFF;
+				if ( ( ord( $ip_bin[ $bytes ] ) & $mask ) === ( ord( $net[ $bytes ] ) & $mask ) ) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/**
