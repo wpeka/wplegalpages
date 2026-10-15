@@ -9,6 +9,10 @@
  * @subpackage WP_Legal_Pages/admin
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The public-facing functionality of the plugin.
  *

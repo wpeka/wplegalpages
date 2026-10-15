@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Provide a admin area view for the WP Legal Pages plugin
  *
@@ -10,6 +9,10 @@
  *
  * @package Wplegalpages
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // // Instantiate a new object of the wplegal_Cookie_Consent_Settings class.
 $this->settings = new WP_Legal_Pages_Settings();

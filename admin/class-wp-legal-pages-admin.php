@@ -9,6 +9,10 @@
  * @subpackage WP_Legal_Pages/admin
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The admin-specific functionality of the WPLegalPages.
  *
@@ -163,7 +167,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 	public function allow_cors_for_react_app(){
     	add_filter('rest_pre_serve_request', function ($value, $result, $request, $server) {
 
-			$origin      = isset( $_SERVER['HTTP_ORIGIN'] ) ? $_SERVER['HTTP_ORIGIN'] : '';
+			$origin = isset( $_SERVER['HTTP_ORIGIN'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) ) : '';
 			$site_origin = site_url();
 
 			$app_origin = rtrim(WPLEGAL_APP_URL, '/');
@@ -731,7 +735,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			return new WP_Error('invalid_master_key', 'Master key mismatch.', ['status' => 401]);
 		}
 
-		$auth_header = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : '';
+		$auth_header = isset( $_SERVER['HTTP_AUTHORIZATION'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) ) : '';
 		if ( ! preg_match('/Bearer\s(\S+)/', $auth_header, $matches) ) {
 			return new WP_Error('no_token', 'Authorization token missing.', ['status' => 401]);
 		}
@@ -763,7 +767,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			return $signature_check;
 		}
 
-		$auth_header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+		$auth_header = isset( $_SERVER['HTTP_AUTHORIZATION'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) ) : '';
 
 		if ( ! preg_match( '/Bearer\s(\S+)/', $auth_header, $matches ) ) {
 			return new WP_Error(
@@ -7404,7 +7408,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						&& isset( $_SERVER['HTTP_X_FORWARDED_FOR'] )
 						&& $this->wplegalpages_ip_matches( $remote, $trusted_proxies )
 					) {
-						$ip_list = array_reverse( array_map( 'trim', explode( ',', wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) ) );  // phpcs:ignore WordPressVIPMinimum.Variables.ServerVariables.UserControlledHeaders
+						$ip_list = array_reverse( array_map( 'trim', explode( ',', sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) ) ) );  // phpcs:ignore WordPressVIPMinimum.Variables.ServerVariables.UserControlledHeaders
 
 						foreach ( $ip_list as $candidate ) {
 							$candidate = filter_var( $candidate, FILTER_VALIDATE_IP );

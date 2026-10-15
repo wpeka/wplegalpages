@@ -9,6 +9,10 @@
  * @subpackage WP_Legal_Pages/widgets
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The widget-specific functionality for WPLegalPages.
  *
