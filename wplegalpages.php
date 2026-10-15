@@ -35,7 +35,7 @@ if ( ! defined( 'WPLEGAL_API_ADMIN_URL' ) ) {
  * Check if the constant GDPR_APP_URL is not already defined.
 */
 if ( ! defined( 'WPLEGAL_APP_URL' ) ) {
-	define( 'WPLEGAL_APP_URL', 'https://testingapp.wplegalpages.com' );
+	define( 'WPLEGAL_APP_URL', 'https://app.wplegalpages.com' );
 }
  
 if ( ! defined( 'APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION' ) ) {
