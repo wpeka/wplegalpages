@@ -7266,7 +7266,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @return string The detected operating system name or 'Unknown OS' if not identified.
 		 */
 		public function wplegalpages_get_user_os() {
-			$user_agent = $_SERVER['HTTP_USER_AGENT'];
+			$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
 		
 			if ( stripos( $user_agent, 'Windows' ) !== false ) return 'Windows';
 			if ( stripos( $user_agent, 'Mac' ) !== false ) return 'Mac OS';
@@ -7287,7 +7287,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 *               and 'Desktop' otherwise.
 		 */
 		public function wplegalpages_get_device_type() {
-			$user_agent = $_SERVER['HTTP_USER_AGENT'];
+			$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
 
 			if ( preg_match( '/mobile|android|iphone|ipod|blackberry|opera mini|windows phone|webos/i', $user_agent ) ) {
 				return 'Mobile';
