@@ -422,7 +422,7 @@ if ( '1' === $lpterms ) {
 											array(
 												'post_type' => 'page',
 												'post_status' => 'publish',
-												'numberposts' => -1, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- All legal pages must be available in the Privacy Policy dropdown.
+												'numberposts' => 100, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- All legal pages must be available in the Privacy Policy dropdown.
 												'orderby' => 'title',
 												'order'   => 'ASC',
 												'meta_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query	
@@ -835,7 +835,7 @@ if ( '1' === $lpterms ) {
 										<?php
 									} else {
 										?>
-										<c-col class="col-sm-4"><label><?php esc_html_e( 'Announcement Bar type', 'wplegalpages' ); ?> <tooltip text="<?php esc_html_e( 'The fixed option ensures the  Announcement bar is visible even after users scroll down.', 'wplegalpages' ); ?>"></tooltip></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_html_e( 'Announcement Bar type', 'wplegalpages' ); ?> <tooltip text="<?php esc_attr_e( 'The fixed option ensures the  Announcement bar is visible even after users scroll down.', 'wplegalpages' ); ?>"></tooltip></label></c-col>
 										<?php
 									}
 									?>
@@ -970,7 +970,7 @@ if ( '1' === $lpterms ) {
 									<?php
 									if ( ! $lp_show_improved_ui ) {
 										?>
-										<c-col class="col-sm-4"><label><?php esc_html_e( 'Font Size', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_html_e( 'Select the Font size for the announcement bar.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
+										<c-col class="col-sm-4"><label><?php esc_html_e( 'Font Size', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_attr_e( 'Select the Font size for the announcement bar.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<?php
 									} else {
 										?>

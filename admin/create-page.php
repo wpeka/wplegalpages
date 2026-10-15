@@ -289,7 +289,7 @@ if ( $countof_pages[0]->cntPages < $max_limit ) {
 							if ( array_key_exists( $ras->contentfor, $tooltip_texts ) ) {
 								?>
 								<span class="wplegal-tooltip"><span class="dashicons dashicons-info"></span>
-									<span class="wplegal-tooltiptext"><?php echo esc_attr( $tooltip_texts[ $ras->contentfor ] ); ?></span>
+									<span class="wplegal-tooltiptext"><?php echo esc_html( $tooltip_texts[ $ras->contentfor ] ); ?></span>
 								</span>
 							</a></span></li>
 								<?php
