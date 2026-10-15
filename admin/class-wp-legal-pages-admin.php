@@ -121,22 +121,25 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		            ptbl.post_modified,
 					ptbl.post_content,
 		            lpt.meta_value AS legal_page_type
-		        FROM {$post_tbl} AS ptbl
-		        INNER JOIN {$postmeta_tbl} AS islegal
+		        FROM %i AS ptbl
+		        INNER JOIN %i AS islegal
 		            ON ptbl.ID = islegal.post_id
 		            AND islegal.meta_key = %s
-		        INNER JOIN {$postmeta_tbl} AS lpt
+		        INNER JOIN %i AS lpt
 		            ON ptbl.ID = lpt.post_id
 		            AND lpt.meta_key = %s
 		        WHERE ptbl.post_status = %s
 				ORDER BY ptbl.post_modified DESC
         		LIMIT 5
 		        ",
+		        $post_tbl,
+		        $postmeta_tbl,
 		        'is_legal',
+		        $postmeta_tbl,
 		        'legal_page_type',
 		        'publish'
 		    )
-		); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		); 
 
 		foreach ( $pagesresult as $res ) {
 			$policy_preview[] = array(
@@ -199,7 +202,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			header( 'Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Nonce, Origin, X-Requested-With, Accept, X-WPLP-Timestamp, X-WPLP-Signature' );
 
 			// Handle preflight requests
-			if ( $_SERVER['REQUEST_METHOD'] === 'OPTIONS' ) {
+			if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'OPTIONS' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) {
 				status_header( 200 );
 				exit;
 			}
@@ -279,16 +282,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$post_tbl     = esc_sql( $post_tbl );
 			$postmeta_tbl = esc_sql( $postmeta_tbl );
 			
-			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
+			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 			$count = $wpdb->get_var(
 				$wpdb->prepare(
 					"
 					SELECT COUNT(*) 
-					FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
+					FROM %i AS ptbl, %i AS pmtbl 
 					WHERE ptbl.ID = pmtbl.post_id 
 					AND ptbl.post_status = %s 
 					AND pmtbl.meta_key = %s
 					",
+					$post_tbl,
+					$postmeta_tbl,
 					'publish',
 					'is_legal'
 				)
@@ -958,16 +963,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$post_tbl     = esc_sql( $post_tbl );
 		$postmeta_tbl = esc_sql( $postmeta_tbl );
 		
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 		$count = $wpdb->get_var(
 			$wpdb->prepare(
 				"
 				SELECT COUNT(*) 
-				FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
+				FROM %i AS ptbl, %i AS pmtbl 
 				WHERE ptbl.ID = pmtbl.post_id 
 				AND ptbl.post_status = %s 
 				AND pmtbl.meta_key = %s
 				",
+				$post_tbl,
+				$postmeta_tbl,
 				'publish',
 				'is_legal'
 			)
@@ -977,17 +984,19 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$wpdb->prepare(
 				"
 				SELECT ptbl.post_title 
-				FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
+				FROM %i AS ptbl, %i AS pmtbl 
 				WHERE ptbl.ID = pmtbl.post_id 
 				AND ptbl.post_status = %s 
 				AND pmtbl.meta_key = %s
 				",
+				$post_tbl,
+				$postmeta_tbl,
 				'publish',
 				'is_legal'
 			),
 			ARRAY_A
 		);
-		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 
 		$titles = array_column($pagesresult, 'post_title');
 		$policy_preview = get_option('policy_preview', array());
@@ -1100,16 +1109,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$post_tbl     = esc_sql( $post_tbl );
 		$postmeta_tbl = esc_sql( $postmeta_tbl );
 		
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 		$count = $wpdb->get_var(
 			$wpdb->prepare(
 				"
 				SELECT COUNT(*) 
-				FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
+				FROM %i AS ptbl, %i AS pmtbl 
 				WHERE ptbl.ID = pmtbl.post_id 
 				AND ptbl.post_status = %s 
 				AND pmtbl.meta_key = %s
 				",
+				$post_tbl,
+				$postmeta_tbl,
 				'publish',
 				'is_legal'
 			)
@@ -1198,20 +1209,24 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					ptbl.post_content,
 		            lpt.meta_value AS legal_page_type,
 		            lpv.meta_value AS legal_page_version
-		        FROM {$post_tbl} AS ptbl
-		        INNER JOIN {$postmeta_tbl} AS islegal
+		        FROM %i AS ptbl
+		        INNER JOIN %i AS islegal
 		            ON ptbl.ID = islegal.post_id
 		            AND islegal.meta_key = %s
-		        INNER JOIN {$postmeta_tbl} AS lpt
+		        INNER JOIN %i AS lpt
 		            ON ptbl.ID = lpt.post_id
 		            AND lpt.meta_key = %s
-				LEFT JOIN {$postmeta_tbl} AS lpv
+				LEFT JOIN %i AS lpv
 					ON ptbl.ID = lpv.post_id
 					AND lpv.meta_key = %s
 		        WHERE ptbl.post_status = %s
 		        ",
+		        $post_tbl,
+		        $postmeta_tbl,
 		        'is_legal',
+		        $postmeta_tbl,
 		        'legal_page_type',
+				$postmeta_tbl,
 				'_wplp_legal_page_version',
 		        'publish'
 		    )
@@ -1455,7 +1470,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$args = array(
 			'post_type'   => 'gdprpolicies',
 			'post_status' => 'publish',
-			'numberposts' => -1,
+			'numberposts' => 100,
 		);
 
 		$gdpr_posts = get_posts( $args );
@@ -2832,20 +2847,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						<td valign="middle" width="10%" align="center"> <input type="checkbox" name="legal_check" id="legal_check" > </td>
 						<td width="90%">
 							<div id="content_area_edit" style="display:none;">
-								<textarea name="legal_content" cols="80" rows="2" ><?php echo esc_attr( $legal_content ); ?></textarea>
+								<textarea name="legal_content" cols="80" rows="2" ><?php echo esc_html( $legal_content ); ?></textarea>
 							</div>
 							<div id="content_area_read">
-								<p><?php echo esc_attr( $legal_content ); ?></p>
+								<p><?php echo esc_html( $legal_content ); ?></p>
 							</div>
 						</td>
 					<?php } else { ?>
 						<td valign="middle" width="10%" align="center"> <input type="checkbox" checked name="legal_check" id="legal_check" > </td>
 						<td width="90%">
 							<div id="content_area_edit">
-								<textarea name="legal_content" cols="80" rows="2" ><?php echo esc_attr( $legal_content ); ?></textarea>
+								<textarea name="legal_content" cols="80" rows="2" ><?php echo esc_html( $legal_content ); ?></textarea>
 							</div>
 							<div id="content_area_read" style="display:none;">
-								<p><?php echo esc_attr( $legal_content ); ?></p>
+								<p><?php echo esc_html( $legal_content ); ?></p>
 							</div>
 						</td>
 					<?php } ?>
@@ -2980,7 +2995,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			global $wpdb;
 			$post_tbl     = $wpdb->prefix . 'posts';
 			$postmeta_tbl = $wpdb->prefix . 'postmeta';
-			$pagesresult  = $wpdb->get_results( $wpdb->prepare( 'SELECT ptbl.ID, ptbl.post_content, ptbl.post_title FROM ' . $post_tbl . ' as ptbl , ' . $postmeta_tbl . ' as pmtbl WHERE ptbl.ID = pmtbl.post_id and ptbl.post_status = %s AND pmtbl.meta_key = %s', array( 'publish', 'is_legal' ) ) );
+			$pagesresult  = $wpdb->get_results( $wpdb->prepare( 'SELECT ptbl.ID, ptbl.post_content, ptbl.post_title FROM %i as ptbl , %i as pmtbl WHERE ptbl.ID = pmtbl.post_id and ptbl.post_status = %s AND pmtbl.meta_key = %s', array( $post_tbl, $postmeta_tbl, 'publish', 'is_legal' ) ) );
 
 			foreach ( $pagesresult as &$page ) {
 				// Remove shortcodes.
@@ -3151,7 +3166,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					array(
 						'post_type'   => 'page',
 						'post_status' => 'publish',
-						'numberposts' => -1,
+						'numberposts' => 100,
 						'orderby'     => 'title',
 						'order'       => 'ASC',
 						'meta_query'  => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query	
@@ -3614,7 +3629,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'orderby'                => 'title',
 				'posts_per_page'         => $per_page,
 				'post_type'              => $post_type,
-				'suppress_filters'       => true,
+				'suppress_filters'       => false,
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
 				'post_status'            => 'publish',
@@ -3700,7 +3715,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$get_posts = new WP_Query();
 					$posts     = $get_posts->query( $args );
 				} else {
-					echo '<p>' . esc_attr_e( 'No items.', 'wplegalpages' ) . '</p>';
+					echo '<p>' . esc_html_e( 'No items.', 'wplegalpages' ) . '</p>';
 					return;
 				}
 			} elseif ( ! empty( $important_pages ) ) {
@@ -3773,17 +3788,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				<ul id="posttype-<?php echo esc_attr( $post_type_name ); ?>-tabs" class="posttype-tabs add-menu-item-tabs">
 					<li <?php echo ( 'most-recent' === $current_tab ? ' class="tabs"' : '' ); ?>>
 						<a class="nav-tab-link" data-type="tabs-panel-posttype-<?php echo esc_attr( $post_type_name ); ?>-most-recent" href="<?php echo esc_url( $most_recent_url ); ?>#tabs-panel-posttype-<?php echo esc_attr( $post_type_name ); ?>-most-recent">
-							<?php esc_attr_e( 'Most Recent', 'wplegalpages' ); ?>
+							<?php esc_html_e( 'Most Recent', 'wplegalpages' ); ?>
 						</a>
 					</li>
 					<li <?php echo ( 'all' === $current_tab ? ' class="tabs"' : '' ); ?>>
 						<a class="nav-tab-link" data-type="<?php echo esc_attr( $post_type_name ); ?>-all" href="<?php echo esc_url( $view_all_url ); ?>#<?php echo esc_attr( $post_type_name ); ?>-all">
-							<?php esc_attr_e( 'View All', 'wplegalpages' ); ?>
+							<?php esc_html_e( 'View All', 'wplegalpages' ); ?>
 						</a>
 					</li>
 					<li <?php echo ( 'search' === $current_tab ? ' class="tabs"' : '' ); ?>>
 						<a class="nav-tab-link" data-type="tabs-panel-posttype-<?php echo esc_attr( $post_type_name ); ?>-search" href="<?php echo esc_url( $search_url ); ?>#tabs-panel-posttype-<?php echo esc_attr( $post_type_name ); ?>-search">
-							<?php esc_attr_e( 'Search', 'wplegalpages' ); ?>
+							<?php esc_html_e( 'Search', 'wplegalpages' ); ?>
 						</a>
 					</li>
 				</ul><!-- .posttype-tabs -->
@@ -3842,7 +3857,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					}
 					?>
 					<p class="quick-search-wrap">
-						<label for="quick-search-posttype-<?php echo esc_attr( $post_type_name ); ?>" class="screen-reader-text"><?php esc_attr_e( 'Search', 'wplegalpages' ); ?></label>
+						<label for="quick-search-posttype-<?php echo esc_attr( $post_type_name ); ?>" class="screen-reader-text"><?php esc_html_e( 'Search', 'wplegalpages' ); ?></label>
 						<input type="search"<?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> class="quick-search" value="<?php echo esc_attr( $searched ); ?>" name="quick-search-posttype-<?php echo esc_attr( $post_type ); ?>" id="quick-search-posttype-<?php echo esc_attr( $post_type_name ); ?>" />
 						<span class="spinner"></span>
 						<?php submit_button( __( 'Search', 'wplegalpages' ), 'small quick-search-submit hide-if-js', 'submit', false, array( 'id' => 'submit-quick-search-posttype-' . $post_type_name ) ); ?>
@@ -3857,7 +3872,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						<?php elseif ( is_wp_error( $search_results ) ) : ?>
 							<li><?php echo esc_html( $search_results->get_error_message() ); ?></li>
 						<?php elseif ( ! empty( $searched ) ) : ?>
-							<li><?php esc_attr_e( 'No results found.', 'wplegalpages' ); ?></li>
+							<li><?php esc_html_e( 'No results found.', 'wplegalpages' ); ?></li>
 						<?php endif; ?>
 					</ul>
 				</div><!-- /.tabs-panel -->
@@ -3906,7 +3921,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				<p class="button-controls wp-clearfix" data-items-type="posttype-<?php echo esc_attr( $post_type_name ); ?>">
 			<span class="list-controls hide-if-no-js">
 				<input type="checkbox"<?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> id="<?php echo esc_attr( $tab_name ); ?>" class="select-all" />
-				<label for="<?php echo esc_attr( $tab_name ); ?>"><?php esc_attr_e( 'Select All', 'wplegalpages' ); ?></label>
+				<label for="<?php echo esc_attr( $tab_name ); ?>"><?php esc_html_e( 'Select All', 'wplegalpages' ); ?></label>
 			</span>
 
 					<span class="add-to-menu">
@@ -4191,8 +4206,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$classname = 0 === $i % 2 ? 'wplegalpages-shortcode-table-even' : 'wplegalpages-shortcode-table-odd';
 				?>
 					<c-row class="<?php echo esc_attr( $classname ); ?>">
-						<c-col class="col-sm-6"><?php echo esc_attr( $key ); ?></c-col>
-						<c-col class="col-sm-6"><?php echo esc_attr( $val ); ?></c-col>
+						<c-col class="col-sm-6"><?php echo esc_html( $key ); ?></c-col>
+						<c-col class="col-sm-6"><?php echo esc_html( $val ); ?></c-col>
 					</c-row>
 					<?php
 					++$i;
@@ -7074,6 +7089,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					}
 
 					wp_redirect( admin_url( 'admin.php?page=legal-pages#create_popup' ) );
+					exit;
 
 				}
 			}
@@ -7197,18 +7213,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 	    $table = $lp_obj->popuptable;
 
-	    if ($wpdb->get_var("SHOW TABLES LIKE '{$table}'") !== $table) {
+	    if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table))) !== $table) {
 	        return;
 	    }
 
 	    $column = $wpdb->get_results(
-	        $wpdb->prepare("SHOW COLUMNS FROM $table LIKE %s", 'popup_template')
+	        $wpdb->prepare('SHOW COLUMNS FROM %i LIKE %s', $table, 'popup_template')
 	    );
 
 	    if (empty($column)) {
 	        $wpdb->query(
-	            "ALTER TABLE $table 
-	             ADD COLUMN popup_template VARCHAR(191) NOT NULL DEFAULT ''"
+	            $wpdb->prepare(
+	                "ALTER TABLE %i ADD COLUMN popup_template VARCHAR(191) NOT NULL DEFAULT ''",
+	                $table
+	            )
 	        );
 	    }
 
