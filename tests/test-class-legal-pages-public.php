@@ -110,7 +110,7 @@ class WP_Legal_Pages_Public_Test extends WP_UnitTestCase {
 	 * Test lp_banner_contents_display
 	 */
 	public function test_lp_banner_contents_display() {
-		$_COOKIE[ 'wplegalpages-update-notice-' . self::$lp_ids[0] ] = 'wplegalpages-update-notice-' . self::$lp_ids[0];
+		$_COOKIE[ 'wplegalpages-update-notice-' . self::$lp_ids[0] ] = 'wplegalpages-update-notice-' . self::$lp_ids[0]; // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		$lp_banner_options = array(
 			'bar_position'            => 'top',
 			'bar_type'                => 'static',
@@ -131,7 +131,7 @@ class WP_Legal_Pages_Public_Test extends WP_UnitTestCase {
 		self::$wplegalpages_public->lp_banner_contents_display();
 		$html = ob_get_clean();
 		$this->assertTrue( is_string( $html ) && ( wp_strip_all_tags( $html ) !== $html ) );
-		$_COOKIE[ 'wplegalpages-update-notice-' . self::$lp_ids[1] ] = 'wplegalpages-update-notice-' . self::$lp_ids[1];
+		$_COOKIE[ 'wplegalpages-update-notice-' . self::$lp_ids[1] ] = 'wplegalpages-update-notice-' . self::$lp_ids[1]; // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
 		ob_start();
 		self::$wplegalpages_public->lp_banner_contents_display();
 		$html = ob_get_clean();
