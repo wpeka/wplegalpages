@@ -12,6 +12,10 @@
  * @subpackage WP_Legal_Pages/includes
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The core WPLegalPages class.
  *

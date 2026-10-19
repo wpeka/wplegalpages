@@ -9,6 +9,10 @@
  * @subpackage WP_Legal_Pages/admin
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The admin-specific functionality of the WPLegalPages.
  *
@@ -163,7 +167,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 	public function allow_cors_for_react_app(){
     	add_filter('rest_pre_serve_request', function ($value, $result, $request, $server) {
 
-			$origin      = isset( $_SERVER['HTTP_ORIGIN'] ) ? $_SERVER['HTTP_ORIGIN'] : '';
+			$origin = isset( $_SERVER['HTTP_ORIGIN'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) ) : '';
 			$site_origin = site_url();
 
 			$app_origin = rtrim(WPLEGAL_APP_URL, '/');
@@ -328,7 +332,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			array(
 				'post_type'        => 'page',
 				'post_status'      => 'any',
-				'numberposts'      => -1,
+				'numberposts'      => 100,
 				'fields'           => 'ids',
 				'suppress_filters' => false,
 				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
@@ -731,7 +735,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			return new WP_Error('invalid_master_key', 'Master key mismatch.', ['status' => 401]);
 		}
 
-		$auth_header = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : '';
+		$auth_header = isset( $_SERVER['HTTP_AUTHORIZATION'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) ) : '';
 		if ( ! preg_match('/Bearer\s(\S+)/', $auth_header, $matches) ) {
 			return new WP_Error('no_token', 'Authorization token missing.', ['status' => 401]);
 		}
@@ -763,7 +767,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			return $signature_check;
 		}
 
-		$auth_header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+		$auth_header = isset( $_SERVER['HTTP_AUTHORIZATION'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) ) : '';
 
 		if ( ! preg_match( '/Bearer\s(\S+)/', $auth_header, $matches ) ) {
 			return new WP_Error(
@@ -1261,7 +1265,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		$created_popups = $wpdb->get_results(
-		    "SELECT id, popup_name, popup_template FROM {$lp_obj->popuptable}"
+			$wpdb->prepare( 'SELECT id, popup_name, popup_template FROM %i', $lp_obj->popuptable )
 		);
 
 		$lp_general = get_option("lp_general");
@@ -7346,7 +7350,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @return string The detected operating system name or 'Unknown OS' if not identified.
 		 */
 		public function wplegalpages_get_user_os() {
-			$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
+			$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : ''; // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__ -- Called only during AJAX/admin, not page-cached.
 		
 			if ( stripos( $user_agent, 'Windows' ) !== false ) return 'Windows';
 			if ( stripos( $user_agent, 'Mac' ) !== false ) return 'Mac OS';
@@ -7367,7 +7371,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 *               and 'Desktop' otherwise.
 		 */
 		public function wplegalpages_get_device_type() {
-			$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
+			$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : ''; // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__ -- Called only during AJAX/admin, not page-cached.
 
 			if ( preg_match( '/mobile|android|iphone|ipod|blackberry|opera mini|windows phone|webos/i', $user_agent ) ) {
 				return 'Mobile';
@@ -7392,7 +7396,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$ipaddress = 'UNKNOWN';
 
 			if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
-				$remote = filter_var( wp_unslash( $_SERVER['REMOTE_ADDR'] ), FILTER_VALIDATE_IP );
+				$remote = filter_var( wp_unslash( $_SERVER['REMOTE_ADDR'] ), FILTER_VALIDATE_IP );  // phpcs:ignore WordPressVIPMinimum.Variables.ServerVariables.UserControlledHeaders -- Validated with FILTER_VALIDATE_IP.
 
 				if ( $remote ) {
 					$ipaddress = $remote;
@@ -7404,7 +7408,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						&& isset( $_SERVER['HTTP_X_FORWARDED_FOR'] )
 						&& $this->wplegalpages_ip_matches( $remote, $trusted_proxies )
 					) {
-						$ip_list = array_reverse( array_map( 'trim', explode( ',', wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) ) );
+						$ip_list = array_reverse( array_map( 'trim', explode( ',', sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) ) ) );  // phpcs:ignore WordPressVIPMinimum.Variables.ServerVariables.UserControlledHeaders
 
 						foreach ( $ip_list as $candidate ) {
 							$candidate = filter_var( $candidate, FILTER_VALIDATE_IP );
