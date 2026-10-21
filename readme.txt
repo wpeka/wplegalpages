@@ -181,47 +181,109 @@ A privacy policy describes the cookies on your site. A cookie banner gets consen
 
 == Frequently Asked Questions ==
 
-**What legal policies can I generate with the free version?**
-Privacy Policy, Terms and Conditions, CCPA Privacy Notice, and DMCA Policy.
+= Do I need a privacy policy on my WordPress site? =
 
-**What additional templates does WPLP Legal Pages Pro include?**
-25+ premium templates, including GDPR Privacy Policy, Cookie Policy, Refund Policy, Earnings Disclaimer, EULA, Medical Disclaimer, Affiliate Disclosure, and more, plus footer link integration, announcement banners, custom popups, and age verification.
+If your site collects personal data, most privacy laws ask you to publish one. That includes contact forms, comments, analytics, newsletter sign-ups, and checkout. GDPR, CCPA, and many other laws ask you to say what you collect, why, and who you share it with. Google AdSense and Amazon Associates also ask for a privacy policy.
 
-**Does WPLP Legal Pages help with GDPR and CCPA compliance?**
-Yes. Pro includes GDPR-compliant Privacy and Cookie Policy templates and a CCPA Privacy Notice to help align with major data protection laws.
+= What is the difference between a privacy policy and terms and conditions? =
 
-**Is WPLP Legal Pages compatible with all WordPress themes?**
-Yes. It works with all modern WordPress themes and page builders.
+A privacy policy explains how your site collects and uses personal data. Terms and conditions (also called terms of service or terms of use) set the rules for using your site, products, or services. Most sites need both.
 
-**Can I use WPLP Legal Pages on multiple sites?**
-The free version is limited to one site. Pro plans are available based on the number of sites you need.
+= Why use a plugin instead of an online policy generator? =
 
-**Does WPLP Legal Pages support Amazon affiliate or earnings disclaimers?**
-Yes. Amazon Affiliate Disclosure and Earnings Disclaimer templates are available.
+An online generator gives you text to copy into a page. WPLP Legal Pages writes the page inside WordPress and publishes it on your domain in one click. It also adds the footer links and the update banner, and on paid plans it drafts updates when a law changes.
 
-**Will a templated privacy policy hurt my SEO?**
-No. Legal pages are standard boilerplate by design and search engines treat them as such. Duplicate-content concerns apply to your commercial and editorial pages, not to legal notices.
+= Do I need a cookie policy too? =
 
-**Will this get my AdSense application approved?**
-A missing privacy policy is one of the most common reasons AdSense rejects a site, so publishing one removes that specific blocker. It can't guarantee approval — AdSense also assesses content quality, traffic sources, and site structure.
+If your site uses cookies beyond the strictly necessary ones, GDPR and the ePrivacy Directive ask you to explain them to EU visitors. A GDPR Cookie Policy template is on paid plans. For the cookie banner itself, use [WPLP Cookie Consent](https://wordpress.org/plugins/gdpr-cookie-consent/).
 
-**What happens to my pages if I deactivate the plugin?**
-They stay published. Your legal pages are ordinary WordPress pages stored in your own database. Deactivating removes the generator and its controls, not your content.
+= Do I need an Impressum? =
 
-**Is any of my data or my visitors' data sent to your servers?**
-No. Generation happens on your own installation. Your policies and your visitors' interactions with them stay on your site.
+Sites run from Germany, Austria, or Switzerland usually need one. It names who runs the site and how to contact them. The Impressum template is on paid plans.
 
-**Will this slow my site down?**
-The generator runs in the admin area only. Front-end output is limited to the features you switch on — footer links, consent gates, or the age popup.
+= What legal pages can I generate with the free version? =
 
-**Do I still need a lawyer?**
-For most blogs, small stores, and service sites, a complete and accurate generated policy is what's needed and what's expected. If you're in a regulated industry — health, finance, children's services — or you process sensitive data at scale, get a review.
+Privacy Policy, Terms of Use, DMCA Notice, and a CCPA privacy notice.
 
-**Can I translate my legal pages?**
-Yes. Generated pages are standard WordPress content and work with WPML and similar translation plugins.
+= What do WPLP paid plans add? =
 
-**Can I edit the generated text?**
-All of it. Pages open in the standard WordPress editor. Most site owners adjust the tone of a paragraph or two and publish.
+30+ more templates, legal page popups, forced agreement, age verification, auto-updates on law change, and branding removal. They also add more sites to the WPLP web app. See the full list in the Description.
+
+= What is the difference between the paid plans? =
+
+Only the number of sites. Professional, Business, and Agency all have every feature. Professional covers up to 3 sites, Business up to 10, and Agency 25, 50, or 100. See the [pricing page](https://wplegalpages.com/pricing/?utm_source=wordpress.org&utm_medium=referral&utm_campaign=wplegalpages&utm_content=faq-plan-difference).
+
+= Can I manage legal pages for many client sites from one place? =
+
+Yes. Connect each site to the WPLP web app. It is on every plan, and multi-site management covers up to your plan's site limit: Free 1, Professional 3, Business 10, Agency 25, 50, or 100.
+
+= Do I need WordPress Multisite? =
+
+No. The WPLP web app manages separate WordPress installs from one login. If you do run a WordPress Multisite network, the plugin works there too.
+
+= How much does it cost for 25 or more client sites? =
+
+The Agency plan covers 25, 50, or 100 sites, with every feature included. It costs $28 a month, or $168 a year, for 25 sites. See the [pricing page](https://wplegalpages.com/pricing/?utm_source=wordpress.org&utm_medium=referral&utm_campaign=wplegalpages&utm_content=faq-agency-cost) for 50 and 100 sites.
+
+= Can I use the free plugin on more than one site? =
+
+Yes. Install the free plugin on as many sites as you like. The free WPLP web app plan manages 1 site from one login. To manage more sites from one place, pick a [paid plan by site count](https://wplegalpages.com/pricing/?utm_source=wordpress.org&utm_medium=referral&utm_campaign=wplegalpages&utm_content=faq-free-sites).
+
+= Can I remove WPLP branding on client sites? =
+
+Yes, on paid plans. You can also add your own logo.
+
+= How do I add legal page links to my footer? =
+
+In the WPLP Legal Pages settings, turn on "Add Legal Pages Link to the Footer". The plugin adds links to your legal pages in the site footer. You can also insert any page with its shortcode or the WPLP block in Gutenberg.
+
+= How do I update my pages when a law changes? =
+
+Edit any page in the WordPress editor, then turn on the policy update banner so returning visitors see the change. On paid plans, auto-updates on law change draft the new text for you to review and approve.
+
+= Does WPLP Legal Pages help with GDPR and CCPA? =
+
+Yes. It has GDPR and CCPA templates and keeps your pages current with update notices and, on paid plans, auto-updates on law change. It doesn't make a site compliant by itself. Pair it with a cookie banner such as WPLP Cookie Consent.
+
+= Do I still need a lawyer? =
+
+Maybe, for a review. WPLP Legal Pages doesn't give legal advice. A lawyer's review of pages you generated costs much less than having a lawyer draft them from scratch.
+
+= Does WPLP Legal Pages support Amazon affiliate or earnings disclaimers? =
+
+Yes. Amazon Affiliate Disclosure and Earnings Disclaimer templates are on paid plans. The free plugin has a basic affiliate disclosure notice you add with one toggle.
+
+= Will this get my AdSense application approved? =
+
+AdSense asks for a privacy policy, and this plugin generates one. Google reviews many other things too, so no plugin can promise approval.
+
+= Will a templated privacy policy hurt my SEO? =
+
+No. Search engines treat privacy policies and terms pages as standard legal text. Duplicate content matters on your product and article pages, not on legal notices. You can also choose whether search engines index your legal pages.
+
+= Is WPLP Legal Pages compatible with my theme? =
+
+It works with any theme that follows WordPress standards. It is tested with Gutenberg, Elementor, and Divi.
+
+= What happens to my pages if I deactivate the plugin? =
+
+They stay live. They are standard WordPress pages in your database. Deactivating removes only the generator and its settings screens.
+
+= Will this slow my site down? =
+
+The generator runs only in your WordPress admin. On the front end, the plugin loads only the features you turn on, such as footer links, the update banner, or the age verification popup.
+
+= What happens if I delete the plugin? =
+
+Your published legal pages stay live, because they are standard WordPress pages. The plugin's settings are removed.
+
+= Can I translate my legal pages? =
+
+Yes. Templates come in English, German, Spanish, French, Italian, Dutch, and Portuguese. Generated pages also work with WPML and similar translation plugins.
+
+= Can I edit the generated text? =
+
+Yes. Edit any page in the WordPress editor, the same as any other page.
 
 
 == Changelog ==
