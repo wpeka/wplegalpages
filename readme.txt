@@ -7,7 +7,7 @@ Tags: privacy policy generator, terms and conditions, legal pages, GDPR, disclai
 Requires at least: 6.2
 Requires PHP: 7.0
 Tested up to: 7.1.3
-Stable tag: 3.7.4
+Stable tag: 3.8.0
 
 Privacy policy and terms and conditions generator for WordPress. GDPR and CCPA templates, cookie policy, disclaimer. One click, many sites.
 
@@ -226,7 +226,7 @@ All of it. Pages open in the standard WordPress editor. Most site owners adjust 
 
 == Changelog ==
 
-= 3.7.4 =
+= 3.8.0 =
 **New**
     * Policy updates are now available: when a newer version of a legal policy template is released, you'll be notified and can update your existing policy pages directly from the dashboard.
 **Improvements**
