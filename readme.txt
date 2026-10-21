@@ -3,7 +3,7 @@ Contributors: wplegalpages
 Donate link:  https://wplegalpages.com/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: privacy policy generator, terms and conditions, legal pages, GDPR, disclaimer
+Tags: privacy policy, terms and conditions, ccpa, GDPR, disclaimer
 Requires at least: 6.2
 Requires PHP: 7.0
 Tested up to: 7.1.3
