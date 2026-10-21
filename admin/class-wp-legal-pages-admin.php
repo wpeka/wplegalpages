@@ -1695,6 +1695,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'post_content' => $page_content,
 				'post_status'  => $current_status ?: 'draft',
 			);
+			$pid = wp_update_post( $post_args );
 		}
 		else {
 			$post_args = array(
@@ -1704,8 +1705,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'post_status'  => 'draft',
 				'post_author'  => "",
 			);
+			$pid = wp_insert_post( $post_args );
 		}
-		$pid = wp_insert_post( $post_args );
 
 		update_post_meta( $pid, 'is_legal', 'yes' );
 		update_post_meta( $pid, 'legal_page_type', $page_slug );
@@ -1922,6 +1923,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		$lp_general                 = get_option( 'lp_general' );
+		$is_edit = $request->get_param( 'is_edit' ) === true;
 
 		if ( ! is_array( $lp_general ) ) {
 		    $lp_general = array();
@@ -1949,10 +1951,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		update_option( 'lp_general', $lp_general );
 
-		$url = $url = admin_url( 'post.php?post=' . $pid . '&action=edit' );
+		$url = $is_edit ? get_permalink( $pid ) : admin_url( 'post.php?post=' . $pid . '&action=edit' );
 		$url = str_replace( '&amp;', '&', $url );
 		$user_email = sanitize_email( $request->get_param('user_email') ?? '' );
 		$is_version_update = $request->get_param( 'is_version_update' ) === true;
+		
 		$this->app_wplp_track_lp_downloaded( 
 			$is_version_update ? 'LP Template Updated from SaaS' : 'LP Template Downloaded from SaaS'
 			, array(
