@@ -7,7 +7,7 @@ Tags: privacy policy generator, terms and conditions, legal pages, GDPR, disclai
 Requires at least: 6.2
 Requires PHP: 7.0
 Tested up to: 7.0.2
-Stable tag: 3.7.3
+Stable tag: 3.7.4
 
 == DESCRIPTION ==
 
@@ -209,6 +209,16 @@ All of it. Pages open in the standard WordPress editor. Most site owners adjust 
 
 
 == Changelog ==
+
+= 3.7.4 =
+**New**
+    * Policy updates are now available: when a newer version of a legal policy template is released, you'll be notified and can update your existing policy pages directly from the dashboard.
+**Improvements**
+    * Improved code quality and compatibility for WordPress VIP coding standards.
+**Security**
+    * Strengthened input sanitization and output escaping across the plugin.
+**Bug Fixes**
+    * Minor bug fixes and improvements.
 
 = 3.7.3 =
 **Improvements**
