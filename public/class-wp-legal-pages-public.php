@@ -528,6 +528,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$pid            = $atts['pid'];
 
 			$res   = $wpdb->get_row( $wpdb->prepare( 'SELECT * from ' . $legalpages_pro->popuptable . ' where id= %d', $pid ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( ! $res ) {
+				return '';
+			}
 			$terms = '';
 			if ( isset( $res->content ) ) {
 				$terms = do_shortcode( $res->content );
@@ -760,7 +763,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			for ( $i = 0; $i < $page_count; $i++ ) {
 				$page_url = get_permalink( $footer_pages[ $i ] );
 				?>
-				<a class="wplegalpages_footer_link" <?php echo esc_attr( $footer_new_tab ); ?> href="<?php echo esc_url( $page_url ); ?>" > <?php echo esc_html( get_the_title( $footer_pages[ $i ] ) ); ?></a>
+				<a class="wplegalpages_footer_link" <?php echo ( $footer_new_tab ); ?> href="<?php echo esc_url( $page_url ); ?>" > <?php echo esc_html( get_the_title( $footer_pages[ $i ] ) ); ?></a>
 				<?php
 				if ( $i !== $page_count - 1 ) {
 					?>
