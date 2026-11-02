@@ -605,19 +605,21 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 		 */
 		public function wplegalpages_pro_shortcode( $atts ) {
 			global $wpdb;
-			$legalpages_pro = new WP_Legal_Pages();
 			$atts           = shortcode_atts(
 				array(
 					'tid' => 1,
 				),
 				$atts
 			);
-			$tid            = $atts['tid'];
+			$tid = absint( $atts['tid'] );
 
-			$res = $wpdb->get_row( $wpdb->prepare( "SELECT ID, post_title, post_content FROM {$wpdb->posts} WHERE ID  = %d AND post_type = %s AND post_status != %s", $tid, 'page', 'trash' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( isset( $res->post_content ) ) {
-				$content = $res->post_content;
+			$res = $wpdb->get_row( $wpdb->prepare( "SELECT ID, post_title, post_content, post_password FROM {$wpdb->posts} WHERE ID = %d AND post_type = %s AND post_status = %s", $tid, 'page', 'publish' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+
+			if ( ! $res || ! empty( $res->post_password ) ) {
+				return '';
 			}
+
+			$content    = $res->post_content;
 			$lp_find    = array( '[Domain]', '[Business Name]', '[Trading Name]', '[Phone]', '[Street]', '[City, State, Zip code]', '[Country]', '[Email]', '[Address]', '[Niche]' );
 			$lp_general = get_option( 'lp_general' );
 			$content    = str_replace( $lp_find, $lp_general, stripslashes( $content ) );
@@ -626,6 +628,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			if ( is_single() || is_page() ) {
 				return html_entity_decode( $content );
 			}
+			return '';
 		}
 		/**
 		 * Disables comments for Legal Pages.
