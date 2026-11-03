@@ -269,11 +269,16 @@ add_action( 'admin_init', 'wplp_appwplp_secret_key_version_check' );
  * @return void
  */
 function activation_redirect_wplegalpages() {
-	if ( get_option( 'redirect_after_activation_option_lp', false ) ) {
-		delete_option( 'redirect_after_activation_option_lp' );
-		wp_safe_redirect( admin_url( 'admin.php?page=legal-pages' ) );
-		exit;
+	if ( wp_doing_ajax() || ! get_option( 'redirect_after_activation_option_lp', false ) ) {
+		return;
 	}
+	delete_option( 'redirect_after_activation_option_lp' );
+	
+	if ( isset( $_GET['page'] ) && 'wplp-dashboard' === sanitize_key( wp_unslash( $_GET['page'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return;
+	}
+	wp_safe_redirect( admin_url( 'admin.php?page=legal-pages' ) );
+	exit;
 }
 /**
  * The code that runs during WPLegalPages deactivation.
