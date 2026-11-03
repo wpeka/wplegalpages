@@ -73,19 +73,25 @@ if ( '1' === $lpterms ) {
 	if ( ! empty( $_POST ) && isset( $_POST['lp-greset'] ) ) :
 
 		$lp_general = array(
-			'domain'       => '',
-			'business'     => '',
-			'phone'        => '',
-			'street'       => '',
-			'cityState'    => '',
-			'country'      => '',
-			'email'        => '',
-			'address'      => '',
-			'niche'        => '',
-			'privacy'      => '',
-			'privacy_page' => '',
-			'pagefooter'   => '',
-			'generate'     => '',
+			'domain'       		=> '',
+			'business'     		=> '',
+			'phone'        		=> '',
+			'street'       		=> '',
+			'cityState'    		=> '',
+			'country'      		=> '',
+			'email'        		=> '',
+			'address'      		=> '',
+			'niche'        		=> '',
+			'privacy'      		=> '',
+			'privacy_page' 		=> '',
+			'pagefooter'   		=> '',
+			'generate'     		=> '',
+			'trading'      		=> '',
+			'legal_form'   		=> '',
+			'representatives' 	=> '',
+			'registration_no'	=> '',
+			'reg_authority'		=> '',
+			'vat_id'			=> ''	
 		);
 
 		update_option( 'lp_general', $lp_general );
@@ -100,17 +106,22 @@ if ( '1' === $lpterms ) {
 
 
 		$lp_general = array(
-			'domain'    => isset( $_POST['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-domain-name'] ) ) : '',
-			'business'  => isset( $_POST['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-business-name'] ) ) : '',
-			'phone'     => isset( $_POST['lp-phone'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-phone'] ) ) : '',
-			'street'    => isset( $_POST['lp-street'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-street'] ) ) : '',
-			'cityState' => isset( $_POST['lp-city-state'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-city-state'] ) ) : '',
-			'country'   => isset( $_POST['lp-country'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-country'] ) ) : '',
-			'email'     => isset( $_POST['lp-email'] ) ? sanitize_email( wp_unslash( $_POST['lp-email'] ) ) : '',
-			'address'   => isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
-			'niche'     => isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
-			'generate'  => isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
-			'trading'   => isset( $_POST['lp-trading-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-trading-name'] ) ) : '',
+			'domain'    		=> isset( $_POST['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-domain-name'] ) ) : '',
+			'business'  		=> isset( $_POST['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-business-name'] ) ) : '',
+			'phone'     		=> isset( $_POST['lp-phone'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-phone'] ) ) : '',
+			'street'    		=> isset( $_POST['lp-street'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-street'] ) ) : '',
+			'cityState' 		=> isset( $_POST['lp-city-state'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-city-state'] ) ) : '',
+			'country'   		=> isset( $_POST['lp-country'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-country'] ) ) : '',
+			'email'     		=> isset( $_POST['lp-email'] ) ? sanitize_email( wp_unslash( $_POST['lp-email'] ) ) : '',
+			'address'   		=> isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
+			'niche'     		=> isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
+			'generate'  		=> isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
+			'trading'   		=> isset( $_POST['lp-trading-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-trading-name'] ) ) : '',
+			'legal_form'		=> isset( $_POST['lp-legal-form'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-legal-form'] ) ) : '',
+			'representatives' 	=> isset( $_POST['lp-legal-representative'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-legal-representative'] ) ) : '',
+			'registration_no'	=> isset( $_POST['lp-registration-no'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-registration-no'] ) ) : '',
+			'reg_authority'		=> isset( $_POST['lp-registration-authority'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-registration-authority'] ) ) : '',
+			'vat_id'			=> isset( $_POST['lp-vat-id'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-vat-id'] ) ) : ''
 		);
 		$lp_general = apply_filters( 'wplegalpages_save_settings', $lp_general, $_POST );
 		update_option( 'lp_general', $lp_general );

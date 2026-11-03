@@ -154,6 +154,38 @@ if ( '1' === $lpterms ) {
 										<c-col class="col-sm-4"><label><?php esc_html_e( 'DBA/Trading Name', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_attr_e( 'Enter your "doing business as"/ trading name. Use [Trading Name] as shortcode.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8"><c-input type="text" name="lp-trading-name" value="<?php echo ! empty( $lp_general['trading'] ) ? esc_attr( $lp_general['trading'] ) : ''; ?>"></c-input></c-col>
 									</c-row>
+
+									<c-row class="wplegalpages-label-row">
+										<c-col class="col-sm-4">
+											<label><?php esc_html_e( 'Legal Form', 'wplegalpages' ); ?></label>
+										</c-col>
+										<c-col class="col-sm-8">
+											<v-select :reduce="label => label.code" class="form-group" :options="legal_form_options" v-model="legal_form" @input="onLegalFormSelect">
+											</v-select>
+											<input type="hidden" name="lp-legal-form" v-model="legal_form">
+										</c-col>
+									</c-row>
+
+									<c-row>
+										<c-col class="col-sm-4"><label><?php esc_html_e( 'Legal Representative', 'wplegalpages' ); ?></label></c-col>
+										<c-col class="col-sm-8"><c-input type="text" name="lp-legal-representative" value="<?php echo ! empty( $lp_general['representatives'] ) ? esc_attr( $lp_general['representatives'] ) : ''; ?>"></c-input></c-col>
+									</c-row>
+
+									<c-row>
+										<c-col class="col-sm-4"><label><?php esc_html_e( 'Company Registration Number', 'wplegalpages' ); ?></label></c-col>
+										<c-col class="col-sm-8"><c-input type="text"  name="lp-registration-no" value="<?php echo ! empty( $lp_general['registration_no'] ) ? esc_attr( $lp_general['registration_no'] ) : ''; ?>"></c-input></c-col>
+									</c-row>
+									
+									<c-row>
+										<c-col class="col-sm-4"><label><?php esc_html_e( 'Registering Authority', 'wplegalpages' ); ?></label></c-col>
+										<c-col class="col-sm-8"><c-input type="text"  name="lp-registration-authority" value="<?php echo ! empty( $lp_general['reg_authority'] ) ? esc_attr( $lp_general['reg_authority'] ) : ''; ?>"></c-input></c-col>
+									</c-row>
+
+									<c-row>
+										<c-col class="col-sm-4"><label><?php esc_html_e( 'VAT ID/GST No.', 'wplegalpages' ); ?></label></c-col>
+										<c-col class="col-sm-8"><c-input type="text"  name="lp-vat-id" value="<?php echo ! empty( $lp_general['vat_id'] ) ? esc_attr( $lp_general['vat_id'] ) : ''; ?>"></c-input></c-col>
+									</c-row>
+
 									<c-row>
 										<c-col class="col-sm-4"><label><?php esc_html_e( 'Phone', 'wplegalpages' ); ?> <c-icon name="cib-google-keep" color="primary" v-c-tooltip="'<?php esc_attr_e( 'Certain policies like CCPA require your contact details. Use [Phone] as shortcode.', 'wplegalpages' ); ?>'"></c-icon></label></c-col>
 										<c-col class="col-sm-8"><c-input type="text"  name="lp-phone" value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>"></c-input></c-col>
@@ -269,6 +301,48 @@ if ( '1' === $lpterms ) {
 									</c-col>
 									<c-col class="col-sm-6">
 										<c-input id="lp-trading-name" type="text" name="lp-trading-name" placeholder=" DBA/Trading Name" value="<?php echo ! empty( $lp_general['trading'] ) ? esc_attr( $lp_general['trading'] ) : ''; ?>"></c-input>
+									</c-col>
+								</c-row>
+
+								<c-row class="wplegalpages-label-row">
+									<c-col class="col-sm-6">
+										<label for="lp-legal-form"><?php esc_html_e( 'Legal Form', 'wplegalpages' ); ?></label>
+									</c-col>
+									<c-col class="col-sm-6">
+										<label for="lp-legal-representative"><?php esc_html_e( 'Legal Representative', 'wplegalpages' ); ?></label>
+									</c-col>
+								</c-row>
+								<c-row>
+									<c-col class="col-sm-6">
+										<v-select id="wplegalpages-legal-form" :reduce="label => label.code" class="form-group" :options="legal_form_options" v-model="legal_form" @input="onLegalFormSelect" placeholder="Select Legal Form">
+										</v-select>
+										<input type="hidden" name="lp-legal-form" v-model="legal_form">
+									</c-col>
+									<c-col class="col-sm-6">
+										<c-input id="lp-legal-representative" type="text" name="lp-legal-representative" placeholder=" Legal Representative" value="<?php echo ! empty( $lp_general['representatives'] ) ? esc_attr( $lp_general['representatives'] ) : ''; ?>"></c-input>
+									</c-col>
+								</c-row>
+
+								<c-row class="wplegalpages-label-row">
+									<c-col class="col-sm-4">
+										<label for="lp-registration-no"><?php esc_html_e( 'Company Registration Number', 'wplegalpages' ); ?></label>
+									</c-col>
+									<c-col class="col-sm-4">
+										<label for="lp-registration-authority"><?php esc_html_e( 'Registering Authority', 'wplegalpages' ); ?></label>
+									</c-col>
+									<c-col class="col-sm-4">
+										<label for="lp-vat-id"><?php esc_html_e( 'VAT ID/GST No.', 'wplegalpages' ); ?></label>
+									</c-col>
+								</c-row>
+								<c-row>
+									<c-col class="col-sm-4">
+										<c-input id="lp-registration-no" class="wplegalpages-full-width-input" type="text" name="lp-registration-no" placeholder=" Company Registration Number" value="<?php echo ! empty( $lp_general['registration_no'] ) ? esc_attr( $lp_general['registration_no'] ) : ''; ?>"></c-input>
+									</c-col>
+									<c-col class="col-sm-4">
+										<c-input id="lp-registration-authority" class="wplegalpages-full-width-input" type="text" name="lp-registration-authority" placeholder=" Registering Authority" value="<?php echo ! empty( $lp_general['reg_authority'] ) ? esc_attr( $lp_general['reg_authority'] ) : ''; ?>"></c-input>
+									</c-col>
+									<c-col class="col-sm-4">
+										<c-input id="lp-vat-id" class="wplegalpages-full-width-input" type="text" name="lp-vat-id" placeholder=" VAT ID/GST No" value="<?php echo ! empty( $lp_general['vat_id'] ) ? esc_attr( $lp_general['vat_id'] ) : ''; ?>"></c-input>
 									</c-col>
 								</c-row>
 
