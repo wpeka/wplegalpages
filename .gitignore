@@ -13,3 +13,6 @@ admin/js/tooltip.min.js
 coverage/
 *.lock
 yarn.lock
+
+# CI-only PHPCS toolchain lock (see .gitlab/ci/phpcs).
+!.gitlab/ci/phpcs/composer.lock
