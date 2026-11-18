@@ -7253,7 +7253,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$flag = false;
 
 				if ( isset( $_REQUEST['mode'] ) && 'edit' === $_REQUEST['mode'] && isset( $_REQUEST['lpid'] ) ) {
+					if ( ! current_user_can( 'manage_options' ) ) {
+						wp_die( esc_html__( 'You do not have permission to perform this action.', 'wplegalpages' ), 403 );
+					}
 
+					if ( isset( $_REQUEST['nonce'] ) ) {
+						$nonce = sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) );
+						if ( ! wp_verify_nonce( $nonce, 'lp-submit-create-popups' ) ) {
+							wp_die( esc_html__( 'Security check failed. Please try again.', 'wplegalpages' ) );
+						}
+					} else {
+						wp_die( esc_html__( 'Missing nonce. Please try again.', 'wplegalpages' ) );
+					}
 					$lpid = isset( $_REQUEST['lpid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) : 0;
 					$row  = $wpdb->get_row( $wpdb->prepare( 'SELECT * from ' . $lp_obj->popuptable . ' where id=%d', $lpid ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
