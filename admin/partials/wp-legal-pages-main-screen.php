@@ -57,9 +57,6 @@ $gdpr_monthly_page_views_percent = 0;
 if ( 'free' === $api_user_plan ) { 
 	$gdpr_monthly_page_views_limit = 20000;
 	$gdpr_monthly_page_views_percent = ( ( $gdpr_monthly_page_views ) / 20000 ) * 100;
-} else if ( '3sites' === $api_user_plan ) {
-	$gdpr_monthly_page_views_limit = 100000;
-	$gdpr_monthly_page_views_percent = ( ( $gdpr_monthly_page_views ) / 100000 ) * 100;
 }
 
 $gdpr_remaining_page_views = $gdpr_monthly_page_views_limit - $gdpr_monthly_page_views;
@@ -373,7 +370,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 										</div>
 
 										<div class="gdpr-progress-wrapper">
-											<?php if ( '10Sites' === $api_user_plan || '25Sites' === $api_user_plan || '50Sites' === $api_user_plan || '100Sites' === $api_user_plan || '10sites' === $api_user_plan || '25sites' === $api_user_plan || '50sites' === $api_user_plan || '100sites' === $api_user_plan) { ?>
+											<?php if ( '3Sites' === $api_user_plan || '10Sites' === $api_user_plan || '25Sites' === $api_user_plan || '50Sites' === $api_user_plan || '100Sites' === $api_user_plan || '3sites' === $api_user_plan || '10sites' === $api_user_plan || '25sites' === $api_user_plan || '50sites' === $api_user_plan || '100sites' === $api_user_plan) { ?>
 												<div class="gdpr-remaining-scans-progress" style="
 													background: 
 														radial-gradient(closest-side, white 90%, transparent 80% 100%),
@@ -412,7 +409,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 										</div>
 
 										<div class="gdpr-progress-wrapper">
-											<?php if ( '10Sites' === $api_user_plan || '10sites' === $api_user_plan || '25Sites' === $api_user_plan || '25sites' === $api_user_plan || '50Sites' === $api_user_plan || '50sites' === $api_user_plan || '100Sites' === $api_user_plan || '100sites' === $api_user_plan) { ?>
+											<?php if ( '3Sites' === $api_user_plan || '3sites' === $api_user_plan || '10Sites' === $api_user_plan || '10Sites' === $api_user_plan || '10sites' === $api_user_plan || '25Sites' === $api_user_plan || '25sites' === $api_user_plan || '50Sites' === $api_user_plan || '50sites' === $api_user_plan || '100Sites' === $api_user_plan || '100sites' === $api_user_plan) { ?>
 												<div class="gdpr-pageviews-progress" style="
 													background: 
 														radial-gradient(closest-side, white 90%, transparent 80% 100%),

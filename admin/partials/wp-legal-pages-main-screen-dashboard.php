@@ -69,9 +69,6 @@ $gdpr_monthly_page_views_percent = 0;
 if ( 'free' === $api_user_plan ) { 
 	$gdpr_monthly_page_views_limit = 20000;
 	$gdpr_monthly_page_views_percent = ( ( $gdpr_monthly_page_views ) / 20000 ) * 100;
-} else if ( '3sites' === $api_user_plan ) {
-	$gdpr_monthly_page_views_limit = 100000;
-	$gdpr_monthly_page_views_percent = ( ( $gdpr_monthly_page_views ) / 100000 ) * 100;
 }
 
 $gdpr_remaining_page_views = $gdpr_monthly_page_views_limit - $gdpr_monthly_page_views;
