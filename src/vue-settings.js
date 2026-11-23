@@ -68,6 +68,12 @@ var gen = new Vue({
             ? Boolean(parseInt(obj.popup_enabled))
             : false,
           page_options: obj.page_options,
+          legal_form_options: obj.legal_form_options,
+          legal_form: obj.lp_options.hasOwnProperty("legal_form") ? obj.lp_options.legal_form : "",
+          representatives: obj.lp_options.hasOwnProperty("representatives") ? obj.lp_options.representatives : "",
+          registration_no: obj.lp_options.hasOwnProperty("registration_no") ? obj.lp_options.registration_no : "",
+          reg_authority: obj.lp_options.hasOwnProperty("reg_authority") ? obj.lp_options.reg_authority : "",
+          vat_id: obj.lp_options.hasOwnProperty("vat_id") ? obj.lp_options.vat_id : "",
           show_footer_form: false,
           show_banner_form: false,
           show_age_verification_form: false,
@@ -279,6 +285,9 @@ var gen = new Vue({
                 }
             }
             this.footer_legal_pages = temp_array;
+        },
+        onLegalFormSelect(value) {
+            this.legal_form = value;
         },
         onDragPages() {
             let footer_pages_length = this.footer_pages_drag.length;
