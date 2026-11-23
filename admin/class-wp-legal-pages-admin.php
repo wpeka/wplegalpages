@@ -1312,6 +1312,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			'country'			=> $lp_general['country'],
 			'email'				=> $lp_general['email'],
 			'address'			=> $lp_general['address'],
+			'niche'				=> $lp_general['niche'] ?? '',
 			'facebookUrl'		=> $lp_general['facebook-url'],
 			'googleUrl'			=> $lp_general['google-url'],
 			'twitterUrl'		=> $lp_general['twitter-url'],
