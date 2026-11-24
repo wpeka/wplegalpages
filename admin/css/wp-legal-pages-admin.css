@@ -1763,7 +1763,8 @@ wp-legalpages-admin-tab-content {
 	margin-top: 3px;
 }
 
-.wp-legalpages-admin-tabs-content .wp-legalpages-admin-tabs-inner-content .wp-legalpages-admin-tab-content {
+.wp-legalpages-admin-tabs-content .wp-legalpages-admin-tabs-inner-content .wp-legalpages-admin-tab-content,
+.wp-legalpages-admin-tabs-content > .wp-legalpages-admin-help-page-content {
 	background: var(--white, #fff);
 	border-radius: 6px;
 }

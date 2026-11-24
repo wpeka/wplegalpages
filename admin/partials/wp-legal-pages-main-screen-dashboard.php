@@ -577,7 +577,6 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 													</div>
 													
 												</div>
-												</div>
 											<?php elseif ( (!$gdpr_installed || !$is_gdpr_active) && $is_user_connected) : ?>
 													<div class="compliance-banner-active-card">
 														<div style="display:flex;gap:14px;">
@@ -653,6 +652,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 														</div>
 													</div>
 												<?php endif; ?>
+										</div>
 										</div>
 									</div>
 							</div>
