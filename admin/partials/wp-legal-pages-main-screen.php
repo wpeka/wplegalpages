@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Provide a admin area view for the WP Legal Pages plugin
  *
@@ -10,6 +9,10 @@
  *
  * @package Wplegalpages
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // // Instantiate a new object of the wplegal_Cookie_Consent_Settings class.
 $this->settings = new WP_Legal_Pages_Settings();
@@ -54,9 +57,6 @@ $gdpr_monthly_page_views_percent = 0;
 if ( 'free' === $api_user_plan ) { 
 	$gdpr_monthly_page_views_limit = 20000;
 	$gdpr_monthly_page_views_percent = ( ( $gdpr_monthly_page_views ) / 20000 ) * 100;
-} else if ( '3sites' === $api_user_plan ) {
-	$gdpr_monthly_page_views_limit = 100000;
-	$gdpr_monthly_page_views_percent = ( ( $gdpr_monthly_page_views ) / 100000 ) * 100;
 }
 
 $gdpr_remaining_page_views = $gdpr_monthly_page_views_limit - $gdpr_monthly_page_views;
@@ -89,7 +89,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 						</div>
 
 					</div>
-					<!-- <div id="wplegalpages-save-settings-alert"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg' ); ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_attr_e( 'Settings saved successfully', 'wplegalpages' ); ?></div> --> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+					<!-- <div id="wplegalpages-save-settings-alert"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg' ); ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_html_e( 'Settings saved successfully', 'wplegalpages' ); ?></div> --> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 					<div class="wp-legalpages-admin-help-and-support">
 						<?php if ( $is_user_connected ) : ?>
 						<div class="wp-legalpages-new-dashboard-btn"><a href="<?php echo esc_url( 'https://app.wplegalpages.com/app/' ); ?>" target="_blank"><?php esc_html_e( 'Try New Dashboard', 'wplegalpages' ); ?><span class="wplegalpages-admin-new-dashboard-btn-beta-span">BETA</span></a></div>
@@ -109,11 +109,11 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 							<!-- //support  -->
 							<div class="wp-legalpages-admin-support-icon">
 								<!-- //image  -->
-								<a href="https://club.wpeka.com/contact/" target="_blank">
+								<a href="https://wplegalpages.com/contact-us/" target="_blank">
 								<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/wp_cookie_support.png'; ?>" alt="WP Cookie Consent Support"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 								</a>
 							</div>
-							<div class="wp-legalpages-admin-support-text"><a href="https://club.wpeka.com/contact/" target="_blank">
+							<div class="wp-legalpages-admin-support-text"><a href="https://wplegalpages.com/contact-us/" target="_blank">
 								Support</a>
 							</div>
 						</div>
@@ -121,7 +121,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 						<div class="wp-legalpages-admin-login">
 							<div class="wp-legalpages-admin-login-icon">
 								<a <?php if ( $is_user_connected ) {
-									echo 'href="https://app.wplegalpages.com/my-account" target="_blank"';
+									echo 'href="https://app.wplegalpages.com/app" target="_blank"';
 								} else {
 									echo 'class="api-connect-to-account-btn"'; 
 								} ?> >
@@ -130,7 +130,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 							</div>
 							<div class="wp-legalpages-admin-login-text">
 								<a <?php if ( $is_user_connected ) {
-									echo 'href="https://app.wplegalpages.com/my-account" target="_blank"';
+									echo 'href="https://app.wplegalpages.com/app" target="_blank"';
 								} else {
 									echo 'class="api-connect-to-account-btn"'; 
 								} ?> ><?php echo $is_user_connected ? esc_html('My Account', 'gdpr-cookie-consent') :esc_html('Login', 'gdpr-cookie-consent'); ?></a>
@@ -344,7 +344,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 													conic-gradient( <?php echo ( $gdpr_monthly_scan_percent < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $gdpr_monthly_scan_percent < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?> <?php echo esc_html( $gdpr_monthly_scan_percent ); ?>%, <?php echo ( $gdpr_monthly_scan_percent < 35 ) ? esc_html('#e6f5ee', 'wplegalpages') : ( ( $gdpr_monthly_scan_percent < 75 ) ? esc_html('#fef7c3', 'wplegalpages') : esc_html('#f8e6e6', 'wplegalpages') ); ?> 0);"
 											>
 												<?php if ( 'free' === $api_user_plan ) { ?>
-													<span style="color: <?php echo ( $gdpr_monthly_scan_percent < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $gdpr_monthly_scan_percent < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?>;"><?php echo esc_attr( ceil( $gdpr_monthly_scan_percent ) ); ?>%</span>
+													<span style="color: <?php echo ( $gdpr_monthly_scan_percent < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $gdpr_monthly_scan_percent < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?>;"><?php echo esc_html( ceil( $gdpr_monthly_scan_percent ) ); ?>%</span>
 													<progress value="<?php echo esc_attr( ceil( $gdpr_monthly_scan_percent ) ); ?>" min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
 												<?php } else { ?>
 													<span><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/Unlimited_scan.svg'; ?>" alt="Unlimited Monthly Scans"></span>
@@ -370,7 +370,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 										</div>
 
 										<div class="gdpr-progress-wrapper">
-											<?php if ( '10Sites' === $api_user_plan || '25Sites' === $api_user_plan || '50Sites' === $api_user_plan || '100Sites' === $api_user_plan || '10sites' === $api_user_plan || '25sites' === $api_user_plan || '50sites' === $api_user_plan || '100sites' === $api_user_plan) { ?>
+											<?php if ( '3Sites' === $api_user_plan || '10Sites' === $api_user_plan || '25Sites' === $api_user_plan || '50Sites' === $api_user_plan || '100Sites' === $api_user_plan || '3sites' === $api_user_plan || '10sites' === $api_user_plan || '25sites' === $api_user_plan || '50sites' === $api_user_plan || '100sites' === $api_user_plan) { ?>
 												<div class="gdpr-remaining-scans-progress" style="
 													background: 
 														radial-gradient(closest-side, white 90%, transparent 80% 100%),
@@ -390,7 +390,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 														radial-gradient(closest-side, white 90%, transparent 80% 100%),
 														conic-gradient( <?php echo ( $remaining_percentage_scan_limit < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $remaining_percentage_scan_limit < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?> <?php echo esc_html( $remaining_percentage_scan_limit ); ?>%, <?php echo ( $remaining_percentage_scan_limit < 35 ) ? esc_html('#e6f5ee', 'wplegalpages') : ( ( $remaining_percentage_scan_limit < 75 ) ? esc_html('#fef7c3', 'wplegalpages') : esc_html('#f8e6e6', 'wplegalpages') ); ?> 0);"
 												>
-													<span style="color: <?php echo ( $remaining_percentage_scan_limit < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $remaining_percentage_scan_limit < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?>;"><?php echo esc_attr( ceil( $remaining_percentage_scan_limit ) ); ?>%</span>
+													<span style="color: <?php echo ( $remaining_percentage_scan_limit < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $remaining_percentage_scan_limit < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?>;"><?php echo esc_html( ceil( $remaining_percentage_scan_limit ) ); ?>%</span>
 													<progress value="<?php echo esc_attr( ceil( $remaining_percentage_scan_limit ) ); ?>" min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
 												</div>
 
@@ -409,7 +409,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 										</div>
 
 										<div class="gdpr-progress-wrapper">
-											<?php if ( '10Sites' === $api_user_plan || '10sites' === $api_user_plan || '25Sites' === $api_user_plan || '25sites' === $api_user_plan || '50Sites' === $api_user_plan || '50sites' === $api_user_plan || '100Sites' === $api_user_plan || '100sites' === $api_user_plan) { ?>
+											<?php if ( '3Sites' === $api_user_plan || '3sites' === $api_user_plan || '10Sites' === $api_user_plan || '10Sites' === $api_user_plan || '10sites' === $api_user_plan || '25Sites' === $api_user_plan || '25sites' === $api_user_plan || '50Sites' === $api_user_plan || '50sites' === $api_user_plan || '100Sites' === $api_user_plan || '100sites' === $api_user_plan) { ?>
 												<div class="gdpr-pageviews-progress" style="
 													background: 
 														radial-gradient(closest-side, white 90%, transparent 80% 100%),
@@ -429,7 +429,7 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 														radial-gradient(closest-side, white 90%, transparent 80% 100%),
 														conic-gradient( <?php echo ( $gdpr_monthly_page_views_percent < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $gdpr_monthly_page_views_percent < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?> <?php echo esc_html( $gdpr_monthly_page_views_percent ); ?>%, <?php echo ( $gdpr_monthly_page_views_percent < 35 ) ? esc_html('#e6f5ee', 'wplegalpages') : ( ( $gdpr_monthly_page_views_percent < 75 ) ? esc_html('#fef7c3', 'wplegalpages') : esc_html('#f8e6e6', 'wplegalpages') ); ?> 0);"
 												>
-													<span style="color: <?php echo ( $gdpr_monthly_page_views_percent < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $gdpr_monthly_page_views_percent < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?>;"><?php echo esc_attr( floor( $gdpr_monthly_page_views_percent ) ); ?>%</span>
+													<span style="color: <?php echo ( $gdpr_monthly_page_views_percent < 35 ) ? esc_html('#469955', 'wplegalpages') : ( ( $gdpr_monthly_page_views_percent < 75 ) ? esc_html('#ca8b25', 'wplegalpages') : esc_html('#c93a38', 'wplegalpages') ); ?>;"><?php echo esc_html( floor( $gdpr_monthly_page_views_percent ) ); ?>%</span>
 													<progress value="<?php echo esc_attr( floor( $gdpr_monthly_page_views_percent ) ); ?>" min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
 												</div>
 

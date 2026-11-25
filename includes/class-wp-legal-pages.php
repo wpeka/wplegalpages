@@ -12,6 +12,10 @@
  * @subpackage WP_Legal_Pages/includes
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The core WPLegalPages class.
  *
@@ -124,7 +128,7 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 
 			global $table_prefix;
 			$this->plugin_name = 'wp-legal-pages';
-			$this->version     = '3.7.3';
+			$this->version     = '3.8.2';
 			$this->tablename   = $table_prefix . 'legal_pages';
 			$this->popuptable  = $table_prefix . 'lp_popups';
 			$this->plugin_url  = plugin_dir_path( __DIR__ );
@@ -291,6 +295,11 @@ if ( ! class_exists( 'WP_Legal_Pages' ) ) {
 
 			// Update popup table schema if not already updated.
 			$this->loader->add_action( 'admin_init', $plugin_admin, 'lp_update_popup_table' );
+
+			// Keep SSL and Cookie Consent status in lp_general.
+			$this->loader->add_action( 'admin_init', $plugin_admin, 'wplp_sync_site_status' );
+			$this->loader->add_action( 'activated_plugin', $plugin_admin, 'wplp_sync_site_status' );
+			$this->loader->add_action( 'deactivated_plugin', $plugin_admin, 'wplp_sync_site_status' );
 
 			//Added to prevent unstyled content flash on plugin activation
 			$this->loader->add_action( 'admin_head', $plugin_admin, 'wplegalpages_inline_onload_admin_styles' );

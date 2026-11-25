@@ -9,6 +9,10 @@
  * @subpackage WP_Legal_Pages/admin
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The admin-specific functionality of the WPLegalPages.
  *
@@ -85,6 +89,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			add_action('rest_api_init', array($this, 'register_wpl_dashboard_route'));
 			add_action('rest_api_init', array($this, 'wplp_generate_api_secret'));
 			add_action('admin_init', array($this, 'handle_compliance_wizard_for_old_users'));
+			add_action('admin_init', array($this, 'wplp_add_version_to_existing_legal_pages'));
 			add_action( 'appwplp_secret_key_generated', array($this, 'appwplp_register_secret_key_with_server'));
 		}
 
@@ -120,22 +125,25 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		            ptbl.post_modified,
 					ptbl.post_content,
 		            lpt.meta_value AS legal_page_type
-		        FROM {$post_tbl} AS ptbl
-		        INNER JOIN {$postmeta_tbl} AS islegal
+		        FROM %i AS ptbl
+		        INNER JOIN %i AS islegal
 		            ON ptbl.ID = islegal.post_id
 		            AND islegal.meta_key = %s
-		        INNER JOIN {$postmeta_tbl} AS lpt
+		        INNER JOIN %i AS lpt
 		            ON ptbl.ID = lpt.post_id
 		            AND lpt.meta_key = %s
 		        WHERE ptbl.post_status = %s
 				ORDER BY ptbl.post_modified DESC
         		LIMIT 5
 		        ",
+		        $post_tbl,
+		        $postmeta_tbl,
 		        'is_legal',
+		        $postmeta_tbl,
 		        'legal_page_type',
 		        'publish'
 		    )
-		); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		); 
 
 		foreach ( $pagesresult as $res ) {
 			$policy_preview[] = array(
@@ -159,7 +167,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 	public function allow_cors_for_react_app(){
     	add_filter('rest_pre_serve_request', function ($value, $result, $request, $server) {
 
-			$origin      = isset( $_SERVER['HTTP_ORIGIN'] ) ? $_SERVER['HTTP_ORIGIN'] : '';
+			$origin = isset( $_SERVER['HTTP_ORIGIN'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) ) : '';
 			$site_origin = site_url();
 
 			$app_origin = rtrim(WPLEGAL_APP_URL, '/');
@@ -198,7 +206,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			header( 'Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Nonce, Origin, X-Requested-With, Accept, X-WPLP-Timestamp, X-WPLP-Signature' );
 
 			// Handle preflight requests
-			if ( $_SERVER['REQUEST_METHOD'] === 'OPTIONS' ) {
+			if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'OPTIONS' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) {
 				status_header( 200 );
 				exit;
 			}
@@ -278,16 +286,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$post_tbl     = esc_sql( $post_tbl );
 			$postmeta_tbl = esc_sql( $postmeta_tbl );
 			
-			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
+			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 			$count = $wpdb->get_var(
 				$wpdb->prepare(
 					"
 					SELECT COUNT(*) 
-					FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
+					FROM %i AS ptbl, %i AS pmtbl 
 					WHERE ptbl.ID = pmtbl.post_id 
 					AND ptbl.post_status = %s 
 					AND pmtbl.meta_key = %s
 					",
+					$post_tbl,
+					$postmeta_tbl,
 					'publish',
 					'is_legal'
 				)
@@ -300,6 +310,51 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$plugin_version = defined( 'GDPR_COOKIE_CONSENT_VERSION' ) ? GDPR_COOKIE_CONSENT_VERSION : '';
 			update_option( 'wplp_legal_pages_version', $plugin_version );
 		}
+	}
+
+	/**
+	 * Stamp every legal page that already exists with the initial page version.
+	 *
+	 * Legal pages saved from now on carry a version of their own, but pages
+	 * created before this release have no version stored against them. This
+	 * runs once on update and back-fills those pages with version 1.0 so that
+	 * every legal page on the site has a version to compare against..
+	 */
+	public function wplp_add_version_to_existing_legal_pages() {
+
+		$migrated_version = get_option( 'wplp_legal_pages_version_migration', '0.0.0' );
+
+		if ( version_compare( $migrated_version, APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION, '>=' ) ) {
+			return;
+		}
+
+		$legal_pages = get_posts(
+			array(
+				'post_type'        => 'page',
+				'post_status'      => 'any',
+				'numberposts'      => 100,
+				'fields'           => 'ids',
+				'suppress_filters' => false,
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'meta_query'       => array(
+					'relation' => 'AND',
+					array(
+						'key'     => 'is_legal',
+						'compare' => 'EXISTS',
+					),
+					array(
+						'key'     => '_wplp_legal_page_version',
+						'compare' => 'NOT EXISTS',
+					),
+				),
+			)
+		);
+
+		foreach ( $legal_pages as $pid ) {
+			update_post_meta( $pid, '_wplp_legal_page_version', '1' );
+		}
+
+		update_option( 'wplp_legal_pages_version_migration', APPWPLP_WPLP_SECRET_KEY_FEATURE_VERSION );
 	}
 
 		/**
@@ -682,7 +737,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			return new WP_Error('invalid_master_key', 'Master key mismatch.', ['status' => 401]);
 		}
 
-		$auth_header = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : '';
+		$auth_header = isset( $_SERVER['HTTP_AUTHORIZATION'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) ) : '';
 		if ( ! preg_match('/Bearer\s(\S+)/', $auth_header, $matches) ) {
 			return new WP_Error('no_token', 'Authorization token missing.', ['status' => 401]);
 		}
@@ -714,7 +769,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			return $signature_check;
 		}
 
-		$auth_header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+		$auth_header = isset( $_SERVER['HTTP_AUTHORIZATION'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) ) : '';
 
 		if ( ! preg_match( '/Bearer\s(\S+)/', $auth_header, $matches ) ) {
 			return new WP_Error(
@@ -914,16 +969,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$post_tbl     = esc_sql( $post_tbl );
 		$postmeta_tbl = esc_sql( $postmeta_tbl );
 		
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 		$count = $wpdb->get_var(
 			$wpdb->prepare(
 				"
 				SELECT COUNT(*) 
-				FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
+				FROM %i AS ptbl, %i AS pmtbl 
 				WHERE ptbl.ID = pmtbl.post_id 
 				AND ptbl.post_status = %s 
 				AND pmtbl.meta_key = %s
 				",
+				$post_tbl,
+				$postmeta_tbl,
 				'publish',
 				'is_legal'
 			)
@@ -933,17 +990,19 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$wpdb->prepare(
 				"
 				SELECT ptbl.post_title 
-				FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
+				FROM %i AS ptbl, %i AS pmtbl 
 				WHERE ptbl.ID = pmtbl.post_id 
 				AND ptbl.post_status = %s 
 				AND pmtbl.meta_key = %s
 				",
+				$post_tbl,
+				$postmeta_tbl,
 				'publish',
 				'is_legal'
 			),
 			ARRAY_A
 		);
-		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 
 		$titles = array_column($pagesresult, 'post_title');
 		$policy_preview = get_option('policy_preview', array());
@@ -1056,16 +1115,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$post_tbl     = esc_sql( $post_tbl );
 		$postmeta_tbl = esc_sql( $postmeta_tbl );
 		
-		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching	
 		$count = $wpdb->get_var(
 			$wpdb->prepare(
 				"
 				SELECT COUNT(*) 
-				FROM {$post_tbl} AS ptbl, {$postmeta_tbl} AS pmtbl 
+				FROM %i AS ptbl, %i AS pmtbl 
 				WHERE ptbl.ID = pmtbl.post_id 
 				AND ptbl.post_status = %s 
 				AND pmtbl.meta_key = %s
 				",
+				$post_tbl,
+				$postmeta_tbl,
 				'publish',
 				'is_legal'
 			)
@@ -1095,6 +1156,36 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 	    }
 
 	    return $value;
+	}
+
+	/**
+	 * Store SSL and Cookie Consent plugin status in lp_general,
+	 * used by the GDPR Privacy Policy page settings.
+	 *
+	 * @return array Updated lp_general option.
+	 */
+	public function wplp_sync_site_status() {
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$lp_general = get_option( 'lp_general' );
+		if ( ! is_array( $lp_general ) ) {
+			$lp_general = array();
+		}
+
+		$ssl_active               = (int) ( 'https' === wp_parse_url( get_site_url(), PHP_URL_SCHEME ) );
+		$cookie_consent_installed = (int) is_plugin_active( 'gdpr-cookie-consent/gdpr-cookie-consent.php' );
+
+		if ( ! isset( $lp_general['ssl_active'], $lp_general['cookie_consent_installed'] )
+			|| (int) $lp_general['ssl_active'] !== $ssl_active
+			|| (int) $lp_general['cookie_consent_installed'] !== $cookie_consent_installed ) {
+			$lp_general['ssl_active']               = $ssl_active;
+			$lp_general['cookie_consent_installed'] = $cookie_consent_installed;
+			update_option( 'lp_general', $lp_general );
+		}
+
+		return $lp_general;
 	}
 
  	public function wplp_fetch_legal_pages_data_react_app( WP_REST_Request $request ) {
@@ -1152,18 +1243,27 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		            ptbl.post_modified,
 		            ptbl.guid,
 					ptbl.post_content,
-		            lpt.meta_value AS legal_page_type
-		        FROM {$post_tbl} AS ptbl
-		        INNER JOIN {$postmeta_tbl} AS islegal
+		            lpt.meta_value AS legal_page_type,
+		            lpv.meta_value AS legal_page_version
+		        FROM %i AS ptbl
+		        INNER JOIN %i AS islegal
 		            ON ptbl.ID = islegal.post_id
 		            AND islegal.meta_key = %s
-		        INNER JOIN {$postmeta_tbl} AS lpt
+		        INNER JOIN %i AS lpt
 		            ON ptbl.ID = lpt.post_id
 		            AND lpt.meta_key = %s
+				LEFT JOIN %i AS lpv
+					ON ptbl.ID = lpv.post_id
+					AND lpv.meta_key = %s
 		        WHERE ptbl.post_status = %s
 		        ",
+		        $post_tbl,
+		        $postmeta_tbl,
 		        'is_legal',
+		        $postmeta_tbl,
 		        'legal_page_type',
+				$postmeta_tbl,
+				'_wplp_legal_page_version',
 		        'publish'
 		    )
 		);
@@ -1178,6 +1278,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'description' 	=> "",
 				'content'		=> $res->post_content,
 				'postID'		=> $res->ID,
+				'version'		=> ! empty( $res->legal_page_version ) ? $res->legal_page_version : '1',
 			);
 		}
 
@@ -1196,16 +1297,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		$created_popups = $wpdb->get_results(
-		    "SELECT id, popup_name, popup_template FROM {$lp_obj->popuptable}"
+			$wpdb->prepare( 'SELECT id, popup_name, popup_template FROM %i', $lp_obj->popuptable )
 		);
 
-		$lp_general = get_option("lp_general");
+		$lp_general = $this->wplp_sync_site_status();
 		$lp_footer_options = get_option( 'lp_footer_options' );
 		$lp_banner_options = get_option( 'lp_banner_options' );
-
-		if (!is_array($lp_general)) {
-			$lp_general = array();
-		}
 
 		$business_info[] = array(
 			'domain' => !empty($lp_general['domain']) ? $lp_general['domain'] : get_bloginfo('url'),
@@ -1217,6 +1314,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			'country'			=> $lp_general['country'],
 			'email'				=> $lp_general['email'],
 			'address'			=> $lp_general['address'],
+			'niche'				=> $lp_general['niche'] ?? '',
 			'facebookUrl'		=> $lp_general['facebook-url'],
 			'googleUrl'			=> $lp_general['google-url'],
 			'twitterUrl'		=> $lp_general['twitter-url'],
@@ -1227,6 +1325,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			'disclosingParty'	=> $lp_general['disclosing-party'],
 			'recipientParty'	=> $lp_general['recipient-party'],
 			'last_updated'	    => $lp_general['last_updated'] ?? '',
+			'legalForm'			=> $lp_general['legal_form'] ?? '',
+			'legalFormOptions'	=> $this->get_legal_form_options() ?? array(),
+			'representatives'	=> $lp_general['representatives'] ?? '',
+			'registrationNo'	=> $lp_general['registration_no'] ?? '',
+			'regAuthority'		=> $lp_general['reg_authority'] ?? '',
+			'vatId'				=> $lp_general['vat_id'] ?? '',
+			'ssl_active'		=> $lp_general['ssl_active'],
+			'cookie_consent_installed'	=> $lp_general['cookie_consent_installed'],
 		);
 
 		$advanced_info[] = array(
@@ -1405,7 +1511,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$args = array(
 			'post_type'   => 'gdprpolicies',
 			'post_status' => 'publish',
-			'numberposts' => -1,
+			'numberposts' => 100,
 		);
 
 		$gdpr_posts = get_posts( $args );
@@ -1523,6 +1629,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$options  = get_post_meta( $pid, 'legal_page_ccpa_options', true );
 				break;
 
+			case 'gdpr_privacy_policy':
+				$settings = get_post_meta( $pid, 'legal_page_gdpr_privacy_policy_settings', true );
+				$options  = get_post_meta( $pid, 'legal_page_gdpr_privacy_policy_options', true );
+				break;
+
 			case 'privacy_policy':
 				$settings = get_post_meta( $pid, 'legal_page_privacy_settings', true );
 				$options  = get_post_meta( $pid, 'legal_page_privacy_options', true );
@@ -1607,6 +1718,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$page_slug    = $request->get_param( 'slug' );
 		$page_settings = $request->get_param( 'settings' );
 		$page_options = $request->get_param( 'options' );
+		$policy_version = $request->get_param( 'policy_version' );
 		$post_id	  = $request->get_param( 'post_id' ) ?? null;
 		$last_updated = $request->get_param( 'last_updated' );
 		$business_info = $request->get_param( 'business' );
@@ -1629,6 +1741,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'post_content' => $page_content,
 				'post_status'  => $current_status ?: 'draft',
 			);
+			$pid = wp_update_post( $post_args );
 		}
 		else {
 			$post_args = array(
@@ -1638,6 +1751,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'post_status'  => 'draft',
 				'post_author'  => "",
 			);
+			$pid = wp_insert_post( $post_args );
 		}
 		/*
 		 * This request runs without a logged-in WP user, so wp_insert_post()
@@ -1668,6 +1782,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 		update_post_meta( $pid, 'is_legal', 'yes' );
 		update_post_meta( $pid, 'legal_page_type', $page_slug );
+
+		$policy_version = is_scalar( $policy_version ) ? sanitize_text_field( (string) $policy_version ) : '';
+		if ( '' === $policy_version ) {
+			$policy_version = get_post_meta( $pid, '_wplp_legal_page_version', true ) ?: '1';
+		}
+		update_post_meta( $pid, '_wplp_legal_page_version', $policy_version );
 
 		$page_settings = $this->populate_settings_with_options( $page_settings, $page_options );
 
@@ -1788,6 +1908,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				break;
 
 			case "gdpr_privacy_policy":
+				update_post_meta( $pid, 'legal_page_gdpr_privacy_policy_settings', $page_settings );
+				update_post_meta( $pid, 'legal_page_gdpr_privacy_policy_options', $page_options );
 				update_option( 'wplegal_gdpr_privacy_policy_page', $pid );
 				break;
 
@@ -1875,6 +1997,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		}
 
 		$lp_general                 = get_option( 'lp_general' );
+		$is_edit = $request->get_param( 'is_edit' ) === true;
 
 		if ( ! is_array( $lp_general ) ) {
 		    $lp_general = array();
@@ -1899,17 +2022,26 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		$lp_general['duration']		= $business_info['duration'] ?? '';
 		$lp_general['disclosing-party']	= $business_info['disclosingParty'] ?? '';
 		$lp_general['recipient-party']	= $business_info['recipientParty'] ?? '';
+		$lp_general['legal_form']		= sanitize_text_field( $business_info['legalForm'] ?? '' );
+		$lp_general['representatives']	= sanitize_text_field( $business_info['representatives'] ?? '' );
+		$lp_general['registration_no']	= sanitize_text_field( $business_info['registrationNo'] ?? '' );
+		$lp_general['reg_authority']	= sanitize_text_field( $business_info['regAuthority'] ?? '' );
+		$lp_general['vat_id']			= sanitize_text_field( $business_info['vatId'] ?? '' );
 
 		update_option( 'lp_general', $lp_general );
 
-		$url = $url = admin_url( 'post.php?post=' . $pid . '&action=edit' );
+		$url = $is_edit ? get_permalink( $pid ) : admin_url( 'post.php?post=' . $pid . '&action=edit' );
 		$url = str_replace( '&amp;', '&', $url );
 		$user_email = sanitize_email( $request->get_param('user_email') ?? '' );
-		$this->app_wplp_track_lp_downloaded( 'LP Template Downloaded from SaaS', array(
-				'user_email' => $user_email,
-				'template'   => $page_slug,
-				'title'      => $page_title,
-			));
+		$is_version_update = $request->get_param( 'is_version_update' ) === true;
+		
+		$this->app_wplp_track_lp_downloaded( 
+			$is_version_update ? 'LP Template Updated from SaaS' : 'LP Template Downloaded from SaaS'
+			, array(
+					'user_email' => $user_email,
+					'template'   => $page_slug,
+					'title'      => $page_title,
+				));
 		return new WP_REST_Response(
 			array(
 				'success' => true,
@@ -2184,24 +2316,31 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$business_info = array();
 		}
         
-        $lp_general['domain']       = $business_info['domain'] ?? '';
-        $lp_general['business']     = $business_info['business'] ?? '';
-        $lp_general['trading']      = $business_info['trading'] ?? '';
-        $lp_general['phone']        = $business_info['phone'] ?? '';
-        $lp_general['street']       = $business_info['street'] ?? '';
-        $lp_general['cityState']    = $business_info['cityState'] ?? '';
-        $lp_general['country']      = $business_info['country'] ?? '';
-        $lp_general['email']        = $business_info['email'] ?? '';
-        $lp_general['address']      = $business_info['address'] ?? '';
-        $lp_general['facebook-url'] = $business_info['facebookUrl'] ?? '';
-        $lp_general['google-url']   = $business_info['googleUrl'] ?? '';
-        $lp_general['twitter-url']  = $business_info['twitterUrl'] ?? '';
-        $lp_general['linkedin-url'] = $business_info['linkedinUrl'] ?? '';
-        $lp_general['date']         = $business_info['date'] ?? '';
-        $lp_general['days']         = $business_info['days'] ?? '';
-        $lp_general['duration']     = $business_info['duration'] ?? '';
-        $lp_general['disclosing-party'] = $business_info['disclosingParty'] ?? '';
-        $lp_general['recipient-party']  = $business_info['recipientParty'] ?? '';
+        $business_key_map = array(
+            'domain'          => 'domain',
+            'business'        => 'business',
+            'trading'         => 'trading',
+            'phone'           => 'phone',
+            'street'          => 'street',
+            'cityState'       => 'cityState',
+            'country'         => 'country',
+            'email'           => 'email',
+            'address'         => 'address',
+            'facebookUrl'     => 'facebook-url',
+            'googleUrl'       => 'google-url',
+            'twitterUrl'      => 'twitter-url',
+            'linkedInUrl'     => 'linkedin-url',
+            'date'            => 'date',
+            'days'            => 'days',
+            'duration'        => 'duration',
+            'disclosingParty' => 'disclosing-party',
+            'recipientParty'  => 'recipient-party',
+        );
+        foreach ( $business_key_map as $request_key => $option_key ) {
+            if ( array_key_exists( $request_key, $business_info ) ) {
+                $lp_general[ $option_key ] = sanitize_text_field( (string) $business_info[ $request_key ] );
+            }
+        }
 
         update_option( 'lp_general', $lp_general );
 
@@ -2798,20 +2937,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						<td valign="middle" width="10%" align="center"> <input type="checkbox" name="legal_check" id="legal_check" > </td>
 						<td width="90%">
 							<div id="content_area_edit" style="display:none;">
-								<textarea name="legal_content" cols="80" rows="2" ><?php echo esc_attr( $legal_content ); ?></textarea>
+								<textarea name="legal_content" cols="80" rows="2" ><?php echo esc_html( $legal_content ); ?></textarea>
 							</div>
 							<div id="content_area_read">
-								<p><?php echo esc_attr( $legal_content ); ?></p>
+								<p><?php echo esc_html( $legal_content ); ?></p>
 							</div>
 						</td>
 					<?php } else { ?>
 						<td valign="middle" width="10%" align="center"> <input type="checkbox" checked name="legal_check" id="legal_check" > </td>
 						<td width="90%">
 							<div id="content_area_edit">
-								<textarea name="legal_content" cols="80" rows="2" ><?php echo esc_attr( $legal_content ); ?></textarea>
+								<textarea name="legal_content" cols="80" rows="2" ><?php echo esc_html( $legal_content ); ?></textarea>
 							</div>
 							<div id="content_area_read" style="display:none;">
-								<p><?php echo esc_attr( $legal_content ); ?></p>
+								<p><?php echo esc_html( $legal_content ); ?></p>
 							</div>
 						</td>
 					<?php } ?>
@@ -2946,7 +3085,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			global $wpdb;
 			$post_tbl     = $wpdb->prefix . 'posts';
 			$postmeta_tbl = $wpdb->prefix . 'postmeta';
-			$pagesresult  = $wpdb->get_results( $wpdb->prepare( 'SELECT ptbl.ID, ptbl.post_content, ptbl.post_title FROM ' . $post_tbl . ' as ptbl , ' . $postmeta_tbl . ' as pmtbl WHERE ptbl.ID = pmtbl.post_id and ptbl.post_status = %s AND pmtbl.meta_key = %s', array( 'publish', 'is_legal' ) ) );
+			$pagesresult  = $wpdb->get_results( $wpdb->prepare( 'SELECT ptbl.ID, ptbl.post_content, ptbl.post_title FROM %i as ptbl , %i as pmtbl WHERE ptbl.ID = pmtbl.post_id and ptbl.post_status = %s AND pmtbl.meta_key = %s', array( $post_tbl, $postmeta_tbl, 'publish', 'is_legal' ) ) );
 
 			foreach ( $pagesresult as &$page ) {
 				// Remove shortcodes.
@@ -3117,7 +3256,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					array(
 						'post_type'   => 'page',
 						'post_status' => 'publish',
-						'numberposts' => -1,
+						'numberposts' => 100,
 						'orderby'     => 'title',
 						'order'       => 'ASC',
 						'meta_query'  => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query	
@@ -3171,6 +3310,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$options_object = array(
 					'lp_options'               => $lp_options,
 					'page_options'             => $options,
+					'legal_form_options'	   => $this->get_legal_form_options(),
 					'lp_footer_options'        => $lp_footer_options,
 					'ajaxurl'                  => admin_url( 'admin-ajax.php' ),
 					'number_of_days'           => range( 1, 30 ),
@@ -3201,6 +3341,35 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			}
 		}
 
+		public static function get_legal_form_options() {
+			$legal_form_options = array(
+				array(
+					'label' => __( 'Sole trader/Individual', 'wplegalpages' ),
+					'code'  => 'sole_trader',
+				),
+				array(
+					'label' => __( 'Partnership', 'wplegalpages' ),
+					'code'  => 'partnership',
+				),
+				array(
+					'label' => __( 'Private Limited Company', 'wplegalpages' ),
+					'code'  => 'private_limited',
+				),
+				array(
+					'label' => __( 'Public Limited Company', 'wplegalpages' ),
+					'code'  => 'public_limited',
+				),
+				array(
+					'label' => __( 'Non-profit or association', 'wplegalpages' ),
+					'code'  => 'non_profit',
+				),
+				array(
+					'label' => __( 'Other', 'wplegalpages' ),
+					'code'  => 'other',
+				),
+			);
+			return $legal_form_options;
+		}
 
 		/**
 		 * This Callback function for Show Page menu for WPLegalpages.
@@ -3580,7 +3749,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'orderby'                => 'title',
 				'posts_per_page'         => $per_page,
 				'post_type'              => $post_type,
-				'suppress_filters'       => true,
+				'suppress_filters'       => false,
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
 				'post_status'            => 'publish',
@@ -3666,7 +3835,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$get_posts = new WP_Query();
 					$posts     = $get_posts->query( $args );
 				} else {
-					echo '<p>' . esc_attr_e( 'No items.', 'wplegalpages' ) . '</p>';
+					echo '<p>' . esc_html_e( 'No items.', 'wplegalpages' ) . '</p>';
 					return;
 				}
 			} elseif ( ! empty( $important_pages ) ) {
@@ -3739,17 +3908,17 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				<ul id="posttype-<?php echo esc_attr( $post_type_name ); ?>-tabs" class="posttype-tabs add-menu-item-tabs">
 					<li <?php echo ( 'most-recent' === $current_tab ? ' class="tabs"' : '' ); ?>>
 						<a class="nav-tab-link" data-type="tabs-panel-posttype-<?php echo esc_attr( $post_type_name ); ?>-most-recent" href="<?php echo esc_url( $most_recent_url ); ?>#tabs-panel-posttype-<?php echo esc_attr( $post_type_name ); ?>-most-recent">
-							<?php esc_attr_e( 'Most Recent', 'wplegalpages' ); ?>
+							<?php esc_html_e( 'Most Recent', 'wplegalpages' ); ?>
 						</a>
 					</li>
 					<li <?php echo ( 'all' === $current_tab ? ' class="tabs"' : '' ); ?>>
 						<a class="nav-tab-link" data-type="<?php echo esc_attr( $post_type_name ); ?>-all" href="<?php echo esc_url( $view_all_url ); ?>#<?php echo esc_attr( $post_type_name ); ?>-all">
-							<?php esc_attr_e( 'View All', 'wplegalpages' ); ?>
+							<?php esc_html_e( 'View All', 'wplegalpages' ); ?>
 						</a>
 					</li>
 					<li <?php echo ( 'search' === $current_tab ? ' class="tabs"' : '' ); ?>>
 						<a class="nav-tab-link" data-type="tabs-panel-posttype-<?php echo esc_attr( $post_type_name ); ?>-search" href="<?php echo esc_url( $search_url ); ?>#tabs-panel-posttype-<?php echo esc_attr( $post_type_name ); ?>-search">
-							<?php esc_attr_e( 'Search', 'wplegalpages' ); ?>
+							<?php esc_html_e( 'Search', 'wplegalpages' ); ?>
 						</a>
 					</li>
 				</ul><!-- .posttype-tabs -->
@@ -3808,7 +3977,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					}
 					?>
 					<p class="quick-search-wrap">
-						<label for="quick-search-posttype-<?php echo esc_attr( $post_type_name ); ?>" class="screen-reader-text"><?php esc_attr_e( 'Search', 'wplegalpages' ); ?></label>
+						<label for="quick-search-posttype-<?php echo esc_attr( $post_type_name ); ?>" class="screen-reader-text"><?php esc_html_e( 'Search', 'wplegalpages' ); ?></label>
 						<input type="search"<?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> class="quick-search" value="<?php echo esc_attr( $searched ); ?>" name="quick-search-posttype-<?php echo esc_attr( $post_type ); ?>" id="quick-search-posttype-<?php echo esc_attr( $post_type_name ); ?>" />
 						<span class="spinner"></span>
 						<?php submit_button( __( 'Search', 'wplegalpages' ), 'small quick-search-submit hide-if-js', 'submit', false, array( 'id' => 'submit-quick-search-posttype-' . $post_type_name ) ); ?>
@@ -3823,7 +3992,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						<?php elseif ( is_wp_error( $search_results ) ) : ?>
 							<li><?php echo esc_html( $search_results->get_error_message() ); ?></li>
 						<?php elseif ( ! empty( $searched ) ) : ?>
-							<li><?php esc_attr_e( 'No results found.', 'wplegalpages' ); ?></li>
+							<li><?php esc_html_e( 'No results found.', 'wplegalpages' ); ?></li>
 						<?php endif; ?>
 					</ul>
 				</div><!-- /.tabs-panel -->
@@ -3872,7 +4041,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				<p class="button-controls wp-clearfix" data-items-type="posttype-<?php echo esc_attr( $post_type_name ); ?>">
 			<span class="list-controls hide-if-no-js">
 				<input type="checkbox"<?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> id="<?php echo esc_attr( $tab_name ); ?>" class="select-all" />
-				<label for="<?php echo esc_attr( $tab_name ); ?>"><?php esc_attr_e( 'Select All', 'wplegalpages' ); ?></label>
+				<label for="<?php echo esc_attr( $tab_name ); ?>"><?php esc_html_e( 'Select All', 'wplegalpages' ); ?></label>
 			</span>
 
 					<span class="add-to-menu">
@@ -3966,6 +4135,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				'email'     => isset( $_POST['lp-email'] ) ? sanitize_email( wp_unslash( $_POST['lp-email'] ) ) : '',
 				'address'   => isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
 				'niche'     => isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
+				'representatives'	=> isset( $_POST['lp-legal-representative'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-legal-representative'] ) ) : '',
+				'legal_form'		=> isset( $_POST['lp-legal-form'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-legal-form'] ) ) : '',
+				'registration_no'	=> isset( $_POST['lp-registration-no'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-registration-no'] ) ) : '',
+				'reg_authority'		=> isset( $_POST['lp-registration-authority'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-registration-authority'] ) ) : '',
+				'vat_id'			=> isset( $_POST['lp-vat-id'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-vat-id'] ) ) : '',
 				'generate'  => isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
 				'is_footer' => isset( $_POST['lp-footer'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-footer'] ) ) : '0',
 				'is_banner' => isset( $_POST['lp-banner'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-banner'] ) ) : '0',
@@ -4157,8 +4331,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$classname = 0 === $i % 2 ? 'wplegalpages-shortcode-table-even' : 'wplegalpages-shortcode-table-odd';
 				?>
 					<c-row class="<?php echo esc_attr( $classname ); ?>">
-						<c-col class="col-sm-6"><?php echo esc_attr( $key ); ?></c-col>
-						<c-col class="col-sm-6"><?php echo esc_attr( $val ); ?></c-col>
+						<c-col class="col-sm-6"><?php echo esc_html( $key ); ?></c-col>
+						<c-col class="col-sm-6"><?php echo esc_html( $val ); ?></c-col>
 					</c-row>
 					<?php
 					++$i;
@@ -4212,7 +4386,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$facebook_url = isset( $lp_general['facebook-url'] ) ? $lp_general['facebook-url'] : '';
 
 			if ( $facebook_url ) {
-				$facebook = array( 'facebook' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $facebook_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/facebook.png"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
+				$facebook_url = trim( $facebook_url );
+				if ( ! preg_match( '#^https?://#i', $facebook_url ) ) {
+					$facebook_url = 'https://' . $facebook_url;
+				}
+				$facebook = array( 'facebook' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . esc_url( $facebook_url ) . '"><img src="' . esc_url( WPL_LITE_PLUGIN_URL . 'admin/images/facebook.png' ) . '"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 			}
 			$lp_find_facebook = array( '[facebook]' );
 			$content          = str_replace( $lp_find_facebook, $facebook, stripslashes( $content ) );
@@ -4220,24 +4398,35 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			$google_url = isset( $lp_general['google-url'] ) ? $lp_general['google-url'] : '';
 
 			if ( $google_url ) {
-
-				$google = array( 'google' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $google_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/google.png"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
+				$google_url = trim( $google_url );
+				if ( ! preg_match( '#^https?://#i', $google_url ) ) {
+					$google_url = 'https://' . $google_url;
+				}
+				$google = array( 'google' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . esc_url( $google_url ) . '"><img src="' . esc_url( WPL_LITE_PLUGIN_URL . 'admin/images/google.png' ) . '"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 			}
 			$lp_find_google = array( '[google]' );
 			$content        = str_replace( $lp_find_google, $google, stripslashes( $content ) );
 
 			$twitter_url = isset( $lp_general['twitter-url'] ) ? $lp_general['twitter-url'] : '';
 			if ( $twitter_url ) {
-
-				$twitter = array( 'twitter' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $twitter_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/twitter.png"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
+				$twitter_url = trim( $twitter_url );
+				if ( ! preg_match( '#^https?://#i', $twitter_url ) ) {
+					$twitter_url = 'https://' . $twitter_url;
+				}
+				$twitter = array( 'twitter' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . esc_url( $twitter_url ) . '"><img src="' . esc_url( WPL_LITE_PLUGIN_URL . 'admin/images/twitter.png' ) . '"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 			}
 			$lp_find_twitter = array( '[twitter]' );
 			$content         = str_replace( $lp_find_twitter, $twitter, stripslashes( $content ) );
 
 			$linkedin_url = isset( $lp_general['linkedin-url'] ) ? $lp_general['linkedin-url'] : '';
 			if ( $linkedin_url ) {
-				$linkedin = array( 'linkedin' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . $linkedin_url . '"><img src="' . WPL_LITE_PLUGIN_URL . 'admin/images/linkedin.png"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
+				$linkedin_url = trim( $linkedin_url );
+				if ( ! preg_match( '#^https?://#i', $linkedin_url ) ) {
+					$linkedin_url = 'https://' . $linkedin_url;
+				}
+				$linkedin = array( 'linkedin' => '<a style="width: 30px; height: 30px; display:inline-block" href="' . esc_url( $linkedin_url ) . '"><img src="' . esc_url( WPL_LITE_PLUGIN_URL . 'admin/images/linkedin.png' ) . '"/></a>' ); //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 			}
+
 			$lp_find_linkedin = array( '[linkedin]' );
 			$content          = str_replace( $lp_find_linkedin, $linkedin, stripslashes( $content ) );
 			return $content;
@@ -4539,6 +4728,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			if ( empty( $last_selected_page ) ) {
 				$last_selected_page = 'privacy_policy';
 			}
+			$lp_general = $this->wplp_sync_site_status();
 
 			wp_localize_script(
 				$this->plugin_name . '-vue-script',
@@ -4590,6 +4780,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					),
 					'templates' => json_decode( $privacy_templates, true ),
 					'last_selected_page' => $last_selected_page,
+					'ssl_active'         => (int) ( $lp_general['ssl_active'] ?? 1 ),
 				)
 			);
 			wp_print_styles( $this->plugin_name . '-select2' );
@@ -4776,7 +4967,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @param string $content Page content.
 		 * @return int|void|WP_Error
 		 */
-		public function wplegalpages_get_pid_by_insert_page( $title = '', $content = '' ) {
+		public function wplegalpages_get_pid_by_insert_page( $title = '', $content = '', $page = '' ) {
 			$post_args = array(
 				'post_title'   => apply_filters( 'the_title', $title ),
 				'post_content' => $content,
@@ -4786,9 +4977,27 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			);
 			$pid       = wp_insert_post( $post_args );
 			if ( ! is_wp_error( $pid ) ) {
+				self::wplegalpages_set_policy_version( $pid, $page );
 				return $pid;
 			} else {
 				return;
+			}
+		}
+
+		/**
+		 * Store the policy template version (from the API's policies.json) on a newly created legal page.
+		 *
+		 * @param int    $pid  Page ID.
+		 * @param string $page Policy slug.
+		 */
+		public static function wplegalpages_set_policy_version( $pid, $page ) {
+			if ( empty( $page ) ) {
+				return;
+			}
+			$response = wp_remote_get( add_query_arg( 'page', $page, WPLEGAL_API_URL . 'get_policy_version' ), array( 'timeout' => 3 ) );  // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_remote_get_wp_remote_get -- vip_safe_wp_remote_get() only exists on VIP hosting.
+			$body     = json_decode( wp_remote_retrieve_body( $response ), true );
+			if ( ! empty( $body['version'] ) ) {
+				update_post_meta( $pid, '_wplp_legal_page_version', sanitize_text_field( $body['version'] ) );
 			}
 		}
 
@@ -4868,7 +5077,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'terms_of_use_free':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Terms of Use' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Terms of Use', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$terms_of_use_free_options = $this->wplegalpages_get_remote_data( 'get_terms_of_use' );
@@ -4916,7 +5125,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'fb_policy':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Facebook Policy' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Facebook Policy', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$fb_policy_options = $this->wplegalpages_get_remote_data( 'get_fb_policy' );
@@ -4966,7 +5175,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'affiliate_agreement':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Affiliate Agreement' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Affiliate Agreement', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$affiliate_agreement_options = $this->wplegalpages_get_remote_data( 'get_affiliate_agreement' );
@@ -5016,7 +5225,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'standard_privacy_policy':
 							if ( empty( $pid ) ) {
-    						    $pid = $this->wplegalpages_get_pid_by_insert_page( 'Standard Privacy Policy' );
+    						    $pid = $this->wplegalpages_get_pid_by_insert_page( 'Standard Privacy Policy', '', $page );
     						    update_post_meta( $pid, 'is_legal', 'yes' );
     						    update_post_meta( $pid, 'legal_page_type', $page );
     						    $standard_privacy_policy_options = $this->wplegalpages_get_remote_data( 'get_standard_privacy_policy' );
@@ -5066,7 +5275,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'california_privacy_policy':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Privacy Notice For California Residents' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Privacy Notice For California Residents', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$ccpa_options = $this->wplegalpages_get_remote_data( 'get_ccpa_settings' );
@@ -5120,7 +5329,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'returns_refunds_policy':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Returns and Refunds Policy' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Returns and Refunds Policy', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$returns_refunds_options = $this->wplegalpages_get_remote_data( 'get_returns_refunds_settings' );
@@ -5170,7 +5379,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'impressum':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Impressum' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Impressum', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$impressum_options = $this->wplegalpages_get_remote_data( 'get_impressum_settings' );
@@ -5221,7 +5430,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 						case 'end_user_license':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'End User License Agreement' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'End User License Agreement', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$end_user_license_options = $this->wplegalpages_get_remote_data( 'get_end_user_license_settings' );
@@ -5274,7 +5483,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 						case 'digital_goods_refund_policy':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Digital Goods Refund Policy' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Digital Goods Refund Policy', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$digital_goods_refund_policy_options = $this->wplegalpages_get_remote_data( 'get_digital_goods_refund_policy_settings' );
@@ -5326,7 +5535,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'privacy_policy':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Privacy Policy' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Privacy Policy', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$privacy_options = $this->wplegalpages_get_remote_data( 'get_privacy_settings' );
@@ -5380,7 +5589,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'dmca':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'DMCA' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'DMCA', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$dmca_options = $this->wplegalpages_get_remote_data( 'get_dmca_policy_settings' );
@@ -5430,7 +5639,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'cookies_policy':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Cookies Policy' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Cookies Policy', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$cookies_policy_options = $this->wplegalpages_get_remote_data( 'get_cookies_policy_settings' );
@@ -5480,7 +5689,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'general_disclaimer':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'General Disclaimer' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'General Disclaimer', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$general_disclaimer_options = $this->wplegalpages_get_remote_data( 'get_general_disclaimer_settings' );
@@ -5530,7 +5739,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'earnings_disclaimer':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Earnings Disclaimer' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Earnings Disclaimer', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$earnings_disclaimer_options = $this->wplegalpages_get_remote_data( 'get_earnings_disclaimer_settings' );
@@ -5580,7 +5789,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'coppa':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'COPPA - Children’s Online Privacy Policy' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'COPPA - Children’s Online Privacy Policy', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$coppa_options = $this->wplegalpages_get_remote_data( 'get_coppa_settings' );
@@ -5630,7 +5839,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'custom_legal':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Custom Legal Page' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Custom Legal Page', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$custom_legal_options = $lp->get_custom_legal_page_fields();
@@ -5680,7 +5889,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'cvd_policy':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Coordinated Vulnerability Disclosure (CVD) Policy' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'Coordinated Vulnerability Disclosure (CVD) Policy', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$cvd_options = $this->wplegalpages_get_remote_data( 'get_cvd_policy_settings' );
@@ -5730,7 +5939,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							break;
 						case 'doc_policy':
 							if ( empty( $pid ) ) {
-								$pid = $this->wplegalpages_get_pid_by_insert_page( 'EU Declaration of Conformity (DoC)' );
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'EU Declaration of Conformity (DoC)', '', $page );
 								update_post_meta( $pid, 'is_legal', 'yes' );
 								update_post_meta( $pid, 'legal_page_type', $page );
 								$doc_options = $this->wplegalpages_get_remote_data( 'get_doc_policy_settings' );
@@ -5778,6 +5987,56 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							}
 							update_post_meta( $pid, 'legal_page_doc_options', $data );
 							break;
+						case 'gdpr_privacy_policy':
+							if ( empty( $pid ) ) {
+								$pid = $this->wplegalpages_get_pid_by_insert_page( 'GDPR Privacy Policy', '', $page );
+								update_post_meta( $pid, 'is_legal', 'yes' );
+								update_post_meta( $pid, 'legal_page_type', $page );
+								$gdpr_privacy_policy_options = $this->wplegalpages_get_remote_data( 'get_gdpr_privacy_policy_settings' );
+
+								$gdpr_privacy_policy_options = $this->normalize_settings( $gdpr_privacy_policy_options );
+
+								update_post_meta( $pid, 'legal_page_gdpr_privacy_policy_settings', $gdpr_privacy_policy_options );
+								update_option( 'wplegal_gdpr_privacy_policy_page', $pid );
+							} else {
+								$gdpr_privacy_policy_settings = get_post_meta( $pid, 'legal_page_gdpr_privacy_policy_settings', true );
+								$gdpr_privacy_policy_options  = $this->normalize_settings( $gdpr_privacy_policy_settings );
+							}
+							$data = array();
+							foreach ( $gdpr_privacy_policy_options as $key => $option ) {
+								if ( isset( $_POST['data'][ $key ] ) ) {
+									$option->checked = true;
+									$fields          = $option->fields;
+									$settings_data   = array();
+									foreach ( $fields as $field_key => $field ) {
+										$field_data                  = $this->wplegalpages_page_sections_settings_save( $field, $post_data );
+										$settings_data[ $field_key ] = $field_data;
+									}
+									$option->fields = $settings_data;
+								} else {
+									$option->checked = false;
+								}
+								$data[ $key ] = $option;
+							}
+							update_post_meta( $pid, 'legal_page_gdpr_privacy_policy_settings', $data );
+							$options = array();
+							foreach ( $data as $key => $value ) {
+								if ( $value->checked ) {
+									if ( isset( $value->fields ) && ! empty( $value->fields ) ) {
+										$subfields = $value->fields;
+										foreach ( $subfields as $sub_key => $sub_fields ) {
+											$options[ $sub_key ]         = $this->wplegalpages_page_sections_clauses_save( $sub_fields );
+											$options[ $sub_key ][ $key ] = true;
+										}
+									}
+								}
+							}
+							$data = array();
+							foreach ( $options as $option ) {
+								$data = array_merge( $data, $option );
+							}
+							update_post_meta( $pid, 'legal_page_gdpr_privacy_policy_options', $data );
+							break;
 					}
 					$result['success'] = true;
 
@@ -5819,6 +6078,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					$twitter_url      = isset( $lp_general['twitter-url'] ) ? $lp_general['twitter-url'] : '';
 					$linkedin_url     = isset( $lp_general['linkedin-url'] ) ? $lp_general['linkedin-url'] : '';
 					$address          = isset( $lp_general['address'] ) ? $lp_general['address'] : '';
+					$legal_form       = isset( $lp_general['legal_form'] ) ? $lp_general['legal_form'] : '';
+					$representatives  = isset( $lp_general['representatives'] ) ? $lp_general['representatives'] : '';
+					$registration_no  = isset( $lp_general['registration_no'] ) ? $lp_general['registration_no'] : '';
+					$reg_authority    = isset( $lp_general['reg_authority'] ) ? $lp_general['reg_authority'] : '';
+					$vat_id           = isset( $lp_general['vat_id'] ) ? $lp_general['vat_id'] : '';
 					if ( isset( $_POST['data'] ) && ! empty( $_POST['data'] ) ) {
 						$general                         = array();
 						$general['date']                 = isset( $_POST['data']['lp-date'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-date'] ) ) : $date;
@@ -5840,6 +6104,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						$general['country']              = isset( $_POST['data']['lp-country'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-country'] ) ) : $country;
 						$general['language']             = isset( $_POST['data']['lp-lang'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-lang'] ) ) : determine_locale();
 						$general['address']              = isset( $_POST['data']['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-address'] ) ) : $address;
+						$general['legal_form']           = isset( $_POST['data']['lp-legal-form'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-legal-form'] ) ) : $legal_form;
+						$general['representatives']      = isset( $_POST['data']['lp-representatives'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-representatives'] ) ) : $representatives;
+						$general['registration_no']      = isset( $_POST['data']['lp-registration-no'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-registration-no'] ) ) : $registration_no;
+						$general['reg_authority']        = isset( $_POST['data']['lp-registering-authority'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-registering-authority'] ) ) : $reg_authority;
+						$general['vat_id']               = isset( $_POST['data']['lp-vat-id'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['lp-vat-id'] ) ) : $vat_id;
 						$general['niche']                = isset( $lp_general['niche'] ) ? $lp_general['niche'] : '';
 						$general['generate']             = isset( $lp_general['generate'] ) ? $lp_general['generate'] : '0';
 						$general['privacy']              = isset( $lp_general['privacy'] ) ? $lp_general['privacy'] : '0';
@@ -5852,6 +6121,14 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						$general['is_adult']             = isset( $lp_general['is_adult'] ) ? $lp_general['is_adult'] : '0';
 						$general['is_footer']            = isset( $lp_general['is_footer'] ) ? $lp_general['is_footer'] : '0';
 						$general['is_banner']            = isset( $lp_general['is_banner'] ) ? $lp_general['is_banner'] : '0';
+						foreach ( array( 'facebook-url', 'google-url', 'twitter-url', 'linkedin-url' ) as $key ) {
+							if ( ! empty( $general[ $key ] ) ) {
+								$general[ $key ] = trim( $general[ $key ] );
+								if ( ! preg_match( '#^https?://#i', $general[ $key ] ) ) {
+									$general[ $key ] = 'https://' . ltrim( $general[ $key ], '/' );
+								}
+							}
+						}
 						update_option( 'lp_general', $general );
 						$result['success'] = true;
 					}
@@ -5873,6 +6150,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			);
 			if ( isset( $_GET['action'] ) ) {
 				$step  = isset( $_GET['step'] ) ? sanitize_text_field( wp_unslash( $_GET['step'] ) ) : '';
+				error_log("DODODO in get step settings, STEP - " . $step);
 				if ( isset( $_GET['page'] ) ) {
 					$page = sanitize_text_field( wp_unslash( $_GET['page'] ) );
 					update_option( 'wplegal_last_selected_page', $page );
@@ -6080,6 +6358,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @return array
 		 */
 		public function wplegalpages_get_page_settings( $page ) {
+			error_log("DODODO getting page settings.");
 			$data = array();
 			require_once plugin_dir_path( __DIR__ ) . 'admin/wizard/class-wp-legal-pages-wizard-page.php';
 			$lp            = new WP_Legal_Pages_Wizard_Page();
@@ -6146,6 +6425,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 						'error_msg' => $setting['error_msg'] ?? 'Invalid input',
 						'required' => $setting['required'],
 					);
+					if ( isset( $setting['options'] ) ) {
+						$field['options'] = $setting['options'];
+					}
 					$data[] = $field;
 				}
 			}
@@ -6160,6 +6442,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @return array
 		 */
 		public function wplegalpages_get_page_sections( $page ) {
+			error_log("DODODO getting page sections.");
 			require_once plugin_dir_path( __DIR__ ) . 'admin/wizard/class-wp-legal-pages-wizard-page.php';
 			$lp          = new WP_Legal_Pages_Wizard_Page();   
 			$lp_sections = (array) $lp->get_section_fields_by_page( $page );
@@ -6196,6 +6479,8 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				}
 				$lp_section_fields[ $key ] = $section;
 			}
+
+			error_log("DODODO for GDPR Privacy Policy section fields are - \n" . print_r($lp_section_fields, true));
 
 			return $lp_section_fields;
 		}
@@ -6998,7 +7283,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$flag = false;
 
 				if ( isset( $_REQUEST['mode'] ) && 'edit' === $_REQUEST['mode'] && isset( $_REQUEST['lpid'] ) ) {
+					if ( ! current_user_can( 'manage_options' ) ) {
+						wp_die( esc_html__( 'You do not have permission to perform this action.', 'wplegalpages' ), 403 );
+					}
 
+					if ( isset( $_REQUEST['nonce'] ) ) {
+						$nonce = sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) );
+						if ( ! wp_verify_nonce( $nonce, 'lp-submit-create-popups' ) ) {
+							wp_die( esc_html__( 'Security check failed. Please try again.', 'wplegalpages' ) );
+						}
+					} else {
+						wp_die( esc_html__( 'Missing nonce. Please try again.', 'wplegalpages' ) );
+					}
 					$lpid = isset( $_REQUEST['lpid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) : 0;
 					$row  = $wpdb->get_row( $wpdb->prepare( 'SELECT * from ' . $lp_obj->popuptable . ' where id=%d', $lpid ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
@@ -7040,6 +7336,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 					}
 
 					wp_redirect( admin_url( 'admin.php?page=legal-pages#create_popup' ) );
+					exit;
 
 				}
 			}
@@ -7163,18 +7460,20 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 
 	    $table = $lp_obj->popuptable;
 
-	    if ($wpdb->get_var("SHOW TABLES LIKE '{$table}'") !== $table) {
+	    if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table))) !== $table) {
 	        return;
 	    }
 
 	    $column = $wpdb->get_results(
-	        $wpdb->prepare("SHOW COLUMNS FROM $table LIKE %s", 'popup_template')
+	        $wpdb->prepare('SHOW COLUMNS FROM %i LIKE %s', $table, 'popup_template')
 	    );
 
 	    if (empty($column)) {
 	        $wpdb->query(
-	            "ALTER TABLE $table 
-	             ADD COLUMN popup_template VARCHAR(191) NOT NULL DEFAULT ''"
+	            $wpdb->prepare(
+	                "ALTER TABLE %i ADD COLUMN popup_template VARCHAR(191) NOT NULL DEFAULT ''",
+	                $table
+	            )
 	        );
 	    }
 
@@ -7294,7 +7593,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @return string The detected operating system name or 'Unknown OS' if not identified.
 		 */
 		public function wplegalpages_get_user_os() {
-			$user_agent = $_SERVER['HTTP_USER_AGENT'];
+			$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : ''; // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__ -- Called only during AJAX/admin, not page-cached.
 		
 			if ( stripos( $user_agent, 'Windows' ) !== false ) return 'Windows';
 			if ( stripos( $user_agent, 'Mac' ) !== false ) return 'Mac OS';
@@ -7315,7 +7614,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 *               and 'Desktop' otherwise.
 		 */
 		public function wplegalpages_get_device_type() {
-			$user_agent = $_SERVER['HTTP_USER_AGENT'];
+			$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : ''; // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__ -- Called only during AJAX/admin, not page-cached.
 
 			if ( preg_match( '/mobile|android|iphone|ipod|blackberry|opera mini|windows phone|webos/i', $user_agent ) ) {
 				return 'Mobile';
@@ -7337,13 +7636,73 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		 * @return string The detected IP address of the user.
 		 */
 		public function wplegalpages_get_user_ip() {
-			if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
-				return $_SERVER['HTTP_CLIENT_IP'];
-			} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-				return $_SERVER['HTTP_X_FORWARDED_FOR'];
-			} else {
-				return $_SERVER['REMOTE_ADDR'];
+			$ipaddress = 'UNKNOWN';
+
+			if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
+				$remote = filter_var( wp_unslash( $_SERVER['REMOTE_ADDR'] ), FILTER_VALIDATE_IP );  // phpcs:ignore WordPressVIPMinimum.Variables.ServerVariables.UserControlledHeaders -- Validated with FILTER_VALIDATE_IP.
+
+				if ( $remote ) {
+					$ipaddress = $remote;
+
+					$trusted_proxies = (array) apply_filters( 'gdpr_cookie_consent_trusted_proxies', array() );
+
+					if (
+						! empty( $trusted_proxies )
+						&& isset( $_SERVER['HTTP_X_FORWARDED_FOR'] )
+						&& $this->wplegalpages_ip_matches( $remote, $trusted_proxies )
+					) {
+						$ip_list = array_reverse( array_map( 'trim', explode( ',', sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) ) ) );  // phpcs:ignore WordPressVIPMinimum.Variables.ServerVariables.UserControlledHeaders
+
+						foreach ( $ip_list as $candidate ) {
+							$candidate = filter_var( $candidate, FILTER_VALIDATE_IP );
+							if ( ! $candidate ) {
+								break;
+							}
+							$ipaddress = $candidate;
+							if ( ! $this->wplegalpages_ip_matches( $candidate, $trusted_proxies ) ) {
+								break;
+							}
+						}
+					}
+				}
 			}
+
+			return $ipaddress;
+		}
+
+		private function wplegalpages_ip_matches( $ip, array $list ) {
+			$ip_bin = inet_pton( $ip );
+			if ( false === $ip_bin ) {
+				return false;
+			}
+			foreach ( $list as $entry ) {
+				$parts = explode( '/', trim( (string) $entry ), 2 );
+				if ( ! filter_var( $parts[0], FILTER_VALIDATE_IP ) ) {
+					continue;
+				}
+				$net   = inet_pton( $parts[0] );
+				if ( false === $net || strlen( $net ) !== strlen( $ip_bin ) ) {
+					continue;
+				}
+				$max_bits = strlen( $net ) * 8;
+				$bits     = isset( $parts[1] ) ? (int) $parts[1] : $max_bits;
+				if ( $bits < 0 || $bits > $max_bits ) {
+					continue;
+				}
+				$bytes = intdiv( $bits, 8 );
+				if ( substr( $ip_bin, 0, $bytes ) !== substr( $net, 0, $bytes ) ) {
+					continue;
+				}
+				$rem = $bits % 8;
+				if ( 0 === $rem ) {
+					return true;
+				}
+				$mask = ( 0xFF << ( 8 - $rem ) ) & 0xFF;
+				if ( ( ord( $ip_bin[ $bytes ] ) & $mask ) === ( ord( $net[ $bytes ] ) & $mask ) ) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/**
