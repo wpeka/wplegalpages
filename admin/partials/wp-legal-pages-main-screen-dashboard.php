@@ -529,16 +529,17 @@ $trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 																	<p style="margin-bottom:0;font-weight:600"><?php esc_html_e("What's next?", "wplegalpages")?></p>
 																	<p style="max-width:450px;"><?php esc_html_e("Install WPLP Cookie Consent plugin to enable cookie scanning, consent logs and compliance features.", "wplegalpages")?></p>
 																	<div class="compliance-buttons">
-																		<button
-																			type="button"
-																			class="compliance-new-connect-btn first-step"
-																			>
+																		<a
+																			href="https://wplegalpages.com/docs/wplp-docs/features-walkthrough/cookie-consent/"
+																			target="_blank"
+																			rel="noopener noreferrer"
+																			class="compliance-new-connect-btn first-step">
 																			<?php esc_html_e( 'Learn more about WP Cookie Consent', 'wplegalpages' ); ?>
 																			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 																				<path d="M20 10V4H14M20 4L12 12" stroke="#026C3C"/>
 																				<path d="M11 5H7C5.89543 5 5 5.89543 5 7V17C5 18.1046 5.89543 19 7 19H17C18.1046 19 19 18.1046 19 17V13" stroke="#026C3C" stroke-linecap="round"/>
 																			</svg>
-																		</button>
+																		</a>
 																	</div>
 																</div>
 															</div>
