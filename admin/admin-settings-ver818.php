@@ -35,7 +35,7 @@ if ( '1' !== $lp_pro_active ) :
 <div style="">
 	<div style="line-height: 2.4em;" class='wplegalpages-pro-promotion'>
 		<a href="https://club.wpeka.com/product/wplegalpages/?utm_source=plugin-banner&utm_campaign=wplegalpages&utm_content=upgrade-to-pro" target="_blank">
-			<img alt="Upgrade to Pro" src="<?php echo esc_attr( WPL_LITE_PLUGIN_URL ) . 'admin/images/upgrade-to-pro.jpg'; ?>"><?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+			<img alt="Upgrade to Pro" src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/upgrade-to-pro.jpg'; ?>"><?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 		</a>
 	</div>
 </div>
@@ -73,26 +73,32 @@ if ( '1' === $lpterms ) {
 	if ( ! empty( $_POST ) && isset( $_POST['lp-greset'] ) ) :
 
 		$lp_general = array(
-			'domain'       => '',
-			'business'     => '',
-			'phone'        => '',
-			'street'       => '',
-			'cityState'    => '',
-			'country'      => '',
-			'email'        => '',
-			'address'      => '',
-			'niche'        => '',
-			'privacy'      => '',
-			'privacy_page' => '',
-			'pagefooter'   => '',
-			'generate'     => '',
+			'domain'       		=> '',
+			'business'     		=> '',
+			'phone'        		=> '',
+			'street'       		=> '',
+			'cityState'    		=> '',
+			'country'      		=> '',
+			'email'        		=> '',
+			'address'      		=> '',
+			'niche'        		=> '',
+			'privacy'      		=> '',
+			'privacy_page' 		=> '',
+			'pagefooter'   		=> '',
+			'generate'     		=> '',
+			'trading'      		=> '',
+			'legal_form'   		=> '',
+			'representatives' 	=> '',
+			'registration_no'	=> '',
+			'reg_authority'		=> '',
+			'vat_id'			=> ''	
 		);
 
 		update_option( 'lp_general', $lp_general );
 
 		?>
 			<div id="message">
-			<p><span class="label label-success myAlert"><?php esc_attr_e( 'Settings Reset.', 'wplegalpages' ); ?></span></p>
+			<p><span class="label label-success myAlert"><?php esc_html_e( 'Settings Reset.', 'wplegalpages' ); ?></span></p>
 		</div>
 			<?php
 		endif;
@@ -100,23 +106,28 @@ if ( '1' === $lpterms ) {
 
 
 		$lp_general = array(
-			'domain'    => isset( $_POST['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-domain-name'] ) ) : '',
-			'business'  => isset( $_POST['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-business-name'] ) ) : '',
-			'phone'     => isset( $_POST['lp-phone'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-phone'] ) ) : '',
-			'street'    => isset( $_POST['lp-street'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-street'] ) ) : '',
-			'cityState' => isset( $_POST['lp-city-state'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-city-state'] ) ) : '',
-			'country'   => isset( $_POST['lp-country'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-country'] ) ) : '',
-			'email'     => isset( $_POST['lp-email'] ) ? sanitize_email( wp_unslash( $_POST['lp-email'] ) ) : '',
-			'address'   => isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
-			'niche'     => isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
-			'generate'  => isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
-			'trading'   => isset( $_POST['lp-trading-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-trading-name'] ) ) : '',
+			'domain'    		=> isset( $_POST['lp-domain-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-domain-name'] ) ) : '',
+			'business'  		=> isset( $_POST['lp-business-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-business-name'] ) ) : '',
+			'phone'     		=> isset( $_POST['lp-phone'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-phone'] ) ) : '',
+			'street'    		=> isset( $_POST['lp-street'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-street'] ) ) : '',
+			'cityState' 		=> isset( $_POST['lp-city-state'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-city-state'] ) ) : '',
+			'country'   		=> isset( $_POST['lp-country'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-country'] ) ) : '',
+			'email'     		=> isset( $_POST['lp-email'] ) ? sanitize_email( wp_unslash( $_POST['lp-email'] ) ) : '',
+			'address'   		=> isset( $_POST['lp-address'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-address'] ) ) : '',
+			'niche'     		=> isset( $_POST['lp-niche'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-niche'] ) ) : '',
+			'generate'  		=> isset( $_POST['lp-generate'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-generate'] ) ) : '',
+			'trading'   		=> isset( $_POST['lp-trading-name'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-trading-name'] ) ) : '',
+			'legal_form'		=> isset( $_POST['lp-legal-form'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-legal-form'] ) ) : '',
+			'representatives' 	=> isset( $_POST['lp-legal-representative'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-legal-representative'] ) ) : '',
+			'registration_no'	=> isset( $_POST['lp-registration-no'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-registration-no'] ) ) : '',
+			'reg_authority'		=> isset( $_POST['lp-registration-authority'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-registration-authority'] ) ) : '',
+			'vat_id'			=> isset( $_POST['lp-vat-id'] ) ? sanitize_text_field( wp_unslash( $_POST['lp-vat-id'] ) ) : ''
 		);
 		$lp_general = apply_filters( 'wplegalpages_save_settings', $lp_general, $_POST );
 		update_option( 'lp_general', $lp_general );
 		?>
 		<div id="message">
-			<p><span class="label label-success myAlert"><?php esc_attr_e( 'Settings Saved.', 'wplegalpages' ); ?></span></p>
+			<p><span class="label label-success myAlert"><?php esc_html_e( 'Settings Saved.', 'wplegalpages' ); ?></span></p>
 		</div>
 			<?php
 		endif;
@@ -137,7 +148,7 @@ if ( '1' === $lpterms ) {
 		}
 		?>
 
-	<h3 class="hndle myLabel-head"  style="cursor:pointer; padding:7px 10px; font-size:20px;"> <?php esc_attr_e( 'General', 'wplegalpages' ); ?> </h3>
+	<h3 class="hndle myLabel-head"  style="cursor:pointer; padding:7px 10px; font-size:20px;"> <?php esc_html_e( 'General', 'wplegalpages' ); ?> </h3>
 	<div id="lp_admin_generalid">
 	<table align="center"><tr>
 	<td style="width:65%">
@@ -146,41 +157,41 @@ if ( '1' === $lpterms ) {
 	<form name="glegal" method="post" action="" enctype="">
 		<table cellpadding="5" cellspacing="0" border="0">
 			<tr>
-				<td></td><td></td><td><b class="hndle myLabel"><?php esc_attr_e( 'Shortcodes(Use as placeholder)', 'wplegalpages' ); ?></b></td>
+				<td></td><td></td><td><b class="hndle myLabel"><?php esc_html_e( 'Shortcodes(Use as placeholder)', 'wplegalpages' ); ?></b></td>
 			</tr>
 			<tr>
-				<td><b><?php esc_attr_e( 'Domain Name:', 'wplegalpages' ); ?></b></td><td><input type="text" name="lp-domain-name" value="<?php echo ! empty( $lp_general['domain'] ) ? esc_attr( $lp_general['domain'] ) : esc_url_raw( get_bloginfo( 'url' ) ); ?>" /></td><td>[Domain]</td>
+				<td><b><?php esc_html_e( 'Domain Name:', 'wplegalpages' ); ?></b></td><td><input type="text" name="lp-domain-name" value="<?php echo ! empty( $lp_general['domain'] ) ? esc_attr( $lp_general['domain'] ) : esc_url_raw( get_bloginfo( 'url' ) ); ?>" /></td><td>[Domain]</td>
 			</tr>
 			<tr>
-				<td><b><?php esc_attr_e( 'Business Name:', 'wplegalpages' ); ?></b></td><td><input type="text" name="lp-business-name" value="<?php echo ! empty( $lp_general['business'] ) ? esc_attr( $lp_general['business'] ) : ''; ?>" /></td><td>[Business Name]</td>
+				<td><b><?php esc_html_e( 'Business Name:', 'wplegalpages' ); ?></b></td><td><input type="text" name="lp-business-name" value="<?php echo ! empty( $lp_general['business'] ) ? esc_attr( $lp_general['business'] ) : ''; ?>" /></td><td>[Business Name]</td>
 			</tr>
 			<tr>
-				<td><b><?php esc_attr_e( 'DBA/Trading Name:', 'wplegalpages' ); ?></b></td><td><input type="text" name="lp-trading-name" value="<?php echo ! empty( $lp_general['trading'] ) ? esc_attr( $lp_general['trading'] ) : ''; ?>" /></td><td>[Trading Name]</td>
+				<td><b><?php esc_html_e( 'DBA/Trading Name:', 'wplegalpages' ); ?></b></td><td><input type="text" name="lp-trading-name" value="<?php echo ! empty( $lp_general['trading'] ) ? esc_attr( $lp_general['trading'] ) : ''; ?>" /></td><td>[Trading Name]</td>
 			</tr>
 			<tr>
-				<td><b><?php esc_attr_e( 'Phone:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-phone" value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>" /></td><td>[Phone]</td>
+				<td><b><?php esc_html_e( 'Phone:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-phone" value="<?php echo ! empty( $lp_general['phone'] ) ? esc_attr( $lp_general['phone'] ) : ''; ?>" /></td><td>[Phone]</td>
 			</tr>
 			<tr>
-				<td><b><?php esc_attr_e( 'Street:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-street" value="<?php echo ! empty( $lp_general['street'] ) ? esc_attr( $lp_general['street'] ) : ''; ?>" /></td><td>[Street]</td>
+				<td><b><?php esc_html_e( 'Street:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-street" value="<?php echo ! empty( $lp_general['street'] ) ? esc_attr( $lp_general['street'] ) : ''; ?>" /></td><td>[Street]</td>
 			</tr>
 			<tr>
-				<td><b><?php esc_attr_e( 'City, State, Zip code:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-city-state" value="<?php echo ! empty( $lp_general['cityState'] ) ? esc_attr( $lp_general['cityState'] ) : ''; ?>" /></td><td>[City, State, Zip code]</td>
+				<td><b><?php esc_html_e( 'City, State, Zip code:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-city-state" value="<?php echo ! empty( $lp_general['cityState'] ) ? esc_attr( $lp_general['cityState'] ) : ''; ?>" /></td><td>[City, State, Zip code]</td>
 			</tr>
 			<tr>
-				<td><b><?php esc_attr_e( 'Country:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-country" value="<?php echo ! empty( $lp_general['country'] ) ? esc_attr( $lp_general['country'] ) : ''; ?>" /></td><td>[Country]</td>
+				<td><b><?php esc_html_e( 'Country:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-country" value="<?php echo ! empty( $lp_general['country'] ) ? esc_attr( $lp_general['country'] ) : ''; ?>" /></td><td>[Country]</td>
 			</tr>
 			<tr>
-				<td><b><?php esc_attr_e( 'Email:', 'wplegalpages' ); ?></b></td><td><input type="email" size="30" name="lp-email" title="Please enter a valid email address" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" /></td><td>[Email]</td>
+				<td><b><?php esc_html_e( 'Email:', 'wplegalpages' ); ?></b></td><td><input type="email" size="30" name="lp-email" title="Please enter a valid email address" value="<?php echo ! empty( $lp_general['email'] ) ? esc_attr( $lp_general['email'] ) : esc_attr( get_option( 'admin_email' ) ); ?>" /></td><td>[Email]</td>
 			</tr>
 			<tr>
-				<td><b><?php esc_attr_e( 'Address:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-address" value="<?php echo ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : ''; ?>" /></td><td>[Address]</td>
+				<td><b><?php esc_html_e( 'Address:', 'wplegalpages' ); ?></b></td><td><input type="text" size="30" name="lp-address" value="<?php echo ! empty( $lp_general['address'] ) ? esc_attr( $lp_general['address'] ) : ''; ?>" /></td><td>[Address]</td>
 			</tr>
 			<tr>
-				<td><b><?php esc_attr_e( 'Niche:', 'wplegalpages' ); ?></b></td> <td><input type="text" size="30" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>" /></td> <td>[Niche]</td>
+				<td><b><?php esc_html_e( 'Niche:', 'wplegalpages' ); ?></b></td> <td><input type="text" size="30" name="lp-niche" value="<?php echo ! empty( $lp_general['niche'] ) ? esc_attr( $lp_general['niche'] ) : ''; ?>" /></td> <td>[Niche]</td>
 			</tr>
 			<?php do_action( 'wplegalpages_admin_settings', $lp_general ); ?>
 			<tr>
-				<td><b><?php esc_attr_e( 'Give Credit:', 'wplegalpages' ); ?></b></td>
+				<td><b><?php esc_html_e( 'Hide Credit:', 'wplegalpages' ); ?></b></td>
 				<td><label class="switch"><input type="checkbox" <?php echo ( isset( $lp_general['generate'] ) && '1' === $lp_general['generate'] ) ? 'checked="checked"' : ''; ?> name="lp-generate" value="1" >
 						<div class="slider round"></div>
 					</label>
@@ -198,7 +209,7 @@ if ( '1' === $lpterms ) {
 	</div>
 </div>
 <div class='lp-pro-link'>
-	<a href="<?php echo esc_url( $baseurl ); ?>?page=lp-create-page"><h3 class="hndle"  style="cursor:pointer; padding:7px 10px; font-size:20px;"><?php esc_attr_e( 'Click Here to Create Legal Pages &raquo;', 'wplegalpages' ); ?></h3></a>
+	<a href="<?php echo esc_url( $baseurl ); ?>?page=lp-create-page"><h3 class="hndle"  style="cursor:pointer; padding:7px 10px; font-size:20px;"><?php esc_html_e( 'Click Here to Create Legal Pages &raquo;', 'wplegalpages' ); ?></h3></a>
 </div>
 		<?php
 } else {

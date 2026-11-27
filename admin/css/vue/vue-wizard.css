@@ -1392,6 +1392,11 @@ button[data-v-09b2f69e] {
 .wplegal-wizard-content .wplegal-form-row.wplegal-section > span.dashicons {
 	position: absolute;
 	right: 10px;
+	cursor: not-allowed !important;
+}
+.wplegal-wizard-content .wplegal-form-row.wplegal-clause.wplegal-row-checked > span.dashicons,
+.wplegal-wizard-content .wplegal-form-row.wplegal-section > span.dashicons {
+  cursor: pointer !important;
 }
 .wplegal-wizard-content .wplegal-form-row.wplegal-section > span.dashicons {
 	top:10px;
@@ -1610,6 +1615,16 @@ button[data-v-09b2f69e] {
 .wplegal-wizard-preview-form {
 	max-width: 750px;
 	margin: 0 auto !important;
+}
+/* Core block table styles are not loaded in admin, so mirror them for the preview. */
+.wplegal-page-preview .wp-block-table table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.wplegal-page-preview .wp-block-table th,
+.wplegal-page-preview .wp-block-table td {
+	border: 1px solid;
+	padding: 0.5em;
 }
 .wplegalpages-wizard-template-text {
 	color: #393f4a;

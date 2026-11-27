@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Provide a admin area view for the WP Legal Pages plugin
  *
@@ -10,6 +9,10 @@
  *
  * @package Wplegalpages
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // // Instantiate a new object of the wplegal_Cookie_Consent_Settings class.
 $this->settings = new WP_Legal_Pages_Settings();
@@ -24,10 +27,66 @@ $if_terms_are_accepted = get_option( 'lp_accept_terms' );
 
 $installed_plugins = get_plugins();
 $plugin_name                   = 'gdpr-cookie-consent/gdpr-cookie-consent.php';
+$gdpr_installed     = isset( $installed_plugins['gdpr-cookie-consent/gdpr-cookie-consent.php'] ) ? true : false;
 $is_gdpr_active = is_plugin_active( $plugin_name );
 $plugin_name_lp                   = 'wplegalpages/wplegalpages.php';
 $is_legalpages_active = is_plugin_active( $plugin_name_lp );
+$step1_completed = (bool) $is_gdpr_active;
+$step2_completed = ( $is_user_connected === 'true' );
 
+if ( ! $is_gdpr_active && $is_user_connected ) {
+	$temp_step1      = $step1_completed;
+	$step1_completed = $step2_completed;
+	$step2_completed = $temp_step1;
+}
+
+$completed_steps = (int) $step1_completed + (int) $step2_completed;
+$total_steps      = 2;
+/*
+* Number of scans on the basis of user's plan
+*/
+if ( $api_user_plan == 'free' ) {
+	$total_no_of_free_scans = 100;
+} else {
+	$total_no_of_free_scans = 20000; // actual 50000.
+}
+
+$gdpr_pages_scanned 			 = get_option('gdpr_no_of_page_scan', 0);
+$gdpr_no_of_page_scan            = $total_no_of_free_scans - get_option( 'gdpr_no_of_page_scan' );
+$remaining_percentage_scan_limit = round( ( get_option( 'gdpr_no_of_page_scan' ) / $total_no_of_free_scans ) * 100 );
+
+//Monthly scan
+$gdpr_monthly_scan_percent = 0;
+if ( 'free' === $api_user_plan ) { 
+	$scan_limit     = get_transient( 'gdpr_monthly_scan_limit_exhausted' );
+	$scan_limit_int = (int) $scan_limit; 
+	$gdpr_monthly_scan_percent = ( ( $scan_limit_int ) / 5 ) * 100;
+}
+
+$gdpr_monthly_page_views = get_option('wpl_monthly_page_views', 0);
+$gdpr_monthly_page_views_limit = 0;
+$gdpr_monthly_page_views_percent = 0;
+if ( 'free' === $api_user_plan ) { 
+	$gdpr_monthly_page_views_limit = 20000;
+	$gdpr_monthly_page_views_percent = ( ( $gdpr_monthly_page_views ) / 20000 ) * 100;
+}
+
+$gdpr_remaining_page_views = $gdpr_monthly_page_views_limit - $gdpr_monthly_page_views;
+
+$gdpr_plan_warning = false;
+
+if( $gdpr_monthly_page_views_percent === 100 || $remaining_percentage_scan_limit === 100 || $gdpr_monthly_scan_percent === 100 ) {
+	$gdpr_plan_warning = true;
+}
+
+$free_trial_data = get_option( 'wplp_free_trial_data', [] );
+
+$local_expiry = (int) ( $free_trial_data['localExpiry'] ?? 0 );
+
+$is_free_trial_active = ! empty( $free_trial_data['isTrialActive'] ) && time() < $local_expiry;
+$trialEndsIn          = $is_free_trial_active ? ceil( ( $local_expiry - time() ) / DAY_IN_SECONDS ) : 0;
+$trialStartDate       = $free_trial_data['trialStartDate'] ?? '';
+$trialEndDate         = $free_trial_data['trialEndDate'] ?? '';
 ?>
 
 <div id="wp-legalpages-main-admin-structure" class="wp-legalpages-main-admin-structure">
@@ -42,7 +101,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 						</div>
 						
 					</div>
-					<!-- <div id="wplegalpages-save-settings-alert"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg' ); ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_attr_e( 'Settings saved successfully', 'wplegalpages' ); ?></div> --> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+					<!-- <div id="wplegalpages-save-settings-alert"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL . 'admin/js/vue/images/settings_saved.svg' ); ?>" alt="create legal" class="wplegal-save-settings-icon"><?php esc_html_e( 'Settings saved successfully', 'wplegalpages' ); ?></div> --> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 					<div class="wp-legalpages-admin-help-and-support">
 						<?php if ( $is_user_connected ) : ?>
 						<div class="wp-legalpages-new-dashboard-btn"><a href="<?php echo esc_url( 'https://app.wplegalpages.com/app/' ); ?>" target="_blank"><?php esc_html_e( 'Try New Dashboard', 'wplegalpages' ); ?> <span class="wplegalpages-admin-new-dashboard-btn-beta-span">BETA</span></a></div>
@@ -62,11 +121,11 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 							<!-- //support  -->
 							<div class="wp-legalpages-admin-support-icon">
 								<!-- //image  -->
-								<a href="https://club.wpeka.com/contact/" target="_blank">
+								<a href="https://wplegalpages.com/contact-us/" target="_blank">
 								<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/wp_cookie_support.png'; ?>" alt="WP Cookie Consent Support"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 								</a>
 							</div>
-							<div class="wp-legalpages-admin-support-text"><a href="https://club.wpeka.com/contact/" target="_blank">
+							<div class="wp-legalpages-admin-support-text"><a href="https://wplegalpages.com/contact-us/" target="_blank">
 								Support</a>
 							</div>
 						</div>
@@ -74,7 +133,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 						<div class="wp-legalpages-admin-login">
 							<div class="wp-legalpages-admin-login-icon">
 								<a <?php if ( $is_user_connected ) {
-									echo 'href="https://app.wplegalpages.com/my-account" target="_blank"';
+									echo 'href="https://app.wplegalpages.com/app" target="_blank"';
 								} else {
 									echo 'class="api-connect-to-account-btn"'; 
 								} ?> >
@@ -83,7 +142,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 							</div>
 							<div class="wp-legalpages-admin-login-text">
 								<a <?php if ( $is_user_connected ) {
-									echo 'href="https://app.wplegalpages.com/my-account" target="_blank"';
+									echo 'href="https://app.wplegalpages.com/app" target="_blank"';
 								} else {
 									echo 'class="api-connect-to-account-btn"'; 
 								} ?> ><?php echo $is_user_connected ? esc_html('My Account', 'wplegalpages') :esc_html('Login', 'wplegalpages'); ?></a>
@@ -91,12 +150,15 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 						</div>
 					</div>
 			</div>
-							
-			<div class="wplp-compliance-main">
+			<?php 
+				$wplp_current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+				$wplp_is_dashboard  = ( $wplp_current_page === 'wplp-dashboard' );
+			?>
+			<div class="wplp-compliance-main <?php echo $wplp_is_dashboard ? ' wplp-dashboard-horizontal' : ''; ?>">
 
 				<!-- tabs -->
 				<div class="wp-legalpages-admin-tabs-section">
-					<div class="wp-legalpages-admin-tabs">
+					<div class="wp-legalpages-admin-tabs dashboard-tabs<?php echo $wplp_is_dashboard ? ' wplp-tabs-horizontal-top' : ''; ?>">
 						<?php if ($is_gdpr_active) {
 							$plugin_slug = 'gdpr-cookie-consent/gdpr-cookie-consent.php';
 				
@@ -125,7 +187,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 								<div class="wplp-admin-tab-link-content">
 									<div class="wplp-admin-tab-link-left">
 										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M10.8333 7.5V2.5H17.5V7.5H10.8333ZM2.5 10.8333V2.5H9.16667V10.8333H2.5ZM10.8333 17.5V9.16667H17.5V17.5H10.8333ZM2.5 17.5V12.5H9.16667V17.5H2.5Z" fill="currentColor"/>
+											<path d="M10.8333 7.5V2.5H17.5V7.5H10.8333ZM2.5 10.8333V2.5H9.16667V10.8333H2.5ZM10.8333 17.5V9.16667H17.5V17.5H10.8333ZM2.5 17.5V12.5H9.16667V17.5H2.5Z" fill="#074EA8"/>
 										</svg>
 
 										<?php echo esc_html('Dashboard','wplegalpages'); ?>
@@ -150,9 +212,6 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 										<?php echo esc_html('Legal Pages','wplegalpages'); ?>
 									</div>
 
-									<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path fill-rule="evenodd" clip-rule="evenodd" d="M4.4073 6.46477L0.282304 2.33977C-0.0430841 2.01438 -0.0430841 1.48682 0.282304 1.16143C0.607691 0.836044 1.13525 0.836045 1.46064 1.16143L4.28936 3.99016C4.67989 4.38068 5.31305 4.38068 5.70358 3.99016L8.5323 1.16143C8.85769 0.836044 9.38525 0.836044 9.71064 1.16143C10.036 1.48682 10.036 2.01438 9.71064 2.33977L5.58564 6.46477C5.42936 6.62099 5.21744 6.70875 4.99647 6.70875C4.7755 6.70875 4.56358 6.62099 4.4073 6.46477Z" fill="currentColor"/>
-									</svg>
 								</div>
 							</a>
 							<!-- Cookie Consent tab  -->
@@ -166,9 +225,6 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 										<?php echo esc_html('Cookie Consent','wplegalpages'); ?>
 									</div>
 
-									<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path fill-rule="evenodd" clip-rule="evenodd" d="M4.4073 6.46477L0.282304 2.33977C-0.0430841 2.01438 -0.0430841 1.48682 0.282304 1.16143C0.607691 0.836044 1.13525 0.836045 1.46064 1.16143L4.28936 3.99016C4.67989 4.38068 5.31305 4.38068 5.70358 3.99016L8.5323 1.16143C8.85769 0.836044 9.38525 0.836044 9.71064 1.16143C10.036 1.48682 10.036 2.01438 9.71064 2.33977L5.58564 6.46477C5.42936 6.62099 5.21744 6.70875 4.99647 6.70875C4.7755 6.70875 4.56358 6.62099 4.4073 6.46477Z" fill="currentColor"/>
-									</svg>
 								</div>
 							</a>
 							<!-- Help tab  -->
@@ -181,7 +237,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 								// Get the version
 								$gdpr_version = $plugin_data['Version'];
 								if($gdpr_version >= '3.7.0') {  ?>
-									<a class="wp-legalpages-admin-tab wp-legalpages-admin-help-tab wp-legalpages-admin-tab-link" data-tab="help-page">
+									<a href="?page=wplp-dashboard#help-page" class="wp-legalpages-admin-tab wp-legalpages-admin-help-tab wp-legalpages-admin-tab-link" data-tab="help-page">
 										<div class="wplp-admin-tab-link-content">
 											<div class="wplp-admin-tab-link-left">
 												<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -193,7 +249,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 										</div>
 									</a>
 							 	<?php } } else{ ?>
-									<div class="wp-legalpages-admin-tab wp-legalpages-admin-help-tab wp-legalpages-admin-tab-link" data-tab="help-page">
+									<a href="?page=wplp-dashboard#help-page" class="wp-legalpages-admin-tab wp-legalpages-admin-help-tab wp-legalpages-admin-tab-link" data-tab="help-page">
 										<div class="wplp-admin-tab-link-content">
 											<div class="wplp-admin-tab-link-left">
 												<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -203,7 +259,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 												<?php echo esc_html('Help','wplegalpages'); ?>
 											</div>
 										</div>
-									</div>
+									</a>
 								<?php } ?>
 							<?php } ?>
 					
@@ -218,22 +274,6 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 						<div class="wp-legalpages-admin-tabs-inner-content">
 							<!-- Getting Started content  -->
 							<div class="wp-legalpages-admin-getting-started-content wp-legalpages-admin-tab-content wplp_dashboard_tab" id="getting_started">
-						
-							<div class="wplegalpages-connect-api-container">
-								<div class="gdpr-api-info-content">
-									<div class="wplp-compliance-banner-content">
-										<h1 class="wplp-compliance-banner-header"><?php echo esc_html( 'Welcome to WPLP Compliance Platform!', 'wplegalpages' ); ?></h1>
-										<p><?php echo esc_html('Complete Legal & Cookie Protection', 'wplegalpages'); ?></p>
-										<p><?php echo esc_html('Your complete compliance package for your website, from legal documents to cookie consent.', 'wplegalpages'); ?></p>
-										<div class="wplp-compliance-banner-tags">
-											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'GDPR Compliant', 'wplegalpages' ); ?></span>
-											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'CCPA Ready', 'wplegalpages' ); ?></span>
-											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'Auto-Generated Policies', 'wplegalpages' ); ?></span>
-											<span class="wplp-compliance-banner-tag"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/WPLP_banner-tag.png'; ?>" alt="Banner Tag"><?php echo esc_html( 'Real-Time Monitoring', 'wplegalpages' ); ?></span>
-										</div>
-									</div>
-								</div>
-						
 								<div id="popup-site-excausted" class="popup-overlay">
 									<div class="popup-content">
 										<div class="popup-header">
@@ -254,64 +294,591 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 										</div>
 									</div>
 								</div>
-							</div>
-
-								<!-- WP Legal Pages Connection Status -->
-							<?php
-							if ( $if_terms_are_accepted ) { 
-									// if user is connected to the app.wplegalpages then show remaining scans
-									
-									if ( $is_user_connected == true ) { ?>
-										<div class="gdpr-remaining-scans-content gdpr-remaining-scans-content-dashboard" >
-											<div class="wplp-remaining-scan-header-left">
-											</div>	
-															
-											<div class="wplp-plan-details">
-												<p><?php echo esc_html('Current Plan: ', 'wplegalpages'); ?>
-												<?php if( $api_user_plan !== 'free' ) { ?>
-													<img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr_pro_account.svg'; ?>" alt="Pro Account">
-												<?php } ?>
-												<span><?php echo esc_html( $api_user_plan ); ?></span></p>
-												<?php if( $api_user_plan === 'free' || $api_user_plan === 'Free' ) { ?>
-													<a class="wplp--scan-header-upgrade-plan gdpr-cookie-consent-admin-upgrade-button"><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr_header_upgrade_icon.svg'; ?>" alt=""><?php echo esc_html('Upgrade', 'wplegalpages'); ?></a>
-												<?php } else { ?>
-													<a class="wplp-scan-header-add-sites gdpr-cookie-consent-admin-upgrade-button"><?php echo esc_html('Add More Sites', 'wplegalpages'); ?><img src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr_add_site.svg'; ?>" alt=""></a>
-												<?php } ?>
-											</div>
-										</div>
-												
+								<?php
+								if ( ($is_user_connected == true) || $is_user_connected == false ) { ?>
 										<?php
 										if ( get_transient( 'app_wplp_subscription_payment_status_failed' ) ) {
 											?>
-											<div class="wp-legalpages-subsription-payment-failed-notice">
-												<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your last payment attempt failed. Please update your payment details within 7 days to avoid service disruption.', 'wplegalpages' ); ?></p>
+										<div class="wp-legalpages-subsription-payment-failed-notice">
+											<div class="wpl-payment-fail-icon-wrapper">
+												<svg viewBox="0 0 24 24">
+  												  <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none" stroke-width="2"/>
+  												  <line x1="12" y1="8" x2="12" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  												  <line x1="12" y1="12" x2="12" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  												</svg>
 											</div>
-											<?php
+											<div class="wpl-payment-fail-right-wrapper">
+												<div class="wpl-payment-fail-content-wrapper">
+													<h1><?php esc_html_e( 'Your last payment attempt failed.', 'wplegalpages' ); ?></h1>
+													<p><?php esc_html_e( 'Please update your payment details within 7 days to avoid service disruption.', 'wplegalpages' ); ?></p>
+												</div>
+
+												<a href="<?php echo esc_url( 'https://app.wplegalpages.com/pricing/' ) ?>" target="_blank" class="wpl-payment-fail-upgrade-button"><?php echo esc_html('Restore Plan', 'wplegalpages'); ?></a>
+											</div>
+										</div>
+										<?php
 										}
 										if ( get_option( 'app_wplp_subscription_status_pending_cancel' ) ) {
 											?>
-											<div class="wp-legalpages-subsription-payment-failed-notice">
-												<p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'Your plan has been canceled to the Free Plan due to a failed payment or manual cancellation. Upgrade now to restore premium features.', 'wplegalpages' ); ?></p>
-											</div>
+												<div class="wp-legalpages-subsription-payment-failed-notice">
+													<div class="wpl-payment-fail-icon-wrapper">
+														<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<path d="M11.9998 8.99999V13M11.9998 17H12.0098M10.6151 3.89171L2.39019 18.0983C1.93398 18.8863 1.70588 19.2803 1.73959 19.6037C1.769 19.8857 1.91677 20.142 2.14613 20.3088C2.40908 20.5 2.86435 20.5 3.77487 20.5H20.2246C21.1352 20.5 21.5904 20.5 21.8534 20.3088C22.0827 20.142 22.2305 19.8857 22.2599 19.6037C22.2936 19.2803 22.0655 18.8863 21.6093 18.0983L13.3844 3.89171C12.9299 3.10654 12.7026 2.71396 12.4061 2.58211C12.1474 2.4671 11.8521 2.4671 11.5935 2.58211C11.2969 2.71396 11.0696 3.10655 10.6151 3.89171Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+														</svg>
+													</div>
+
+													<div class="wpl-payment-fail-right-wrapper">
+														<div class="wpl-payment-fail-content-wrapper">
+															<h1><?php esc_html_e( 'Your plan has been cancelled.', 'wplegalpages' ); ?></h1>
+															<p><?php esc_html_e( 'You\'ll lose access to premium features soon. Upgrade now to avoid interruption.', 'wplegalpages' ); ?></p>
+														</div>
+
+														<a href="<?php echo esc_url( 'https://app.wplegalpages.com/pricing/' ) ?>" target="_blank" class="wpl-payment-fail-upgrade-button"><?php echo esc_html('Restore Plan', 'wplegalpages'); ?></a>
+													</div>
+												</div>
 											<?php
 										}
 									}
-								}
 									?>
-							<?php if ( $if_terms_are_accepted ) { 
-								if ( $is_user_connected == true && $api_user_plan == 'free' ) { ?>
-									<div class="legalpages-banner-div">
-										<!-- Legal pages banner for upgrade to pro -->
-										<div >
-											<img class="legal-pages-upgrade-to-pro-banner" src="<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/legal-pages-banner-upgrade-to-pro.png'; ?>" alt="Banner legal pages"> <?php //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
+									<?php if($is_user_connected && $api_user_plan==='free'): ?>
+									<div class="upgrade-to-pro-banner">
+										<svg width="27" height="26" viewBox="0 0 27 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M10.4137 5.0119C11.4303 2.47747 11.9386 1.21026 12.7645 1.03464C12.9816 0.988455 13.206 0.988455 13.4232 1.03464C14.249 1.21026 14.7573 2.47747 15.7739 5.01189C16.3521 6.45317 16.6411 7.17381 17.182 7.66396C17.3337 7.80144 17.4984 7.92388 17.6738 8.02957C18.2989 8.40636 19.0793 8.47626 20.6402 8.61604C23.2824 8.85267 24.6035 8.97099 25.0069 9.72425C25.0905 9.88025 25.1473 10.0492 25.175 10.224C25.3087 11.0679 24.3375 11.9515 22.3951 13.7187L21.8557 14.2094C20.9476 15.0356 20.4935 15.4487 20.2309 15.9643C20.0734 16.2735 19.9677 16.6066 19.9182 16.9501C19.8357 17.5228 19.9687 18.122 20.2346 19.3206L20.3296 19.7488C20.8065 21.8983 21.045 22.973 20.7473 23.5012C20.4799 23.9757 19.9874 24.2795 19.4434 24.3055C18.8378 24.3344 17.9844 23.639 16.2776 22.2482C15.1531 21.3319 14.5908 20.8738 13.9666 20.6948C13.3963 20.5313 12.7914 20.5313 12.221 20.6948C11.5968 20.8738 11.0346 21.3319 9.91008 22.2482C8.20328 23.639 7.34988 24.3344 6.74423 24.3055C6.20019 24.2795 5.7077 23.9757 5.44033 23.5012C5.14268 22.973 5.38112 21.8983 5.85802 19.7488L5.95303 19.3206C6.21896 18.122 6.35192 17.5228 6.26941 16.9501C6.21991 16.6066 6.11428 16.2735 5.95673 15.9643C5.6941 15.4487 5.24005 15.0356 4.33193 14.2094L3.79253 13.7187C1.85012 11.9515 0.878911 11.0679 1.01266 10.224C1.04036 10.0492 1.09717 9.88025 1.18072 9.72425C1.58416 8.97099 2.90526 8.85267 5.54747 8.61604C7.10829 8.47626 7.88871 8.40636 8.51387 8.02957C8.68922 7.92388 8.85391 7.80144 9.00562 7.66396C9.5465 7.17381 9.83557 6.45317 10.4137 5.0119Z" fill="#CA8A04" stroke="#CA8A04" stroke-width="2"/>
+										</svg>
+										<div class="upgrade-to-pro-content">
+											<div style="display:flex;flex-direction:column">
+												<p style="font-weight:500"><?php esc_html_e("Unlock Premium Compliance Features", "wplegalpages")?></p>
+												<p><?php esc_html_e("Get automated scans, compliance reports, and everything you need to stay compliant.", "wplegalpages")?></p>
+											</div>
+											<button
+												type="button"
+												class="go-to-dashboard-btn"
+												onclick="window.open('<?php echo esc_url( 'https://app.wplegalpages.com/pricing' ); ?>','_blank');"
+											>
+												<?php esc_html_e("Upgrade to Pro", "wplegalpages")?>
+												<span>
+													<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path d="M16.6667 8.33325V3.33325H11.6667M16.6667 3.33325L10 9.99992" stroke="#FFF" stroke-width="1.66667"/>
+														<path d="M9.16666 4.16675H5.83332C4.91285 4.16675 4.16666 4.91294 4.16666 5.83341V14.1667C4.16666 15.0872 4.91285 15.8334 5.83332 15.8334H14.1667C15.0871 15.8334 15.8333 15.0872 15.8333 14.1667V10.8334" stroke="#FFF" stroke-width="1.66667" stroke-linecap="round"/>
+													</svg>
+												</span>
+											</button>
 										</div>
-									</div> 
-								<?php } 
-							} ?>
+									</div>
+								<?php endif?>
+								<!-- compliance setup container  -->
+								<div class="compliance-setup-container">
+									<div class="compliance-setup-header" id="compliance-setup-toggle">
+										<div style="display:flex;gap:18px">
+											<p><?php esc_html_e('Compliance Setup', 'wplegalpages')?></p>
+											<span>
+												<?php
+												printf(
+													esc_html__( '%1$d of %2$d steps completed', 'wplegalpages' ),
+													absint( $completed_steps ),
+													absint( $total_steps )
+												);
+												?>
+											</span>
+										</div>
+										<button type="button" class="compliance-setup-chevron" id="compliance-setup-chevron" aria-expanded="true" aria-controls="compliance-setup-content">
+											<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M5 7.5L10 12.5L15 7.5" stroke="#2D2D32" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+											</svg>
+										</button>
+									</div>
+									<div class="compliance-setup-content" id="compliance-setup-content">
+										<div class="step-indicator">
+											<div class="step-row">
+												<div class="step <?php echo $step1_completed ? 'completed' : ''; ?>">
+													<span class="step-circle">
+														<?php if ( $step1_completed ) : ?>
+															<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="16" height="16" aria-hidden="true">
+																<path fill="#fff" d="M530.8 134.1C545.1 144.5 548.3 164.5 537.9 178.8L281.9 530.8C276.4 538.4 267.9 543.1 258.5 543.9C249.1 544.7 240 541.2 233.4 534.6L105.4 406.6C92.9 394.1 92.9 373.8 105.4 361.3C117.9 348.8 138.2 348.8 150.7 361.3L252.2 462.8L486.2 141.1C496.6 126.8 516.6 123.6 530.9 134z"/>
+															</svg>
+														<?php else : ?>
+															1
+														<?php endif; ?>
+													</span>
+												</div>
+											</div>
+											<?php if((!$gdpr_installed || !$is_gdpr_active) && !$is_user_connected) : ?>
+											<div class="step-line"></div>
+											<?php elseif((!$gdpr_installed || !$is_gdpr_active) && $is_user_connected) : ?>
+												<div class="step-line" style="height:240px"></div>
+												<?php endif?>
+											<div class="step-row">
+												<div class="step <?php echo $step2_completed ? 'completed' : ''; ?>">
+													<span class="step-circle">
+														<?php if ( $step2_completed ) : ?>
+															<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="16" height="16" aria-hidden="true">
+																<path fill="#fff" d="M530.8 134.1C545.1 144.5 548.3 164.5 537.9 178.8L281.9 530.8C276.4 538.4 267.9 543.1 258.5 543.9C249.1 544.7 240 541.2 233.4 534.6L105.4 406.6C92.9 394.1 92.9 373.8 105.4 361.3C117.9 348.8 138.2 348.8 150.7 361.3L252.2 462.8L486.2 141.1C496.6 126.8 516.6 123.6 530.9 134z"/>
+															</svg>
+														<?php else : ?>
+															2
+														<?php endif; ?>
+													</span>
+												</div>
+											</div>
+										</div>
+										<div class="compliance-cards">
+											
+												<?php if((!$gdpr_installed || !$is_gdpr_active) && !$is_user_connected) : ?>
+													<div class="compliance-banner-active-card">
+														<div style="display:flex;gap:14px;">
+															<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+																<rect width="40" height="40" rx="20" fill="#E6EDF6"/>
+																<path d="M20 23.8333L19.4932 24.3862L20 24.8507L20.5068 24.3862L20 23.8333ZM20.75 12.8333C20.75 12.4191 20.4142 12.0833 20 12.0833C19.5858 12.0833 19.25 12.4191 19.25 12.8333L20 12.8333L20.75 12.8333ZM14 18.3333L13.4932 18.8862L19.4932 24.3862L20 23.8333L20.5068 23.2804L14.5068 17.7804L14 18.3333ZM20 23.8333L20.5068 24.3862L26.5068 18.8862L26 18.3333L25.4932 17.7804L19.4932 23.2804L20 23.8333ZM20 23.8333L20.75 23.8333L20.75 12.8333L20 12.8333L19.25 12.8333L19.25 23.8333L20 23.8333Z" fill="#074EA8"/>
+																<path d="M13 28.8333H27" stroke="#074EA8" stroke-width="1.5"/>
+															</svg>
+															<div>
+																<div class="compliance-card-header">
+																	<h3><?php esc_html_e( 'Install WP Cookie Consent', 'wplegalpages' ); ?></h3>
+																</div>
+																<p><?php esc_html_e( 'Protect your website with a cookie consent banner and unlock advanced compliance features.', 'wplegalpages' ); ?></p>
+															</div>
+														</div>
+															<div class="horizontal">
+																<div class="left-column">
+																	<div class="current-status-container first-step">
+																		<div style="display:flex;gap:14px">
+																			<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+																				<rect width="40" height="40" rx="20" fill="#E6EDF6"/>
+																				<path d="M29.381 18.4762H27.8095V14.2857C27.8095 13.73 27.5888 13.1971 27.1958 12.8042C26.8029 12.4112 26.27 12.1905 25.7143 12.1905H21.5238V10.619C21.5238 9.92443 21.2479 9.25827 20.7567 8.7671C20.2655 8.27593 19.5994 8 18.9048 8C18.2101 8 17.544 8.27593 17.0528 8.7671C16.5616 9.25827 16.2857 9.92443 16.2857 10.619V12.1905H12.0952C11.5395 12.1905 11.0066 12.4112 10.6137 12.8042C10.2207 13.1971 10 13.73 10 14.2857V18.2667H11.5714C13.1429 18.2667 14.4 19.5238 14.4 21.0952C14.4 22.6667 13.1429 23.9238 11.5714 23.9238H10V27.9048C10 28.4605 10.2207 28.9934 10.6137 29.3863C11.0066 29.7793 11.5395 30 12.0952 30H16.0762V28.4286C16.0762 26.8571 17.3333 25.6 18.9048 25.6C20.4762 25.6 21.7333 26.8571 21.7333 28.4286V30H25.7143C26.27 30 26.8029 29.7793 27.1958 29.3863C27.5888 28.9934 27.8095 28.4605 27.8095 27.9048V23.7143H29.381C30.0756 23.7143 30.7417 23.4384 31.2329 22.9472C31.7241 22.456 32 21.7899 32 21.0952C32 20.4006 31.7241 19.7345 31.2329 19.2433C30.7417 18.7521 30.0756 18.4762 29.381 18.4762Z" fill="#074EA8"/>
+																			</svg>
+																			<div>
+																				<p><strong><?php esc_html_e("WP Cookie Consent Plugin is not installed", "wplegalpages")?></strong></p>
+																				<p><?php esc_html_e("Install WPLP Cookie Consent plugin to continue with the next step.", "wplegalpages")?></p>
+																			</div>
+																		</div>
+																	</div>
+																	<button type="button"
+																		class="compliance-new-connect-btn"
+																		onclick="window.location.href='<?php echo esc_url(admin_url( 'admin.php?page=gdpr-cookie-consent' )); ?>';">
+																		<span>
+																			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+																				<path d="M10 13.3333L9.64645 13.6868L10 14.0404L10.3536 13.6868L10 13.3333ZM10.5 3.33325C10.5 3.05711 10.2761 2.83325 10 2.83325C9.72386 2.83325 9.5 3.05711 9.5 3.33325L10 3.33325L10.5 3.33325ZM5 8.33325L4.64645 8.68681L9.64645 13.6868L10 13.3333L10.3536 12.9797L5.35355 7.9797L5 8.33325ZM10 13.3333L10.3536 13.6868L15.3536 8.68681L15 8.33325L14.6464 7.9797L9.64645 12.9797L10 13.3333ZM10 13.3333L10.5 13.3333L10.5 3.33325L10 3.33325L9.5 3.33325L9.5 13.3333L10 13.3333Z" fill="white"/>
+																				<path d="M4.16663 17.5L15.8333 17.5" stroke="white"/>
+																			</svg>
+																		</span>
+																		<?php esc_html_e('Install Cookie Consent', 'wplegalpages');
+																		?>
+																	</button>
+																</div>
+																<div class="gdpr-feature-list">
+																	<p><strong><?php esc_html_e("Why do you need it?", "wplegalpages")?></strong></p>
+																	<p>
+																		<span>
+																			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																				<circle cx="12" cy="12" r="9" stroke="#074EA8"/>
+																				<path d="M8 12L11 15L16 9" stroke="#074EA8"/>
+																			</svg>
+																			<?php esc_html_e("Display a GDPR/CCPA compliant cookie banner", "wplegalpages")?>
+																		</span>
+																	</p>
+																	<p>
+																		<span>
+																			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																				<circle cx="12" cy="12" r="9" stroke="#074EA8"/>
+																				<path d="M8 12L11 15L16 9" stroke="#074EA8"/>
+																			</svg>
+																			<?php esc_html_e("Collected visitor consent", "wplegalpages")?>
+																		</span>
+																	</p>
+																	<p>
+																		<span>
+																			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																				<circle cx="12" cy="12" r="9" stroke="#074EA8"/>
+																				<path d="M8 12L11 15L16 9" stroke="#074EA8"/>
+																			</svg>
+																			<?php esc_html_e("Connect your website to unlock cookie scanning, consent logs and compliance reports", "wplegalpages")?>
+																		</span>
+																	</p>
+															</div>
+														</div>
+													</div>
+												<?php elseif((!$gdpr_installed || !$is_gdpr_active) && $is_user_connected) : ?>
+														<div class="compliance-connect-card first-step">
+															<div class="compliance-card-header">
+																<h3><?php esc_html_e( 'Connect and scan your website for cookies', 'wplegalpages' ); ?></h3>
+																
+															</div>
+															<p style="padding-top:8px">
+																<?php esc_html_e(
+																	'Connect your website to the WPLP web app to unlock advanced compliance features',
+																	'wplegalpages'
+																); ?>
+															</p>
+															<div class="horizontal">
+																<div class="current-status-container first-step">
+																	<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<rect width="40" height="40" rx="20" fill="#E6F5EE"/>
+																		<path d="M13 22L17.3077 25L27 14" stroke="#026C3C" stroke-width="1.5"/>
+																	</svg>
 
+																	<div>
+																		<h3><?php esc_html_e("Current Status", "wplegalpages")?></h3>
+																		<p style="color:#026C3C;font-weight:500;font-size:16px;"><?php esc_html_e("Account connected", "wplegalpages")?></p>
+																		<p style="padding-top:8px"><?php esc_html_e("Your WPLP account is now connected.", "wplegalpages")?></p>
+																	</div>
+																</div>
+																<div class="whats-next-container">
+																	<p style="margin-bottom:0;font-weight:600"><?php esc_html_e("What's next?", "wplegalpages")?></p>
+																	<p style="max-width:450px;"><?php esc_html_e("Install WPLP Cookie Consent plugin to enable cookie scanning, consent logs and compliance features.", "wplegalpages")?></p>
+																	<div class="compliance-buttons">
+																		<a
+																			href="https://wplegalpages.com/docs/wplp-docs/features-walkthrough/cookie-consent/"
+																			target="_blank"
+																			rel="noopener noreferrer"
+																			class="compliance-new-connect-btn first-step">
+																			<?php esc_html_e( 'Learn more about WP Cookie Consent', 'wplegalpages' ); ?>
+																			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																				<path d="M20 10V4H14M20 4L12 12" stroke="#026C3C"/>
+																				<path d="M11 5H7C5.89543 5 5 5.89543 5 7V17C5 18.1046 5.89543 19 7 19H17C18.1046 19 19 18.1046 19 17V13" stroke="#026C3C" stroke-linecap="round"/>
+																			</svg>
+																		</a>
+																	</div>
+																</div>
+															</div>
+														</div>
+												<?php endif; ?>
+											
+											<?php if ( (!$gdpr_installed || !$is_gdpr_active) && !$is_user_connected) : ?>
+												<div class="compliance-connect-card disabled">
+													<div class="compliance-card-header disabled">
+														<h3><?php esc_html_e( 'Connect and scan your website for cookies', 'wplegalpages' ); ?></h3>
+														
+													</div>
+													<p>
+														<?php esc_html_e(
+															'Connect your website to the WPLP web app to unlock advanced compliance features',
+															'wplegalpages'
+														); ?>
+													</p>
+													<div class="compliance-buttons">
+													<button
+														type="button"
+														class="compliance-new-connect-btn disabled gdpr-start-auth"
+														disabled>
+														<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<circle cx="10" cy="5.83333" r="3.33333" stroke="white" stroke-linecap="round"/>
+															<path d="M4.3832 15.558C4.91397 13.0367 7.42344 11.6667 10 11.6667C12.5766 11.6667 15.086 13.0367 15.6168 15.558C15.6816 15.866 15.7352 16.1821 15.7728 16.5023C15.8372 17.0508 15.3856 17.5001 14.8333 17.5001H5.16667C4.61439 17.5001 4.16283 17.0508 4.22725 16.5023C4.26486 16.1821 4.31837 15.866 4.3832 15.558Z" stroke="white" stroke-linecap="round"/>
+														</svg>
+														<?php esc_html_e( 'Connect with a new account', 'wplegalpages' ); ?>
+													</button>
+													<button
+														type="button"
+														class="compliance-connect-btn disabled gdpr-dashboard-start-auth" disabled>
+														<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<path d="M16.6667 8.33325V3.33325H11.6667M16.6667 3.33325L10 9.99992" stroke="#A1A1AA" stroke-width="1.66667"/>
+															<path d="M9.16663 4.16675H5.83329C4.91282 4.16675 4.16663 4.91294 4.16663 5.83341V14.1667C4.16663 15.0872 4.91282 15.8334 5.83329 15.8334H14.1666C15.0871 15.8334 15.8333 15.0872 15.8333 14.1667V10.8334" stroke="#A1A1AA" stroke-width="1.66667" stroke-linecap="round"/>
+														</svg>
+														<?php esc_html_e( 'Connect with an existing account', 'wplegalpages' ); ?>
+													</button>
+													</div>
+													
+												</div>
+											<?php elseif ( (!$gdpr_installed || !$is_gdpr_active) && $is_user_connected) : ?>
+													<div class="compliance-banner-active-card">
+														<div style="display:flex;gap:14px;">
+															<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+																<rect width="40" height="40" rx="20" fill="#E6EDF6"/>
+																<path d="M20 23.8333L19.4932 24.3862L20 24.8507L20.5068 24.3862L20 23.8333ZM20.75 12.8333C20.75 12.4191 20.4142 12.0833 20 12.0833C19.5858 12.0833 19.25 12.4191 19.25 12.8333L20 12.8333L20.75 12.8333ZM14 18.3333L13.4932 18.8862L19.4932 24.3862L20 23.8333L20.5068 23.2804L14.5068 17.7804L14 18.3333ZM20 23.8333L20.5068 24.3862L26.5068 18.8862L26 18.3333L25.4932 17.7804L19.4932 23.2804L20 23.8333ZM20 23.8333L20.75 23.8333L20.75 12.8333L20 12.8333L19.25 12.8333L19.25 23.8333L20 23.8333Z" fill="#074EA8"/>
+																<path d="M13 28.8333H27" stroke="#074EA8" stroke-width="1.5"/>
+															</svg>
+															<div>
+																<div class="compliance-card-header">
+																	<h3><?php $gdpr_installed ? esc_html_e( 'Activate WP Cookie Consent', 'wplegalpages' ) : esc_html_e( 'Install WP Cookie Consent', 'wplegalpages' ); ?></h3>
+																</div>
+																<p><?php esc_html_e( 'Protect your website with a cookie consent banner and unlock advanced compliance features.', 'wplegalpages' ); ?></p>
+															</div>
+														</div>
+															<div class="horizontal">
+																<div class="left-column">
+																	<div class="current-status-container first-step">
+																		<div style="display:flex;gap:14px">
+																			<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+																				<rect width="40" height="40" rx="20" fill="#E6EDF6"/>
+																				<path d="M29.381 18.4762H27.8095V14.2857C27.8095 13.73 27.5888 13.1971 27.1958 12.8042C26.8029 12.4112 26.27 12.1905 25.7143 12.1905H21.5238V10.619C21.5238 9.92443 21.2479 9.25827 20.7567 8.7671C20.2655 8.27593 19.5994 8 18.9048 8C18.2101 8 17.544 8.27593 17.0528 8.7671C16.5616 9.25827 16.2857 9.92443 16.2857 10.619V12.1905H12.0952C11.5395 12.1905 11.0066 12.4112 10.6137 12.8042C10.2207 13.1971 10 13.73 10 14.2857V18.2667H11.5714C13.1429 18.2667 14.4 19.5238 14.4 21.0952C14.4 22.6667 13.1429 23.9238 11.5714 23.9238H10V27.9048C10 28.4605 10.2207 28.9934 10.6137 29.3863C11.0066 29.7793 11.5395 30 12.0952 30H16.0762V28.4286C16.0762 26.8571 17.3333 25.6 18.9048 25.6C20.4762 25.6 21.7333 26.8571 21.7333 28.4286V30H25.7143C26.27 30 26.8029 29.7793 27.1958 29.3863C27.5888 28.9934 27.8095 28.4605 27.8095 27.9048V23.7143H29.381C30.0756 23.7143 30.7417 23.4384 31.2329 22.9472C31.7241 22.456 32 21.7899 32 21.0952C32 20.4006 31.7241 19.7345 31.2329 19.2433C30.7417 18.7521 30.0756 18.4762 29.381 18.4762Z" fill="#074EA8"/>
+																			</svg>
+																			<div>
+																				<p><strong><?php $gdpr_installed ? esc_html_e("WP Cookie Consent Plugin is not activated", "wplegalpages") : esc_html_e("WP Cookie Consent Plugin is not installed", "wplegalpages")?></strong></p>
+																				<p><?php $gdpr_installed ? esc_html_e("Activate WPLP Cookie Consent plugin to continue with the next step.", "wplegalpages") : esc_html_e("Install WPLP Cookie Consent plugin to continue with the next step.", "wplegalpages")?></p>
+																			</div>
+																		</div>
+																	</div>
+																	<button type="button"
+																		class="compliance-new-connect-btn"
+																		onclick="window.location.href='<?php echo esc_url(admin_url( 'admin.php?page=gdpr-cookie-consent' )); ?>';">
+																		<span>
+																			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+																				<path d="M10 13.3333L9.64645 13.6868L10 14.0404L10.3536 13.6868L10 13.3333ZM10.5 3.33325C10.5 3.05711 10.2761 2.83325 10 2.83325C9.72386 2.83325 9.5 3.05711 9.5 3.33325L10 3.33325L10.5 3.33325ZM5 8.33325L4.64645 8.68681L9.64645 13.6868L10 13.3333L10.3536 12.9797L5.35355 7.9797L5 8.33325ZM10 13.3333L10.3536 13.6868L15.3536 8.68681L15 8.33325L14.6464 7.9797L9.64645 12.9797L10 13.3333ZM10 13.3333L10.5 13.3333L10.5 3.33325L10 3.33325L9.5 3.33325L9.5 13.3333L10 13.3333Z" fill="white"/>
+																				<path d="M4.16663 17.5L15.8333 17.5" stroke="white"/>
+																			</svg>
+																		</span>
+																		<?php $gdpr_installed ? esc_html_e('Activate Cookie Consent', 'wplegalpages') : esc_html_e('Install Cookie Consent', 'wplegalpages');
+																		?>
+																	</button>
+																</div>
+																<div class="gdpr-feature-list">
+																	<p><strong><?php esc_html_e("Why run a cookie scan?", "wplegalpages")?></strong></p>
+																	<p>
+																		<span>
+																			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																				<circle cx="12" cy="12" r="9" stroke="#074EA8"/>
+																				<path d="M8 12L11 15L16 9" stroke="#074EA8"/>
+																			</svg>
+																			<?php esc_html_e("Detect all cookies and tracking technologies", "wplegalpages")?>
+																		</span>
+																	</p>
+																	<p>
+																		<span>
+																			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																				<circle cx="12" cy="12" r="9" stroke="#074EA8"/>
+																				<path d="M8 12L11 15L16 9" stroke="#074EA8"/>
+																			</svg>
+																			<?php esc_html_e("Generate compliance report", "wplegalpages")?>
+																		</span>
+																	</p>
+																	<p>
+																		<span>
+																			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																				<circle cx="12" cy="12" r="9" stroke="#074EA8"/>
+																				<path d="M8 12L11 15L16 9" stroke="#074EA8"/>
+																			</svg>
+																			<?php esc_html_e("Stay compliant with GDPR, CCPA and more", "wplegalpages")?>
+																		</span>
+																	</p>
+															</div>
+														</div>
+													</div>
+												<?php endif; ?>
+										</div>
+										</div>
+									</div>
+							</div>
+
+							<!-- features heading -->
+							<div class="compliance-features-header">
+								<h3 class="compliance-features-heading">
+									<?php esc_html_e('Set up and manage compliance features', 'wplegalpages');?>
+								</h3>
+								<p class="compliance-features-subheading">
+									<?php esc_html_e('You can configure basic compliance settings now. Advanced features unlock after connecting your account.', 'wplegalpages')?>
+								</p>				
+								<!-- GDPR & LP cards -->
+								<div class="gdpr-lp-cards">
+									<div class="gdpr-card">
+										<div style="display:flex; gap:14px; flex: 1">
+											<?php if ( $gdpr_installed ) : ?>
+
+											<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<rect width="40" height="40" rx="10" fill="#E6F5EE"/>
+													<path d="M19.2119 11.25C19.715 11.0344 20.285 11.0344 20.7881 11.25L26.7021 13.7842C27.5214 14.1353 28.01 14.9867 27.8994 15.8711L27.2861 20.7744C27.066 22.5356 26.1848 24.1479 24.8213 25.2842L21.2803 28.2344C20.5386 28.8525 19.4614 28.8525 18.7197 28.2344L15.1787 25.2842C13.8152 24.1479 12.934 22.5356 12.7139 20.7744L12.1006 15.8711C11.99 14.9867 12.4786 14.1353 13.2979 13.7842L19.2119 11.25Z" stroke="#15803D" stroke-width="2" stroke-linecap="round"/>
+													<path d="M17 20L19.5687 22.5687C19.7918 22.7918 20.1633 22.7551 20.3383 22.4925L24 17" stroke="#15803D" stroke-width="2" stroke-linecap="round"/>
+											</svg>
+											<?php else: ?>
+											<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect width="40" height="40" rx="10" fill="#e5e5e5"/>
+												<path d="M19.2119 11.25C19.715 11.0344 20.285 11.0344 20.7881 11.25L26.7021 13.7842C27.5214 14.1353 28.01 14.9867 27.8994 15.8711L27.2861 20.7744C27.066 22.5356 26.1848 24.1479 24.8213 25.2842L21.2803 28.2344C20.5386 28.8525 19.4614 28.8525 18.7197 28.2344L15.1787 25.2842C13.8152 24.1479 12.934 22.5356 12.7139 20.7744L12.1006 15.8711C11.99 14.9867 12.4786 14.1353 13.2979 13.7842L19.2119 11.25Z" stroke="#3A3A41" stroke-width="2" stroke-linecap="round"/>
+												<path d="M17 20L19.5687 22.5687C19.7918 22.7918 20.1633 22.7551 20.3383 22.4925L24 17" stroke="#3A3A41" stroke-width="2" stroke-linecap="round"/>
+											</svg>
+												<?php endif ?>
+											<div style="display:flex; justify-content:space-between;" class="compliance-card-header">
+												<div style="display:flex; flex-direction:column;gap:8px">
+													<h3 class=""><?php esc_html_e("Cookie Banner", 'wplegalpages')?>
+														<!-- <?php if ( $is_gdpr_active ) : ?>
+															<span class="status-badge">
+																	<?php esc_html_e( 'Active', 'wplegalpages' ); ?>
+															</span>
+															<?php else : ?> -->
+																<span class="status-badge-inactive">
+																	<?php esc_html_e( 'Not active', 'wplegalpages' ); ?>
+																</span>
+															<!-- <?php endif ?> -->
+													</h3>
+													<!-- <?php if ( $is_gdpr_active ) : ?>
+														<p style="font-size:14px"><?php esc_html_e("Your Cookie banner is live on your website", 'wplegalpages')?></p>
+														<?php else: ?> -->
+														<p style="font-size:14px"><?php esc_html_e("Your Cookie banner is not active on your website", 'wplegalpages')?></p>
+														<!-- <?php endif  ?> -->
+													<div class="card-features">
+														<p>
+															<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+															</svg>
+															<?php esc_html_e("Customize banner design", 'wplegalpages')?>
+														</p>
+														<p>
+															<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+															</svg>
+														<?php esc_html_e("Edit text and colors", 'wplegalpages')?>
+														</p>
+														<p>
+															<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+															</svg>
+														<?php esc_html_e("Manage cookie categories", 'wplegalpages')?>
+														</p>
+														<p>
+															<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+															</svg>
+														<?php esc_html_e("Configure preferences", 'wplegalpages')?>
+														</p>
+													</div>
+														<button
+															type="button"
+															class="install-gdpr-button gdpr-lp-card"
+															onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=gdpr-cookie-consent' ) ); ?>';">
+															<!-- <?php if ( $is_gdpr_active ) : ?>
+																	<?php esc_html_e( 'Customize Banner', 'wplegalpages' ); ?>
+															<?php else: ?> -->
+
+																	<?php esc_html_e( 'Install Cookie Consent', 'wplegalpages' ); ?>
+															<!-- <?php endif?> -->
+														</button>
+												</div>
+												<!-- <?php if ( $is_gdpr_active ) : ?>
+													<img src = "<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr-card.png'; ?>" class="gdpr-card-img" />
+												<?php else: ?> -->
+													<img src = "<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/gdpr-card-inactive.png'; ?>" class="gdpr-card-img" />
+												<!-- <?php endif?> -->
+											</div>
+										</div>
+									</div>
+									<div class="lp-card">
+										<div style="display:flex; gap:14px; flex: 1">
+											<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect width="40" height="40" rx="10" fill="#F3E8FF"/>
+												<path d="M21.3389 10H16.5714C14.4164 10 13.3389 10 12.6695 10.6509C12 11.3017 12 12.3493 12 14.4444V25.5556C12 27.6507 12 28.6983 12.6695 29.3491C13.3389 30 14.4164 30 16.5714 30H23.4286C25.5836 30 26.6611 30 27.3305 29.3491C28 28.6983 28 27.6507 28 25.5556V16.476C28 16.0219 28 15.7948 27.913 15.5906C27.826 15.3864 27.6609 15.2258 27.3305 14.9047L22.9552 10.6509C22.6249 10.3297 22.4597 10.1692 22.2497 10.0846C22.0397 10 21.8061 10 21.3389 10Z" stroke="#7E22CE" stroke-width="2"/>
+												<path d="M17 21L23 21" stroke="#7E22CE" stroke-width="2" stroke-linecap="round"/>
+												<path d="M17 26L21 26" stroke="#7E22CE" stroke-width="2" stroke-linecap="round"/>
+												<path d="M21 10V14.6667C21 15.7666 21 16.3166 21.3417 16.6583C21.6834 17 22.2334 17 23.3333 17H28" stroke="#7E22CE" stroke-width="2"/>
+											</svg>
+											<div style="display:flex; justify-content:space-between;" class="compliance-card-header">
+												<div style="display:flex; flex-direction:column;gap:8px">
+													<h3 class=""><?php esc_html_e("Legal Pages", 'wplegalpages')?>
+															<?php if( !$is_user_connected || $api_user_plan=='free') : ?>
+																<span class="status-badge purple">
+																		<?php esc_html_e( '4 Basic available', 'wplegalpages' ); ?>
+																</span>
+																<?php elseif ($is_user_connected || $api_user_plan!=='free') :?>
+																	<span class="status-badge purple">
+																			<?php esc_html_e( '30+ Templates Available', 'wplegalpages' ); ?>
+																	</span>
+															<?php endif ?>
+													</h3>
+													<p style="font-size:14px"><?php esc_html_e("Your legal pages are ready to use. Generate any policy you need.", 'wplegalpages')?></p>
+													<div class="card-features">
+														<?php if( !$is_user_connected || $api_user_plan=='free') : ?>
+															<p>
+																<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																	<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+																</svg>
+																<?php esc_html_e("Standard Privacy Policy", 'wplegalpages')?>
+															</p>
+															<p>
+																<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																	<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+																</svg>
+															<?php esc_html_e("Terms of use", 'wplegalpages')?>
+															</p>
+															<p>
+																<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																	<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+																</svg>
+															<?php esc_html_e("DMCA", 'wplegalpages')?>
+															</p>
+															<p>
+																<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																	<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+																</svg>
+															<?php esc_html_e("Standard CCPA & more", 'wplegalpages')?>
+															</p>
+															<?php elseif ($is_user_connected || $api_user_plan!=='free') :?>
+																<p>
+																	<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+																	</svg>
+																	<?php esc_html_e("Professional Privacy Policy", 'wplegalpages')?>
+																</p>
+																<p>
+																	<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+																	</svg>
+																<?php esc_html_e("Terms and Conditions", 'wplegalpages')?>
+																</p>
+																<p>
+																	<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+																	</svg>
+																<?php esc_html_e("Cookie Policy", 'wplegalpages')?>
+																</p>
+																<p>
+																	<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<path d="M8.5 3.02018L8.85355 2.66663L9.20711 3.02018L8.85355 3.37374L8.5 3.02018ZM0.5 3.52018C0.223858 3.52018 0 3.29632 0 3.02018C0 2.74404 0.223858 2.52018 0.5 2.52018V3.02018V3.52018ZM5.83333 0.353516L6.18689 -3.77595e-05L8.85355 2.66663L8.5 3.02018L8.14645 3.37374L5.47978 0.707069L5.83333 0.353516ZM8.5 3.02018L8.85355 3.37374L6.18689 6.0404L5.83333 5.68685L5.47978 5.3333L8.14645 2.66663L8.5 3.02018ZM8.5 3.02018V3.52018H0.5V3.02018V2.52018H8.5V3.02018Z" fill="#074EA8"/>
+																	</svg>
+																<?php esc_html_e("Disclaimer & more", 'wplegalpages')?>
+																</p>
+															<?php endif?>
+													</div>
+													<?php if ( $is_legalpages_active ) : ?>
+														<button
+															type="button"
+															class="manage-wplp-button gdpr-lp-card"
+															onclick="window.location.href='<?php echo esc_url( admin_url( 'index.php?page=wplegal-wizard#/' ) ); ?>';">
+															<?php esc_html_e( 'Manage Legal pages', 'wplegalpages' ); ?>
+														</button>
+													<?php else : ?>
+														<button
+															type="button"
+															class="install-wplp-button gdpr-lp-card"
+															onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=legal-pages' ) ); ?>';">
+															<?php esc_html_e( 'Install WP Legal Pages', 'wplegalpages' ); ?>
+														</button>
+													<?php endif; ?>
+												</div>
+												<!-- <div> -->
+													<?php if ( $is_legalpages_active ) : ?>
+														<img src = "<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/lp-card.png'; ?>" class="lp-card-img" />
+													<?php else: ?>
+														<img src = "<?php echo esc_url( WPL_LITE_PLUGIN_URL ) . 'admin/images/lp-card-not-installed.png'; ?>" class="lp-card-img lp-card-not-installed" />
+													<?php endif?>
+												</div>
+											</div>
+										</div>
+								</div>
+							</div>	
+							<!-- help container -->
+							<div class="help-container">
+								<svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<rect width="38" height="38" rx="19" fill="#064799"/>
+									<rect x="23" y="18.0835" width="5" height="8" rx="2.5" fill="#E6EDF6" stroke="#E6EDF6" stroke-width="2" stroke-linejoin="round"/>
+									<rect x="10" y="18.0835" width="4" height="8" rx="2" fill="#E6EDF6" stroke="#E6EDF6" stroke-width="2" stroke-linejoin="round"/>
+									<path d="M10 20.0835V23.0835" stroke="#E6EDF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									<path d="M28 20.0835V23.0835" stroke="#E6EDF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									<path d="M28 19.5835C28 16.7987 27.0518 14.128 25.364 12.1589C23.6761 10.1897 21.3869 9.0835 19 9.0835C16.6131 9.0835 14.3239 10.1897 12.636 12.1589C10.9482 14.128 10 16.7987 10 19.5835" stroke="#E6EDF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+								<div style="display:flex; justify-content:space-between;flex:1">
+										<div style="display:flex; flex-direction: column">
+											<p style="font-weight: 500"><?php esc_html_e("Need help?", "wplegalpages")?></p>
+											<p><?php esc_html_e("Visit our help center or contact support anytime.", "wplegalpages")?></p>
+										</div>
+										<a class="need-more-help-link" href="https://wplegalpages.com/docs/wplp-docs" target="_blank"><?php esc_html_e("View Help Center", "wplegalpages")?>
+											<span>
+												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M16.6667 8.33325V3.33325H11.6667M16.6667 3.33325L10 9.99992" stroke="#074EA8" stroke-width="1.66667"/>
+													<path d="M9.16666 4.16675H5.83332C4.91285 4.16675 4.16666 4.91294 4.16666 5.83341V14.1667C4.16666 15.0872 4.91285 15.8334 5.83332 15.8334H14.1667C15.0871 15.8334 15.8333 15.0872 15.8333 14.1667V10.8334" stroke="#074EA8" stroke-width="1.66667" stroke-linecap="round"/>
+												</svg>
+											</span>
+										</a>
+									</div>
+							</div>
 							<?php require_once plugin_dir_path( __FILE__ ) . 'wp-legal-pages-getting-started-template.php'; ?>
 						
-							</div>
+						</div>
 						
 							<!-- legalpages content -->
 							<div class="wp-legalpages-admin-cookie-settings-content wp-legalpages-admin-tab-content" id="legal-pages">
@@ -334,7 +901,7 @@ $is_legalpages_active = is_plugin_active( $plugin_name_lp );
 							?>
 		
 							</div>
-						</div>
+						<!-- </div> -->
 					</div>
 				</div>
 			</div>

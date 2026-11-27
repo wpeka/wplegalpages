@@ -99,7 +99,6 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 			 */
 			$this->data_key            = 'wc_am_client_' . strtolower( str_ireplace( array( ' ', '_', '&', '?', '-' ), '_', $product_id ) );
 			$this->wc_am_activated_key = $this->data_key . '_activated';
-
 			if ( is_admin() ) {
 				if ( ! empty( $this->plugin_or_theme ) && $this->plugin_or_theme == 'theme' ) {
 					add_action( 'admin_init', array( $this, 'activation' ) );
@@ -114,23 +113,14 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 				/**
 				 * Set all data defaults here
 				 */
-				$this->wc_am_api_key_key  = $this->data_key . '_api_key';
-				$this->wc_am_instance_key = $this->data_key . '_instance';
+				
 
 				add_action( 'admin_init', array($this, 'setup_admin_menu_titles') );
 				
 				/**
 				 * Set all software update data here
 				 */
-				$this->data              = get_option( $this->data_key );
-				$this->wc_am_plugin_name = $this->plugin_or_theme == 'plugin' ? untrailingslashit( plugin_basename( $this->file ) ) : get_stylesheet(); // same as plugin slug. if a theme use a theme name like 'twentyeleven'
-				$this->wc_am_instance_id = get_option( $this->wc_am_instance_key ); // Instance ID (unique to each blog activation)
-
-				$instance_option = get_option( 'wc_am_client_gdpr_cookie_consent_instance' );
-
-				if ( ! empty( $instance_option ) ) {
-					$this->wc_am_instance_id = $instance_option;
-				}
+				
 
 				/**
 				 * Some web hosts have security policies that block the : (colon) and // (slashes) in http://,
@@ -143,13 +133,25 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 				 *
 				 * $this->wc_am_domain = str_ireplace( array( 'http://', 'https://' ), '', home_url() ); // blog domain name
 				 */
-				$this->wc_am_domain           = str_ireplace( array( 'http://', 'https://' ), '', home_url() ); // blog domain name
-				$this->wc_am_software_version = $this->software_version; // The software version
+				
 
 				/**
 				 * Check for software updates
 				 */
 				$this->check_for_update();
+			}
+
+			$this->wc_am_api_key_key  = $this->data_key . '_api_key';
+			$this->wc_am_instance_key = $this->data_key . '_instance';
+			$this->data              = get_option( $this->data_key );
+			$this->wc_am_plugin_name = $this->plugin_or_theme == 'plugin' ? untrailingslashit( plugin_basename( $this->file ) ) : get_stylesheet(); // same as plugin slug. if a theme use a theme name like 'twentyeleven'
+			$this->wc_am_instance_id = get_option( $this->wc_am_instance_key ); // Instance ID (unique to each blog activation)
+			$this->wc_am_domain           = str_ireplace( array( 'http://', 'https://' ), '', home_url() ); // blog domain name				$this->wc_am_software_version = $this->software_version; // The software version
+
+			$instance_option = get_option( 'wc_am_client_gdpr_cookie_consent_instance' );
+
+			if ( ! empty( $instance_option ) ) {
+				$this->wc_am_instance_id = $instance_option;
 			}
 
 			/**
@@ -213,42 +215,19 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 			 * If set to false uninstall() method will be disabled.
 			 */
 			if ( apply_filters( 'wc_am_client_uninstall_disable', true ) ) {
-				global $blog_id;
-
-				$this->license_key_deactivation();
-
-				// Remove options pre API Manager 2.0
-				if ( is_multisite() ) {
-					switch_to_blog( $blog_id );
-
-					foreach (
-						array(
-							$this->wc_am_instance_key,
-							$this->wc_am_deactivate_checkbox_key,
-							$this->wc_am_activated_key,
-						) as $option
-					) {
-
-						delete_option( $option );
-					}
-
-					restore_current_blog();
-				} else {
-					foreach (
-						array(
-							$this->wc_am_instance_key,
-							$this->wc_am_deactivate_checkbox_key,
-							$this->wc_am_activated_key,
-						) as $option
-					) {
-
-						delete_option( $option );
-					}
 				require_once plugin_dir_path( __DIR__ ) . 'wplegalpages/includes/settings/class-wp-legal-pages-settings.php';
 				$settings   = new WP_Legal_Pages_Settings();
 				$options    = $settings->get_defaults();
-				update_option( 'wpeka_api_framework_app_settings', $options );
+				$existing = get_option( 'wpeka_api_framework_app_settings', array() );
+
+				// Reset settings, but keep the connection data.
+				foreach ( array( 'api', 'account' ) as $section ) {
+					if ( isset( $existing[ $section ] ) ) {
+						$options[ $section ] = $existing[ $section ];
+					}
 				}
+
+				update_option( 'wpeka_api_framework_app_settings', $options );
 			}
 		}
 
@@ -348,7 +327,7 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 				);
 				$args       = wp_parse_args( $defaults, $args );
 				$target_url = esc_url_raw( $this->create_software_api_url( $args ) );
-				$request    = wp_safe_remote_post( $target_url, array( 'timeout' => 15 ) );
+				$request    = wp_safe_remote_post( $target_url, array( 'timeout' => 15 ) ); // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout 
 				if ( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) != 200 ) {
 					// Request failed
 					return false;
@@ -370,7 +349,7 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 				);
 				$args       = wp_parse_args( $defaults, $args );
 				$target_url = esc_url_raw( $this->create_software_api_url( $args ) );
-				$request    = wp_safe_remote_post( $target_url, array( 'timeout' => 15 ) );
+				$request    = wp_safe_remote_post( $target_url, array( 'timeout' => 15 ) ); // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout 
 				$response = wp_remote_retrieve_body( $request );
 				return $response;
 			}
@@ -453,7 +432,7 @@ if ( ! class_exists( 'WC_AM_Client_2_7_WPLegalPages' ) ) {
 		 */
 		public function send_query( $args ) {
 			$target_url = esc_url_raw( add_query_arg( 'wc-api', 'wc-am-api', $this->api_url ) . '&' . http_build_query( $args ) );
-			$request    = wp_safe_remote_post( $target_url, array( 'timeout' => 15 ) );
+			$request    = wp_safe_remote_post( $target_url, array( 'timeout' => 15 ) ); // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout 
 
 			if ( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) != 200 ) {
 				return false;

@@ -9,6 +9,10 @@
  * @subpackage WP_Legal_Pages/admin
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -306,7 +310,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 				} else {
 					$cookie_duration = 0;
 				}
-				setcookie( 'wplegalpages', 1, $cookie_duration, COOKIEPATH, COOKIE_DOMAIN, false );
+				setcookie( 'wplegalpages', 1, $cookie_duration, COOKIEPATH, COOKIE_DOMAIN, false ); // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE -- Runs only in admin/logged-in context, not page-cached.
 				wp_safe_redirect( esc_url_raw( $redirect_url ) . '?wplegalpages=' . wp_create_nonce( 'wplegalpages' ) );
 				exit;
 			else :
@@ -524,6 +528,9 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$pid            = $atts['pid'];
 
 			$res   = $wpdb->get_row( $wpdb->prepare( 'SELECT * from ' . $legalpages_pro->popuptable . ' where id= %d', $pid ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			if ( ! $res ) {
+				return '';
+			}
 			$terms = '';
 			if ( isset( $res->content ) ) {
 				$terms = do_shortcode( $res->content );
@@ -598,19 +605,21 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 		 */
 		public function wplegalpages_pro_shortcode( $atts ) {
 			global $wpdb;
-			$legalpages_pro = new WP_Legal_Pages();
 			$atts           = shortcode_atts(
 				array(
 					'tid' => 1,
 				),
 				$atts
 			);
-			$tid            = $atts['tid'];
+			$tid = absint( $atts['tid'] );
 
-			$res = $wpdb->get_row( $wpdb->prepare( "SELECT ID, post_title, post_content FROM {$wpdb->posts} WHERE ID  = %d AND post_type = %s AND post_status != %s", $tid, 'page', 'trash' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			if ( isset( $res->post_content ) ) {
-				$content = $res->post_content;
+			$res = $wpdb->get_row( $wpdb->prepare( "SELECT ID, post_title, post_content, post_password FROM %i WHERE ID = %d AND post_type = %s AND post_status = %s", $wpdb->posts, $tid, 'page', 'publish' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+
+			if ( ! $res || ! empty( $res->post_password ) ) {
+				return '';
 			}
+
+			$content    = $res->post_content;
 			$lp_find    = array( '[Domain]', '[Business Name]', '[Trading Name]', '[Phone]', '[Street]', '[City, State, Zip code]', '[Country]', '[Email]', '[Address]', '[Niche]' );
 			$lp_general = get_option( 'lp_general' );
 			$content    = str_replace( $lp_find, $lp_general, stripslashes( $content ) );
@@ -619,6 +628,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			if ( is_single() || is_page() ) {
 				return html_entity_decode( $content );
 			}
+			return '';
 		}
 		/**
 		 * Disables comments for Legal Pages.
@@ -723,7 +733,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			$footer_font_id     = $lp_footer_options['footer_font_id'];
 			$footer_font_size   = $lp_footer_options['footer_font_size'];
 			$footer_custom_css  = $lp_footer_options['footer_custom_css'];
-			$footer_new_tab     = '1' === $lp_footer_options['footer_new_tab'] ? 'target="_blank"' : '';
+			$footer_target = '1' === ( $lp_footer_options['footer_new_tab'] ?? '' ) ? '_blank' : '';
 			$footer_pages       = $lp_footer_options['footer_legal_pages'];
 			$font_family_url    = 'http://fonts.googleapis.com/css?family=' . $footer_font_id;
 			if ( empty( $footer_pages ) || empty( $footer_pages[0] ) ) {
@@ -756,7 +766,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			for ( $i = 0; $i < $page_count; $i++ ) {
 				$page_url = get_permalink( $footer_pages[ $i ] );
 				?>
-				<a class="wplegalpages_footer_link" <?php echo esc_attr( $footer_new_tab ); ?> href="<?php echo esc_attr( $page_url ); ?>" > <?php echo esc_html( get_the_title( $footer_pages[ $i ] ) ); ?></a>
+				<a class="wplegalpages_footer_link" <?php if ( $footer_target ) : ?>target="<?php echo esc_attr( $footer_target ); ?>" rel="noopener noreferrer"<?php endif; ?> href="<?php echo esc_url( $page_url ); ?>"><?php echo esc_html( get_the_title( $footer_pages[ $i ] ) ); ?></a>
 				<?php
 				if ( $i !== $page_count - 1 ) {
 					?>
@@ -802,12 +812,12 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 				if ( ! isset( $_COOKIE[ $cookie_option['cookie_name'] ] ) && time() < $cookie_option['cookie_end'] ) {
 					$cookie_option['cookie_expire'] = $cookie_option['cookie_end'] - time();
 					array_push( $cookies_array, $cookie_option );
-					setcookie($cookie_option['cookie_name'], $cookie_option['cookie_name'], $cookie_option['cookie_end'], '/');
-					$_COOKIE[$cookie_option['cookie_name']] = $cookie_option['cookie_name'];
+					setcookie($cookie_option['cookie_name'], $cookie_option['cookie_name'], $cookie_option['cookie_end'], '/'); // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE -- Runs only in admin/logged-in context, not page-cached.
+					$_COOKIE[$cookie_option['cookie_name']] = $cookie_option['cookie_name']; // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE -- Runs only in admin/logged-in context, not page-cached.
 				}
 			}
 			if ( '1' === $lp_banner_options['show_banner'] || true === $lp_banner_options['show_banner'] || 'true' === $lp_banner_options['show_banner'] ) {
-				foreach ( $_COOKIE as $key => $val ) {
+				foreach ( $_COOKIE as $key => $val ) { // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE -- Runs only in admin/logged-in context, not page-cached.
 					if ( preg_match( '/wplegalpages-update-notice-\d+/', sanitize_key( $key ) ) ) {
 						$this->lp_banner_contents_display();
 						break;
@@ -868,7 +878,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 					$page_titles = '';
 					$page_links  = array();
 					$exp         = '/wplegalpages-update-notice-\d+/';
-					foreach ( $_COOKIE as $key => $val ) {
+					foreach ( $_COOKIE as $key => $val ) { // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE -- Runs only in admin/logged-in context, not page-cached.
 						if ( preg_match( $exp, $key ) ) {
 							$p_id = substr( $key, 27 );
 							array_push( $page_ids, $p_id );
@@ -884,7 +894,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 						if ( strpos( $banner_message, '[wplegalpages_page_link]' ) ) {
 							echo esc_html( substr( $banner_message, 0, strpos( $banner_message, '[wplegalpages_page_link]' ) ) );
 							?>
-							<a class="wplegalpages_banner_link" href="<?php echo esc_attr( get_page_link( $page_ids[0] ) ); ?>" > <?php echo esc_html( $page_titles ); ?> </a>
+							<a class="wplegalpages_banner_link" href="<?php echo esc_url( get_page_link( $page_ids[0] ) ); ?>" > <?php echo esc_html( $page_titles ); ?> </a>
 							<?php
 							echo esc_html( substr( $banner_message, strpos( $banner_message, '[wplegalpages_page_link]' ) + 24 ) );
 						} else {
@@ -905,7 +915,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 							echo esc_html( substr( $banner_multiple_message, 0, strpos( $banner_multiple_message, '[wplegalpages_page_link]' ) ) );
 							for ( $i = 0; $i < $num_of_pages; $i++ ) {
 								?>
-								<a class="wplegalpages_banner_link" href=" <?php echo esc_attr( $page_links[ $i ] ); ?> "><?php echo esc_html( get_the_title( $page_ids[ $i ] ) ); ?></a>
+								<a class="wplegalpages_banner_link" href=" <?php echo esc_url( $page_links[ $i ] ); ?> "><?php echo esc_html( get_the_title( $page_ids[ $i ] ) ); ?></a>
 								<?php
 								if ( get_post_modified_time( 'U', false, $page_ids[ $i ] ) > $page_latest_update ) {
 									$page_date          = get_the_modified_date( $date_format, $page_ids[ $i ] );
@@ -918,7 +928,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 						}
 					}
 					?>
-					<a style="cursor:pointer;" class="closeButton"> <?php echo esc_attr( $banner_close_message ); ?> </a>
+					<a style="cursor:pointer;" class="closeButton"> <?php echo esc_html( $banner_close_message ); ?> </a>
 				</div>
 				<script type="text/javascript">
 					

@@ -8,6 +8,12 @@ jQuery(document).ready(function () {
 	const lpTerms  = wplp_localize_data.lp_terms;
 	const is_user_connected = wplp_localize_data.is_user_connected;
 
+	var url = window.location.href;
+	if (url.includes("#help-page")) {
+		jQuery('.wp-legalpages-admin-tabs-inner-content').hide();
+	}
+
+
 	jQuery(document).ready(function ($) {
 	  // click handler (same as yours)
 	  $(".wplp-compliance-legalpages-tab-admin .wplp-admin-tab-link-content").on("click", function (e) {
@@ -40,8 +46,14 @@ jQuery(document).ready(function () {
 	    });
 	  });
 	});
-
-
+	jQuery(function ($) {
+    $('a[href*="page=wplp-dashboard#help-page"]').on('click', function (e) {
+        if (window.location.href.indexOf('page=wplp-dashboard') !== -1) {
+            window.location.href = $(this).attr('href');
+            window.location.reload();
+        }
+    });
+});
 
 
 
@@ -202,15 +214,30 @@ jQuery(document).ready(function () {
 				 // Construct the full URL
 				 var fullUrl = baseUrl + relativePath + tabHash;
 
-				 //reload the window after settimeout.
-				 setTimeout(function () {
-				   window.location.href = fullUrl;
-				   location.reload();
-				 }, 100);
-				// //reload the window after settimeout.
-				// setTimeout(function() {
-				// 	location.reload();
-				// }, 100);
+				 // Save free trial first, then reload
+          		  if (data.response && data.response.freeTrial) {
+          		    jQuery.ajax({
+          		        url: wplp_localize_data.ajaxurl,
+          		        type: "POST",
+          		        data: {
+          		            action: "lp_save_free_trial_data",
+							_ajax_nonce : wplp_localize_data._ajax_nonce,
+          		            free_trial: JSON.stringify(data.response.freeTrial),
+          		        },
+          		        complete: function () {
+          		            // Reload only after trial data is saved
+          		            setTimeout(function () {
+          		                window.location.href = fullUrl;
+          		                location.reload();
+          		            }, 100);
+          		        }
+          		    });
+          		} else {
+          		    setTimeout(function () {
+          		        window.location.href = fullUrl;
+          		        location.reload();
+          		    }, 100);
+          		}
 
 			},
 			error: function(error) {
@@ -553,11 +580,10 @@ jQuery(document).ready(function () {
 	   //For Installing GDPR plugin - Unified Dashboard 
 	   jQuery(document).ready(function ($) {
 		// Handle wp help menu click- start
-		jQuery('#toplevel_page_wp-legal-pages a[href="admin.php?page=wplp-dashboard#help-page"]').on('click', function (e) {
+		jQuery('#wp-legalpages-main-admin-structure a[href="admin.php?page=wplp-dashboard#help-page"]').on('click', function (e) {
 			e.preventDefault(); // Prevent default anchor behavior
 			// Remove 'current' class from all <li> elements
 			jQuery('li').removeClass('current');
-	  
 			// Add 'current' class to the immediate <li> parent of the clicked <a> tag
 			jQuery(this).closest('li').addClass('current');
 	  
@@ -574,8 +600,8 @@ jQuery(document).ready(function () {
 		 });
 		if (window.location.href.includes('#help-page')) {
 			// Select the "Help Page" link and its immediate parent <li>
-			var $helpPageLink = jQuery('#toplevel_page_wp-legal-pages a[href="admin.php?page=wplp-dashboard#help-page"]');
-			var $dashboardLink = jQuery('#toplevel_page_wp-legal-pages a[href="admin.php?page=wplp-dashboard"]');
+			var $helpPageLink = jQuery('#wp-legalpages-main-admin-structure a[href="admin.php?page=wplp-dashboard#help-page"]');
+			var $dashboardLink = jQuery('#wp-legalpages-main-admin-structure a[href="admin.php?page=wplp-dashboard"]');
 			
 			// Add the 'current' class to the parent <li> of the "Help Page" link
 			$helpPageLink.closest('li').addClass('current');
@@ -701,3 +727,27 @@ function alignSideBar(){
         });
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+		var toggleBtn = document.getElementById('compliance-setup-chevron');
+		var content   = document.getElementById('compliance-setup-content');
+		var header    = document.getElementById('compliance-setup-toggle');
+		if (!toggleBtn || !content) {
+			return;
+		}
+
+		function toggleCompliancePanel() {
+			var isCollapsed = content.classList.toggle('collapsed');
+			toggleBtn.classList.toggle('rotated', isCollapsed);
+			toggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
+		}
+
+		toggleBtn.addEventListener('click', function (e) {
+			e.stopPropagation();
+			toggleCompliancePanel();
+		});
+
+		if (header) {
+			header.addEventListener('click', toggleCompliancePanel);
+		}
+	});

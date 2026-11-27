@@ -11,7 +11,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$lp_eu_button_text    = get_option( 'lp_eu_button_text' );
+$lp_eu_button_text    = get_option( 'lp_eu_button_text' , 'Yes, I am');
 $lp_eu_button_text_no = get_option( 'lp_eu_button_text_no' , 'No, I am not');
 $data                 = apply_filters( 'wplegalpages_pro_invalid_description', get_option( '_lp_invalid_description', __( 'We are Sorry.', 'wplegalpages' ) ) );
 ?>
@@ -36,7 +36,7 @@ $data                 = apply_filters( 'wplegalpages_pro_invalid_description', g
 				<script>
 					jQuery(document).ready(function($) {
 							$('#lp_verify_yes').click(function(){
-								$.cookie("wplegalpages", 1, { expires : 1 });
+								$.cookie("wplegalpages", 1, { expires : 1, path: '/' });
 							location.reload();
 							});
 
