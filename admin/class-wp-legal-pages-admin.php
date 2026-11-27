@@ -3462,7 +3462,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							sprintf(
 								/* translators: %s: Terms of use link, %s Text */
 								'<a href="%s" target="_blank" style="color:#0A6CD0;">%s</a>',
-								esc_url( 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=25-policy-pages#wplegalpages-policy-templates' ),
+								esc_url( 'https://wplegalpages.com/legal-pages/' ),
 								__( '25+ policy pages', 'wplegalpages' )
 							)
 						),

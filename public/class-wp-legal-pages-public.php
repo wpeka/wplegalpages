@@ -613,7 +613,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Public' ) ) {
 			);
 			$tid = absint( $atts['tid'] );
 
-			$res = $wpdb->get_row( $wpdb->prepare( "SELECT ID, post_title, post_content, post_password FROM {$wpdb->posts} WHERE ID = %d AND post_type = %s AND post_status = %s", $tid, 'page', 'publish' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$res = $wpdb->get_row( $wpdb->prepare( "SELECT ID, post_title, post_content, post_password FROM %i WHERE ID = %d AND post_type = %s AND post_status = %s", $wpdb->posts, $tid, 'page', 'publish' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
 			if ( ! $res || ! empty( $res->post_password ) ) {
 				return '';
