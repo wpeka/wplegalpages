@@ -715,6 +715,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 		return true;
 	}
 	public function permission_callback_for_react_app(WP_REST_Request $request) {
+
 		$this->settings = new WP_Legal_Pages_Settings();
 
 		// Signature first - see permission_callback_for_wplp_connect_site.
@@ -1312,6 +1313,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			'country'			=> $lp_general['country'],
 			'email'				=> $lp_general['email'],
 			'address'			=> $lp_general['address'],
+			'niche'				=> $lp_general['niche'] ?? '',
 			'facebookUrl'		=> $lp_general['facebook-url'],
 			'googleUrl'			=> $lp_general['google-url'],
 			'twitterUrl'		=> $lp_general['twitter-url'],
@@ -1750,6 +1752,32 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			);
 			$pid = wp_insert_post( $post_args );
 		}
+		/*
+		 * This request runs without a logged-in WP user, so wp_insert_post()
+		 * applies kses to post_content, which strips <iframe> (e.g. embedded
+		 * maps). Allow iframes for this save only.
+		 */
+		$allow_iframe = function ( $tags, $context ) {
+			if ( 'post' === $context ) {
+				$tags['iframe'] = array(
+					'src'             => true,
+					'width'           => true,
+					'height'          => true,
+					'style'           => true,
+					'title'           => true,
+					'frameborder'     => true,
+					'scrolling'       => true,
+					'allow'           => true,
+					'allowfullscreen' => true,
+					'loading'         => true,
+					'referrerpolicy'  => true,
+				);
+			}
+			return $tags;
+		};
+		add_filter( 'wp_kses_allowed_html', $allow_iframe, 10, 2 );
+		$pid = wp_insert_post( $post_args );
+		remove_filter( 'wp_kses_allowed_html', $allow_iframe, 10 );
 
 		update_post_meta( $pid, 'is_legal', 'yes' );
 		update_post_meta( $pid, 'legal_page_type', $page_slug );
@@ -2085,10 +2113,11 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 			    update_option( 'lp_footer_options', $lp_footer_options );
 			}
 
-			if ( $save_object['is_banner'] && !empty( $announcement_object ) && is_array( $announcement_object ) ) {
+			if ( !empty( $announcement_object ) && is_array( $announcement_object ) ) {
 				$lp_banner_options = array_merge( $lp_banner_options, $announcement_object );
-				update_option( 'lp_banner_options', $lp_banner_options );
 			}
+			$lp_banner_options['show_banner'] = !empty( $save_object['is_banner'] ) && 'false' !== $save_object['is_banner'] ? '1' : '0';
+			update_option( 'lp_banner_options', $lp_banner_options );
 
 			if( !empty( $age_verification_object ) && is_array( $age_verification_object ) ) {
 				update_option( '_lp_require_for', $age_verification_object['is_age'] );
@@ -3433,7 +3462,7 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 							sprintf(
 								/* translators: %s: Terms of use link, %s Text */
 								'<a href="%s" target="_blank" style="color:#0A6CD0;">%s</a>',
-								esc_url( 'https://club.wpeka.com/product/wplegalpages/?utm_source=plugin&utm_medium=wplegalpages&utm_campaign=getting-started&utm_content=25-policy-pages#wplegalpages-policy-templates' ),
+								esc_url( 'https://wplegalpages.com/legal-pages/' ),
 								__( '25+ policy pages', 'wplegalpages' )
 							)
 						),
@@ -7253,7 +7282,18 @@ if ( ! class_exists( 'WP_Legal_Pages_Admin' ) ) {
 				$flag = false;
 
 				if ( isset( $_REQUEST['mode'] ) && 'edit' === $_REQUEST['mode'] && isset( $_REQUEST['lpid'] ) ) {
+					if ( ! current_user_can( 'manage_options' ) ) {
+						wp_die( esc_html__( 'You do not have permission to perform this action.', 'wplegalpages' ), 403 );
+					}
 
+					if ( isset( $_REQUEST['nonce'] ) ) {
+						$nonce = sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) );
+						if ( ! wp_verify_nonce( $nonce, 'lp-submit-create-popups' ) ) {
+							wp_die( esc_html__( 'Security check failed. Please try again.', 'wplegalpages' ) );
+						}
+					} else {
+						wp_die( esc_html__( 'Missing nonce. Please try again.', 'wplegalpages' ) );
+					}
 					$lpid = isset( $_REQUEST['lpid'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['lpid'] ) ) : 0;
 					$row  = $wpdb->get_row( $wpdb->prepare( 'SELECT * from ' . $lp_obj->popuptable . ' where id=%d', $lpid ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
